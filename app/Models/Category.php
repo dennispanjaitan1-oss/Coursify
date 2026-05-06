@@ -10,7 +10,7 @@ class Category extends Model
 {
     protected $fillable = ['name', 'slug', 'parent_id', 'icon'];
 
-    // ── Relationships ────────────────────────────────────────────
+    // ── Relationships ───────────────────────────────────────
 
     /** Subkategori (self-referencing) */
     public function children(): HasMany
