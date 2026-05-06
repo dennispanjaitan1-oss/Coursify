@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="csrf-token" content="{{ csrf_token() }}">
+<title>Profile Settings — Coursify</title>
+
+<link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+@vite(['resources/css/app.css', 'resources/js/app.js'])
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+<style>
+:root {
+    --navy: #153759;
+    --navy-dark: #0F2744;
+    --lav-1: #F5F1FC;
+    --lav-2: #E8E1F3;
+    --lav-3: #D4CDF0;
+    --lav-4: #B8AFEB;
+    --purple: #7B6FE8;
+    --purple-dark: #5B4FD4;
+    --teal: #00C896;
+    --teal-light: #E6FBF5;
+    --orange: #FF8A5B;
+    --orange-light: #FFF0E8;
+    --gold: #FFC452;
+    --gold-light: #FFF7E0;
+    --red: #EF4444;
+    --red-light: #FEE2E2;
+    --text: #1A1825;
+    --text-soft: #4A4660;
+    --muted: #8B87A8;
+    --border: rgba(30,58,95,0.08);
+    --font-serif: 'Instrument Serif', serif;
+    --font-sans: 'Inter', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: var(--font-sans);
+    color: var(--text);
+    background: linear-gradient(180deg, #EDE5F9 0%, #D8CEEE 50%, #C4B8E8 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    padding-top: 90px;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 800px 400px at 20% 10%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(ellipse 600px 300px at 80% 30%, rgba(255,255,255,0.4), transparent),
+        radial-gradient(ellipse 700px 400px at 50% 90%, rgba(255,255,255,0.3), transparent);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+}
+
+/* ═══ NAVBAR ═══ */
+.navbar-wrap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 20px 20px 0;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.navbar-wrap.navbar-hidden { transform: translateY(-120%); }
+.navbar-wrap.navbar-scrolled .navbar {
+    background: rgba(255,255,255,0.9);
+    box-shadow: 0 10px 40px rgba(30,58,95,0.1);
+}
+.navbar {
+    max-width: 900px;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.65);
+    backdrop-filter: blur(30px) saturate(180%);
+    border: 1px solid rgba(255,255,255,0.9);
+    border-radius: 100px;
+    padding: 8px 8px 8px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 10px 40px rgba(30,58,95,0.08);
+}
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
+.logo-img { width: 34px; height: 34px; border-radius: 8px; object-fit: cover; box-shadow: 0 2px 8px rgba(30,58,95,0.2); }
+.logo-text { font-size: 17px; font-weight: 700; letter-spacing: -0.02em; }
+
+.nav-links { display: flex; gap: 2px; }
+.nav-link {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-soft);
+    text-decoration: none;
+    padding: 8px 14px;
+    border-radius: 100px;
+    transition: all 0.2s;
+}
+.nav-link:hover { background: rgba(255,255,255,0.7); color: var(--text); }
+
+.btn-nav {
+    padding: 9px 18px;
+    background: #1A1825;
+    color: white;
+    border-radius: 100px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+.btn-nav:hover { background: #2A2840; transform: translateY(-1px); }
+
+/* ═══ USER DROPDOWN ═══ */
+.user-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.7);
+    border: 1px solid rgba(255,255,255,0.9);
+    border-radius: 100px;
+    padding: 6px 14px 6px 6px;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    transition: all 0.2s;
+}
+.user-btn:hover {
+    background: rgba(255,255,255,0.95);
+    box-shadow: 0 4px 12px rgba(30,58,95,0.08);
+}
+.user-avatar-nav {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--navy), #2D4D7A);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+.user-name-nav { white-space: nowrap; }
+.user-dropdown {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 12px);
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(30px);
+    border: 1px solid rgba(255,255,255,0.9);
+    border-radius: 16px;
+    padding: 8px;
+    min-width: 240px;
+    box-shadow: 0 20px 50px rgba(30,58,95,0.15);
+    z-index: 100;
+}
+.dropdown-header {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    margin-bottom: 6px;
+}
+.dropdown-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.dropdown-email {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    color: var(--text-soft);
+    font-size: 13px;
+    text-decoration: none;
+    transition: all 0.2s;
+    background: transparent;
+    border: none;
+    width: 100%;
+    cursor: pointer;
+    text-align: left;
+    font-family: var(--font-sans);
+    font-weight: 500;
+}
+.dropdown-item:hover {
+    background: rgba(123,111,232,0.08);
+    color: var(--text);
+}
+.dropdown-item.active-route {
+    background: rgba(123,111,232,0.12);
+    color: var(--purple-dark);
+    font-weight: 600;
+}
+.dropdown-item-danger { color: var(--orange); }
+.dropdown-item-danger:hover { background: rgba(255,138,91,0.08); color: var(--orange); }
+
+/* ═══ FLASH ═══ */
+.flash-wrap {
+    position: fixed;
+    top: 90px;
+    right: 24px;
+    z-index: 101;
+    max-width: 400px;
+    animation: slideInRight 0.4s ease-out;
+}
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+.flash {
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.9);
+    border-radius: 14px;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: 0 10px 40px rgba(30,58,95,0.15);
+}
+.flash-success { border-left: 4px solid var(--teal); }
+.flash-error { border-left: 4px solid var(--orange); }
+
+/* ═══ PAGE HEADER ═══ */
+.page-header {
+    text-align: center;
+    padding: 40px 20px 24px;
+    position: relative;
+    z-index: 1;
+}
+
+.page-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.9);
+    padding: 6px 16px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-soft);
+    margin-bottom: 18px;
+}
+
+.page-badge-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--teal);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.3); }
+}
+
+.page-title {
+    font-family: var(--font-serif);
+    font-size: clamp(36px, 6vw, 64px);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+    padding-bottom: 0.1em;
+    overflow: visible;
+}
+
+.page-title em {
+    font-style: italic;
+    background: linear-gradient(135deg, #9F94F2, #7B6FE8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    padding-bottom: 0.15em;
+    margin-top: 0.05em;
+    overflow: visible;
+}
+
+.page-subtitle {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-soft);
+    max-width: 520px;
+    margin: 0 auto;
+}
+
+/* ═══ MAIN LAYOUT ═══ */
+.main-section {
+    padding: 20px 20px 60px;
+}
+
+.layout-grid {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 24px;
+    max-width: 1080px;
+    margin: 0 auto;
+    align-items: start;
+}
+
+/* ═══ SIDEBAR TABS ═══ */
+.tabs-sidebar {
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.9);
+    border-radius: 16px;
+    padding: 12px;
+    position: sticky;
+    top: 110px;
+    box-shadow: 0 4px 20px rgba(30,58,95,0.04);
+}
+
+.tab-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--text-soft);
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s;
+    margin-bottom: 4px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-family: var(--font-sans);
+}
+
+.tab-link:last-child { margin-bottom: 0; }
+
+.tab-link:hover {
+    background: var(--lav-1);
+    color: var(--text);
+}
+
+.tab-link.active {
+    background: linear-gradient(135deg, var(--purple), var(--purple-dark));
+    color: white;
+    box-shadow: 0 4px 12px rgba(123,111,232,0.3);
+}
+
+.tab-icon {
+    width: 20px;
+    font-size: 16px;
+    text-align: center;
+}
+
+/* ═══ CONTENT CARD ═══ */
+.content-card {
+    background: rgba(255,255,255,0.65);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.9);
+    border-radius: 20px;
+    padding: 32px;
+    box-shadow: 0 4px 20px rgba(30,58,95,0.04);
+}
+
+.card-header {
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+.card-title {
+    font-family: var(--font-serif);
+    font-size: 28px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+    padding-bottom: 0.05em;
+}
+
+.card-title em {
+    font-style: italic;
+    color: var(--purple);
+}
+
+.card-desc {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.5;
+}
+
+/* ═══ AVATAR SECTION ═══ */
+.avatar-section {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 24px;
+    background: linear-gradient(135deg, var(--lav-1), rgba(255,255,255,0.5));
+    border: 1px solid rgba(123,111,232,0.15);
+    border-radius: 16px;
+    margin-bottom: 28px;
+}
+
+.avatar-large {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--navy), #2D4D7A);
+    color: white;
+    font-size: 36px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 8px 24px rgba(30,58,95,0.2);
+    position: relative;
+}
+
+.avatar-upload-btn {
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    width: 32px;
+    height: 32px;
+    background: white;
+    border: 2px solid var(--purple);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--purple);
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.avatar-upload-btn:hover {
+    background: var(--purple);
+    color: white;
+    transform: scale(1.1);
+}
+
+.avatar-info { flex: 1; min-width: 0; }
+
+.avatar-name {
+    font-family: var(--font-serif);
+    font-size: 24px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
+    line-height: 1.2;
+}
+
+.avatar-email {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 10px;
+}
+
+.avatar-role {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 12px;
+    background: rgba(123,111,232,0.15);
+    color: var(--purple-dark);
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+/* ═══ FORM ═══ */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group-full {
+    grid-column: 1 / -1;
+}
+
+.form-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-soft);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.form-label .required {
+    color: var(--orange);
+    margin-left: 2px;
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+    width: 100%;
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.8);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    transition: all 0.2s;
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder { color: var(--muted); }
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+    background: white;
+    border-color: var(--purple);
+    box-shadow: 0 0 0 4px rgba(123,111,232,0.1);
+}
+
+.form-input.error,
+.form-textarea.error {
+    border-color: var(--orange);
+    background: rgba(255,138,91,0.03);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 100px;
+    font-family: var(--font-sans);
+    line-height: 1.6;
+}
+
+.form-error {
+    font-size: 12px;
+    color: var(--orange);
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 500;
+}
+
+.form-help {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 6px;
+    line-height: 1.5;
+}
+
+.form-input-icon {
+    position: relative;
+}
+
+.form-input-icon input {
+    padding-left: 42px;
+}
+
+.form-input-icon .icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 15px;
+    pointer-events: none;
+}
+
+/* ═══ FORM ACTIONS ═══ */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+}
+
+.form-actions-info {
+    flex: 1;
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.btn-cancel {
+    padding: 11px 22px;
+    background: rgba(255,255,255,0.7);
+    border: 1.5px solid var(--border);
+    border-radius: 100px;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-soft);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+}
+
+.btn-cancel:hover {
+    background: white;
+    border-color: var(--muted);
+    color: var(--text);
+}
+
+.btn-save {
+    padding: 11px 24px;
+    background: #1A1825;
+    color: white;
+    border: none;
+    border-radius: 100px;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+    box-shadow: 0 4px 14px rgba(26,24,37,0.3);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-save:hover {
+    background: #2A2840;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(26,24,37,0.4);
+}
+
+.btn-danger {
+    padding: 11px 24px;
+    background: var(--red);
+    color: white;
+    border: none;
+    border-radius: 100px;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-danger:hover {
+    background: #DC2626;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(239,68,68,0.3);
+}
+
+/* ═══ DANGER ZONE ═══ */
+.danger-zone {
+    margin-top: 24px;
+    padding: 20px;
+    background: rgba(239,68,68,0.05);
+    border: 1px solid rgba(239,68,68,0.2);
+    border-radius: 14px;
+}
+
+.danger-title {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--red);
+    margin-bottom: 4px;
+}
+
+.danger-desc {
+    font-size: 13px;
+    color: var(--text-soft);
+    line-height: 1.5;
+    margin-bottom: 16px;
+}
+
+/* ═══ TOGGLE SWITCH ═══ */
+.toggle-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background: rgba(255,255,255,0.5);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 10px;
+}
+
+.toggle-info { flex: 1; }
+
+.toggle-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 3px;
+}
+
+.toggle-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+}
+
+.toggle-switch {
+    position: relative;
+    width: 42px;
+    height: 24px;
+    background: var(--lav-2);
+    border-radius: 100px;
+    cursor: pointer;
+    transition: background 0.2s;
+    flex-shrink: 0;
+    border: none;
+}
+
+.toggle-switch.active {
+    background: var(--purple);
+}
+
+.toggle-switch::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    transition: transform 0.2s;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.toggle-switch.active::after {
+    transform: translateX(18px);
+}
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 900px) {
+    .layout-grid { grid-template-columns: 1fr; }
+    .tabs-sidebar { position: static; }
+    .form-grid { grid-template-columns: 1fr; }
+    .avatar-section { flex-direction: column; text-align: center; }
+}
+
+@media (max-width: 640px) {
+    .nav-links { display: none; }
+    .user-name-nav { display: none; }
+    .content-card { padding: 24px; }
+    .form-actions { flex-direction: column-reverse; align-items: stretch; }
+    .form-actions .btn-save,
+    .form-actions .btn-cancel {
+        width: 100%;
+        justify-content: center;
+    }
+}
+</style>
+</head>
+<body>
+
+{{-- NAVBAR --}}
+@include('partials.navbar')
+
+{{-- Flash Messages --}}
+@if(session('success'))
+    <div class="flash-wrap" x-data x-init="setTimeout(() => $el.remove(), 4000)">
+        <div class="flash flash-success">✓ {{ session('success') }}</div>
+    </div>
+@endif
+
+@if(session('error'))
+    <div class="flash-wrap" x-data x-init="setTimeout(() => $el.remove(), 4000)">
+        <div class="flash flash-error">✕ {{ session('error') }}</div>
+    </div>
+@endif
+
+
+{{-- PAGE HEADER --}}
+<section class="page-header">
+    <div class="container">
+        <div class="page-badge">
+            <span class="page-badge-dot"></span>
+            <span>Account settings</span>
+        </div>
+
+        <h1 class="page-title">
+            Profile <em>Settings</em>
+        </h1>
+
+        <p class="page-subtitle">
+            Manage your personal information, security, and preferences.
+        </p>
+    </div>
+</section>
+
+{{-- MAIN CONTENT --}}
+<section class="main-section" x-data="{ activeTab: 'profile' }">
+    <div class="container">
+        <div class="layout-grid">
+
+            {{-- ═══════════════════════════════════════════════ --}}
+            {{-- SIDEBAR TABS                                    --}}
+            {{-- ═══════════════════════════════════════════════ --}}
+            <aside class="tabs-sidebar">
+                <button @click="activeTab = 'profile'"
+                        :class="{ 'active': activeTab === 'profile' }"
+                        class="tab-link">
+                    <span class="tab-icon">👤</span>
+                    <span>Profile</span>
+                </button>
+
+                <button @click="activeTab = 'security'"
+                        :class="{ 'active': activeTab === 'security' }"
+                        class="tab-link">
+                    <span class="tab-icon">🔒</span>
+                    <span>Security</span>
+                </button>
+
+                <button @click="activeTab = 'notifications'"
+                        :class="{ 'active': activeTab === 'notifications' }"
+                        class="tab-link">
+                    <span class="tab-icon">🔔</span>
+                    <span>Notifications</span>
+                </button>
+
+                <button @click="activeTab = 'preferences'"
+                        :class="{ 'active': activeTab === 'preferences' }"
+                        class="tab-link">
+                    <span class="tab-icon">🎨</span>
+                    <span>Preferences</span>
+                </button>
+
+                <button @click="activeTab = 'billing'"
+                        :class="{ 'active': activeTab === 'billing' }"
+                        class="tab-link">
+                    <span class="tab-icon">💳</span>
+                    <span>Billing</span>
+                </button>
+            </aside>
+
+            {{-- ═══════════════════════════════════════════════ --}}
+            {{-- TAB CONTENTS                                    --}}
+            {{-- ═══════════════════════════════════════════════ --}}
+            <div>
+                {{-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ --}}
+                {{-- TAB 1: PROFILE                              --}}
+                {{-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ --}}
+                <div class="content-card" x-show="activeTab === 'profile'" x-transition>
+                    <div class="card-header">
+                        <h2 class="card-title">Personal <em>Information</em></h2>
+                        <p class="card-desc">Update your profile details and public information.</p>
+                    </div>
+
+                    {{-- Avatar Section --}}
+                    <div class="avatar-section">
+                        <div class="avatar-large">
+                            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                            <button class="avatar-upload-btn" onclick="alert('Upload avatar feature coming soon!')" title="Change photo">
+                                📷
+                            </button>
+                        </div>
+                        <div class="avatar-info">
+                            <div class="avatar-name">{{ auth()->user()->name }}</div>
+                            <div class="avatar-email">{{ auth()->user()->email }}</div>
+                            @php
+                                $role = auth()->user()->role ?? 'student';
+                                $roleLabel = match($role) {
+                                    'admin' => '⚙️ Administrator',
+                                    'instructor' => '👨‍🏫 Instructor',
+                                    default => '🎓 Student',
+                                };
+                            @endphp
+                            <span class="avatar-role">{{ $roleLabel }}</span>
+                        </div>
+                    </div>
+
+                    {{-- Profile Form --}}
+                    <form method="POST" action="{{ route('student.profile.update') }}">
+                        @csrf
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label" for="name">
+                                    Full Name <span class="required">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    id="name"
+                                    name="name"
+                                    class="form-input {{ $errors->has('name') ? 'error' : '' }}"
+                                    value="{{ old('name', auth()->user()->name) }}"
+                                    placeholder="Your full name"
+                                    required
+                                >
+                                @error('name')
+                                    <div class="form-error">⚠ {{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="email">
+                                    Email Address <span class="required">*</span>
+                                </label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    class="form-input {{ $errors->has('email') ? 'error' : '' }}"
+                                    value="{{ old('email', auth()->user()->email) }}"
+                                    placeholder="you@email.com"
+                                    required
+                                >
+                                @error('email')
+                                    <div class="form-error">⚠ {{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group form-group-full">
+                                <label class="form-label" for="headline">Headline</label>
+                                <input
+                                    type="text"
+                                    id="headline"
+                                    name="headline"
+                                    class="form-input"
+                                    value="{{ old('headline', auth()->user()->headline) }}"
+                                    placeholder="e.g., Aspiring Full-Stack Developer"
+                                    maxlength="100"
+                                >
+                                <div class="form-help">A short professional tagline that appears under your name (max 100 characters).</div>
+                            </div>
+
+                            <div class="form-group form-group-full">
+                                <label class="form-label" for="bio">Bio</label>
+                                <textarea
+                                    id="bio"
+                                    name="bio"
+                                    class="form-textarea"
+                                    placeholder="Tell us a bit about yourself, your interests, and what you're learning..."
+                                    maxlength="500"
+                                    rows="4"
+                                >{{ old('bio', auth()->user()->bio) }}</textarea>
+                                <div class="form-help">Brief description for your profile. Maximum 500 characters.</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="website_url">Website</label>
+                                <div class="form-input-icon">
+                                    <span class="icon">🌐</span>
+                                    <input
+                                        type="url"
+                                        id="website_url"
+                                        name="website_url"
+                                        class="form-input"
+                                        value="{{ old('website_url', auth()->user()->website_url ?? '') }}"
+                                        placeholder="https://yourwebsite.com"
+                                    >
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="linkedin_url">LinkedIn</label>
+                                <div class="form-input-icon">
+                                    <span class="icon">in</span>
+                                    <input
+                                        type="url"
+                                        id="linkedin_url"
+                                        name="linkedin_url"
+                                        class="form-input"
+                                        value="{{ old('linkedin_url', auth()->user()->linkedin_url ?? '') }}"
+                                        placeholder="https://linkedin.com/in/..."
+                                    >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <div class="form-actions-info">
+                                * Required fields
+                            </div>
+                            <a href="{{ route('student.index') }}" class="btn-cancel">Cancel</a>
+                            <button type="submit" class="btn-save">
+                                💾 Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                {{-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ --}}
+                {{-- TAB 2: SECURITY                             --}}
+                {{-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ --}}
+                <div class="content-card" x-show="activeTab === 'security'" x-transition>
+                    <div class="card-header">
+                        <h2 class="card-title">Password & <em>Security</em></h2>
+                        <p class="card-desc">Update your password and manage account security.</p>
+                    </div>
+
+                    <form method="POST" action="{{ route('student.profile.password') }}" x-data="{ showCurrent: false, showNew: false, showConfirm: false }">
+                        @csrf
+
+                        <div class="form-grid" style="grid-template-columns: 1fr;">
+                            <div class="form-group">
+                                <label class="form-label" for="current_password">
+                                    Current Password <span class="required">*</span>
+                                </label>
+                                <div class="form-input-icon" style="position:relative;">
+                                    <span class="icon">🔒</span>
+                                    <input
+                                        :type="showCurrent ? 'text' : 'password'"
+                                        id="current_password"
+                                        name="current_password"
+                                        class="form-input {{ $errors->has('current_password') ? 'error' : '' }}"
+                                        placeholder="Enter your current password"
+                                        required
+                                        style="padding-right: 42px;"
+                                    >
+                                    <button type="button" @click="showCurrent = !showCurrent"
+                                            style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:15px;color:var(--muted);">
+                                        <span x-show="!showCurrent">👁</span>
+                                        <span x-show="showCurrent">🔐</span>
+                                    </button>
+                                </div>
+                                @error('current_password')
+                                    <div class="form-error">⚠ {{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="password">
+                                    New Password <span class="required">*</span>
+                                </label>
+                                <div class="form-input-icon" style="position:relative;">
+                                    <span class="icon">🔑</span>
+                                    <input
+                                        :type="showNew ? 'text' : 'password'"
+                                        id="password"
+                                        name="password"
+                                        class="form-input {{ $errors->has('password') ? 'error' : '' }}"
+                                        placeholder="At least 8 characters"
+                                        required
+                                        minlength="8"
+                                        style="padding-right: 42px;"
+                                    >
+                                    <button type="button" @click="showNew = !showNew"
+                                            style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:15px;color:var(--muted);">
+                                        <span x-show="!showNew">👁</span>
+                                        <span x-show="showNew">🔐</span>
+                                    </button>
+                                </div>
+                                @error('password')
+                                    <div class="form-error">⚠ {{ $message }}</div>
+                                @enderror
+                                <div class="form-help">Minimum 8 characters. Use a mix of letters, numbers, and symbols for better security.</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="password_confirmation">
+                                    Confirm New Password <span class="required">*</span>
+                                </label>
+                                <div class="form-input-icon" style="position:relative;">
+                                    <span class="icon">🔑</span>
+                                    <input
+                                        :type="showConfirm ? 'text' : 'password'"
+                                        id="password_confirmation"
+                                        name="password_confirmation"
+                                        class="form-input"
+                                        placeholder="Repeat new password"
+                                        required
+                                        style="padding-right: 42px;"
+                                    >
+                                    <button type="button" @click="showConfirm = !showConfirm"
+                                            style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:15px;color:var(--muted);">
+                                        <span x-show="!showConfirm">👁</span>
+                                        <span x-show="showConfirm">🔐</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <div class="form-actions-info">
+                                🛡️ Your password is encrypted and secure
+                            </div>
+                            <button type="submit" class="btn-save">
+                                🔒 Update Password
+                            </button>
+                        </div>
+                    </form>
+
+                    {{-- Two-Factor Auth Info --}}
+                    <div style="margin-top: 28px; padding: 20px; background: linear-gradient(135deg, var(--teal-light), rgba(255,255,255,0.5)); border: 1px solid rgba(0,200,150,0.2); border-radius: 14px;">
+                        <div style="display: flex; align-items: flex-start; gap: 14px;">
+                            <div style="font-size: 28px;">🛡️</div>
+                            <div style="flex: 1;">
+                                <div style="font-family: var(--font-serif); font-size: 18px; margin-bottom: 4px;">
+                                    Two-Factor <em style="color: var(--teal);">Authentication</em>
+                                </div>
+                                <p style="font-size: 13px; color: var(--text-soft); line-height: 1.6; margin-bottom: 12px;">
+                                    Add an extra layer of security to your account by enabling 2FA. You'll need to enter a code from your authenticator app when signing in.
+                                </p>
+                                <button type="button" style="padding: 8px 16px; background: var(--teal); color: white; border: none; border-radius: 100px; font-size: 12px; font-weight: 600; cursor: pointer;" onclick="alert('2FA feature coming soon!')">
+                                    Enable 2FA
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Danger Zone --}}
+                    <div class="danger-zone">
+                        <div class="danger-title">Delete Account</div>
+                        <p class="danger-desc">
+                            Permanently delete your account and all associated data. This action cannot be undone — all your course progress, certificates, and saved items will be lost forever.
+                        </p>
+                        <button type="button" class="btn-danger" onclick="confirmDeleteAccount()">
+                            🗑️ Delete My Account
+                        </button>
+                    </div>
+                </div>
+
+                {{-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ --}}
+                {{-- TAB 3: NOTIFICATIONS                        --}}
+                {{-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ --}}
+                <div class="content-card" x-show="activeTab === 'notifications'" x-transition
+                     x-data="{
+                        email_courses: true,
+                        email_promo: false,
+                        email_newsletter: true,
+                        push_progress: true,
+                        push_reminders: false,
+                        push_new_courses: true,
+                     }">
+                    <div class="card-header">
+                        <h2 class="card-title">Notification <em>Preferences</em></h2>
+                        <p class="card-desc">Choose how you want to receive updates and alerts.</p>
+                    </div>
+
+                    {{-- Email Notifications --}}
+                    <div style="margin-bottom: 28px;">
+                        <div style="font-family: var(--font-serif); font-size: 20px; margin-bottom: 14px;">
+                            📧 Email Notifications
+                        </div>
+
+                        <div class="toggle-row">
+                            <div class="toggle-info">
+                                <div class="toggle-label">Course Updates</div>
+                                <div class="toggle-desc">Get notified when there are new lessons, updates, or announcements in your enrolled courses.</div>
+                            </div>
+                            <button type="button"
+                                    @click="email_courses = !email_courses"
+                                    :class="{ 'active': email_courses }"
+                                    class="toggle-switch"></button>
+                        </div>
+
+                        <div class="toggle-row">
+                            <div class="toggle-info">
+                                <div class="toggle-label">Promotional Emails</div>
+                                <div class="toggle-desc">Receive special offers, discounts, and deals on courses.</div>
+                            </div>
+                            <button type="button"
+                                    @click="email_promo = !email_promo"
+                                    :class="{ 'active': email_promo }"
+                                    class="toggle-switch"></button>
+                        </div>
+
+                        <div class="toggle-row">
+                            <div class="toggle-info">
+                                <div class="toggle-label">Weekly Newsletter</div>
+                                <div class="toggle-desc">Get a weekly digest of new courses, trending topics, and learning tips.</div>
+                            </div>
+                            <button type="button"
+                                    @click="email_newsletter = !email_newsletter"
+                                    :class="{ 'active': email_newsletter }"
+                                    class="toggle-switch"></button>
+                        </div>
+                    </div>
+
+                    {{-- Push Notifications --}}
+                    <div style="margin-bottom: 28px;">
+                        <div style="font-family: var(--font-serif); font-size: 20px; margin-bottom: 14px;">
+                            🔔 Push Notifications
+                        </div>
+
+                        <div class="toggle-row">
+                            <div class="toggle-info">
+                                <div class="toggle-label">Learning Progress</div>
+                                <div class="toggle-desc">Celebrate your milestones — certificates earned, lessons completed, and streaks.</div>
+                            </div>
+                            <button type="button"
+                                    @click="push_progress = !push_progress"
+                                    :class="{ 'active': push_progress }"
+                                    class="toggle-switch"></button>
+                        </div>
+
+                        <div class="toggle-row">
+                            <div class="toggle-info">
+                                <div class="toggle-label">Study Reminders</div>
+                                <div class="toggle-desc">Daily reminders to continue your learning journey and build a habit.</div>
+                            </div>
+                            <button type="button"
+                                    @click="push_reminders = !push_reminders"
+                                    :class="{ 'active': push_reminders }"
+                                    class="toggle-switch"></button>
+                        </div>
+
+                        <div class="toggle-row">
+                            <div class="toggle-info">
+                                <div class="toggle-label">New Course Alerts</div>
+                                <div class="toggle-desc">Get notified when new courses are published in categories you're interested in.</div>
+                            </div>
+                            <button type="button"
+                                    @click="push_new_courses = !push_new_courses"
+                                    :class="{ 'active': push_new_courses }"
+                                    class="toggle-switch"></button>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <div class="form-actions-info">
+                            💡 Changes are saved automatically
+                        </div>
+                        <button type="button" class="btn-save" onclick="showToast('Notification preferences saved!', 'success')">
+                            ✓ Save Preferences
+                        </button>
+                    </div>
+                </div>
+
+                {{-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ --}}
+                {{-- TAB 4: PREFERENCES                          --}}
+                {{-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ --}}
+                <div class="content-card" x-show="activeTab === 'preferences'" x-transition>
+                    <div class="card-header">
+                        <h2 class="card-title">Learning <em>Preferences</em></h2>
+                        <p class="card-desc">Customize your learning experience on Coursify.</p>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="language">Display Language</label>
+                            <select id="language" name="language" class="form-select">
+                                <option value="id" selected>🇮🇩 Bahasa Indonesia</option>
+                                <option value="en">🇬🇧 English</option>
+                                <option value="ja">🇯🇵 日本語</option>
+                                <option value="ko">🇰🇷 한국어</option>
+                            </select>
+                            <div class="form-help">Language used across the Coursify interface.</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="timezone">Timezone</label>
+                            <select id="timezone" name="timezone" class="form-select">
+                                <option value="Asia/Jakarta" selected>🌏 Asia/Jakarta (WIB, UTC+7)</option>
+                                <option value="Asia/Makassar">🌏 Asia/Makassar (WITA, UTC+8)</option>
+                                <option value="Asia/Jayapura">🌏 Asia/Jayapura (WIT, UTC+9)</option>
+                                <option value="UTC">🌍 UTC (Universal)</option>
+                            </select>
+                            <div class="form-help">Used for displaying dates and scheduling.</div>
+                        </div>
+
+                        <div class="form-group form-group-full">
+                            <label class="form-label">Theme Preference</label>
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 4px;">
+                                <button type="button" class="theme-option active" data-theme="light">
+                                    <div style="background: white; border: 2px solid var(--border); border-radius: 10px; padding: 18px; margin-bottom: 8px; height: 70px; display: flex; align-items: center; justify-content: center; font-size: 28px;">☀️</div>
+                                    <div style="font-size: 12px; font-weight: 600;">Light</div>
+                                </button>
+                                <button type="button" class="theme-option" data-theme="dark">
+                                    <div style="background: linear-gradient(135deg, #1A1825, #2A2840); border: 2px solid var(--border); border-radius: 10px; padding: 18px; margin-bottom: 8px; height: 70px; display: flex; align-items: center; justify-content: center; font-size: 28px;">🌙</div>
+                                    <div style="font-size: 12px; font-weight: 600;">Dark</div>
+                                </button>
+                                <button type="button" class="theme-option" data-theme="auto">
+                                    <div style="background: linear-gradient(135deg, white 50%, #1A1825 50%); border: 2px solid var(--border); border-radius: 10px; padding: 18px; margin-bottom: 8px; height: 70px; display: flex; align-items: center; justify-content: center; font-size: 28px;">💫</div>
+                                    <div style="font-size: 12px; font-weight: 600;">Auto</div>
+                                </button>
+                            </div>
+                            <div class="form-help" style="margin-top: 10px;">Choose your preferred color scheme. "Auto" follows your system settings.</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="playback_speed">Default Video Speed</label>
+                            <select id="playback_speed" name="playback_speed" class="form-select">
+                                <option value="0.5">0.5x (Slow)</option>
+                                <option value="0.75">0.75x</option>
+                                <option value="1" selected>1x (Normal)</option>
+                                <option value="1.25">1.25x</option>
+                                <option value="1.5">1.5x</option>
+                                <option value="2">2x (Fast)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="quality">Video Quality</label>
+                            <select id="quality" name="quality" class="form-select">
+                                <option value="auto" selected>Auto</option>
+                                <option value="1080p">1080p HD</option>
+                                <option value="720p">720p</option>
+                                <option value="480p">480p</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <div class="form-actions-info"></div>
+                        <button type="button" class="btn-save" onclick="showToast('Preferences saved!', 'success')">
+                            ✓ Save Preferences
+                        </button>
+                    </div>
+                </div>
+
+                {{-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ --}}
+                {{-- TAB 5: BILLING                              --}}
+                {{-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ --}}
+                <div class="content-card" x-show="activeTab === 'billing'" x-transition>
+                    <div class="card-header">
+                        <h2 class="card-title">Billing & <em>Payments</em></h2>
+                        <p class="card-desc">Manage your subscription and payment methods.</p>
+                    </div>
+
+                    {{-- Current Plan --}}
+                    <div style="background: linear-gradient(135deg, var(--navy), #2D4D7A); border-radius: 16px; padding: 24px; color: white; margin-bottom: 20px; position: relative; overflow: hidden;">
+                        <div style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(184,175,235,0.3), transparent); pointer-events: none;"></div>
+
+                        <div style="position: relative; z-index: 1;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+                                <div>
+                                    <div style="font-size: 11px; color: var(--lav-4); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px;">Current Plan</div>
+                                    <div style="font-family: var(--font-serif); font-size: 32px; font-weight: 400; line-height: 1; padding-bottom: 2px;">
+                                        <em style="color: var(--lav-4);">Free</em> Plan
+                                    </div>
+                                </div>
+                                <span style="padding: 6px 14px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 100px; font-size: 11px; font-weight: 700; letter-spacing: 0.05em;">
+                                    ACTIVE
+                                </span>
+                            </div>
+
+                            <p style="font-size: 13px; color: rgba(255,255,255,0.8); line-height: 1.6; margin-bottom: 20px;">
+                                You're on the Free plan. Upgrade to Pro to unlock all premium courses, certificates, and advanced features.
+                            </p>
+
+                            <a href="{{ route('home') }}#pricing" style="display: inline-flex; align-items: center; gap: 6px; padding: 11px 22px; background: white; color: var(--navy); text-decoration: none; border-radius: 100px; font-size: 13px; font-weight: 700;">
+                                ✨ Upgrade to Pro
+                            </a>
+                        </div>
+                    </div>
+
+                    {{-- Payment Methods --}}
+                    <div style="margin-bottom: 20px;">
+                        <div style="font-family: var(--font-serif); font-size: 20px; margin-bottom: 14px;">
+                            💳 Payment Methods
+                        </div>
+
+                        <div style="padding: 20px; background: rgba(255,255,255,0.5); border: 1px solid var(--border); border-radius: 12px; text-align: center;">
+                            <div style="font-size: 36px; margin-bottom: 8px;">💳</div>
+                            <div style="font-size: 14px; color: var(--text-soft); margin-bottom: 12px;">
+                                No payment methods added yet
+                            </div>
+                            <button type="button" style="padding: 10px 20px; background: #1A1825; color: white; border: none; border-radius: 100px; font-size: 12px; font-weight: 600; cursor: pointer;" onclick="alert('Payment integration coming soon!')">
+                                + Add Payment Method
+                            </button>
+                        </div>
+                    </div>
+
+                    {{-- Transaction History --}}
+                    <div>
+                        <div style="font-family: var(--font-serif); font-size: 20px; margin-bottom: 14px;">
+                            📋 Transaction History
+                        </div>
+
+                        <div style="padding: 40px 20px; background: rgba(255,255,255,0.5); border: 1px solid var(--border); border-radius: 12px; text-align: center;">
+                            <div style="font-size: 36px; margin-bottom: 8px;">📭</div>
+                            <div style="font-family: var(--font-serif); font-size: 18px; margin-bottom: 4px;">No transactions yet</div>
+                            <div style="font-size: 12px; color: var(--muted);">
+                                Your purchase history will appear here
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div style="height: 60px;"></div>
+
+{{-- ADDITIONAL CSS --}}
+<style>
+.theme-option {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    text-align: center;
+    transition: transform 0.2s;
+    font-family: var(--font-sans);
+    color: var(--text);
+}
+
+.theme-option:hover {
+    transform: translateY(-3px);
+}
+
+.theme-option.active > div:first-child {
+    border-color: var(--purple) !important;
+    box-shadow: 0 0 0 3px rgba(123,111,232,0.2);
+}
+
+.theme-option.active > div:last-child {
+    color: var(--purple);
+}
+</style>
+
+{{-- JAVASCRIPT --}}
+<script>
+    // Prevent browser bfcache
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    });
+
+    // Auto hide/show navbar on scroll
+    (function() {
+        const navbar = document.getElementById('mainNavbar');
+        if (!navbar) return;
+
+        let lastScroll = 0;
+        let ticking = false;
+        const scrollThreshold = 100;
+
+        function updateNavbar() {
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll > 20) {
+                navbar.classList.add('navbar-scrolled');
+            } else {
+                navbar.classList.remove('navbar-scrolled');
+            }
+
+            if (currentScroll < scrollThreshold) {
+                navbar.classList.remove('navbar-hidden');
+                lastScroll = currentScroll;
+                ticking = false;
+                return;
+            }
+
+            if (currentScroll > lastScroll + 5) {
+                navbar.classList.add('navbar-hidden');
+            } else if (currentScroll < lastScroll - 5) {
+                navbar.classList.remove('navbar-hidden');
+            }
+
+            lastScroll = currentScroll;
+            ticking = false;
+        }
+
+        window.addEventListener('scroll', function() {
+            if (!ticking) {
+                window.requestAnimationFrame(updateNavbar);
+                ticking = true;
+            }
+        }, { passive: true });
+    })();
+
+    // Theme switcher
+    document.querySelectorAll('.theme-option').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.theme-option').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            showToast(`Theme set to ${this.dataset.theme}`, 'success');
+        });
+    });
+
+    // Delete account confirmation
+    function confirmDeleteAccount() {
+        if (confirm('Are you SURE you want to delete your account? This action cannot be undone.\n\nAll your data will be permanently deleted:\n• Course progress\n• Certificates\n• Saved items\n• Reviews\n\nType YES to confirm.')) {
+            const confirmation = prompt('Type "DELETE MY ACCOUNT" to confirm:');
+            if (confirmation === 'DELETE MY ACCOUNT') {
+                alert('Account deletion feature will be implemented soon.');
+            } else {
+                alert('Deletion cancelled.');
+            }
+        }
+    }
+
+    // Toast helper
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.style.cssText = `
+            position: fixed;
+            top: 100px;
+            right: 24px;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(20px);
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            box-shadow: 0 10px 40px rgba(30,58,95,0.15);
+            z-index: 9999;
+            border-left: 4px solid ${type === 'success' ? 'var(--teal)' : type === 'error' ? 'var(--orange)' : 'var(--purple)'};
+            animation: slideInRight 0.3s ease;
+        `;
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transition = 'opacity 0.3s';
+            setTimeout(() => toast.remove(), 300);
+        }, 2500);
+    }
+</script>
+
+</body>
+</html>
