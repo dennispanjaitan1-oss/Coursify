@@ -22,7 +22,7 @@ class Enrollment extends Model
         'completed_at'     => 'datetime',
     ];
 
-    // ── Relationships ───────────────────────────────────────────────
+    // ── Relationships ────────────────────────────────────────────
 
     public function user(): BelongsTo
     {
