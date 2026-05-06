@@ -33,7 +33,7 @@ class DashboardController extends Controller
             'certificates' => Certificate::where('user_id', $user->id)->count(),
         ];
 
-        return view('student.dashboard', compact('enrollments', 'stats'));
+        return view('student.index', compact('enrollments', 'stats'));
     }
 
     // ═══════════════════════════════════════════════════
