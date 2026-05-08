@@ -12,6 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -249,79 +250,91 @@ body::before {
     padding: 20px 20px 60px;
 }
 
-/* ═══ FILTER TABS + SEARCH ═══ */
+/* ═══ FILTER TABS + SEARCH (MINIMALIST & SOFT) ═══ */
 .courses-toolbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 24px;
-    gap: 16px;
+    margin-bottom: 32px; /* Tambah sedikit ruang agar tidak sesak */
+    gap: 20px;
     flex-wrap: wrap;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06); /* Garis pembatas di bawah seluruh toolbar */
 }
 
 .filter-tabs {
     display: flex;
-    gap: 4px;
-    background: rgba(255,255,255,0.6);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255,255,255,0.9);
-    border-radius: 100px;
-    padding: 4px;
+    gap: 32px; /* Jarak antar teks yang lebih lega agar terasa mewah */
+    background: transparent;
+    padding: 0;
 }
 
 .filter-tab {
-    padding: 8px 16px;
-    border: none;
-    background: transparent;
-    font-family: var(--font-sans);
-    font-size: 13px;
-    font-weight: 600;
+    position: relative;
+    padding: 12px 0; /* Memberi ruang klik yang nyaman */
     color: var(--text-soft);
-    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 500;
+    background: none !important;
+    border: none;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: color 0.3s ease;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    white-space: nowrap;
+    gap: 8px;
 }
 
 .filter-tab:hover {
     color: var(--purple);
 }
 
+/* Indikator Garis Bawah untuk Tab Aktif */
 .filter-tab.active {
-    background: var(--text);
-    color: white;
-    box-shadow: 0 4px 12px rgba(26,24,37,0.2);
-}
-
-.filter-tab-count {
-    background: rgba(255,255,255,0.25);
-    color: inherit;
-    padding: 2px 7px;
-    border-radius: 100px;
-    font-size: 10px;
-    font-weight: 700;
-    min-width: 18px;
-    text-align: center;
-}
-
-.filter-tab:not(.active) .filter-tab-count {
-    background: var(--lav-2);
     color: var(--purple-dark);
+    font-weight: 600; /* Sedikit tebal agar menonjol */
+}
+
+.filter-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; /* Tepat di atas border toolbar */
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--purple);
+    border-radius: 2px;
+    animation: slideIn 0.3s ease; /* Animasi masuk yang halus */
+}
+
+@keyframes slideIn {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+}
+
+/* Badge Count yang Lebih Halus */
+.filter-tab-count {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    background: transparent; /* Hilangkan background bulat agar tidak ramai */
+    padding: 0;
+    min-width: auto;
+}
+
+.filter-tab.active .filter-tab-count {
+    color: var(--purple); /* Warna count mengikuti tema aktif */
 }
 
 /* Search */
 .search-mycourses {
     position: relative;
-    min-width: 260px;
+    display: flex;
+    align-items: center;
 }
 
 .search-input {
     width: 100%;
-    padding: 10px 16px 10px 40px;
+    padding: 10px 16px 10px 42px;
     background: rgba(255,255,255,0.7);
     backdrop-filter: blur(20px);
     border: 1.5px solid rgba(255,255,255,0.9);
@@ -343,12 +356,26 @@ body::before {
 
 .search-icon {
     position: absolute;
-    left: 14px;
+    left: 16px;
     top: 50%;
     transform: translateY(-50%);
     color: var(--muted);
     font-size: 14px;
     pointer-events: none;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+}
+
+/* Penyesuaian Responsif */
+@media (max-width: 768px) {
+    .courses-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .toolbar-search {
+        max-width: 100%;
+    }
 }
 
 /* ═══ COURSES GRID ═══ */
@@ -854,42 +881,53 @@ body::before {
             @endphp
 
             <div class="filter-tabs">
-                <a href="{{ route('student.courses') }}"
-                   class="filter-tab {{ $currentFilter === 'all' ? 'active' : '' }}">
-                    📚 All
-                    <span class="filter-tab-count">{{ $stats['total'] }}</span>
-                </a>
-                <a href="{{ route('student.courses', ['filter' => 'in_progress']) }}"
-                   class="filter-tab {{ $currentFilter === 'in_progress' ? 'active' : '' }}">
-                    ⚡ In Progress
-                    <span class="filter-tab-count">{{ $stats['in_progress'] }}</span>
-                </a>
-                <a href="{{ route('student.courses', ['filter' => 'completed']) }}"
-                   class="filter-tab {{ $currentFilter === 'completed' ? 'active' : '' }}">
-                    ✅ Completed
-                    <span class="filter-tab-count">{{ $stats['completed'] }}</span>
-                </a>
-                <a href="{{ route('student.courses', ['filter' => 'not_started']) }}"
-                   class="filter-tab {{ $currentFilter === 'not_started' ? 'active' : '' }}">
-                    🔖 Not Started
-                    <span class="filter-tab-count">{{ $stats['not_started'] }}</span>
-                </a>
-            </div>
+    {{-- Filter All --}}
+    <a href="{{ route('student.courses') }}"
+       class="filter-tab {{ $currentFilter === 'all' ? 'active' : '' }}">
+        <i class="fa-solid fa-layer-group"></i> All
+        <span class="filter-tab-count">{{ $stats['total'] }}</span>
+    </a>
 
-            <form action="{{ route('student.courses') }}" method="GET" class="search-mycourses">
-                <span class="search-icon">🔍</span>
-                <input
-                    type="text"
-                    name="search"
-                    class="search-input"
-                    placeholder="Search your courses..."
-                    value="{{ request('search') }}"
-                    autocomplete="off"
-                >
-                @if($currentFilter !== 'all')
-                    <input type="hidden" name="filter" value="{{ $currentFilter }}">
-                @endif
-            </form>
+    {{-- Filter In Progress --}}
+    <a href="{{ route('student.courses', ['filter' => 'in_progress']) }}"
+       class="filter-tab {{ $currentFilter === 'in_progress' ? 'active' : '' }}">
+        <i class="fa-solid fa-spinner fa-spin-pulse" style="--fa-animation-duration: 2s;"></i> In Progress
+        <span class="filter-tab-count">{{ $stats['in_progress'] }}</span>
+    </a>
+
+    {{-- Filter Completed --}}
+    <a href="{{ route('student.courses', ['filter' => 'completed']) }}"
+       class="filter-tab {{ $currentFilter === 'completed' ? 'active' : '' }}">
+        <i class="fa-solid fa-circle-check"></i> Completed
+        <span class="filter-tab-count">{{ $stats['completed'] }}</span>
+    </a>
+
+    {{-- Filter Not Started --}}
+    <a href="{{ route('student.courses', ['filter' => 'not_started']) }}"
+       class="filter-tab {{ $currentFilter === 'not_started' ? 'active' : '' }}">
+        <i class="fa-solid fa-book-bookmark"></i> Not Started
+        <span class="filter-tab-count">{{ $stats['not_started'] }}</span>
+    </a>
+</div>
+
+           <form action="{{ route('student.courses') }}" method="GET" class="search-mycourses">
+    <span class="search-icon">
+        <i class="fa-solid fa-magnifying-glass"></i>
+    </span>
+    
+    <input
+        type="text"
+        name="search"
+        class="search-input"
+        placeholder="Search your courses..."
+        value="{{ request('search') }}"
+        autocomplete="off"
+    >
+    {{-- Hidden filter input jika ada --}}
+    @if($currentFilter !== 'all')
+        <input type="hidden" name="filter" value="{{ $currentFilter }}">
+    @endif
+</form>
         </div>
 
         {{-- Courses Grid --}}
@@ -1040,6 +1078,55 @@ body::before {
                                 ⋯
                             </button>
                         </div>
+
+                        {{-- Review Form — hanya tampil kalau sudah selesai --}}
+                        @if($progress >= 100 || $status === 'completed')
+                            @php
+                                $existingReview = auth()->user()->reviews()
+                                    ->where('course_id', $course->id)
+                                    ->first();
+                            @endphp
+
+                            @if($existingReview)
+                                <div style="margin-top:12px; padding:10px 14px; background:var(--teal-light); border-radius:10px; font-size:12px; color:var(--teal);">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    Kamu sudah memberikan review
+                                    <strong>{{ $existingReview->rating }}/5</strong> untuk kursus ini.
+                                </div>
+                            @else
+                                <div style="margin-top:12px;" x-data="{ open: false }">
+                                    <button @click="open = !open"
+                                            style="width:100%; padding:10px; background:var(--lav-2); border:none; border-radius:100px; font-size:12px; font-weight:600; color:var(--purple-dark); cursor:pointer;">
+                                        <i class="fa-solid fa-star"></i>
+                                        Berikan Review
+                                    </button>
+
+                                    <div x-show="open" x-transition style="margin-top:10px; padding:14px; background:var(--lav-1); border-radius:12px;">
+                                        <form action="{{ route('student.course.review.submit', $course->id) }}" method="POST">
+                                            @csrf
+                                            <div style="margin-bottom:10px;">
+                                                <label style="font-size:12px; font-weight:600; display:block; margin-bottom:4px;">Rating</label>
+                                                <select name="rating" required style="width:100%; padding:8px; border-radius:8px; border:1px solid var(--lav-3); font-size:13px;">
+                                                    <option value="">Pilih rating...</option>
+                                                    <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+                                                    <option value="4">⭐⭐⭐⭐ Good</option>
+                                                    <option value="3">⭐⭐⭐ Average</option>
+                                                    <option value="2">⭐⭐ Poor</option>
+                                                    <option value="1">⭐ Very Poor</option>
+                                                </select>
+                                            </div>
+                                            <div style="margin-bottom:10px;">
+                                                <label style="font-size:12px; font-weight:600; display:block; margin-bottom:4px;">Komentar (opsional)</label>
+                                                <textarea name="comment" rows="3" placeholder="Tulis pendapatmu..." style="width:100%; padding:8px; border-radius:8px; border:1px solid var(--lav-3); font-size:13px; resize:none;"></textarea>
+                                            </div>
+                                            <button type="submit" style="width:100%; padding:10px; background:var(--purple); color:white; border:none; border-radius:100px; font-size:12px; font-weight:600; cursor:pointer;">
+                                                Kirim Review
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            @endif
+                        @endif
                     </div>
                 </div>
 
@@ -1060,6 +1147,7 @@ body::before {
         </div>
     </div>
 </section>
+
 
 <div style="height: 60px;"></div>
 

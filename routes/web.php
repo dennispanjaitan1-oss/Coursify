@@ -97,3 +97,7 @@ Route::middleware(['auth', 'role:admin'])
         Route::resource('/users', AdminUserController::class);
         Route::resource('/courses', AdminCourseController::class);
     });
+
+Route::post('/student/course/{course}/review', [EnrollmentController::class, 'submitReview'])
+    ->name('student.course.review.submit')
+    ->middleware('auth');

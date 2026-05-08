@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Coursify') — Learn Anything, Anytime</title>
+    <title>@yield('title', 'Coursify')</title>
 
     {{-- Favicon --}}
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     {{-- Vite Assets --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -376,6 +376,7 @@ body {
             .footer-grid { grid-template-columns: 1fr 1fr; }
             .footer-main { padding: 24px; }
         }
+
     </style>
 
     @stack('styles')
@@ -391,10 +392,27 @@ body {
             </a>
 
             <div class="nav-links">
-                <a href="{{ route('courses.index') }}" class="nav-link {{ request()->routeIs('courses.*') ? 'active' : '' }}">Courses</a>
-                <a href="{{ route('home') }}#how" class="nav-link">How It Works</a>
-                <a href="{{ route('home') }}#pricing" class="nav-link">Pricing</a>
-            </div>
+    <a href="{{ route('courses.index') }}"class="nav-link {{ request()->routeIs('courses.index') || request()->routeIs('courses.show') ? 'active' : '' }}"
+        <span class="nav-icon-wrap icon-courses">
+            <i class="fa-solid fa-graduation-cap"></i>
+        </span> 
+        Courses
+    </a>
+    
+    <a href="{{ route('home') }}#how" class="nav-link">
+        <span class="nav-icon-wrap icon-how">
+            <i class="fa-solid fa-circle-info"></i>
+        </span> 
+        How It Works
+    </a>
+    
+    <a href="{{ route('home') }}#pricing" class="nav-link">
+        <span class="nav-icon-wrap icon-pricing">
+            <i class="fa-solid fa-tag"></i>
+        </span> 
+        Pricing
+    </a>
+</div>
 
             @guest
                 <a href="{{ route('login') }}" class="btn btn-dark">Get Started</a>
@@ -416,90 +434,91 @@ body {
         <div style="margin-top:6px;">
             @php
                 $roleColors = [
-                    'admin' => ['bg' => 'linear-gradient(135deg,#1E3A5F,#2D4D7A)', 'text' => 'white', 'label' => '⚙️ Administrator'],
-                    'instructor' => ['bg' => 'rgba(0,200,150,0.15)', 'text' => '#00805F', 'label' => '👨‍🏫 Instructor'],
-                    'student' => ['bg' => 'rgba(123,111,232,0.15)', 'text' => '#5B4FD4', 'label' => '🎓 Student'],
+                    'admin' => ['bg' => 'linear-gradient(135deg,#1E3A5F,#2D4D7A)', 'text' => 'white', 'icon' => 'fa-solid fa-user-shield', 'label' => 'Administrator'],
+        'instructor' => ['bg' => 'rgba(0,200,150,0.15)', 'text' => '#00805F', 'icon' => 'fa-solid fa-chalkboard-user', 'label' => 'Instructor'],
+        'student' => ['bg' => 'rgba(123,111,232,0.15)', 'text' => '#5B4FD4', 'icon' => 'fa-solid fa-graduation-cap', 'label' => 'Student'],
                 ];
                 $userRole = auth()->user()->role;
                 $roleStyle = $roleColors[$userRole] ?? $roleColors['student'];
             @endphp
             <span style="display:inline-block; padding:3px 10px; background:{{ $roleStyle['bg'] }}; color:{{ $roleStyle['text'] }}; border-radius:100px; font-size:10px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase;">
-                {{ $roleStyle['label'] }}
-            </span>
+    <i class="{{ $roleStyle['icon'] }} mr-1"></i> {{ $roleStyle['label'] }}
+</span>
         </div>
     </div>
 
     {{-- ═══ ADMIN MENU ═══ --}}
-    @if(auth()->user()->role === 'admin')
-        <a href="{{ route('admin.dashboard') }}" class="dropdown-item">
-            📊 Dashboard
-        </a>
-        <a href="#" class="dropdown-item">
-            👥 Manage Users
-        </a>
-        <a href="#" class="dropdown-item">
-            📚 Manage Courses
-        </a>
-        <a href="#" class="dropdown-item">
-            ✅ Pending Approvals
-        </a>
-        <a href="#" class="dropdown-item">
-            💰 Transactions
-        </a>
-        <a href="#" class="dropdown-item">
-            ⚙️ Settings
-        </a>
-    @endif
+@if(auth()->user()->role === 'admin')
+    <a href="{{ route('admin.dashboard') }}" class="dropdown-item">
+        <i class="fa-solid fa-chart-pie"></i> Dashboard
+    </a>
+    <a href="#" class="dropdown-item">
+        <i class="fa-solid fa-users-gear"></i> Manage Users
+    </a>
+    <a href="#" class="dropdown-item">
+        <i class="fa-solid fa-book-stack"></i> Manage Courses
+    </a>
+    <a href="#" class="dropdown-item">
+        <i class="fa-solid fa-file-shield"></i> Pending Approvals
+    </a>
+    <a href="#" class="dropdown-item">
+        <i class="fa-solid fa-money-bill-transfer"></i> Transactions
+    </a>
+    <a href="#" class="dropdown-item">
+        <i class="fa-solid fa-gears"></i> Settings
+    </a>
+@endif
 
     {{-- ═══ INSTRUCTOR MENU ═══ --}}
-    @if(auth()->user()->role === 'instructor')
-        <a href="{{ route('instructor.dashboard') }}" class="dropdown-item">
-            📊 Dashboard
-        </a>
-        <a href="#" class="dropdown-item">
-            📚 My Courses
-        </a>
-        <a href="#" class="dropdown-item">
-            👥 My Students
-        </a>
-        <a href="#" class="dropdown-item">
-            ✏️ Create Course
-        </a>
-        <a href="#" class="dropdown-item">
-            💰 Earnings
-        </a>
-        <a href="#" class="dropdown-item">
-            👤 Profile Settings
-        </a>
-    @endif
+@if(auth()->user()->role === 'instructor')
+    <a href="{{ route('instructor.dashboard') }}" class="dropdown-item">
+        <i class="fa-solid fa-chart-line"></i> Dashboard
+    </a>
+    <a href="#" class="dropdown-item">
+        <i class="fa-solid fa-chalkboard-user"></i> My Courses
+    </a>
+    <a href="#" class="dropdown-item">
+        <i class="fa-solid fa-users"></i> My Students
+    </a>
+    <a href="#" class="dropdown-item">
+        <i class="fa-solid fa-square-plus"></i> Create Course
+    </a>
+    <a href="#" class="dropdown-item">
+        <i class="fa-solid fa-wallet"></i> Earnings
+    </a>
+    <a href="#" class="dropdown-item">
+        <i class="fa-solid fa-user-gear"></i> Profile Settings
+    </a>
+@endif
 
     {{-- ═══ STUDENT MENU ═══ --}}
-    @if(auth()->user()->role === 'student')
-        <a href="{{ route('student.index') }}" class="dropdown-item">
-            🎓 My Dashboard
-        </a>
-        <a href="{{ route('student.courses') }}" class="dropdown-item">
-            📖 My Courses
-        </a>
-        <a href="{{ route('student.wishlist') }}" class="dropdown-item">❤️ Wishlist</a>
-        </a>
-        <a href="{{ route('student.certificates') }}" class="dropdown-item">
-            🏆 Certificates
-        </a>
-        <a href="{{ route('student.profile') }}" class="dropdown-item">
-            👤 Profile Settings
-        </a>
-    @endif
+@if(auth()->user()->role === 'student')
+    <a href="{{ route('student.index') }}" class="dropdown-item">
+        <i class="fa-solid fa-gauge-high"></i> My Dashboard
+    </a>
+    <a href="{{ route('student.courses') }}" class="dropdown-item">
+        <i class="fa-solid fa-book-open"></i> My Courses
+    </a>
+    <a href="{{ route('student.wishlist') }}" class="dropdown-item">
+        <i class="fa-solid fa-heart"></i> Wishlist
+    </a>
+    <a href="{{ route('student.certificates') }}" class="dropdown-item">
+        <i class="fa-solid fa-award"></i> Certificates
+    </a>
+    <a href="{{ route('student.profile') }}" class="dropdown-item">
+        <i class="fa-solid fa-user-pen"></i> Profile Settings
+    </a>
+@endif
 
     {{-- Logout (semua role) --}}
-    <div style="border-top: 1px solid rgba(0,0,0,0.06); margin-top: 6px; padding-top: 6px;">
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button type="submit" class="dropdown-item dropdown-item-danger">
-                🚪 Sign Out
-            </button>
-        </form>
-    </div>
+<div style="border-top: 1px solid rgba(0,0,0,0.06); margin-top: 6px; padding-top: 6px;">
+    <form method="POST" action="{{ route('logout') }}">
+        @csrf
+        <button type="submit" class="dropdown-item dropdown-item-danger">
+            <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+        </button>
+    </form>
+</div>
 </div>
                 </div>
             @endguest
@@ -507,25 +526,27 @@ body {
     </div>
 
     {{-- FLASH MESSAGES --}}
-    @if(session('success') || session('error') || session('info'))
-        <div class="flash-wrap">
-            @if(session('success'))
-                <div class="flash flash-success" x-data x-init="setTimeout(() => $el.remove(), 4000)">
-                    ✓ {{ session('success') }}
-                </div>
-            @endif
-            @if(session('error'))
-                <div class="flash flash-error" x-data x-init="setTimeout(() => $el.remove(), 4000)">
-                    ✕ {{ session('error') }}
-                </div>
-            @endif
-            @if(session('info'))
-                <div class="flash flash-info" x-data x-init="setTimeout(() => $el.remove(), 4000)">
-                    ℹ {{ session('info') }}
-                </div>
-            @endif
-        </div>
-    @endif
+@if(session('success') || session('error') || session('info'))
+    <div class="flash-wrap">
+        @if(session('success'))
+            <div class="flash flash-success" x-data x-init="setTimeout(() => $el.remove(), 4000)">
+                <i class="fa-solid fa-circle-check"></i> {{ session('success') }}
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="flash flash-error" x-data x-init="setTimeout(() => $el.remove(), 4000)">
+                <i class="fa-solid fa-circle-xmark"></i> {{ session('error') }}
+            </div>
+        @endif
+
+        @if(session('info'))
+            <div class="flash flash-info" x-data x-init="setTimeout(() => $el.remove(), 4000)">
+                <i class="fa-solid fa-circle-info"></i> {{ session('info') }}
+            </div>
+        @endif
+    </div>
+@endif
 
     {{-- MAIN CONTENT --}}
     <main style="position:relative;z-index:1;">
@@ -542,11 +563,11 @@ body {
                 </a>
                 <p class="footer-brand-desc">Modern learning platform helping you master new skills with world-class instructors. Anytime, anywhere.</p>
                 <div class="footer-social">
-                    <a href="#">𝕏</a>
-                    <a href="#">f</a>
-                    <a href="#">in</a>
-                    <a href="#">ig</a>
-                </div>
+    <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+    <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+</div>
             </div>
 
             <div>
@@ -582,7 +603,6 @@ body {
 
         <div class="footer-bottom">
             <div>© {{ date('Y') }} Coursify. All Rights Reserved.</div>
-            <div>Supporting SDG 4 · 8 · 10 🌱</div>
         </div>
     </footer>
 

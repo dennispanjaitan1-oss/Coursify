@@ -3442,14 +3442,17 @@ section {
     }
 
     // ═══ Wishlist sidebar button ═══
-    function toggleWishlistBtn(btn) {
-        btn.classList.toggle('active');
-        if (btn.classList.contains('active')) {
-            btn.innerHTML = '❤️ Added to Wishlist';
-        } else {
-            btn.innerHTML = '🤍 Add to Wishlist';
-        }
+function toggleWishlistBtn(btn) {
+    btn.classList.toggle('active');
+    
+    if (btn.classList.contains('active')) {
+        // Menggunakan ikon hati solid (merah bisa diatur via CSS)
+        btn.innerHTML = '<i class="fa-solid fa-heart"></i> Added to Wishlist';
+    } else {
+        // Menggunakan ikon hati regular (hanya garis luar)
+        btn.innerHTML = '<i class="fa-regular fa-heart"></i> Add to Wishlist';
     }
+}
 
     // ═══ Review helpful toggle ═══
     function toggleHelpful(btn) {

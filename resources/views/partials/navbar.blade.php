@@ -13,16 +13,19 @@
 
         {{-- Nav Links --}}
         <div class="nav-links">
-            <a href="{{ route('courses.index') }}" class="nav-link active">
-                <i class="fa-solid fa-graduation-cap" style="margin-right:5px;"></i>Courses
-            </a>
-            <a href="{{ route('home') }}#how" class="nav-link">
-                <i class="fa-solid fa-circle-info" style="margin-right:5px;"></i>How It Works
-            </a>
-            <a href="{{ route('home') }}#pricing" class="nav-link">
-                <i class="fa-solid fa-tag" style="margin-right:5px;"></i>Pricing
-            </a>
-        </div>
+    <a href="{{ route('courses.index') }}" 
+       class="nav-link {{ request()->routeIs('courses.index') || request()->routeIs('courses.show') ? 'active' : '' }}">
+        <i class="fa-solid fa-graduation-cap" style="margin-right:5px;"></i>Courses
+    </a>
+    <a href="{{ route('home') }}#how" 
+       class="nav-link">
+        <i class="fa-solid fa-circle-info" style="margin-right:5px;"></i>How It Works
+    </a>
+    <a href="{{ route('home') }}#pricing" 
+       class="nav-link">
+        <i class="fa-solid fa-tag" style="margin-right:5px;"></i>Pricing
+    </a>
+</div>
 
         {{-- Auth --}}
         @guest
