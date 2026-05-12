@@ -850,8 +850,7 @@
                     <a href="{{ route('courses.index') }}?university=ugm" class="mega-link">Universitas Gadjah Mada</a>
                     <a href="{{ route('courses.index') }}?university=its" class="mega-link">ITS Surabaya</a>
                     <a href="{{ route('courses.index') }}?university=unair" class="mega-link">Universitas Airlangga</a>
-                    <a href="{{ route('courses.index') }}?university=ipb" class="mega-link">IPB University</a>
-                    <a href="#partners" class="mega-link mega-link-cta">Lihat semua universitas </a>
+                    <a href="{{ route('universities') }}" class="mega-link mega-link-cta">Lihat semua universitas </a>
                     <div class="mega-group-label">Jalur Karir</div>
                     <a href="{{ route('courses.index') }}?career=software-engineer" class="mega-link">Software Engineer</a>
                     <a href="{{ route('courses.index') }}?career=data-scientist" class="mega-link">Data Scientist</a>
@@ -1013,7 +1012,7 @@
                         ['Universitas Airlangga','courses.index','?university=unair'],
                         ['IPB University','courses.index','?university=ipb'],
                         ['BINUS University','courses.index','?university=binus'],
-                        ['Lihat semua Universitas','courses.index','?type=university'],
+                        ['Lihat semua Universitas','universities',''],
                     ] as $i => [$label, $route, $param])
                         <a href="{{ route($route) }}{{ $param }}"
                            style="display:block;font-size:13px;color:{{ $i === 7 ? '#B8AFEB' : 'rgba(255,255,255,0.55)' }};text-decoration:none;padding:4px 0;line-height:1.5;transition:color 0.2s;{{ $i === 7 ? 'margin-top:8px;font-weight:600;' : '' }}"
@@ -1050,7 +1049,7 @@
 
             </div>{{-- /Row 1 --}}
 
-            {{-- ══ SECONDARY FOOTER ROW ══ --}}
+            {{-- ══ SECONDARY FOOTER ROWw ══ --}}
             <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:40px;padding:40px 0 48px;border-bottom:1px solid rgba(255,255,255,0.08);">
 
                 {{-- Coursify Company --}}

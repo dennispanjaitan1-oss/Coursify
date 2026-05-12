@@ -106,3 +106,5 @@ Route::post('/student/course/{course}/review', [EnrollmentController::class, 'su
 
 Route::delete('/enrollments/{enrollment}', [EnrollmentController::class, 'unenroll'])
     ->name('student.unenroll');
+
+Route::get('/universities', fn() => view('pages.universities'))->name('universities');
