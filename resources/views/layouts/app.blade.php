@@ -168,34 +168,36 @@
             will-change: transform;
         }
         .navbar-wrap.navbar-hidden { transform: translateY(-120%); }
-        .navbar-wrap.navbar-scrolled .navbar {
-            background: rgba(255,255,255,0.88);
-            backdrop-filter: blur(40px) saturate(180%);
-            -webkit-backdrop-filter: blur(40px) saturate(180%);
-            box-shadow: 0 10px 40px rgba(30,58,95,0.1);
-        }
+       .navbar-wrap.navbar-scrolled .navbar {
+    max-width: 980px;
+    padding: 6px 8px 6px 18px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(80px) saturate(250%);
+    -webkit-backdrop-filter: blur(80px) saturate(250%);
+}
         @keyframes slideDown {
             from { opacity: 0; transform: translateY(-20px); }
             to   { opacity: 1; transform: translateY(0); }
         }
 
-        .navbar-inner { padding: 10px 20px; }
+        .navbar-inner { padding: 14px 20px; }
 
         .navbar {
-            max-width: 960px;
-            margin: 0 auto;
-            background: rgba(255,255,255,0.65);
-            backdrop-filter: blur(30px) saturate(180%);
-            -webkit-backdrop-filter: blur(30px) saturate(180%);
-            border: 1px solid rgba(255,255,255,0.9);
-            border-radius: 100px;
-            padding: 7px 7px 7px 18px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-            box-shadow: 0 8px 30px rgba(30,58,95,0.08);
-        }
+    display: grid;
+    /* Kolom kiri (logo), tengah (nav), kanan (CTA) */
+    grid-template-columns: auto 1fr auto; 
+    align-items: center;
+    max-width: 1040px; /* Diperkecil agar tidak terlalu lebar */
+    margin: 0 auto;
+    padding: 10px 10px 10px 22px; /* Padding lebih tipis untuk kesan slim */
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(60px) saturate(200%); /* Blur ditingkatkan */
+    -webkit-backdrop-filter: blur(60px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 20px; /* Corner lebih soft */
+    box-shadow: 0 12px 40px rgba(15, 39, 68, 0.06);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
         .logo {
             display: flex;
             align-items: center;
@@ -206,29 +208,32 @@
         }
         .logo-text { font-size: 17px; font-weight: 700; letter-spacing: -0.02em; }
 
-        .nav-center {
-            display: flex;
-            align-items: center;
-            gap: 2px;
-            flex: 1;
-            padding: 0 8px;
-        }
-        .nav-link {
-            font-size: 13.5px;
-            font-weight: 500;
-            color: var(--text-soft);
-            text-decoration: none;
-            padding: 7px 13px;
-            border-radius: 100px;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            white-space: nowrap;
-        }
+      .nav-center {
+    justify-self: center;
+    display: flex;
+    align-items: center;
+    gap: 16px; /* Spacing antar link lebih rapat tapi lega */
+    }
+        
+    .nav-link {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(26, 24, 37, 0.7);
+    padding: 8px 14px;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
         .nav-link i { font-size: 11px; opacity: 0.65; }
-        .nav-link:hover { background: rgba(255,255,255,0.75); color: var(--text); }
+        .nav-link:hover { background: rgba(255,255,255,0.5); color: var(--navy); transform: translateY(-1px); }
         .nav-link.active { background: rgba(123,111,232,0.14); color: var(--purple-dark); }
+       .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    justify-self: end;   /* ← ganti margin-left: auto dengan ini */
+}
 
         /* ══════════════════════════════════════════════
            MEGA NAV TRIGGER BUTTON
@@ -289,7 +294,6 @@
         }
         .mega-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
             gap: 0;
         }
         .mega-col { padding: 0 20px 0 0; }
@@ -368,15 +372,25 @@
             text-decoration: none;
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             white-space: nowrap;
+            width: fit-content;
             position: relative;
             overflow: hidden;
         }
         .btn:active { transform: scale(0.96); }
         .btn-dark {
-            background: #1A1825;
-            color: white;
-            box-shadow: 0 4px 14px rgba(26,24,37,0.3);
-        }
+    background: #111827;
+    color: white;
+    
+
+    border-radius: 14px;
+
+    padding: 12px 20px;
+
+    box-shadow:
+        0 6px 20px rgba(17,24,39,0.18);
+
+    transition: all 0.25s ease;
+}
         .btn-dark:hover {
             background: #2A2840;
             transform: translateY(-2px);
@@ -1053,28 +1067,25 @@
             <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:40px;padding:40px 0 48px;border-bottom:1px solid rgba(255,255,255,0.08);">
 
                 {{-- Coursify Company --}}
-                <div>
-                    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:14px;">
-                        Coursify
-                    </div>
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;">
-                        @foreach([
-                            ['Tentang Kami','#'],
-                            ['Partner Kami','#'],
-                            ['For Business','#'],
-                            ['Afiliasi','#'],
-                            ['Karir','#'],
-                            ['Blog & Berita','#'],
-                        ] as [$label, $url])
-                            <a href="{{ $url }}"
-                               style="display:block;font-size:13px;color:rgba(255,255,255,0.5);text-decoration:none;padding:4px 0;transition:color 0.2s;"
-                               onmouseover="this.style.color='white'"
-                               onmouseout="this.style.color='rgba(255,255,255,0.5)'">
-                                {{ $label }}
-                            </a>
-                        @endforeach
-                    </div>
-                </div>
+<div>
+    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:14px;">
+        Coursify
+    </div>
+    <div style="display:block;"> {{-- Pakai block jika ingin berurutan ke bawah --}}
+        @foreach([
+            ['Tentang Kami', '/about'], 
+            ['Partner Kami', '/universities'],
+            ['Blog & Berita', '/blog'],
+        ] as [$label, $url])
+            <a href="{{ url($url) }}"
+               style="display:block;font-size:13px;color:rgba(255,255,255,0.5);text-decoration:none;padding:4px 0;transition:color 0.2s;"
+               onmouseover="this.style.color='white'"
+               onmouseout="this.style.color='rgba(255,255,255,0.5)'">
+                {{ $label }}
+            </a>
+        @endforeach
+    </div>
+</div>
 
                 {{-- Connect --}}
                 <div>
@@ -1082,11 +1093,11 @@
                         Connect
                     </div>
                     @foreach([
-                        ['Pusat Bantuan','#'],
-                        ['Hubungi Kami','#'],
-                        ['Forum Komunitas','#'],
-                        ['Media Kit','#'],
-                        ['Jadi Instruktur','#'],
+                        ['Pusat Bantuan','/contact'],
+                        ['Hubungi Kami','/login'],
+                        ['Forum Komunitas','/forum'],
+                        ['FAQ','/faq'],
+                        ['Jadi Instruktur','login'],
                     ] as [$label, $url])
                         <a href="{{ $url }}"
                            style="display:block;font-size:13px;color:rgba(255,255,255,0.5);text-decoration:none;padding:4px 0;transition:color 0.2s;"
@@ -1103,12 +1114,12 @@
                         Legal
                     </div>
                     @foreach([
-                        ['Syarat & Ketentuan','#'],
-                        ['Kebijakan Privasi','#'],
-                        ['Cookie Policy','#'],
-                        ['Kebijakan Aksesibilitas','#'],
-                        ['Sitemap','#'],
-                        ['Your Privacy Choices','#'],
+                        ['Syarat & Ketentuan','/terms'],
+                        ['Kebijakan Privasi','/privacy'],
+                        ['Cookie Policy','/cookies'],
+                        ['Kebijakan Aksesibilitas','/accessibility'],
+                        ['Sitemap','/sitemap'],
+                        ['keamanan','/security'],
                     ] as [$label, $url])
                         <a href="{{ $url }}"
                            style="display:block;font-size:13px;color:rgba(255,255,255,0.5);text-decoration:none;padding:4px 0;transition:color 0.2s;"
@@ -1127,15 +1138,20 @@
                     © {{ date('Y') }} Coursify. All Rights Reserved. 
                 </div>
                 <div style="display:flex;gap:20px;">
-                    @foreach(['Privacy','Terms','Cookies','Sitemap'] as $label)
-                        <a href="#"
-                           style="font-size:12px;color:rgba(255,255,255,0.3);text-decoration:none;transition:color 0.2s;"
-                           onmouseover="this.style.color='rgba(255,255,255,0.7)'"
-                           onmouseout="this.style.color='rgba(255,255,255,0.3)'">
-                            {{ $label }}
-                        </a>
-                    @endforeach
-                </div>
+    @foreach([
+        ['Privacy', '/privacy'],
+        ['Terms', '/terms'],
+        ['Cookies', '/cookies'],
+        ['Sitemap', '/sitemap'],
+    ] as [$label, $url])
+        <a href="{{ $url }}"
+           style="font-size:12px;color:rgba(255,255,255,0.3);text-decoration:none;transition:color 0.2s;"
+           onmouseover="this.style.color='rgba(255,255,255,0.7)'"
+           onmouseout="this.style.color='rgba(255,255,255,0.3)'">
+            {{ $label }}
+        </a>
+    @endforeach
+</div>
             </div>
 
         </div>

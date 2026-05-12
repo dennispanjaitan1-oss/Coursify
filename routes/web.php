@@ -37,11 +37,13 @@ require __DIR__.'/auth.php';
 // ═══════════════════════════════════════════════════════════
 Route::middleware('auth')->group(function () {
 
-    // Enrollment & Review
+    // Enrollment, Review & Unenroll
     Route::post('/courses/{course}/enroll', [EnrollmentController::class, 'enroll'])
          ->name('enroll');
     Route::post('/courses/{course}/review', [EnrollmentController::class, 'submitReview'])
          ->name('review');
+    Route::delete('/enrollments/{enrollment}', [EnrollmentController::class, 'unenroll'])
+         ->name('student.unenroll');
 
     // Wishlist AJAX (toggle add/remove dari halaman catalog/detail)
     Route::post('/wishlist/toggle/{course}', [WishlistController::class, 'toggle'])
@@ -100,11 +102,24 @@ Route::middleware(['auth', 'role:admin'])
         Route::resource('/courses', AdminCourseController::class);
     });
 
-Route::post('/student/course/{course}/review', [EnrollmentController::class, 'submitReview'])
-    ->name('student.course.review.submit')
-    ->middleware('auth');
-
-Route::delete('/enrollments/{enrollment}', [EnrollmentController::class, 'unenroll'])
-    ->name('student.unenroll');
-
 Route::get('/universities', fn() => view('pages.universities'))->name('universities');
+
+Route::view('/about', 'about')->name('about');
+
+Route::view('/contact', 'contact')->name('contact');
+
+Route::view('/blog', 'blog')->name('blog');
+
+Route::view('/privacy', 'legal.privacy')->name('privacy');
+
+Route::view('/terms', 'legal.terms')->name('terms');
+
+Route::view('/cookies', 'legal.cookies')->name('cookies');
+
+Route::view('/security', 'legal.security')->name('security');
+
+Route::view('/faq', 'faq')->name('faq');
+
+Route::view('/forum', 'forum')->name('forum');
+
+Route::view('/pusat-bantuan', 'pusat-bantuan')->name('pusat-bantuan');
