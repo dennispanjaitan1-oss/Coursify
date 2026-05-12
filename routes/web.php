@@ -101,3 +101,6 @@ Route::middleware(['auth', 'role:admin'])
 Route::post('/student/course/{course}/review', [EnrollmentController::class, 'submitReview'])
     ->name('student.course.review.submit')
     ->middleware('auth');
+
+Route::delete('/enrollments/{enrollment}', [EnrollmentController::class, 'unenroll'])
+    ->name('student.unenroll');

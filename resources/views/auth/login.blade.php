@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -133,65 +134,86 @@
             margin-bottom: 7px;
         }
 
-        .input-wrap{ position: relative; }
+        /* ═══ INPUT WRAP ═══ */
+.input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
 
-        .input-icon{
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--muted);
-            font-size: 15px;
-            pointer-events: none;
-        }
+/* Ikon kiri (gembok/email) */
+.input-wrap .input-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 14px;
+    pointer-events: none;
+    z-index: 10;
+}
 
-        .input-toggle{
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: transparent;
-            border: none;
-            color: var(--muted);
-            cursor: pointer;
-            padding: 6px;
-            font-size: 14px;
-            transition: color 0.2s;
-        }
-        .input-toggle:hover { color: var(--purple); }
+/* Tombol toggle mata (kanan) */
+.input-wrap .input-toggle {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 14px;
+    z-index: 10;
+    padding: 6px;
+    transition: color 0.2s;
+}
+.input-wrap .input-toggle:hover {
+    color: var(--purple);
+}
 
-        input[type=email], input[type=password], input[type=text]{
-            width: 100%;
-            padding: 12px 16px 12px 42px;
-            border: 1.5px solid var(--border);
-            border-radius: 12px;
-            font-size: 14px;
-            font-family: var(--font-sans);
-            color: var(--text);
-            background: #FAFAFB;
-            outline: none;
-            transition: all 0.2s;
-        }
-        input::placeholder { color: var(--muted); }
-        input:focus{
-            border-color: var(--purple);
-            background: white;
-            box-shadow: 0 0 0 4px rgba(123,111,232,0.1);
-        }
-        input.error{
-            border-color: var(--orange);
-            background: rgba(255,138,91,0.03);
-        }
+/* Input field — SATU DEKLARASI SAJA */
+.input-wrap input[type=email],
+.input-wrap input[type=password],
+.input-wrap input[type=text] {
+    width: 100%;
+    padding: 12px 45px 12px 42px; /* kiri: ruang ikon gembok, kanan: ruang ikon mata */
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    font-size: 14px;
+    font-family: var(--font-sans);
+    color: var(--text);
+    background: #FAFAFB;
+    outline: none;
+    transition: all 0.2s;
+}
 
-        .error-msg{
-            font-size: 12px;
-            color: var(--orange);
-            margin-top: 6px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
+.input-wrap input::placeholder {
+    color: var(--muted);
+}
+
+.input-wrap input:focus {
+    border-color: var(--purple);
+    background: white;
+    box-shadow: 0 0 0 4px rgba(123, 111, 232, 0.1);
+}
+
+.input-wrap input.error {
+    border-color: var(--orange);
+    background: rgba(255, 138, 91, 0.03);
+}
+
+/* Error message */
+.error-msg {
+    font-size: 12px;
+    color: var(--orange);
+    margin-top: 6px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
 
         /* Remember + Forgot Row */
         .remember-row{
@@ -644,7 +666,7 @@
             <div class="field">
                 <label for="email">Email</label>
                 <div class="input-wrap">
-                    <span class="input-icon">✉</span>
+                    <i class="fa-regular fa-envelope input-icon"></i>
                     <input
                         type="email"
                         id="email"
@@ -663,28 +685,33 @@
             </div>
 
             {{-- Password --}}
-            <div class="field">
-                <label for="password">Password</label>
-                <div class="input-wrap">
-                    <span class="input-icon">🔒</span>
-                    <input
-                        :type="showPassword ? 'text' : 'password'"
-                        id="password"
-                        name="password"
-                        placeholder="Masukkan password"
-                        required
-                        autocomplete="current-password"
-                        class="{{ $errors->has('password') ? 'error' : '' }}"
-                    >
-                    <button type="button" class="input-toggle" @click="showPassword = !showPassword" tabindex="-1">
-                        <span x-show="!showPassword">👁</span>
-                        <span x-show="showPassword">🔐</span>
-                    </button>
-                </div>
-                @error('password')
-                    <div class="error-msg">⚠ {{ $message }}</div>
-                @enderror
-            </div>
+<div class="field">
+    <label for="password">Password</label>
+    <div class="input-wrap">
+        {{-- Ikon Gembok di Kiri --}}
+        <i class="fa-solid fa-lock input-icon"></i>
+        
+        <input
+            :type="showPassword ? 'text' : 'password'"
+            id="password"
+            name="password"
+            placeholder="Masukkan password"
+            required
+            autocomplete="current-password"
+            class="{{ $errors->has('password') ? 'error' : '' }}"
+        >
+
+        {{-- Tombol Mata di Kanan --}}
+        <button type="button" class="input-toggle" @click="showPassword = !showPassword" tabindex="-1">
+            <i class="fa-solid fa-eye" x-show="!showPassword"></i>
+            <i class="fa-solid fa-eye-slash" x-show="showPassword" x-cloak></i>
+        </button>
+    </div>
+    
+    @error('password')
+        <div class="error-msg">⚠ {{ $message }}</div>
+    @enderror
+</div>
 
             {{-- Remember + Forgot --}}
             <div class="remember-row">

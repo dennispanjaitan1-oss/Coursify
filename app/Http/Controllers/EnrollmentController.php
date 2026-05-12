@@ -106,4 +106,17 @@ class EnrollmentController extends Controller
     return back()->with('success', 'Review berhasil dikirim!');
 }
 
+public function unenroll(Enrollment $enrollment)
+{
+    $user = auth()->user();
+
+    if ($enrollment->user_id !== $user->id) {
+        return back()->with('error', 'Tidak diizinkan.');
+    }
+
+    $enrollment->delete();
+
+    return back()->with('success', 'Berhasil unenroll dari kursus.');
+}
+
 }

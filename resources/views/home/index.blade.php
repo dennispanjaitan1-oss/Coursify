@@ -465,7 +465,7 @@
                 <a href="{{ route('register') }}" class="btn btn-dark">Start Learning Free</a>
                 <a href="{{ route('courses.index') }}" class="btn btn-light">▶ Browse Courses</a>
             @else
-                <a href="{{ route('student.index') }}" class="btn btn-dark">Continue Learning →</a>
+                <a href="{{ route('student.index') }}" class="btn btn-dark">Continue Learning </a>
                 <a href="{{ route('courses.index') }}" class="btn btn-light">▶ Browse Courses</a>
             @endguest
         </div>

@@ -362,12 +362,12 @@ body::before {
     color: var(--gold-dark);
 }
 
-.stat-value.value-purple em { color: var(--purple); }
-.stat-value.value-teal em { color: var(--teal); }
+.stat-value.value-purple em { color: var black; }
+.stat-value.value-teal em { color: var black; }
 
 .stat-label {
     font-size: 10px;
-    color: var(--muted);
+    color: var black;
     font-weight: 600;
     letter-spacing: 0.05em;
     text-transform: uppercase;
@@ -441,7 +441,10 @@ body::before {
 
 /* Search */
 .search-wrap {
-    position: relative;
+    position: fixed;
+    top: 22px;
+    right: 24px;
+    z-index: 101;
     min-width: 260px;
 }
 
@@ -502,6 +505,18 @@ body::before {
 {{-- NAVBAR (PARTIAL) --}}
 @include('partials.navbar')
 
+<form action="{{ route('student.certificates') }}" method="GET" class="search-wrap">
+    <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+    <input
+        type="text"
+        name="search"
+        class="search-input"
+        placeholder="Search certificates..."
+        value="{{ request('search') }}"
+        autocomplete="off"
+    >
+</form>
+
 {{-- Flash Messages --}}
 @if(session('success'))
     <div class="flash-wrap" x-data x-init="setTimeout(() => $el.remove(), 4000)">
@@ -515,10 +530,6 @@ body::before {
 {{-- PAGE HEADER --}}
 <section class="page-header">
     <div class="container">
-        <div class="page-badge">
-            <span class="page-badge-trophy">🏆</span>
-            <span>{{ $stats['total'] }} {{ $stats['total'] == 1 ? 'achievement' : 'achievements' }} unlocked</span>
-        </div>
 
         <h1 class="page-title">
             My <em>Certificates</em>
@@ -531,22 +542,22 @@ body::before {
         {{-- Stats Bar --}}
         <div class="stats-bar">
             <div class="stat-cell">
-                <div class="stat-icon">🏆</div>
+                <div class="stat-icon"><i class="fa-solid fa-trophy"></i></div>
                 <div class="stat-value"><em>{{ $stats['total'] }}</em></div>
                 <div class="stat-label">Total Earned</div>
             </div>
             <div class="stat-cell">
-                <div class="stat-icon">📅</div>
+                <div class="stat-icon"><i class="fa-solid fa-calendar"></i></div>
                 <div class="stat-value value-purple"><em>{{ $stats['this_year'] }}</em></div>
                 <div class="stat-label">This Year</div>
             </div>
             <div class="stat-cell">
-                <div class="stat-icon">⏱</div>
+                <div class="stat-icon"><i class="fa-solid fa-clock"></i></div>
                 <div class="stat-value value-teal"><em>{{ $stats['hours_learned'] }}h</em></div>
                 <div class="stat-label">Hours Learned</div>
             </div>
             <div class="stat-cell">
-                <div class="stat-icon">💯</div>
+                <div class="stat-icon"><i class="fa-solid fa-star"></i></div>
                 <div class="stat-value value-purple"><em>{{ $stats['avg_score'] }}%</em></div>
                 <div class="stat-label">Avg Score</div>
             </div>
@@ -567,18 +578,18 @@ body::before {
             <div class="filter-tabs">
                 <a href="{{ route('student.certificates') }}"
                    class="filter-tab {{ $currentFilter === 'all' ? 'active' : '' }}">
-                    🏆 All Certificates
+                    <i class="fa-solid fa-trophy"></i> All Certificates
                     <span class="filter-tab-count">{{ $stats['total'] }}</span>
                 </a>
                 <a href="{{ route('student.certificates', ['filter' => 'this_year']) }}"
                    class="filter-tab {{ $currentFilter === 'this_year' ? 'active' : '' }}">
-                    📅 This Year
+                    <i class="fa-solid fa-calendar"></i> This Year
                     <span class="filter-tab-count">{{ $stats['this_year'] }}</span>
                 </a>
             </div>
 
             <form action="{{ route('student.certificates') }}" method="GET" class="search-wrap">
-                <span class="search-icon">🔍</span>
+                <i class="fa-solid fa-search search-icon"></i>
                 <input
                     type="text"
                     name="search"
@@ -686,7 +697,7 @@ body::before {
                         {{-- Content --}}
                         <div class="cert-content">
                             <div class="cert-seal">
-                                <div class="cert-seal-inner">🏆</div>
+                                <div class="cert-seal-inner"><i class="fa-solid fa-trophy"></i></div>
                             </div>
 
                             <div class="cert-label">Certificate of</div>
@@ -723,7 +734,7 @@ body::before {
                                 <span>{{ $instructorName }}</span>
                             </div>
                             <div class="cert-issued">
-                                📅 {{ $issuedDate }}
+                                <i class="fa-solid fa-calendar-days"></i> {{ $issuedDate }}
                             </div>
                         </div>
 
@@ -733,7 +744,7 @@ body::before {
                             <div class="credential-id">
                                 <span>{{ $certNumber }}</span>
                                 <button class="credential-copy" onclick="copyCredential('{{ $certNumber }}', this)" title="Copy">
-                                    📋
+                                    <i class="fa-solid fa-copy"></i>
                                 </button>
                             </div>
                         </div>
@@ -741,19 +752,19 @@ body::before {
                         {{-- Actions --}}
                         <div class="cert-actions">
                             <button class="btn-cert-primary" onclick="downloadCert({{ $cert->id ?? $index }})">
-                                ⬇ Download PDF
+                                <i class="fa-solid fa-download"></i> Download PDF
                             </button>
                             <button class="btn-cert-share" onclick="shareCert(this, '{{ $courseTitle }}', '{{ $certNumber }}')" title="Share">
-                                🔗
+                                <i class="fa-solid fa-share-nodes"></i> 
                             </button>
                             <button class="btn-cert-share" onclick="verifyCert('{{ $certNumber }}')" title="Verify">
-                                🛡️
+                                <i class="fa-solid fa-shield-halved"></i>
                             </button>
                         </div>
 
                         {{-- Verify link --}}
                         <a href="{{ route('certificates.verify', $certNumber) }}" class="cert-verify-link">
-                            View verification page →
+                            View verification page 
                         </a>
                     </div>
                 </div>
@@ -761,13 +772,13 @@ body::before {
             @empty
                 {{-- Empty State --}}
                 <div class="empty-state">
-                    <div class="empty-icon">🏆</div>
+                    <div class="empty-icon"><i class="fa-solid fa-trophy"></i></div>
                     <h3 class="empty-title">No <em>certificates</em> yet</h3>
                     <p class="empty-desc">
                         Complete courses to earn verified certificates. Your achievements will appear here, ready to download and share on LinkedIn.
                     </p>
                     <a href="{{ route('courses.index') }}" class="btn-browse">
-                        🔍 Browse Courses
+                        <i class="fa-solid fa-magnifying-glass"></i> Browse Courses
                     </a>
                 </div>
             @endforelse
@@ -777,17 +788,17 @@ body::before {
         {{-- Pro Tip Card --}}
         @if($displayCerts->count() > 0)
             <div class="tip-card">
-                <div class="tip-icon">💡</div>
+                <div class="tip-icon"><i class="fa-solid fa-lightbulb"></i></div>
                 <div class="tip-content">
                     <div class="tip-title">
                         Add to your <em>LinkedIn</em>
                     </div>
                     <div class="tip-text">
                         Share your certificates on LinkedIn to boost your professional profile.
-                        Click "🔗 Share" and follow the instructions to add them to your achievements.
+                        Follow the instructions to add them to your achievements.
                     </div>
                 </div>
-                <a href="#" class="tip-action">Learn how →</a>
+                <a href="#" class="tip-action">Learn how </a>
             </div>
         @endif
 
@@ -1207,7 +1218,7 @@ body::before {
 .cert-verify-link {
     display: inline-block;
     font-size: 11px;
-    color: var(--purple);
+    color: black;
     text-decoration: none;
     font-weight: 600;
     transition: all 0.2s;

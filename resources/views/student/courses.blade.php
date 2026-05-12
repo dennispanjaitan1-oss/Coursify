@@ -825,6 +825,99 @@ body::before {
         min-width: 220px;
     }
 }
+
+/* ═══ COURSE DROPDOWN MENU ═══ */
+.course-dropdown-menu {
+    position: fixed;
+    background: rgba(255,255,255,0.97);
+    backdrop-filter: blur(30px);
+    border: 1px solid rgba(255,255,255,0.9);
+    border-radius: 16px;
+    padding: 6px;
+    min-width: 220px;
+    box-shadow: 0 16px 48px rgba(30,58,95,0.14), 0 2px 8px rgba(30,58,95,0.06);
+    z-index: 9999;
+    animation: dropIn 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-origin: top right;
+}
+
+@keyframes dropIn {
+    from { opacity: 0; transform: scale(0.88) translateY(-6px); }
+    to   { opacity: 1; transform: scale(1)   translateY(0); }
+}
+
+.cdm-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--text-soft);
+    cursor: pointer;
+    transition: all 0.15s;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    font-family: var(--font-sans);
+    text-decoration: none;
+}
+
+.cdm-item:hover { background: rgba(123,111,232,0.07); color: var(--text); }
+.cdm-item:hover .cdm-icon { transform: scale(1.12); }
+.cdm-item.danger { color: #E55A3A; }
+.cdm-item.danger:hover { background: rgba(255,138,91,0.09); color: #C0411F; }
+
+.cdm-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+    transition: transform 0.15s;
+}
+
+.cdm-icon.purple { background: rgba(0,0,0,0.12); color: black;} 
+.cdm-icon.teal   { background: rgba(0,0,0,0.12);   color: black;}
+/* Tambahkan !important untuk memaksa warna hitam muncul */
+.cdm-icon.gold { 
+    background: rgba(0, 0, 0, 0.12) !important; 
+    color: #000000 !important; 
+}
+.cdm-icon.red    { background: rgba(255,138,91,0.12);  color: #E55A3A;       }
+
+.cdm-text { display: flex; flex-direction: column; gap: 1px; line-height: 1.2; }
+.cdm-sub  { font-size: 11px; font-weight: 400; color: var(--muted); }
+.cdm-divider { height: 1px; background: rgba(30,58,95,0.06); margin: 4px 0; }
+
+/* Toast notification */
+.cdm-toast {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: #1A1825;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 99999;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+}
+.cdm-toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
 </style>
 </head>
 <body>
@@ -835,18 +928,15 @@ body::before {
 {{-- PAGE HEADER --}}
 <section class="page-header">
     <div class="container">
-        <div class="page-badge">
-            <span class="page-badge-dot"></span>
-            <span>{{ $stats['total'] }} {{ $stats['total'] == 1 ? 'course' : 'courses' }} enrolled</span>
         </div>
 
         <h1 class="page-title">
             My <em>Courses</em>
         </h1>
 
-        <p class="page-subtitle">
-            Continue your learning journey. Your progress is automatically saved across all courses.
-        </p>
+        <p class="page-subtitle" style="max-width: 600px; margin: 0 auto;">
+    Lanjutkan perjalanan belajarmu dengan mudah! Di halaman ini, kamu bisa melihat semua kursus yang sedang kamu ikuti agar progres belajarmu tetap terpantau.
+</p>
 
         {{-- Stats Bar --}}
         <div class="stats-bar">
@@ -1004,26 +1094,26 @@ body::before {
                     $progress = $enrollment->progress_percent ?? 0;
                     $status = $enrollment->status ?? 'active';
 
-                    // Determine status display
-                    if ($progress >= 100 || $status === 'completed') {
-                        $statusClass = 'status-completed';
-                        $statusLabel = '✓ Completed';
-                        $progressClass = 'completed';
-                        $btnLabel = '🏆 View Certificate';
-                        $btnClass = 'completed';
-                    } elseif ($progress == 0) {
-                        $statusClass = 'status-not-started';
-                        $statusLabel = '🔖 Not Started';
-                        $progressClass = 'not-started';
-                        $btnLabel = '▶ Start Learning';
-                        $btnClass = '';
-                    } else {
-                        $statusClass = 'status-in-progress';
-                        $statusLabel = '⚡ In Progress';
-                        $progressClass = '';
-                        $btnLabel = '▶ Resume';
-                        $btnClass = '';
-                    }
+                    // Determine status display dengan Font Awesome 6
+if ($progress >= 100 || $status === 'completed') {
+    $statusClass = 'status-completed';
+    $statusLabel = '<i class="fa-solid fa-circle-check"></i> Completed';
+    $progressClass = 'completed';
+    $btnLabel = '<i class="fa-solid fa-award"></i> View Certificate';
+    $btnClass = 'completed';
+} elseif ($progress == 0) {
+    $statusClass = 'status-not-started';
+    $statusLabel = '<i class="fa-solid fa-book-bookmark"></i> Not Started';
+    $progressClass = 'not-started';
+    $btnLabel = '<i class="fa-solid fa-play"></i> Start Learning';
+    $btnClass = '';
+} else {
+    $statusClass = 'status-in-progress';
+    $statusLabel = '<i class="fa-solid fa-bolt-lightning"></i> In Progress';
+    $progressClass = '';
+    $btnLabel = '<i class="fa-solid fa-circle-play"></i> Resume';
+    $btnClass = '';
+}
 
                     // Course data
                     $courseTitle = is_object($course) ? ($course->title ?? 'Untitled') : 'Untitled';
@@ -1039,9 +1129,6 @@ body::before {
 
                 <div class="course-card">
                     <div class="course-thumb course-thumb-{{ $thumb }}">
-                        <span class="course-status {{ $statusClass }}">
-                            {{ $statusLabel }}
-                        </span>
                         {{ $icon }}
                     </div>
 
@@ -1069,14 +1156,18 @@ body::before {
 
                         {{-- Footer: Continue Button + Menu --}}
                         <div class="course-footer">
-                            <a href="{{ route('courses.show', $courseSlug) }}"
-                               class="btn-continue {{ $btnClass }}">
-                                {{ $btnLabel }}
-                            </a>
-                            <button class="course-menu" title="More options"
-                                    onclick="toggleMenu(this, event)">
-                                ⋯
-                            </button>
+                            <a href="{{ $progress >= 100 || $status === 'completed' ? route('student.certificates') : route('courses.show', $courseSlug) }}"
+   class="btn-continue {{ $btnClass }}">
+    {!! $btnLabel !!}
+</a>
+                           <button class="course-menu" title="More options"
+    onclick="toggleMenu(this, event)"
+    data-enrollment-id="{{ $enrollment->id }}"
+    data-course-title="{{ $courseTitle }}"
+    data-course-slug="{{ $courseSlug }}"
+    data-course-url="{{ url('courses/' . $courseSlug) }}">
+    ⋯
+</button>
                         </div>
 
                         {{-- Review Form — hanya tampil kalau sudah selesai --}}
@@ -1088,11 +1179,15 @@ body::before {
                             @endphp
 
                             @if($existingReview)
-                                <div style="margin-top:12px; padding:10px 14px; background:var(--teal-light); border-radius:10px; font-size:12px; color:var(--teal);">
-                                    <i class="fa-solid fa-circle-check"></i>
-                                    Kamu sudah memberikan review
-                                    <strong>{{ $existingReview->rating }}/5</strong> untuk kursus ini.
-                                </div>
+                                <div x-data="{ show: true }" x-show="show" style="margin-top:12px; padding:10px 14px; background:var(--teal-light); border-radius:10px; font-size:12px; color:var(--teal); display:flex; justify-content:space-between; align-items:center;">
+    <span>
+        <i class="fa-solid fa-circle-check"></i>
+        Kamu sudah memberikan review untuk kursus ini.
+    </span>
+    <button @click="show = false" style="background:none; border:none; cursor:pointer; color:var(--teal); font-size:14px; padding:0 0 0 8px;">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+</div>
                             @else
                                 <div style="margin-top:12px;" x-data="{ open: false }">
                                     <button @click="open = !open"
@@ -1153,69 +1248,157 @@ body::before {
 
 {{-- JAVASCRIPT --}}
 <script>
-    // Prevent browser bfcache
-    window.addEventListener('pageshow', function(event) {
-        if (event.persisted) {
-            window.location.reload();
+    // ═══ COURSE DROPDOWN MENU ═══
+let _activeDropdown = null;
+
+function toggleMenu(btn, event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    // Tutup dropdown yang sedang buka
+    if (_activeDropdown) {
+        _activeDropdown.remove();
+        _activeDropdown = null;
+        if (_activeDropdown === null && btn.classList.contains('menu-open')) {
+            btn.classList.remove('menu-open');
+            return;
         }
-    });
-
-    // Auto hide/show navbar on scroll
-    (function() {
-        const navbar = document.getElementById('mainNavbar');
-        if (!navbar) return;
-
-        let lastScroll = 0;
-        let ticking = false;
-        const scrollThreshold = 100;
-
-        function updateNavbar() {
-            const currentScroll = window.pageYOffset;
-
-            if (currentScroll > 20) {
-                navbar.classList.add('navbar-scrolled');
-            } else {
-                navbar.classList.remove('navbar-scrolled');
-            }
-
-            if (currentScroll < scrollThreshold) {
-                navbar.classList.remove('navbar-hidden');
-                lastScroll = currentScroll;
-                ticking = false;
-                return;
-            }
-
-            if (currentScroll > lastScroll + 5) {
-                navbar.classList.add('navbar-hidden');
-            } else if (currentScroll < lastScroll - 5) {
-                navbar.classList.remove('navbar-hidden');
-            }
-
-            lastScroll = currentScroll;
-            ticking = false;
-        }
-
-        window.addEventListener('scroll', function() {
-            if (!ticking) {
-                window.requestAnimationFrame(updateNavbar);
-                ticking = true;
-            }
-        }, { passive: true });
-    })();
-
-    // Course menu toggle
-    function toggleMenu(btn, event) {
-        event.preventDefault();
-        event.stopPropagation();
-        alert('Menu options:\n• Unenroll from course\n• Download materials\n• Mark as favorite\n• Share with friends');
     }
 
-    // Search form auto-submit on enter
-    document.querySelector('.search-mycourses input')?.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            this.closest('form').submit();
-        }
-    });
+    const enrollmentId  = btn.dataset.enrollmentId;
+    const courseTitle   = btn.dataset.courseTitle;
+    const courseSlug    = btn.dataset.courseSlug;   // tambahkan data-course-slug di blade
+    const courseUrl     = btn.dataset.courseUrl;    // tambahkan data-course-url di blade
+
+    // Buat dropdown
+    const menu = document.createElement('div');
+    menu.className = 'course-dropdown-menu';
+
+    menu.innerHTML = `
+      <button class="cdm-item" onclick="cdmAction('resume','${courseSlug}',this)">
+        <span class="cdm-icon purple"><i class="fa-solid fa-circle-play"></i></span>
+        <span class="cdm-text">
+          <span>Resume Course</span>
+          <span class="cdm-sub">Lanjutkan dari terakhir</span>
+        </span>
+      </button>
+
+      <button class="cdm-item" onclick="cdmAction('download','${enrollmentId}',this)">
+        <span class="cdm-icon teal"><i class="fa-solid fa-download"></i></span>
+        <span class="cdm-text">
+          <span>Download Materials</span>
+          <span class="cdm-sub">Materi & slide tersedia</span>
+        </span>
+      </button>
+
+      <button class="cdm-item" onclick="cdmAction('favorite','${enrollmentId}',this)">
+        <span class="cdm-icon gold"><i class="fa-solid fa-star"></i></span>
+        <span class="cdm-text">
+          <span>Mark as Favorite</span>
+          <span class="cdm-sub">Simpan ke favoritmu</span>
+        </span>
+      </button>
+
+      <button class="cdm-item" onclick="cdmAction('share','${courseUrl || window.location.origin + '/courses/' + courseSlug}',this)">
+        <span class="cdm-icon gold" style="background:rgba(255,196,82,0.15);color:#C88A00;"><i class="fa-solid fa-share-nodes"></i></span>
+        <span class="cdm-text">
+          <span>Share with Friends</span>
+          <span class="cdm-sub">Salin link kursus</span>
+        </span>
+      </button>
+
+      <div class="cdm-divider"></div>
+
+      <button class="cdm-item danger" onclick="cdmAction('unenroll','${enrollmentId}',this,'${courseTitle.replace(/'/g,"\\'")}')">
+        <span class="cdm-icon red"><i class="fa-solid fa-right-from-bracket"></i></span>
+        <span class="cdm-text">
+          <span>Unenroll</span>
+          <span class="cdm-sub">Hapus dari daftar kursus</span>
+        </span>
+      </button>
+    `;
+
+    document.body.appendChild(menu);
+    _activeDropdown = menu;
+
+    // Posisi dropdown mengikuti tombol
+    const rect = btn.getBoundingClientRect();
+    const menuW = 230;
+    let left = rect.right - menuW;
+    let top  = rect.bottom + 8;
+    if (left < 8) left = 8;
+    if (top + 280 > window.innerHeight) top = rect.top - 280;
+
+    menu.style.left = left + 'px';
+    menu.style.top  = top  + 'px';
+
+    btn.classList.add('menu-open');
+}
+
+function cdmAction(type, value, el, title) {
+    // Tutup menu
+    if (_activeDropdown) { _activeDropdown.remove(); _activeDropdown = null; }
+
+    if (type === 'unenroll') {
+        if (!confirm(`Unenroll dari "${title}"?\n\nProgress kamu akan hilang permanen.`)) return;
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/enrollments/${value}`;
+        form.innerHTML = `
+            <input type="hidden" name="_token" value="${document.querySelector('meta[name=csrf-token]').content}">
+            <input type="hidden" name="_method" value="DELETE">
+        `;
+        document.body.appendChild(form);
+        form.submit();
+        return;
+    }
+
+    if (type === 'resume') {
+        window.location.href = `/courses/${value}`;
+        return;
+    }
+
+    if (type === 'share') {
+        navigator.clipboard.writeText(value).then(() => {
+            showCdmToast('<i class="fa-solid fa-check"></i> Link disalin ke clipboard!');
+        }).catch(() => {
+            showCdmToast('<i class="fa-solid fa-link"></i> ' + value);
+        });
+        return;
+    }
+
+    if (type === 'download') {
+        showCdmToast('<i class="fa-solid fa-clock"></i> Fitur download segera hadir!');
+        return;
+    }
+
+    if (type === 'favorite') {
+        showCdmToast('<i class="fa-solid fa-star"></i> Fitur favorit segera hadir!');
+        return;
+    }
+}
+
+function showCdmToast(msg) {
+    let t = document.getElementById('cdmToast');
+    if (!t) {
+        t = document.createElement('div');
+        t.id = 'cdmToast';
+        t.className = 'cdm-toast';
+        document.body.appendChild(t);
+    }
+    t.innerHTML = msg;
+    t.classList.add('show');
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+// Tutup dropdown klik di luar
+document.addEventListener('click', function(e) {
+    if (_activeDropdown && !e.target.closest('.course-dropdown-menu') && !e.target.closest('.course-menu')) {
+        _activeDropdown.remove();
+        _activeDropdown = null;
+    }
+});
 </script>
 
 </body>
