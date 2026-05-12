@@ -1586,7 +1586,7 @@
                     <li>Priority support 24/7</li>
                     <li>1-on-1 mentoring sessions</li>
                 </ul>
-                <a href="{{ route('register') }}" class="pricing-btn">Start Free Trial</a>
+                <a href="{{ route('payment.index') }}?plan=pro" class="pricing-btn">Start Free Trial</a>
             </div>
 
             <div class="pricing-card">
@@ -1600,7 +1600,7 @@
                     <li>Analytics & reporting</li>
                     <li>Custom learning paths</li>
                 </ul>
-                <a href="#" class="pricing-btn">Contact Sales</a>
+                <a href="{{ route('payment.index') }}?plan=business" class="pricing-btn">Contact Sales</a>
             </div>
         </div>
     </div>

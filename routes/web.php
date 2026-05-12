@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\CourseController as AdminCourseController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PaymentController;
 
 // ═══════════════════════════════════════════════════════════
 // PUBLIC ROUTES
@@ -21,6 +22,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
 Route::get('/courses/{course:slug}', [CourseController::class, 'show'])->name('courses.show');
+Route::get('/payment', [PaymentController::class, 'index'])->name('payment.index');
 
 Route::get('/verify/{certificateNumber}', [CertificateController::class, 'verify'])
      ->name('certificates.verify');

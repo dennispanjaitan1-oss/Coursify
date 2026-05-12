@@ -703,7 +703,6 @@ body {
         <a href="{{ route('student.courses') }}" class="sidebar-link {{ request()->routeIs('student.courses') ? 'active' : '' }}">
             <i class="fa-solid fa-book-open sidebar-link-icon"></i>
             <span>My Courses</span>
-            <span class="sidebar-badge">{{ $enrolledCount ?? 3 }}</span>
         </a>
         <a href="{{ route('courses.index') }}" class="sidebar-link {{ request()->routeIs('courses.*') ? 'active' : '' }}">
             <i class="fa-solid fa-magnifying-glass sidebar-link-icon"></i>
