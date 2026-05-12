@@ -608,7 +608,7 @@
         <span class="promo-dot"></span>
         Mulai belajar hari ini! Dapatkan <strong>30% off</strong> untuk semua kursus premium hingga 31 Mei.
         Gunakan kode <span class="promo-code">BELAJAR30</span>.
-        <a href="#pricing">Pelajari lebih lanjut →</a>
+        <a href="#pricing">Pelajari lebih lanjut </a>
         <button class="promo-close" onclick="closePromoBanner()" aria-label="Tutup banner">×</button>
     </div>
 
@@ -802,7 +802,7 @@
                         Keamanan Siber <span class="mega-badge badge-new">Baru</span>
                     </a>
                     <a href="{{ route('courses.index') }}?category=languages" class="mega-link">Bahasa Asing</a>
-                    <a href="{{ route('courses.index') }}" class="mega-link mega-link-cta">Lihat semua topik →</a>
+                    <a href="{{ route('courses.index') }}" class="mega-link mega-link-cta">Lihat semua topik </a>
                     <div class="mega-group-label">Untuk Pemula</div>
                     <a href="{{ route('courses.index') }}?q=python+pemula" class="mega-link">Python untuk Pemula</a>
                     <a href="{{ route('courses.index') }}?q=excel+pemula" class="mega-link">Excel untuk Pemula</a>
@@ -817,7 +817,7 @@
                     <a href="{{ route('courses.index') }}?type=certificate&topic=project" class="mega-link">Manajemen Proyek</a>
                     <a href="{{ route('courses.index') }}?type=certificate&topic=finance" class="mega-link">Keuangan & Akuntansi</a>
                     <a href="{{ route('courses.index') }}?type=certificate&topic=marketing" class="mega-link">Digital Marketing</a>
-                    <a href="{{ route('courses.index') }}?type=certificate" class="mega-link mega-link-cta">Lihat semua sertifikat →</a>
+                    <a href="{{ route('courses.index') }}?type=certificate" class="mega-link mega-link-cta">Lihat semua sertifikat </a>
                     <div class="mega-group-label">Populer</div>
                     <a href="{{ route('courses.index') }}?q=ai+3+bulan" class="mega-link">AI dalam 3 bulan</a>
                     <a href="{{ route('courses.index') }}?q=data+analyst" class="mega-link">Data Analyst Bootcamp</a>
@@ -833,7 +833,7 @@
                     <a href="{{ route('courses.index') }}?type=program&level=bachelor" class="mega-link">Program Sarjana (S1)</a>
                     <a href="{{ route('courses.index') }}?type=program&level=master" class="mega-link">Program Magister (S2)</a>
                     <a href="{{ route('courses.index') }}?type=program&level=diploma" class="mega-link">Program Diploma (D3/D4)</a>
-                    <a href="{{ route('courses.index') }}?type=program" class="mega-link mega-link-cta">Lihat semua program →</a>
+                    <a href="{{ route('courses.index') }}?type=program" class="mega-link mega-link-cta">Lihat semua program </a>
                     <div class="mega-group-label">Populer</div>
                     <a href="{{ route('courses.index') }}?q=mba+online" class="mega-link">MBA Online</a>
                     <a href="{{ route('courses.index') }}?q=master+data+science" class="mega-link">Master Data Science</a>
@@ -851,7 +851,7 @@
                     <a href="{{ route('courses.index') }}?university=its" class="mega-link">ITS Surabaya</a>
                     <a href="{{ route('courses.index') }}?university=unair" class="mega-link">Universitas Airlangga</a>
                     <a href="{{ route('courses.index') }}?university=ipb" class="mega-link">IPB University</a>
-                    <a href="#partners" class="mega-link mega-link-cta">Lihat semua universitas →</a>
+                    <a href="#partners" class="mega-link mega-link-cta">Lihat semua universitas </a>
                     <div class="mega-group-label">Jalur Karir</div>
                     <a href="{{ route('courses.index') }}?career=software-engineer" class="mega-link">Software Engineer</a>
                     <a href="{{ route('courses.index') }}?career=data-scientist" class="mega-link">Data Scientist</a>
@@ -899,82 +899,257 @@
 {{-- ══════════════════════════════════════════════════════════ --}}
 {{-- MAIN CONTENT                                               --}}
 {{-- ══════════════════════════════════════════════════════════ --}}
-<main style="position:relative;z-index:1;">
+<main>
     @yield('content')
 </main>
 
 
-{{-- ══════════════════════════════════════════════════════════ --}}
-{{-- FOOTER                                                     --}}
-{{-- ══════════════════════════════════════════════════════════ --}}
-<footer class="footer-main">
-    <div class="footer-grid">
-        <div>
-            <a href="{{ route('home') }}" class="logo">
-                <img src="{{ asset('images/logo.png') }}" alt="Coursify" class="logo-img logo-img-sm">
-                <span class="logo-text">Coursify</span>
-            </a>
-            <p class="footer-brand-desc">
-                Platform belajar modern yang membantu kamu menguasai skill baru bersama instruktur terbaik dari universitas-universitas terkemuka Indonesia.
-            </p>
-            <div class="footer-social">
-                <a href="#" aria-label="X / Twitter"><i class="fa-brands fa-x-twitter"></i></a>
-                <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-                <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-                <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
-            </div>
-        </div>
 
-        <div>
-            <div class="footer-col-title">Platform</div>
-            <div class="footer-links-col">
-                <a href="{{ route('courses.index') }}" class="footer-link">Semua Kursus</a>
-                <a href="#categories" class="footer-link">Kategori</a>
-                <a href="#partners" class="footer-link">Universitas Partner</a>
-                <a href="{{ route('home') }}#pricing" class="footer-link">Pricing</a>
-            </div>
-        </div>
 
-        <div>
-            <div class="footer-col-title">Company</div>
-            <div class="footer-links-col">
-                <a href="#" class="footer-link">Tentang Kami</a>
-                <a href="#" class="footer-link">Blog</a>
-                <a href="#" class="footer-link">Karir</a>
-                <a href="#" class="footer-link">Kontak</a>
-            </div>
-        </div>
+<footer>
 
-        <div>
-            <div class="footer-col-title">Support</div>
-            <div class="footer-links-col">
-                <a href="#" class="footer-link">Pusat Bantuan</a>
-                <a href="#" class="footer-link">Kebijakan Privasi</a>
-                <a href="#" class="footer-link">Syarat & Ketentuan</a>
-                <a href="#" class="footer-link">Jadi Instruktur</a>
-            </div>
-        </div>
-    </div>
+    {{-- ══ MEGA FOOTER (dark, banyak link) ══ --}}
+    <div style="background:#0F2744;padding:56px 0 0;">
+        <div style="max-width:1160px;margin:0 auto;padding:0 24px;">
 
-    <div class="footer-bottom">
-        <div>© {{ date('Y') }} Coursify. All Rights Reserved.</div>
-        <div style="display:flex;gap:16px;">
-            <a href="#" class="footer-link">Privacy</a>
-            <a href="#" class="footer-link">Terms</a>
-            <a href="#" class="footer-link">Cookies</a>
+            {{-- Row 1: Logo + 4 kolom link --}}
+            <div style="display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr 1fr;gap:40px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,0.08);">
+
+                {{-- Brand --}}
+                <div>
+                    <a href="{{ route('home') }}" style="display:inline-flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:16px;">
+                        <img src="{{ asset('images/logo.png') }}" alt="Coursify"
+                             style="width:36px;height:36px;border-radius:9px;object-fit:cover;box-shadow:0 2px 10px rgba(0,0,0,0.3);">
+                        <span style="font-size:20px;font-weight:700;letter-spacing:-0.02em;color:white;">Coursify</span>
+                    </a>
+                    <p style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;max-width:240px;margin-bottom:20px;">
+                        Platform belajar online terpercaya dari universitas-universitas terkemuka Indonesia. Belajar kapan saja, di mana saja.
+                    </p>
+                    {{-- SDG Badges --}}
+                    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px;">
+                        @foreach([['#4CAF50','SDG 4'],['#2196F3','SDG 8'],['#FF9800','SDG 10']] as [$c,$l])
+                            <span style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);font-size:10px;font-weight:600;padding:4px 10px;border-radius:100px;letter-spacing:0.05em;">
+                                {{ $l }}
+                            </span>
+                        @endforeach
+                    </div>
+                    {{-- Social --}}
+                    <div style="display:flex;gap:8px;">
+                        @foreach([
+                            ['fa-x-twitter','#'],
+                            ['fa-facebook-f','#'],
+                            ['fa-linkedin-in','#'],
+                            ['fa-instagram','#'],
+                        ] as [$icon,$url])
+                            <a href="{{ $url }}"
+                               style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.55);font-size:13px;text-decoration:none;transition:all 0.2s;"
+                               onmouseover="this.style.background='rgba(255,255,255,0.18)';this.style.color='white';"
+                               onmouseout="this.style.background='rgba(255,255,255,0.08)';this.style.color='rgba(255,255,255,0.55)';">
+                                <i class="fa-brands {{ $icon }}"></i>
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+
+                {{-- Kolom: Jelajahi Topik --}}
+                <div>
+                    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:16px;">
+                        Jelajahi Topik
+                    </div>
+                    @foreach([
+                        ['Kecerdasan Buatan','courses.index','?category=ai'],
+                        ['Web Development','courses.index','?category=web'],
+                        ['Data Science','courses.index','?category=data'],
+                        ['Cybersecurity','courses.index','?category=cyber'],
+                        ['Desain UI/UX','courses.index','?category=design'],
+                        ['Mobile Development','courses.index','?category=mobile'],
+                        ['Bahasa Asing','courses.index','?category=language'],
+                        ['Bisnis & Manajemen','courses.index','?category=business'],
+                        ['Lihat semua topik ','courses.index',''],
+                    ] as $i => [$label, $route, $param])
+                        <a href="{{ route($route) }}{{ $param }}"
+                           style="display:block;font-size:13px;color:{{ $i === 8 ? '#B8AFEB' : 'rgba(255,255,255,0.55)' }};text-decoration:none;padding:4px 0;line-height:1.5;transition:color 0.2s;{{ $i === 8 ? 'margin-top:8px;font-weight:600;' : '' }}"
+                           onmouseover="this.style.color='white'"
+                           onmouseout="this.style.color='{{ $i === 8 ? '#B8AFEB' : 'rgba(255,255,255,0.55)' }}'">
+                            {{ $label }}
+                        </a>
+                    @endforeach
+                </div>
+
+                {{-- Kolom: Program --}}
+                <div>
+                    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:16px;">
+                        Program
+                    </div>
+                    @foreach([
+                        ['Sertifikat Profesional','courses.index','?type=certificate'],
+                        ['MicroMasters','courses.index','?type=micromasters'],
+                        ['Program Diploma','courses.index','?type=diploma'],
+                        ['S1 Online','courses.index','?type=bachelor'],
+                        ['S2 Online','courses.index','?type=master'],
+                        ['MBA Online','courses.index','?q=mba'],
+                        ['Executive Education','courses.index','?type=executive'],
+                        ['Lihat semua program ','courses.index','?type=all'],
+                    ] as $i => [$label, $route, $param])
+                        <a href="{{ route($route) }}{{ $param }}"
+                           style="display:block;font-size:13px;color:{{ $i === 7 ? '#B8AFEB' : 'rgba(255,255,255,0.55)' }};text-decoration:none;padding:4px 0;line-height:1.5;transition:color 0.2s;{{ $i === 7 ? 'margin-top:8px;font-weight:600;' : '' }}"
+                           onmouseover="this.style.color='white'"
+                           onmouseout="this.style.color='{{ $i === 7 ? '#B8AFEB' : 'rgba(255,255,255,0.55)' }}'">
+                            {{ $label }}
+                        </a>
+                    @endforeach
+                </div>
+
+                {{-- Kolom: Universitas --}}
+                <div>
+                    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:16px;">
+                        Universitas
+                    </div>
+                    @foreach([
+                        ['Universitas Indonesia','courses.index','?university=ui'],
+                        ['ITB Bandung','courses.index','?university=itb'],
+                        ['Universitas Gadjah Mada','courses.index','?university=ugm'],
+                        ['ITS Surabaya','courses.index','?university=its'],
+                        ['Universitas Airlangga','courses.index','?university=unair'],
+                        ['IPB University','courses.index','?university=ipb'],
+                        ['BINUS University','courses.index','?university=binus'],
+                        ['Lihat semua Universitas','courses.index','?type=university'],
+                    ] as $i => [$label, $route, $param])
+                        <a href="{{ route($route) }}{{ $param }}"
+                           style="display:block;font-size:13px;color:{{ $i === 7 ? '#B8AFEB' : 'rgba(255,255,255,0.55)' }};text-decoration:none;padding:4px 0;line-height:1.5;transition:color 0.2s;{{ $i === 7 ? 'margin-top:8px;font-weight:600;' : '' }}"
+                           onmouseover="this.style.color='white'"
+                           onmouseout="this.style.color='{{ $i === 7 ? '#B8AFEB' : 'rgba(255,255,255,0.55)' }}'">
+                            {{ $label }}
+                        </a>
+                    @endforeach
+                </div>
+
+                {{-- Kolom: Jalur Karir --}}
+                <div>
+                    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:16px;">
+                        Jalur Karir
+                    </div>
+                    @foreach([
+                        ['Software Engineer','courses.index','?career=software-engineer'],
+                        ['Data Scientist','courses.index','?career=data-scientist'],
+                        ['UI/UX Designer','courses.index','?career=ui-ux'],
+                        ['Cybersecurity Analyst','courses.index','?career=cybersecurity'],
+                        ['Product Manager','courses.index','?career=product-manager'],
+                        ['Cloud Architect','courses.index','?career=cloud'],
+                        ['Digital Marketer','courses.index','?career=marketing'],
+                        ['Lihat semua karir ','courses.index','?type=career'],
+                    ] as $i => [$label, $route, $param])
+                        <a href="{{ route($route) }}{{ $param }}"
+                           style="display:block;font-size:13px;color:{{ $i === 7 ? '#B8AFEB' : 'rgba(255,255,255,0.55)' }};text-decoration:none;padding:4px 0;line-height:1.5;transition:color 0.2s;{{ $i === 7 ? 'margin-top:8px;font-weight:600;' : '' }}"
+                           onmouseover="this.style.color='white'"
+                           onmouseout="this.style.color='{{ $i === 7 ? '#B8AFEB' : 'rgba(255,255,255,0.55)' }}'">
+                            {{ $label }}
+                        </a>
+                    @endforeach
+                </div>
+
+            </div>{{-- /Row 1 --}}
+
+            {{-- ══ SECONDARY FOOTER ROW ══ --}}
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:40px;padding:40px 0 48px;border-bottom:1px solid rgba(255,255,255,0.08);">
+
+                {{-- Coursify Company --}}
+                <div>
+                    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:14px;">
+                        Coursify
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;">
+                        @foreach([
+                            ['Tentang Kami','#'],
+                            ['Partner Kami','#'],
+                            ['For Business','#'],
+                            ['Afiliasi','#'],
+                            ['Karir','#'],
+                            ['Blog & Berita','#'],
+                        ] as [$label, $url])
+                            <a href="{{ $url }}"
+                               style="display:block;font-size:13px;color:rgba(255,255,255,0.5);text-decoration:none;padding:4px 0;transition:color 0.2s;"
+                               onmouseover="this.style.color='white'"
+                               onmouseout="this.style.color='rgba(255,255,255,0.5)'">
+                                {{ $label }}
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+
+                {{-- Connect --}}
+                <div>
+                    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:14px;">
+                        Connect
+                    </div>
+                    @foreach([
+                        ['Pusat Bantuan','#'],
+                        ['Hubungi Kami','#'],
+                        ['Forum Komunitas','#'],
+                        ['Media Kit','#'],
+                        ['Jadi Instruktur','#'],
+                    ] as [$label, $url])
+                        <a href="{{ $url }}"
+                           style="display:block;font-size:13px;color:rgba(255,255,255,0.5);text-decoration:none;padding:4px 0;transition:color 0.2s;"
+                           onmouseover="this.style.color='white'"
+                           onmouseout="this.style.color='rgba(255,255,255,0.5)'">
+                            {{ $label }}
+                        </a>
+                    @endforeach
+                </div>
+
+                {{-- Legal --}}
+                <div>
+                    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:14px;">
+                        Legal
+                    </div>
+                    @foreach([
+                        ['Syarat & Ketentuan','#'],
+                        ['Kebijakan Privasi','#'],
+                        ['Cookie Policy','#'],
+                        ['Kebijakan Aksesibilitas','#'],
+                        ['Sitemap','#'],
+                        ['Your Privacy Choices','#'],
+                    ] as [$label, $url])
+                        <a href="{{ $url }}"
+                           style="display:block;font-size:13px;color:rgba(255,255,255,0.5);text-decoration:none;padding:4px 0;transition:color 0.2s;"
+                           onmouseover="this.style.color='white'"
+                           onmouseout="this.style.color='rgba(255,255,255,0.5)'">
+                            {{ $label }}
+                        </a>
+                    @endforeach
+                </div>
+
+            </div>{{-- /Secondary row --}}
+
+            {{-- ══ BOTTOM BAR ══ --}}
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 0;flex-wrap:wrap;gap:12px;">
+                <div style="font-size:12px;color:rgba(255,255,255,0.3);">
+                    © {{ date('Y') }} Coursify. All Rights Reserved. 
+                </div>
+                <div style="display:flex;gap:20px;">
+                    @foreach(['Privacy','Terms','Cookies','Sitemap'] as $label)
+                        <a href="#"
+                           style="font-size:12px;color:rgba(255,255,255,0.3);text-decoration:none;transition:color 0.2s;"
+                           onmouseover="this.style.color='rgba(255,255,255,0.7)'"
+                           onmouseout="this.style.color='rgba(255,255,255,0.3)'">
+                            {{ $label }}
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+
         </div>
-    </div>
+    </div>{{-- /mega footer --}}
+
+</footer>
 </footer>
 
-
-{{-- ══════════════════════════════════════════════════════════ --}}
-{{-- SCRIPTS                                                    --}}
-{{-- ══════════════════════════════════════════════════════════ --}}
+{{-- ══ SCRIPTS ══ --}}
 @stack('scripts')
 
 <script>
-/* ─── Adjust body padding to account for navbar + promo height ─── */
+/* ─── Adjust body padding ─── */
 function adjustBodyPadding() {
     var nb = document.getElementById('mainNavbar');
     if (nb) {
@@ -1006,11 +1181,8 @@ function closePromoBanner() {
 
 /* ─── Mega Nav ─── */
 function toggleMega() {
-    var menu    = document.getElementById('mega-menu');
-    var btn     = document.getElementById('mega-btn');
-    var overlay = document.getElementById('mega-overlay');
-    var isOpen  = menu.classList.contains('open');
-    isOpen ? closeMega() : openMega();
+    var menu = document.getElementById('mega-menu');
+    menu.classList.contains('open') ? closeMega() : openMega();
 }
 function openMega() {
     document.getElementById('mega-menu').classList.add('open');
@@ -1030,12 +1202,9 @@ document.addEventListener('keydown', function (e) {
 
 /* ─── Auto-hide navbar on scroll ─── */
 (function () {
-    var navbar   = document.getElementById('mainNavbar');
+    var navbar = document.getElementById('mainNavbar');
     if (!navbar) return;
-    var lastScroll = 0;
-    var ticking    = false;
-    var threshold  = 80;
-
+    var lastScroll = 0, ticking = false, threshold = 80;
     function updateNavbar() {
         var cur = window.pageYOffset;
         navbar.classList.toggle('navbar-scrolled', cur > 20);
@@ -1050,13 +1219,12 @@ document.addEventListener('keydown', function (e) {
         lastScroll = cur;
         ticking = false;
     }
-
     window.addEventListener('scroll', function () {
         if (!ticking) { window.requestAnimationFrame(updateNavbar); ticking = true; }
     }, { passive: true });
 })();
 
-/* ─── Fix bfcache (back button stale UI) ─── */
+/* ─── Fix bfcache ─── */
 window.addEventListener('pageshow', function (e) {
     if (e.persisted) window.location.reload();
 });
