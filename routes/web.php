@@ -5,13 +5,13 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\WishlistController;
+
 use App\Http\Controllers\Student\DashboardController as StudentDashboard;
 use App\Http\Controllers\Student\LearningController;
+
 use App\Http\Controllers\Instructor\DashboardController as InstructorDashboard;
 use App\Http\Controllers\Instructor\CourseController as InstructorCourseController;
-use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
-use App\Http\Controllers\Admin\UserController as AdminUserController;
-use App\Http\Controllers\Admin\CourseController as AdminCourseController;
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PaymentController;
 
@@ -20,36 +20,46 @@ use App\Http\Controllers\PaymentController;
 // ═══════════════════════════════════════════════════════════
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
-Route::get('/courses/{course:slug}', [CourseController::class, 'show'])->name('courses.show');
-Route::get('/payment', [PaymentController::class, 'index'])->name('payment.index');
+Route::get('/courses', [CourseController::class, 'index'])
+    ->name('courses.index');
+
+Route::get('/courses/{course:slug}', [CourseController::class, 'show'])
+    ->name('courses.show');
+
+Route::get('/payment', [PaymentController::class, 'index'])
+    ->name('payment.index');
 
 Route::get('/verify/{certificateNumber}', [CertificateController::class, 'verify'])
-     ->name('certificates.verify');
+    ->name('certificates.verify');
 
 // ═══════════════════════════════════════════════════════════
-// BREEZE AUTH ROUTES
+// AUTH
 // ═══════════════════════════════════════════════════════════
 require __DIR__.'/auth.php';
 
 // ═══════════════════════════════════════════════════════════
-// AUTHENTICATED ROUTES (General)
+// AUTHENTICATED ROUTES
 // ═══════════════════════════════════════════════════════════
 Route::middleware('auth')->group(function () {
 
-    // Enrollment, Review & Unenroll
+    // Enrollment
     Route::post('/courses/{course}/enroll', [EnrollmentController::class, 'enroll'])
-         ->name('enroll');
-    Route::post('/courses/{course}/review', [EnrollmentController::class, 'submitReview'])
-         ->name('review');
-    Route::delete('/enrollments/{enrollment}', [EnrollmentController::class, 'unenroll'])
-         ->name('student.unenroll');
+        ->name('enroll');
 
-    // Wishlist AJAX (toggle add/remove dari halaman catalog/detail)
+    // Review
+    Route::post('/courses/{course}/review', [EnrollmentController::class, 'submitReview'])
+        ->name('review');
+
+    // Unenroll
+    Route::delete('/enrollments/{enrollment}', [EnrollmentController::class, 'unenroll'])
+        ->name('student.unenroll');
+
+    // Wishlist
     Route::post('/wishlist/toggle/{course}', [WishlistController::class, 'toggle'])
-         ->name('wishlist.toggle');
+        ->name('wishlist.toggle');
+
     Route::delete('/wishlist/{wishlist}', [WishlistController::class, 'destroy'])
-         ->name('wishlist.destroy');
+        ->name('wishlist.destroy');
 });
 
 // ═══════════════════════════════════════════════════════════
@@ -60,23 +70,20 @@ Route::middleware(['auth', 'role:student,instructor,admin'])
     ->name('student.')
     ->group(function () {
 
-        // Dashboard & Pages
         Route::get('/', [StudentDashboard::class, 'index'])->name('index');
         Route::get('/my-courses', [StudentDashboard::class, 'myCourses'])->name('courses');
         Route::get('/certificates', [StudentDashboard::class, 'certificates'])->name('certificates');
-
-        // Wishlist page (pakai WishlistController::index)
         Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
 
-        // Learning (video player page)
+        // Learning & Progress
         Route::get('/learn/{slug}', [LearningController::class, 'index'])->name('learn');
         Route::get('/learn/{slug}/{lesson}', [LearningController::class, 'lesson'])->name('learn.lesson');
         Route::post('/progress/{lesson}', [LearningController::class, 'updateProgress'])->name('learn.progress');
 
-        // TAMBAHKAN INI:
-         Route::post('/course/review/{course}', [EnrollmentController::class, 'submitReview'])->name('course.review.submit');
+        // Review Course
+        Route::post('/course/review/{course}', [EnrollmentController::class, 'submitReview'])->name('course.review.submit');
 
-        // Profile Settings (BARU)
+        // Profile Settings (Hanya satu set rute di sini)
         Route::get('/profile', [StudentDashboard::class, 'profile'])->name('profile');
         Route::post('/profile/update', [StudentDashboard::class, 'updateProfile'])->name('profile.update');
         Route::post('/profile/password', [StudentDashboard::class, 'updatePassword'])->name('profile.password');
@@ -89,7 +96,10 @@ Route::middleware(['auth', 'role:instructor,admin'])
     ->prefix('instructor')
     ->name('instructor.')
     ->group(function () {
-        Route::get('/dashboard', [InstructorDashboard::class, 'index'])->name('dashboard');
+
+        Route::get('/dashboard', [InstructorDashboard::class, 'index'])
+            ->name('dashboard');
+
         Route::resource('/courses', InstructorCourseController::class);
     });
 
@@ -100,12 +110,43 @@ Route::middleware(['auth', 'role:admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
-        Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
-        Route::resource('/users', AdminUserController::class);
-        Route::resource('/courses', AdminCourseController::class);
+
+        Route::view('/dashboard', 'admin.dashboard')->name('dashboard');
+
+        Route::view('/analytics', 'admin.analytics')->name('analytics');
+
+        Route::view('/users', 'admin.users')->name('users');
+
+        Route::view('/courses', 'admin.courses')->name('courses');
+
+        Route::view('/institutions', 'admin.institutions')->name('institutions');
+
+        Route::view('/categories', 'admin.categories')->name('categories');
+
+        Route::view('/approvals', 'admin.approvals')->name('approvals');
+
+        Route::view('/reviews', 'admin.reviews')->name('reviews');
+
+        Route::view('/reports', 'admin.reports')->name('reports');
+
+        Route::view('/transactions', 'admin.transactions')->name('transactions');
+
+        Route::view('/payouts', 'admin.payouts')->name('payouts');
+
+        Route::view('/settings', 'admin.settings')->name('settings');
+
+        Route::view('/logs', 'admin.logs')->name('logs');
     });
 
-Route::get('/universities', fn() => view('pages.universities'))->name('universities');
+// ═══════════════════════════════════════════════════════════
+// OTHER ROUTES
+// ═══════════════════════════════════════════════════════════
+Route::post('/student/course/{course}/review', [EnrollmentController::class, 'submitReview'])
+    ->name('student.course.review.submit')
+    ->middleware('auth');
+
+Route::get('/universities', fn() => view('pages.universities'))
+    ->name('universities');
 
 Route::view('/about', 'about')->name('about');
 
