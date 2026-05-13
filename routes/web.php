@@ -73,6 +73,9 @@ Route::middleware(['auth', 'role:student,instructor,admin'])
         Route::get('/learn/{slug}/{lesson}', [LearningController::class, 'lesson'])->name('learn.lesson');
         Route::post('/progress/{lesson}', [LearningController::class, 'updateProgress'])->name('learn.progress');
 
+        // TAMBAHKAN INI:
+         Route::post('/course/review/{course}', [EnrollmentController::class, 'submitReview'])->name('course.review.submit');
+
         // Profile Settings (BARU)
         Route::get('/profile', [StudentDashboard::class, 'profile'])->name('profile');
         Route::post('/profile/update', [StudentDashboard::class, 'updateProfile'])->name('profile.update');
@@ -123,3 +126,5 @@ Route::view('/faq', 'faq')->name('faq');
 Route::view('/forum', 'forum')->name('forum');
 
 Route::view('/pusat-bantuan', 'pusat-bantuan')->name('pusat-bantuan');
+
+Route::view('/sitemap', 'sitemap')->name('sitemap');

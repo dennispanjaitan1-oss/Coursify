@@ -13,42 +13,39 @@ use Illuminate\Http\Request;
 class EnrollmentController extends Controller
 {
     public function enroll(Request $request, Course $course)
-    {
-        $user = auth()->user();
+{
+    $user = auth()->user();
 
-        // Cek sudah enroll belum
-        if ($user->enrollments()->where('course_id', $course->id)->exists()) {
-            return redirect()->route('student.learn', $course->slug)
-                ->with('info', 'Kamu sudah terdaftar di kursus ini.');
-        }
+    if ($user->enrollments()->where('course_id', $course->id)->exists()) {
+        return redirect()->route('student.learn', $course->slug)
+            ->with('info', 'Kamu sudah terdaftar di kursus ini.');
+    }
 
-        if ($course->price == 0) {
-            // GRATIS — langsung enroll sebagai audit
-            Payment::create([
-                'user_id' => $user->id,
-                'amount'  => 0,
-                'method'  => 'free',
-                'status'  => 'paid',
-                'paid_at' => now(),
-            ]);
+    if ($course->price == 0) {
+        Payment::create([
+            'user_id' => $user->id,
+            'amount'  => 0,
+            'method'  => 'free',
+            'status'  => 'paid',
+            'paid_at' => now(),
+        ]);
 
-            $enrollment = Enrollment::create([
+        $enrollment = Enrollment::create([
             'user_id'   => $user->id,
             'course_id' => $course->id,
             'type'      => 'audit',
             'status'    => 'active',
         ]);
 
-        // Broadcast event untuk real-time notification
         broadcast(new NewEnrollment($enrollment));
 
         return redirect()->route('student.learn', $course->slug)
-            ->with('success', 'Berhasil enroll! Selamat belajar di kursus ini.');
+            ->with('success', 'Berhasil enroll! Selamat belajar.');
     }
 
-    // BERBAYAR — untuk sekarang redirect ke halaman checkout sederhana
-    return redirect()->route('student.learn', $course->slug)
-        ->with('info', 'Fitur pembayaran segera hadir!');
+    // Berbayar
+    return redirect()->route('payment.index', ['course' => $course->id])
+        ->with('info', 'Silakan selesaikan pembayaran.');
 }
 
     public function toggleWishlist(Course $course)

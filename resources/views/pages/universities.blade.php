@@ -619,10 +619,14 @@
            data-type="negeri teknik">
             <div class="univ-card-banner banner-ui">
                 <span class="univ-card-tag tag-featured">⭐ Featured</span>
-                <div class="univ-logo-placeholder">
-                    {{-- Ganti dengan: <img src="{{ asset('images/universities/ui-logo.png') }}" alt="UI"> --}}
-                    <i class="fa-solid fa-building-columns" style="font-size:32px;color:rgba(255,255,255,0.9);"></i>
-                </div>
+                <div class="univ-logo-placeholder" style="width: 100%; height: 100%; overflow: hidden; position: relative;">
+    <img src="{{ asset('images/universities/ui-logo.png') }}" 
+         alt="UI" 
+         style="width: 100%; height: 100%; object-fit: cover; display: block;">
+    
+    {{-- Ikon tetap ada sebagai fallback atau overlay jika diinginkan --}}
+    {{-- <i class="fa-solid fa-building-columns" style="position:absolute; z-index:1; ..."></i> --}}
+</div>
             </div>
             <div class="univ-card-body">
                 <div class="univ-card-type">Perguruan Tinggi Negeri</div>
@@ -668,7 +672,7 @@
             <div class="univ-card-banner banner-itb">
                 <span class="univ-card-tag tag-partner">Partner</span>
                 <div class="univ-logo-placeholder">
-                    {{-- Ganti dengan: <img src="{{ asset('images/universities/itb-logo.png') }}" alt="ITB"> --}}
+                    <img src="{{ asset('images/universities/itb-logo.png') }}" alt="ITB"> 
                     <i class="fa-solid fa-flask" style="font-size:30px;color:rgba(255,255,255,0.9);"></i>
                 </div>
             </div>
@@ -712,7 +716,7 @@
             <div class="univ-card-banner banner-ugm">
                 <span class="univ-card-tag tag-partner">Partner</span>
                 <div class="univ-logo-placeholder">
-                    {{-- Ganti dengan: <img src="{{ asset('images/universities/ugm-logo.png') }}" alt="UGM"> --}}
+                     <img src="{{ asset('images/universities/ugm-logo.png') }}" alt="UGM"> 
                     <i class="fa-solid fa-landmark" style="font-size:30px;color:rgba(255,255,255,0.9);"></i>
                 </div>
             </div>
@@ -756,7 +760,7 @@
             <div class="univ-card-banner banner-its">
                 <span class="univ-card-tag tag-partner">Partner</span>
                 <div class="univ-logo-placeholder">
-                    {{-- Ganti dengan: <img src="{{ asset('images/universities/its-logo.png') }}" alt="ITS"> --}}
+                     <img src="{{ asset('images/universities/its-logo.png') }}" alt="ITS"> 
                     <i class="fa-solid fa-microchip" style="font-size:30px;color:rgba(255,255,255,0.9);"></i>
                 </div>
             </div>
@@ -800,7 +804,7 @@
             <div class="univ-card-banner banner-unair">
                 <span class="univ-card-tag tag-partner">Partner</span>
                 <div class="univ-logo-placeholder">
-                    {{-- Ganti dengan: <img src="{{ asset('images/universities/unair-logo.png') }}" alt="Unair"> --}}
+                    <img src="{{ asset('images/universities/unair-logo.png') }}" alt="Unair"> 
                     <i class="fa-solid fa-stethoscope" style="font-size:30px;color:rgba(255,255,255,0.9);"></i>
                 </div>
             </div>
@@ -844,7 +848,7 @@
             <div class="univ-card-banner banner-ipb">
                 <span class="univ-card-tag tag-partner">Partner</span>
                 <div class="univ-logo-placeholder">
-                    {{-- Ganti dengan: <img src="{{ asset('images/universities/ipb-logo.png') }}" alt="IPB"> --}}
+                    <img src="{{ asset('images/universities/ipb-logo.png') }}" alt="IPB"> 
                     <i class="fa-solid fa-leaf" style="font-size:30px;color:rgba(255,255,255,0.9);"></i>
                 </div>
             </div>
@@ -888,7 +892,7 @@
             <div class="univ-card-banner banner-binus">
                 <span class="univ-card-tag tag-partner">Partner</span>
                 <div class="univ-logo-placeholder">
-                    {{-- Ganti dengan: <img src="{{ asset('images/universities/binus-logo.png') }}" alt="BINUS"> --}}
+                    <img src="{{ asset('images/universities/binus-logo.png') }}" alt="BINUS"> 
                     <i class="fa-solid fa-laptop-code" style="font-size:30px;color:rgba(255,255,255,0.9);"></i>
                 </div>
             </div>
@@ -932,7 +936,7 @@
             <div class="univ-card-banner banner-undip">
                 <span class="univ-card-tag tag-partner">Partner</span>
                 <div class="univ-logo-placeholder">
-                    {{-- Ganti dengan: <img src="{{ asset('images/universities/undip-logo.png') }}" alt="Undip"> --}}
+                    <img src="{{ asset('images/universities/undip-logo.png') }}" alt="Undip">
                     <i class="fa-solid fa-water" style="font-size:30px;color:rgba(255,255,255,0.9);"></i>
                 </div>
             </div>
@@ -976,7 +980,7 @@
             <div class="univ-card-banner banner-ub">
                 <span class="univ-card-tag tag-partner">Partner</span>
                 <div class="univ-logo-placeholder">
-                    {{-- Ganti dengan: <img src="{{ asset('images/universities/ub-logo.png') }}" alt="UB"> --}}
+                    <img src="{{ asset('images/universities/ub-logo.png') }}" alt="UB"> 
                     <i class="fa-solid fa-scale-balanced" style="font-size:30px;color:rgba(255,255,255,0.9);"></i>
                 </div>
             </div>

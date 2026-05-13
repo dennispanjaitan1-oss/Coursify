@@ -1075,52 +1075,72 @@
         <div class="team-grid">
     @php
         $team = [
-            [
-                'initial' => 'A',
-                'color'   => 'team-avatar-a',
-                'photo'   => '',
-                'name'    => 'Dennis Panjaitan',
-                'role'    => 'Frontend Developer',
-                'bio'     => 'Alumni ITB. Sebelumnya product lead di Gojek. Obsesi: membuat belajar menjadi hal yang menyenangkan.',
-                'socials' => ['fa-linkedin-in', 'fa-github', 'fa-instagram'],
-            ],
-            [
-                'initial' => 'D',
-                'color'   => 'team-avatar-b',
-                'photo'   => '',
-                'name'    => 'Abdullah Jufar',
-                'role'    => 'Backend Developer',
-                'bio'     => 'Engineer backend berpengalaman 8 tahun. Arsitek infrastruktur platform Coursify dari hari pertama.',
-                'socials' => ['fa-linkedin-in', 'fa-github', 'fa-instagram'],
-            ],
-            [
-                'initial' => 'R',
-                'color'   => 'team-avatar-c',
-                'photo'   => '',
-                'name'    => 'Agi Aginta',
-                'role'    => 'Lead Designer',
-                'bio'     => 'Designer dan product thinker. Bertanggung jawab atas setiap piksel yang ada di Coursify.',
-                'socials' => ['fa-linkedin-in', 'fa-github', 'fa-instagram'],
-            ],
-            [
-                'initial' => 'M',
-                'color'   => 'team-avatar-d',
-                'photo'   => '',
-                'name'    => 'Randi Abdiansyah',
-                'role'    => 'UI/UX Designer',
-                'bio'     => 'Membangun jembatan antara Coursify dan universitas-universitas partner terbaik Indonesia.',
-                'socials' => ['fa-linkedin-in', 'fa-github', 'fa-instagram'],
-            ],
-            [
-                'initial' => 'B',
-                'color'   => 'team-avatar-e',
-                'photo'   => 'renald.png',
-                'name'    => 'Reynald Alvaro',
-                'role'    => 'Frontend Developer',
-                'bio'     => 'Mantan mahasiswa di UNIMED.',
-                'socials' => ['fa-linkedin-in', 'fa-github', 'fa-instagram'],
-            ],
-        ];
+    [
+        'initial' => 'A',
+        'color'   => 'team-avatar-a',
+        'photo'   => '',
+        'name'    => 'Dennis Panjaitan',
+        'role'    => 'Frontend Developer',
+        'bio'     => 'Alumni ITB. Sebelumnya product lead di Gojek. Obsesi: membuat belajar menjadi hal yang menyenangkan.',
+        'socials' => [
+            ['icon' => 'fa-linkedin-in', 'url' => 'https://linkedin.com/in/username'],
+            ['icon' => 'fa-github',      'url' => 'https://github.com/username'],
+            ['icon' => 'fa-instagram',   'url' => 'https://instagram.com/username'],
+        ],
+    ],
+    [
+        'initial' => 'D',
+        'color'   => 'team-avatar-b',
+        'photo'   => 'jupar.jpg',
+        'name'    => 'Abdullah Jufar',
+        'role'    => 'Backend Developer',
+        'bio'     => 'Engineer backend berpengalaman 8 tahun. Arsitek infrastruktur platform Coursify dari hari pertama.',
+        'socials' => [
+            ['icon' => 'fa-linkedin-in', 'url' => 'https://linkedin.com/in/username'],
+            ['icon' => 'fa-github',      'url' => 'https://github.com/username'],
+            ['icon' => 'fa-instagram',   'url' => 'https://instagram.com/username'],
+        ],
+    ],
+    [
+        'initial' => 'R',
+        'color'   => 'team-avatar-c',
+        'photo'   => 'agi.jpg',
+        'name'    => 'Agi Aginta',
+        'role'    => 'Lead Designer',
+        'bio'     => 'Designer dan product thinker. Bertanggung jawab atas setiap piksel yang ada di Coursify.',
+        'socials' => [
+            ['icon' => 'fa-linkedin-in', 'url' => 'https://linkedin.com/in/username'],
+            ['icon' => 'fa-github',      'url' => 'https://github.com/username'],
+            ['icon' => 'fa-instagram',   'url' => 'https://instagram.com/username'],
+        ],
+    ],
+    [
+        'initial' => 'M',
+        'color'   => 'team-avatar-d',
+        'photo'   => '',
+        'name'    => 'Randi Abdiansyah',
+        'role'    => 'UI/UX Designer',
+        'bio'     => 'Membangun jembatan antara Coursify dan universitas-universitas partner terbaik Indonesia.',
+        'socials' => [
+            ['icon' => 'fa-linkedin-in', 'url' => 'https://linkedin.com/in/username'],
+            ['icon' => 'fa-github',      'url' => 'https://github.com/username'],
+            ['icon' => 'fa-instagram',   'url' => 'https://instagram.com/username'],
+        ],
+    ],
+    [
+        'initial' => 'B',
+        'color'   => 'team-avatar-e',
+        'photo'   => 'renald.png',
+        'name'    => 'Reynald Alvaro',
+        'role'    => 'Frontend Developer',
+        'bio'     => 'Mantan mahasiswa di UNIMED.',
+        'socials' => [
+            ['icon' => 'fa-linkedin-in', 'url' => 'https://linkedin.com/in/username'],
+            ['icon' => 'fa-github',      'url' => 'https://github.com/username'],
+            ['icon' => 'fa-instagram',   'url' => 'https://instagram.com/username'],
+        ],
+    ],
+];
     @endphp
 
     @foreach($team as $member)
@@ -1138,11 +1158,13 @@
                     <div class="team-role">{{ $member['role'] }}</div>
                     <p class="team-bio">{{ $member['bio'] }}</p>
                     <div class="team-socials">
-                        @foreach($member['socials'] as $icon)
-                            <a href="#" class="team-social-btn" aria-label="{{ $icon }}">
-                                <i class="fa-brands {{ $icon }}"></i>
-                            </a>
-                        @endforeach
+                        @foreach($member['socials'] as $social)
+    <a href="{{ $social['url'] }}" class="team-social-btn"
+       aria-label="{{ $social['icon'] }}"
+       target="_blank" rel="noopener noreferrer">
+        <i class="fa-brands {{ $social['icon'] }}"></i>
+    </a>
+@endforeach
                     </div>
                 </div>
             @endforeach

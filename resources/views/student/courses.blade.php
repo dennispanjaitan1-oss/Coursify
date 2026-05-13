@@ -1023,67 +1023,7 @@ body::before {
         {{-- Courses Grid --}}
         <div class="courses-grid">
 
-            @php
-                // Fallback dummy data kalau belum ada enrollments
-                $defaultCourses = collect([
-                    (object)[
-                        'id' => 1,
-                        'progress_percent' => 65,
-                        'status' => 'active',
-                        'course' => (object)[
-                            'id' => 1,
-                            'title' => 'Fullstack Web Development with Laravel 12',
-                            'slug' => 'fullstack-web-development-with-laravel-12',
-                            'thumb' => 1,
-                            'icon' => '💻',
-                            'category' => (object)['name' => 'Programming'],
-                            'instructor_name' => 'Budi Santoso',
-                            'initial' => 'B',
-                            'lessons_total' => 124,
-                            'lessons_done' => 80,
-                        ]
-                    ],
-                    (object)[
-                        'id' => 2,
-                        'progress_percent' => 100,
-                        'status' => 'completed',
-                        'course' => (object)[
-                            'id' => 2,
-                            'title' => 'UI/UX Design Fundamentals',
-                            'slug' => 'ui-ux-design-fundamentals',
-                            'thumb' => 2,
-                            'icon' => '🎨',
-                            'category' => (object)['name' => 'Design'],
-                            'instructor_name' => 'Sari Dewi',
-                            'initial' => 'S',
-                            'lessons_total' => 45,
-                            'lessons_done' => 45,
-                        ]
-                    ],
-                    (object)[
-                        'id' => 3,
-                        'progress_percent' => 0,
-                        'status' => 'active',
-                        'course' => (object)[
-                            'id' => 3,
-                            'title' => 'Python for Data Analysis & Visualization',
-                            'slug' => 'python-for-data-analysis',
-                            'thumb' => 3,
-                            'icon' => '📊',
-                            'category' => (object)['name' => 'Data Science'],
-                            'instructor_name' => 'Rio Ahmad',
-                            'initial' => 'R',
-                            'lessons_total' => 38,
-                            'lessons_done' => 0,
-                        ]
-                    ],
-                ]);
-
-                // Pakai data real kalau ada, atau dummy kalau kosong
-                $displayCourses = ($enrollments->count() > 0) ? $enrollments : $defaultCourses;
-            @endphp
-
-            @forelse($displayCourses as $index => $enrollment)
+            @forelse($enrollments as $enrollment)
                 @php
                     // Handle both Eloquent & dummy data
                     $course = $enrollment->course ?? null;
@@ -1119,7 +1059,7 @@ if ($progress >= 100 || $status === 'completed') {
                     $courseTitle = is_object($course) ? ($course->title ?? 'Untitled') : 'Untitled';
                     $courseSlug = is_object($course) ? ($course->slug ?? 'course') : 'course';
                     $categoryName = is_object($course) && isset($course->category) ? ($course->category->name ?? 'General') : 'General';
-                    $thumb = $course->thumb ?? (($index % 6) + 1);
+                    $thumb = $course->thumb ?? (($loop->index % 6) + 1);
                     $icon = $course->icon ?? '📚';
                     $instructorName = $course->instructor_name ?? (isset($course->instructors) && $course->instructors->count() > 0 ? $course->instructors->first()->name : 'Coursify Team');
                     $initial = $course->initial ?? strtoupper(substr($instructorName, 0, 1));
@@ -1197,7 +1137,7 @@ if ($progress >= 100 || $status === 'completed') {
                                     </button>
 
                                     <div x-show="open" x-transition style="margin-top:10px; padding:14px; background:var(--lav-1); border-radius:12px;">
-                                        <form action="{{ route('student.course.review.submit', $course->id) }}" method="POST">
+                                        <form action="{{ route('student.course.review.submit', $course) }}" method="POST">
                                             @csrf
                                             <div style="margin-bottom:10px;">
                                                 <label style="font-size:12px; font-weight:600; display:block; margin-bottom:4px;">Rating</label>
