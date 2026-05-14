@@ -115,13 +115,21 @@ Route::middleware(['auth', 'role:admin'])
 
         Route::view('/analytics', 'admin.analytics')->name('analytics');
 
-        Route::view('/users', 'admin.users')->name('users');
+        Route::get('/users', [App\Http\Controllers\Admin\UserController::class, 'index'])->name('users');
+        Route::post('/users', [App\Http\Controllers\Admin\UserController::class, 'store'])->name('users.store');
+        Route::get('/users/{id}', [App\Http\Controllers\Admin\UserController::class, 'show'])->name('users.show');  
+        Route::get('/users/{id}/edit', [App\Http\Controllers\Admin\UserController::class, 'edit'])->name('users.edit');
+        Route::put('/users/{id}', [App\Http\Controllers\Admin\UserController::class, 'update'])->name('users.update');
+        Route::delete('/users/{id}', [App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('users.destroy');
 
         Route::view('/courses', 'admin.courses')->name('courses');
 
         Route::view('/institutions', 'admin.institutions')->name('institutions');
 
-        Route::view('/categories', 'admin.categories')->name('categories');
+        Route::get('/categories', [App\Http\Controllers\Admin\CategoryController::class, 'index'])->name('categories');
+        Route::post('/categories', [App\Http\Controllers\Admin\CategoryController::class, 'store'])->name('categories.store');
+        Route::put('/categories/{id}', [App\Http\Controllers\Admin\CategoryController::class, 'update'])->name('categories.update');
+        Route::delete('/categories/{id}', [App\Http\Controllers\Admin\CategoryController::class, 'destroy'])->name('categories.destroy');
 
         Route::view('/approvals', 'admin.approvals')->name('approvals');
 

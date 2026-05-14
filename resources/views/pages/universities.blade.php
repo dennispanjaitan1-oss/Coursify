@@ -254,6 +254,27 @@
         padding: 8px;
     }
 
+    /* Partner cards: full-cover photo banner (no small box) */
+    .univ-card:not(.univ-card-featured) .univ-logo-placeholder {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+        background: transparent;
+        border: none;
+        backdrop-filter: none;
+        overflow: hidden;
+        position: absolute;
+        top: 0; left: 0;
+    }
+    .univ-card:not(.univ-card-featured) .univ-logo-placeholder img {
+        object-fit: cover;
+        padding: 0;
+    }
+    /* hide icon overlays on partner cards */
+    .univ-card:not(.univ-card-featured) .univ-logo-placeholder i {
+        display: none;
+    }
+
     /* Badge on banner */
     .univ-card-tag {
         position: absolute;
@@ -381,13 +402,27 @@
     .univ-card-featured {
         grid-column: span 2;
         flex-direction: row;
+        align-items: stretch;
     }
     .univ-card-featured .univ-card-banner {
-        width: 260px;
-        min-width: 260px;
+        width: 280px;
+        min-width: 280px;
         height: auto;
+        align-self: stretch;
         border-radius: 0;
         flex-shrink: 0;
+        overflow: hidden;
+    }
+    .univ-card-featured .univ-card-banner img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+    .univ-card-featured .univ-card-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
     }
     .univ-card-featured .univ-card-desc {
         -webkit-line-clamp: 4;
@@ -619,14 +654,8 @@
            data-type="negeri teknik">
             <div class="univ-card-banner banner-ui">
                 <span class="univ-card-tag tag-featured">⭐ Featured</span>
-                <div class="univ-logo-placeholder" style="width: 100%; height: 100%; overflow: hidden; position: relative;">
-    <img src="{{ asset('images/universities/ui-logo.png') }}" 
-         alt="UI" 
-         style="width: 100%; height: 100%; object-fit: cover; display: block;">
-    
-    {{-- Ikon tetap ada sebagai fallback atau overlay jika diinginkan --}}
-    {{-- <i class="fa-solid fa-building-columns" style="position:absolute; z-index:1; ..."></i> --}}
-</div>
+                <img src="{{ asset('images/universities/ui-logo.png') }}" alt="UI"
+                     style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block;">
             </div>
             <div class="univ-card-body">
                 <div class="univ-card-type">Perguruan Tinggi Negeri</div>
