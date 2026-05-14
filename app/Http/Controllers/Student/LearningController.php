@@ -11,16 +11,12 @@ use Illuminate\Http\Request;
 
 class LearningController extends Controller
 {
-    public function index(Course $course)
+    public function index(string $slug)
     {
+        $course = Course::where('slug', $slug)->firstOrFail();
         $this->checkEnrollment($course);
 
-        $enrollment = auth()->user()
-            ->enrollments()->where('course_id', $course->id)->first();
-
-        $sections = $course->sections()->with('lessons')->orderBy('order_index')->get();
-
-        // Cari lesson pertama atau lesson terakhir yang ditonton
+        $sections    = $course->sections()->with('lessons')->orderBy('order_index')->get();
         $firstLesson = $sections->first()?->lessons->first();
 
         return redirect()->route('student.learn.lesson', [
@@ -28,12 +24,13 @@ class LearningController extends Controller
         ]);
     }
 
-    public function lesson(Course $course, Lesson $lesson)
+    public function lesson(string $slug, Lesson $lesson)
     {
+        $course = Course::where('slug', $slug)->firstOrFail();
         $this->checkEnrollment($course);
 
-        $enrollment = auth()->user()
-            ->enrollments()->where('course_id', $course->id)->first();
+        $enrollment = Enrollment::where('user_id', auth()->id())
+            ->where('course_id', $course->id)->first();
 
         $sections = $course->sections()
             ->with(['lessons' => function($q) {
@@ -45,7 +42,7 @@ class LearningController extends Controller
             ->get()
             ->keyBy('lesson_id');
 
-        return view('courses.learn', compact('course', 'lesson', 'sections', 'progress', 'enrollment'));
+        return view('student.learn', compact('course', 'lesson', 'sections', 'progress', 'enrollment'));
     }
 
     public function updateProgress(Request $request, Lesson $lesson)
@@ -60,8 +57,7 @@ class LearningController extends Controller
             ]
         );
 
-        // Update enrollment progress
-        $course      = $lesson->section->course;
+        $course       = $lesson->section->course;
         $totalLessons = $course->sections()->with('lessons')->get()
             ->flatMap->lessons->count();
         $doneLessons  = LessonProgress::where('user_id', auth()->id())
@@ -81,7 +77,6 @@ class LearningController extends Controller
                 'completed_at'     => $percent >= 100 ? now() : null,
             ]);
 
-            // Auto-generate sertifikat jika selesai
             if ($percent >= 100 && !$course->certificates()->where('user_id', auth()->id())->exists()) {
                 \App\Models\Certificate::create([
                     'user_id'            => auth()->id(),
@@ -97,8 +92,9 @@ class LearningController extends Controller
 
     private function checkEnrollment(Course $course): void
     {
-        $isEnrolled = auth()->user()
-            ->enrollments()->where('course_id', $course->id)->exists();
+        $isEnrolled = Enrollment::where('user_id', auth()->id())
+            ->where('course_id', $course->id)
+            ->exists();
 
         if (!$isEnrolled) {
             abort(403, 'Kamu belum terdaftar di kursus ini.');

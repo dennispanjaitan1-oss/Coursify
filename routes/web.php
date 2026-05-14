@@ -5,47 +5,61 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\WishlistController;
+
 use App\Http\Controllers\Student\DashboardController as StudentDashboard;
 use App\Http\Controllers\Student\LearningController;
+
 use App\Http\Controllers\Instructor\DashboardController as InstructorDashboard;
 use App\Http\Controllers\Instructor\CourseController as InstructorCourseController;
-use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
-use App\Http\Controllers\Admin\UserController as AdminUserController;
-use App\Http\Controllers\Admin\CourseController as AdminCourseController;
+
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PaymentController;
 
 // ═══════════════════════════════════════════════════════════
 // PUBLIC ROUTES
 // ═══════════════════════════════════════════════════════════
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
-Route::get('/courses/{course:slug}', [CourseController::class, 'show'])->name('courses.show');
+Route::get('/courses', [CourseController::class, 'index'])
+    ->name('courses.index');
+
+Route::get('/courses/{course:slug}', [CourseController::class, 'show'])
+    ->name('courses.show');
+
+Route::get('/payment', [PaymentController::class, 'index'])
+    ->name('payment.index');
 
 Route::get('/verify/{certificateNumber}', [CertificateController::class, 'verify'])
-     ->name('certificates.verify');
+    ->name('certificates.verify');
 
 // ═══════════════════════════════════════════════════════════
-// BREEZE AUTH ROUTES
+// AUTH
 // ═══════════════════════════════════════════════════════════
 require __DIR__.'/auth.php';
 
 // ═══════════════════════════════════════════════════════════
-// AUTHENTICATED ROUTES (General)
+// AUTHENTICATED ROUTES
 // ═══════════════════════════════════════════════════════════
 Route::middleware('auth')->group(function () {
 
-    // Enrollment & Review
+    // Enrollment
     Route::post('/courses/{course}/enroll', [EnrollmentController::class, 'enroll'])
-         ->name('enroll');
-    Route::post('/courses/{course}/review', [EnrollmentController::class, 'submitReview'])
-         ->name('review');
+        ->name('enroll');
 
-    // Wishlist AJAX (toggle add/remove dari halaman catalog/detail)
+    // Review
+    Route::post('/courses/{course}/review', [EnrollmentController::class, 'submitReview'])
+        ->name('review');
+
+    // Unenroll
+    Route::delete('/enrollments/{enrollment}', [EnrollmentController::class, 'unenroll'])
+        ->name('student.unenroll');
+
+    // Wishlist
     Route::post('/wishlist/toggle/{course}', [WishlistController::class, 'toggle'])
-         ->name('wishlist.toggle');
+        ->name('wishlist.toggle');
+
     Route::delete('/wishlist/{wishlist}', [WishlistController::class, 'destroy'])
-         ->name('wishlist.destroy');
+        ->name('wishlist.destroy');
 });
 
 // ═══════════════════════════════════════════════════════════
@@ -56,20 +70,20 @@ Route::middleware(['auth', 'role:student,instructor,admin'])
     ->name('student.')
     ->group(function () {
 
-        // Dashboard & Pages
         Route::get('/', [StudentDashboard::class, 'index'])->name('index');
         Route::get('/my-courses', [StudentDashboard::class, 'myCourses'])->name('courses');
         Route::get('/certificates', [StudentDashboard::class, 'certificates'])->name('certificates');
-
-        // Wishlist page (pakai WishlistController::index)
         Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
 
-        // Learning (video player page)
+        // Learning & Progress
         Route::get('/learn/{slug}', [LearningController::class, 'index'])->name('learn');
         Route::get('/learn/{slug}/{lesson}', [LearningController::class, 'lesson'])->name('learn.lesson');
         Route::post('/progress/{lesson}', [LearningController::class, 'updateProgress'])->name('learn.progress');
 
-        // Profile Settings (BARU)
+        // Review Course
+        Route::post('/course/review/{course}', [EnrollmentController::class, 'submitReview'])->name('course.review.submit');
+
+        // Profile Settings (Hanya satu set rute di sini)
         Route::get('/profile', [StudentDashboard::class, 'profile'])->name('profile');
         Route::post('/profile/update', [StudentDashboard::class, 'updateProfile'])->name('profile.update');
         Route::post('/profile/password', [StudentDashboard::class, 'updatePassword'])->name('profile.password');
@@ -82,7 +96,10 @@ Route::middleware(['auth', 'role:instructor,admin'])
     ->prefix('instructor')
     ->name('instructor.')
     ->group(function () {
-        Route::get('/dashboard', [InstructorDashboard::class, 'index'])->name('dashboard');
+
+        Route::get('/dashboard', [InstructorDashboard::class, 'index'])
+            ->name('dashboard');
+
         Route::resource('/courses', InstructorCourseController::class);
     });
 
@@ -93,7 +110,70 @@ Route::middleware(['auth', 'role:admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
-        Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
-        Route::resource('/users', AdminUserController::class);
-        Route::resource('/courses', AdminCourseController::class);
+
+        Route::view('/dashboard', 'admin.dashboard')->name('dashboard');
+
+        Route::view('/analytics', 'admin.analytics')->name('analytics');
+
+        Route::get('/users', [App\Http\Controllers\Admin\UserController::class, 'index'])->name('users');
+        Route::post('/users', [App\Http\Controllers\Admin\UserController::class, 'store'])->name('users.store');
+        Route::get('/users/{id}', [App\Http\Controllers\Admin\UserController::class, 'show'])->name('users.show');  
+        Route::get('/users/{id}/edit', [App\Http\Controllers\Admin\UserController::class, 'edit'])->name('users.edit');
+        Route::put('/users/{id}', [App\Http\Controllers\Admin\UserController::class, 'update'])->name('users.update');
+        Route::delete('/users/{id}', [App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('users.destroy');
+
+        Route::view('/courses', 'admin.courses')->name('courses');
+
+        Route::view('/institutions', 'admin.institutions')->name('institutions');
+
+        Route::get('/categories', [App\Http\Controllers\Admin\CategoryController::class, 'index'])->name('categories');
+        Route::post('/categories', [App\Http\Controllers\Admin\CategoryController::class, 'store'])->name('categories.store');
+        Route::put('/categories/{id}', [App\Http\Controllers\Admin\CategoryController::class, 'update'])->name('categories.update');
+        Route::delete('/categories/{id}', [App\Http\Controllers\Admin\CategoryController::class, 'destroy'])->name('categories.destroy');
+
+        Route::view('/approvals', 'admin.approvals')->name('approvals');
+
+        Route::view('/reviews', 'admin.reviews')->name('reviews');
+
+        Route::view('/reports', 'admin.reports')->name('reports');
+
+        Route::view('/transactions', 'admin.transactions')->name('transactions');
+
+        Route::view('/payouts', 'admin.payouts')->name('payouts');
+
+        Route::view('/settings', 'admin.settings')->name('settings');
+
+        Route::view('/logs', 'admin.logs')->name('logs');
     });
+
+// ═══════════════════════════════════════════════════════════
+// OTHER ROUTES
+// ═══════════════════════════════════════════════════════════
+Route::post('/student/course/{course}/review', [EnrollmentController::class, 'submitReview'])
+    ->name('student.course.review.submit')
+    ->middleware('auth');
+
+Route::get('/universities', fn() => view('pages.universities'))
+    ->name('universities');
+
+Route::view('/about', 'about')->name('about');
+
+Route::view('/contact', 'contact')->name('contact');
+
+Route::view('/blog', 'blog')->name('blog');
+
+Route::view('/privacy', 'legal.privacy')->name('privacy');
+
+Route::view('/terms', 'legal.terms')->name('terms');
+
+Route::view('/cookies', 'legal.cookies')->name('cookies');
+
+Route::view('/security', 'legal.security')->name('security');
+
+Route::view('/faq', 'faq')->name('faq');
+
+Route::view('/forum', 'forum')->name('forum');
+
+Route::view('/pusat-bantuan', 'pusat-bantuan')->name('pusat-bantuan');
+
+Route::view('/sitemap', 'sitemap')->name('sitemap');

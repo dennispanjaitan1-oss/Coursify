@@ -4,9 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<title>Dashboard — Coursify</title>
+<title>Dashboard</title>
 
 <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+<!-- Font Awesome 6.x (Versi Terbaru) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -694,88 +696,91 @@ body {
 
     <div class="sidebar-section">Menu</div>
     <nav class="sidebar-nav">
-        <a href="#" class="sidebar-link active">
-            <span class="sidebar-link-icon">📊</span>
+        <a href="{{ route('student.index') }}" class="sidebar-link {{ request()->routeIs('student.index') ? 'active' : '' }}">
+            <i class="fa-solid fa-gauge-high sidebar-link-icon"></i>
             <span>Dashboard</span>
         </a>
-        <a href="{{ route('student.courses') }}" class="sidebar-link">
-            <span class="sidebar-link-icon">📚</span>
+        <a href="{{ route('student.courses') }}" class="sidebar-link {{ request()->routeIs('student.courses') ? 'active' : '' }}">
+            <i class="fa-solid fa-book-open sidebar-link-icon"></i>
             <span>My Courses</span>
-            <span class="sidebar-badge">{{ $enrolledCount ?? 3 }}</span>
         </a>
-        <a href="{{ route('courses.index') }}" class="sidebar-link">
-            <span class="sidebar-link-icon">🔍</span>
+        <a href="{{ route('courses.index') }}" class="sidebar-link {{ request()->routeIs('courses.*') ? 'active' : '' }}">
+            <i class="fa-solid fa-magnifying-glass sidebar-link-icon"></i>
             <span>Browse</span>
         </a>
-        <a href="#" class="sidebar-link">
-            <span class="sidebar-link-icon">❤️</span>
+        <a href="{{ route('student.wishlist') }}" class="sidebar-link {{ request()->routeIs('student.wishlist') ? 'active' : '' }}">
+            <i class="fa-solid fa-heart sidebar-link-icon"></i>
             <span>Wishlist</span>
         </a>
-        <a href="{{ route('student.certificates') }}" class="sidebar-link">
-            <span class="sidebar-link-icon">🏆</span>
+        <a href="{{ route('student.certificates') }}" class="sidebar-link {{ request()->routeIs('student.certificates') ? 'active' : '' }}">
+            <i class="fa-solid fa-trophy sidebar-link-icon"></i>
             <span>Certificates</span>
         </a>
     </nav>
 
     <div class="sidebar-section">Account</div>
     <nav class="sidebar-nav">
-        <a href="#" class="sidebar-link">
-            <span class="sidebar-link-icon">👤</span>
+        <a href="{{ route('student.profile') }}" class="sidebar-link {{ request()->routeIs('student.profile') ? 'active' : '' }}">
+            <i class="fa-solid fa-user-pen sidebar-link-icon"></i>
             <span>Profile</span>
         </a>
-        <a href="#" class="sidebar-link">
-            <span class="sidebar-link-icon">💳</span>
-            <span>Billing</span>
-        </a>
-        <a href="#" class="sidebar-link">
-            <span class="sidebar-link-icon">⚙️</span>
-            <span>Settings</span>
-        </a>
+
     </nav>
 
     {{-- User Card --}}
-    <div class="sidebar-user">
-        <div class="user-avatar">
-            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
-        </div>
-        <div class="user-info">
-            <div class="user-name">{{ auth()->user()->name }}</div>
-            <div class="user-role">{{ auth()->user()->role }}</div>
-        </div>
-        <form method="POST" action="{{ route('logout') }}" style="margin:0;">
-            @csrf
-            <button type="submit" style="background:none;border:none;cursor:pointer;color:var(--muted);padding:4px;" title="Logout">
-                🚪
-            </button>
-        </form>
+<div class="sidebar-user">
+    <div class="user-avatar">
+        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
     </div>
+    <div class="user-info">
+        <div class="user-name">{{ auth()->user()->name }}</div>
+        <div class="user-role">{{ auth()->user()->role }}</div>
+    </div>
+    <form method="POST" action="{{ route('logout') }}" style="margin:0;">
+        @csrf
+        <button type="submit" style="background:none;border:none;cursor:pointer;color:var(--muted);padding:4px;" title="Logout">
+            <i class="fa-solid fa-right-from-bracket"></i>
+        </button>
+    </form>
+</div>
 </aside>
 
 {{-- MAIN CONTENT --}}
 <main class="main">
 
     {{-- TOP BAR --}}
-    <div class="topbar">
-        <div class="topbar-search">
-            <span class="search-icon">🔍</span>
+<div class="topbar">
+    <div class="topbar-search">
+        <span class="search-icon">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </span>
             <input type="text" class="search-input" placeholder="Search courses, lessons, instructors...">
         </div>
 
         <div class="topbar-actions">
-            <button class="icon-btn" title="Notifications">
-                🔔
-                <span class="icon-btn-dot"></span>
-            </button>
-            <button class="icon-btn" title="Messages">✉</button>
-            <button class="icon-btn" title="Help">❓</button>
-        </div>
+    {{-- Notifications --}}
+    <button class="icon-btn" title="Notifications">
+        <i class="fa-solid fa-bell"></i>
+        <span class="icon-btn-dot"></span>
+    </button>
+
+    {{-- Messages --}}
+    <button class="icon-btn" title="Messages">
+        <i class="fa-solid fa-envelope"></i>
+    </button>
+
+    {{-- Help --}}
+    <button class="icon-btn" title="Help">
+        <i class="fa-solid fa-circle-question"></i>
+    </button>
+</div>
     </div>
 
     {{-- WELCOME HERO --}}
     <div class="welcome-card">
         <div class="welcome-content">
             <div class="welcome-greeting">
-                {{ now()->format('l, d F Y') }} · Good {{ now()->hour < 12 ? 'morning' : (now()->hour < 18 ? 'afternoon' : 'evening') }}
+                {{ now()->format('l, d F Y') }} <br> Good {{ now()->hour < 12 ? 'morning' : (now()->hour < 18 ? 'afternoon' : 'evening') }}
             </div>
             <h1 class="welcome-title">
                 Welcome back, <em>{{ explode(' ', auth()->user()->name)[0] }}</em>
@@ -794,40 +799,62 @@ body {
         </div>
 
         <div class="welcome-visual">
-            <div class="welcome-img">🎓</div>
-        </div>
+    <div class="welcome-img">
+        <i class="fa-solid fa-graduation-cap"></i>
+    </div>
+</div>
     </div>
 
     {{-- STATS GRID --}}
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-icon-wrap stat-icon-purple">📚</div>
-            <div class="stat-label">Enrolled Courses</div>
-            <div class="stat-value">{{ $enrolledCount ?? 3 }}</div>
-            <div class="stat-trend stat-trend-up">↑ 1 this month</div>
+<div class="stats-grid">
+    {{-- Enrolled Courses --}}
+    <div class="stat-card">
+        <div class="stat-icon-wrap stat-icon-purple">
+            <i class="fa-solid fa-book"></i>
         </div>
-
-        <div class="stat-card">
-            <div class="stat-icon-wrap stat-icon-teal">✓</div>
-            <div class="stat-label">Completed</div>
-            <div class="stat-value">{{ $completedCount ?? 1 }}</div>
-            <div class="stat-trend stat-trend-neutral">—</div>
-        </div>
-
-        <div class="stat-card">
-            <div class="stat-icon-wrap stat-icon-orange">⏱</div>
-            <div class="stat-label">Study Time</div>
-            <div class="stat-value">{{ $studyHours ?? 24 }}<span style="font-size:16px;color:var(--muted);">h</span></div>
-            <div class="stat-trend stat-trend-up">↑ 5h this week</div>
-        </div>
-
-        <div class="stat-card">
-            <div class="stat-icon-wrap stat-icon-gold">🏆</div>
-            <div class="stat-label">Certificates</div>
-            <div class="stat-value">{{ $certificatesCount ?? 1 }}</div>
-            <div class="stat-trend stat-trend-up">↑ Ready to claim</div>
+        <div class="stat-label">Enrolled Courses</div>
+        <div class="stat-value">{{ $enrolledCount ?? 3 }}</div>
+        <div class="stat-trend stat-trend-up">
+            <i class="fa-solid fa-arrow-up"></i> 1 this month
         </div>
     </div>
+
+    {{-- Completed --}}
+    <div class="stat-card">
+        <div class="stat-icon-wrap stat-icon-teal">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <div class="stat-label">Completed</div>
+        <div class="stat-value">{{ $completedCount ?? 1 }}</div>
+        <div class="stat-trend stat-trend-neutral">
+            <i class="fa-solid fa-minus"></i>
+        </div>
+    </div>
+
+    {{-- Study Time --}}
+    <div class="stat-card">
+        <div class="stat-icon-wrap stat-icon-orange">
+            <i class="fa-solid fa-clock"></i>
+        </div>
+        <div class="stat-label">Study Time</div>
+        <div class="stat-value">{{ $studyHours ?? 24 }}<span style="font-size:16px;color:var(--muted);">h</span></div>
+        <div class="stat-trend stat-trend-up">
+            <i class="fa-solid fa-arrow-up"></i> 5h this week
+        </div>
+    </div>
+
+    {{-- Certificates --}}
+    <div class="stat-card">
+        <div class="stat-icon-wrap stat-icon-gold">
+            <i class="fa-solid fa-trophy"></i>
+        </div>
+        <div class="stat-label">Certificates</div>
+        <div class="stat-value">{{ $certificatesCount ?? 1 }}</div>
+        <div class="stat-trend stat-trend-up">
+            <i class="fa-solid fa-star"></i> Ready to claim
+        </div>
+    </div>
+</div>
 
     {{-- CONTINUE LEARNING --}}
     <div class="section-header">
@@ -839,9 +866,11 @@ body {
 
     <div class="continue-card">
         <div class="continue-thumb">
-            💻
-            <div class="continue-thumb-play">▶</div>
-        </div>
+    <i class="fa-solid fa-laptop-code" style="color: white; font-size: 40px;"></i>
+    <div class="continue-thumb-play">
+        <i class="fa-solid fa-play" style="font-size: 10px;"></i>
+    </div>
+</div>
 
         <div class="continue-info">
             <div class="continue-label">In Progress</div>
@@ -874,44 +903,59 @@ body {
     <div class="courses-grid">
         @php
             $myCourses = [
-                [
-                    'thumb' => 1, 'icon' => '💻', 'category' => 'Programming',
-                    'title' => 'Fullstack Web Development with Laravel 12',
-                    'instructor' => 'Budi Santoso',
-                    'progress' => 30, 'lessons_done' => 12, 'lessons_total' => 40,
-                    'duration' => '40h', 'status' => 'in_progress',
-                ],
-                [
-                    'thumb' => 2, 'icon' => '🎨', 'category' => 'Design',
-                    'title' => 'UI/UX Design Fundamentals for Beginners',
-                    'instructor' => 'Sari Dewi',
-                    'progress' => 75, 'lessons_done' => 18, 'lessons_total' => 24,
-                    'duration' => '25h', 'status' => 'in_progress',
-                ],
-                [
-                    'thumb' => 3, 'icon' => '📊', 'category' => 'Data Science',
-                    'title' => 'Python for Data Analysis',
-                    'instructor' => 'Rio Ahmad',
-                    'progress' => 100, 'lessons_done' => 20, 'lessons_total' => 20,
-                    'duration' => '20h', 'status' => 'completed',
-                ],
-            ];
+    [
+        'thumb' => 'programming-bg.jpg', // Nama file gambar asli
+        'icon' => 'fa-solid fa-laptop-code', 
+        'category' => 'Programming',
+        'title' => 'Fullstack Web Development with Laravel 12',
+        'instructor' => 'Budi Santoso',
+        'progress' => 30, 'lessons_done' => 12, 'lessons_total' => 40,
+        'duration' => '40h', 'status' => 'in_progress',
+    ],
+    [
+        'thumb' => 'design-uiux.jpeg.jpg', // Nama file gambar asli
+        'icon' => 'fa-solid fa-palette', 
+        'category' => 'Design',
+        'title' => 'UI/UX Design Fundamentals for Beginners',
+        'instructor' => 'Sari Dewi',
+        'progress' => 75, 'lessons_done' => 18, 'lessons_total' => 24,
+        'duration' => '25h', 'status' => 'in_progress',
+    ],
+    [
+        'thumb' => 'data-science.jpeg', // Nama file gambar asli
+        'icon' => 'fa-solid fa-chart-pie', 
+        'category' => 'Data Science',
+        'title' => 'Python for Data Analysis',
+        'instructor' => 'Rio Ahmad',
+        'progress' => 100, 'lessons_done' => 20, 'lessons_total' => 20,
+        'duration' => '20h', 'status' => 'completed',
+    ],
+];
         @endphp
 
         @foreach($myCourses as $course)
-            <a href="#" class="course-card">
-                <div class="course-thumb course-thumb-{{ $course['thumb'] }}">
-                    <span>{{ $course['icon'] }}</span>
-                    @if($course['status'] === 'completed')
-                        <div class="course-badge-status completed">
-                            ✓ Completed
-                        </div>
-                    @else
-                        <div class="course-badge-status in-progress">
-                            In Progress
-                        </div>
-                    @endif
+    <a href="#" class="course-card">
+        <div class="course-thumb">
+            {{-- Menampilkan gambar asli sebagai background atau img tag --}}
+            <img src="{{ asset('images/' . $course['thumb']) }}" 
+                 alt="{{ $course['title'] }}" 
+                 style="width: 100%; height: 100%; object-fit: cover;">
+            
+            {{-- Overlay ikon kecil di pojok agar tetap ada identitas kategori (Opsional) --}}
+            <div class="course-category-icon" style="position: absolute; left: 12px; bottom: 12px; background: rgba(255,255,255,0.9); padding: 5px; border-radius: 8px; font-size: 14px;">
+                <i class="{{ $course['icon'] }}"></i>
+            </div>
+
+            @if($course['status'] === 'completed')
+                <div class="course-badge-status completed">
+                    <i class="fa-solid fa-check"></i> Completed
                 </div>
+            @else
+                <div class="course-badge-status in-progress">
+                    In Progress
+                </div>
+            @endif
+        </div>
                 <div class="course-card-body">
                     <div class="course-card-category">{{ $course['category'] }}</div>
                     <div class="course-card-title">{{ $course['title'] }}</div>
@@ -1026,9 +1070,9 @@ body {
                         <div class="upcoming-icon
                             {{ $item['type'] === 'quiz' ? 'upcoming-icon-orange' : '' }}
                             {{ $item['type'] === 'project' ? 'upcoming-icon-teal' : '' }}">
-                            @if($item['type'] === 'video') 🎬
-                            @elseif($item['type'] === 'quiz') 📝
-                            @else 📦
+                            @if($item['type'] === 'video') <i class="fa-solid fa-video"></i>
+                            @elseif($item['type'] === 'quiz') <i class="fa-solid fa-file-alt"></i>
+                            @else <i class="fa-solid fa-box"></i>
                             @endif
                         </div>
                         <div class="upcoming-info">
@@ -1049,20 +1093,43 @@ body {
         <a href="#" class="section-link">All badges →</a>
     </div>
 
+    @php
+    $achievements = [
+        [
+            'icon' => 'fa-solid fa-bullseye', 
+            'title' => 'First Lesson', 
+            'desc' => 'Completed your first lesson', 
+            'date' => 'Unlocked · 2 weeks ago', 
+            'bg' => 'purple'
+        ],
+        [
+            'icon' => 'fa-solid fa-fire', 
+            'title' => '7-Day Streak', 
+            'desc' => 'Study 7 consecutive days', 
+            'date' => 'Unlocked · yesterday', 
+            'bg' => 'orange'
+        ],
+        [
+            'icon' => 'fa-solid fa-trophy', 
+            'title' => 'Course Complete', 
+            'desc' => 'Finished Python for Data', 
+            'date' => 'Unlocked · 3 days ago', 
+            'bg' => 'gold'
+        ],
+        [
+            'icon' => 'fa-solid fa-star', 
+            'title' => 'Top Reviewer', 
+            'desc' => 'Gave 5 thoughtful reviews', 
+            'date' => 'Unlocked · today', 
+            'bg' => 'teal'
+        ],
+    ];
+@endphp
     <div class="achievements-grid">
-        @php
-            $achievements = [
-                ['icon' => '🎯', 'title' => 'First Lesson', 'desc' => 'Completed your first lesson', 'date' => 'Unlocked · 2 weeks ago', 'bg' => 'purple'],
-                ['icon' => '🔥', 'title' => '7-Day Streak', 'desc' => 'Study 7 consecutive days', 'date' => 'Unlocked · yesterday', 'bg' => 'orange'],
-                ['icon' => '🏆', 'title' => 'Course Complete', 'desc' => 'Finished Python for Data', 'date' => 'Unlocked · 3 days ago', 'bg' => 'gold'],
-                ['icon' => '⭐', 'title' => 'Top Reviewer', 'desc' => 'Gave 5 thoughtful reviews', 'date' => 'Unlocked · today', 'bg' => 'teal'],
-            ];
-        @endphp
-
         @foreach($achievements as $ach)
             <div class="achievement-card">
                 <div class="achievement-icon achievement-{{ $ach['bg'] }}">
-                    {{ $ach['icon'] }}
+                    <i class="{{ $ach['icon'] }}"></i>
                 </div>
                 <div class="achievement-title">{{ $ach['title'] }}</div>
                 <div class="achievement-desc">{{ $ach['desc'] }}</div>
@@ -1151,19 +1218,18 @@ body {
 .course-thumb {
     aspect-ratio: 16/9;
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 48px;
-    overflow: hidden;
+    overflow: hidden; /* Memastikan gambar tidak keluar dari radius kartu */
+    background: #eee; /* Warna cadangan jika gambar gagal load */
 }
 
-.course-thumb-1 { background: linear-gradient(135deg, #667EEA, #764BA2); }
-.course-thumb-2 { background: linear-gradient(135deg, #F093FB, #F5576C); }
-.course-thumb-3 { background: linear-gradient(135deg, #4FACFE, #00F2FE); }
-.course-thumb-4 { background: linear-gradient(135deg, #FA709A, #FEE140); }
-.course-thumb-5 { background: linear-gradient(135deg, #30CFD0, #330867); }
-.course-thumb-6 { background: linear-gradient(135deg, #A8EDEA, #FED6E3); }
+/* Pastikan gambar mengisi seluruh area */
+.course-thumb img {
+    transition: transform 0.5s ease;
+}
+
+.course-card:hover .course-thumb img {
+    transform: scale(1.1); /* Efek zoom saat kartu di-hover */
+}
 
 .course-badge-status {
     position: absolute;

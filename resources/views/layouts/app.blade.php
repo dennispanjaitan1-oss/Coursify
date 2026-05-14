@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Coursify') — Learn Anything, Anytime</title>
+    <title>@yield('title', 'Coursify')</title>
 
     {{-- Favicon --}}
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
@@ -14,6 +14,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     {{-- Vite Assets --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -22,22 +23,25 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <style>
+        /* ══════════════════════════════════════════════
+           CSS VARIABLES
+        ══════════════════════════════════════════════ */
         :root {
-            --navy: #1E3A5F;
-            --navy-dark: #152B48;
-            --lav-1: #F5F1FC;
-            --lav-2: #E8E1F3;
-            --lav-3: #D4CDF0;
-            --lav-4: #B8AFEB;
-            --purple: #7B6FE8;
+            --navy:        #1E3A5F;
+            --navy-dark:   #152B48;
+            --lav-1:       #F5F1FC;
+            --lav-2:       #E8E1F3;
+            --lav-3:       #D4CDF0;
+            --lav-4:       #B8AFEB;
+            --purple:      #7B6FE8;
             --purple-dark: #5B4FD4;
-            --teal: #00C896;
-            --orange: #FF8A5B;
-            --text: #1A1825;
-            --text-soft: #4A4660;
-            --muted: #8B87A8;
-            --font-serif: 'Instrument Serif', serif;
-            --font-sans: 'Inter', sans-serif;
+            --teal:        #00C896;
+            --orange:      #FF8A5B;
+            --text:        #1A1825;
+            --text-soft:   #4A4660;
+            --muted:       #8B87A8;
+            --font-serif:  'Instrument Serif', serif;
+            --font-sans:   'Inter', sans-serif;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -52,8 +56,8 @@
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
             position: relative;
+            padding-top: 90px; /* override by JS after promo banner height check */
         }
-
         body::before {
             content: '';
             position: fixed;
@@ -66,9 +70,79 @@
             z-index: 0;
         }
 
-        .container { max-width: 1160px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
+        .container {
+            max-width: 1160px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
 
-        /* ═══ LOGO ═══ */
+        /* ══════════════════════════════════════════════
+           PROMO BANNER
+        ══════════════════════════════════════════════ */
+        .promo-bar {
+            background: var(--navy);
+            color: white;
+            padding: 9px 50px 9px 20px;
+            text-align: center;
+            position: relative;
+            font-size: 13px;
+            font-weight: 500;
+            line-height: 1.5;
+            transition: max-height 0.35s ease, opacity 0.35s ease, padding 0.35s ease;
+            overflow: hidden;
+        }
+        .promo-bar.promo-closing {
+            max-height: 0 !important;
+            opacity: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+        .promo-bar a { color: var(--lav-4); font-weight: 700; margin-left: 6px; text-decoration: underline; }
+        .promo-bar a:hover { color: white; }
+        .promo-code {
+            display: inline-block;
+            background: rgba(184,175,235,0.25);
+            border: 1px solid rgba(184,175,235,0.4);
+            color: #D4CCFF;
+            padding: 1px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+        .promo-dot {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: var(--lav-4);
+            border-radius: 50%;
+            margin-right: 8px;
+            vertical-align: middle;
+            animation: pulse 2s infinite;
+        }
+        .promo-close {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.5);
+            cursor: pointer;
+            font-size: 20px;
+            line-height: 1;
+            padding: 5px 7px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        .promo-close:hover { color: white; background: rgba(255,255,255,0.12); }
+
+        /* ══════════════════════════════════════════════
+           LOGO
+        ══════════════════════════════════════════════ */
         .logo-img {
             width: 34px;
             height: 34px;
@@ -77,82 +151,213 @@
             box-shadow: 0 2px 8px rgba(30,58,95,0.25);
             transition: all 0.3s;
         }
-        .logo:hover .logo-img {
-            transform: scale(1.08) rotate(-3deg);
-        }
+        .logo:hover .logo-img { transform: scale(1.08) rotate(-3deg); }
         .logo-img-sm { width: 26px; height: 26px; border-radius: 6px; }
 
-        /* ═══ NAVBAR ═══ */
+        /* ══════════════════════════════════════════════
+           NAVBAR
+        ══════════════════════════════════════════════ */
         .navbar-wrap {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    padding: 20px 20px 0;
-    animation: slideDown 0.6s ease-out;
-    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    will-change: transform;
-}
-
-/* Hide state when scrolling down */
-.navbar-wrap.navbar-hidden {
-    transform: translateY(-120%);
-}
-
-/* Navbar compact style when scrolled */
-.navbar-wrap.navbar-scrolled .navbar {
-    background: rgba(255,255,255,0.85);
-    backdrop-filter: blur(40px) saturate(180%);
-    -webkit-backdrop-filter: blur(40px) saturate(180%);
-    box-shadow: 0 10px 40px rgba(30,58,95,0.1);
-}
-
-/* Add padding top ke body supaya content tidak ketiban navbar */
-body {
-    padding-top: 90px;
-}
-
-@media (max-width: 500px) {
-    body {
-        padding-top: 80px;
-    }
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 500;
+            animation: slideDown 0.6s ease-out;
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform;
+        }
+        .navbar-wrap.navbar-hidden { transform: translateY(-120%); }
+       .navbar-wrap.navbar-scrolled .navbar {
+    max-width: 980px;
+    padding: 6px 8px 6px 18px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(80px) saturate(250%);
+    -webkit-backdrop-filter: blur(80px) saturate(250%);
 }
         @keyframes slideDown {
             from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+            to   { opacity: 1; transform: translateY(0); }
         }
+
+        .navbar-inner { padding: 14px 20px; }
+
         .navbar {
-            max-width: 900px;
-            margin: 0 auto;
-            background: rgba(255,255,255,0.65);
-            backdrop-filter: blur(30px) saturate(180%);
-            -webkit-backdrop-filter: blur(30px) saturate(180%);
-            border: 1px solid rgba(255,255,255,0.9);
-            border-radius: 100px;
-            padding: 8px 8px 8px 20px;
+    display: grid;
+    /* Kolom kiri (logo), tengah (nav), kanan (CTA) */
+    grid-template-columns: auto 1fr auto; 
+    align-items: center;
+    max-width: 1040px; /* Diperkecil agar tidak terlalu lebar */
+    margin: 0 auto;
+    padding: 10px 10px 10px 22px; /* Padding lebih tipis untuk kesan slim */
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(60px) saturate(200%); /* Blur ditingkatkan */
+    -webkit-backdrop-filter: blur(60px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 20px; /* Corner lebih soft */
+    box-shadow: 0 12px 40px rgba(15, 39, 68, 0.06);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+        .logo {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 10px 40px rgba(30,58,95,0.08);
+            gap: 9px;
+            text-decoration: none;
+            color: var(--text);
+            flex-shrink: 0;
         }
-        .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
         .logo-text { font-size: 17px; font-weight: 700; letter-spacing: -0.02em; }
-        .nav-links { display: flex; gap: 2px; }
-        .nav-link {
-            font-size: 14px;
-            font-weight: 500;
+
+      .nav-center {
+    justify-self: center;
+    display: flex;
+    align-items: center;
+    gap: 16px; /* Spacing antar link lebih rapat tapi lega */
+    }
+        
+    .nav-link {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(26, 24, 37, 0.7);
+    padding: 8px 14px;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+        .nav-link i { font-size: 11px; opacity: 0.65; }
+        .nav-link:hover { background: rgba(255,255,255,0.5); color: var(--navy); transform: translateY(-1px); }
+        .nav-link.active { background: rgba(123,111,232,0.14); color: var(--purple-dark); }
+       .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    justify-self: end;   /* ← ganti margin-left: auto dengan ini */
+}
+
+        /* ══════════════════════════════════════════════
+           MEGA NAV TRIGGER BUTTON
+        ══════════════════════════════════════════════ */
+        .mega-trigger {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--navy);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 13.5px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: var(--font-sans);
+            transition: background 0.2s, transform 0.15s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .mega-trigger:hover { background: #2D4D7A; }
+        .mega-trigger:active { transform: scale(0.97); }
+        .mega-chevron {
+            width: 14px;
+            height: 14px;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+        }
+        .mega-trigger.active .mega-chevron { transform: rotate(180deg); }
+
+        /* ══════════════════════════════════════════════
+           MEGA MENU DROPDOWN
+        ══════════════════════════════════════════════ */
+        .mega-menu-wrap {
+            padding: 0 20px;
+            pointer-events: none;
+        }
+        .mega-menu {
+            display: none;
+            max-width: 960px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.97);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid rgba(255,255,255,0.9);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(30,58,95,0.16);
+            padding: 28px;
+            pointer-events: auto;
+            animation: megaFadeIn 0.2s ease;
+            margin-top: 8px;
+        }
+        .mega-menu.open { display: block; }
+        @keyframes megaFadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .mega-grid {
+            display: grid;
+            gap: 0;
+        }
+        .mega-col { padding: 0 20px 0 0; }
+        .mega-col + .mega-col {
+            padding-left: 20px;
+            border-left: 1px solid rgba(30,58,95,0.08);
+        }
+        .mega-col-title {
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--text);
+            margin-bottom: 12px;
+            letter-spacing: -0.01em;
+        }
+        .mega-link {
+            display: block;
+            font-size: 13px;
             color: var(--text-soft);
             text-decoration: none;
-            padding: 8px 14px;
-            border-radius: 100px;
-            transition: all 0.2s;
+            padding: 4px 0;
+            line-height: 1.5;
+            transition: color 0.2s;
         }
-        .nav-link:hover { background: rgba(255,255,255,0.7); color: var(--text); }
-        .nav-link:active { transform: scale(0.95); }
-        .nav-link.active { background: rgba(123,111,232,0.15); color: var(--purple-dark); }
+        .mega-link:hover { color: var(--purple); }
+        .mega-link-cta {
+            color: var(--purple) !important;
+            font-weight: 600;
+            margin-top: 6px;
+        }
+        .mega-group-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin: 12px 0 6px;
+        }
+        .mega-badge {
+            display: inline-block;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 1px 6px;
+            border-radius: 4px;
+            margin-left: 4px;
+            vertical-align: middle;
+        }
+        .badge-hot  { background: rgba(255,80,80,0.12); color: #B00; }
+        .badge-new  { background: rgba(255,138,91,0.15); color: #C84A00; }
+        .badge-free { background: rgba(0,200,150,0.12); color: #007A5E; }
 
-        /* ═══ BUTTONS ═══ */
+        /* Overlay backdrop */
+        .mega-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 499;
+            background: rgba(26,24,37,0.08);
+            backdrop-filter: blur(2px);
+        }
+        .mega-overlay.open { display: block; }
+
+        /* ══════════════════════════════════════════════
+           BUTTONS
+        ══════════════════════════════════════════════ */
         .btn {
             display: inline-flex;
             align-items: center;
@@ -167,25 +372,25 @@ body {
             text-decoration: none;
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             white-space: nowrap;
+            width: fit-content;
             position: relative;
             overflow: hidden;
         }
-        .btn::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: rgba(255,255,255,0.3);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        .btn:active::after { opacity: 1; }
         .btn:active { transform: scale(0.96); }
-
         .btn-dark {
-            background: #1A1825;
-            color: white;
-            box-shadow: 0 4px 14px rgba(26,24,37,0.3);
-        }
+    background: #111827;
+    color: white;
+    
+
+    border-radius: 14px;
+
+    padding: 12px 20px;
+
+    box-shadow:
+        0 6px 20px rgba(17,24,39,0.18);
+
+    transition: all 0.25s ease;
+}
         .btn-dark:hover {
             background: #2A2840;
             transform: translateY(-2px);
@@ -202,38 +407,117 @@ body {
             transform: translateY(-2px);
         }
 
-        /* ═══ FLASH ═══ */
+        /* ══════════════════════════════════════════════
+           FLASH MESSAGES
+        ══════════════════════════════════════════════ */
         .flash-wrap {
             position: fixed;
-            top: 90px;
+            top: 100px;
             right: 20px;
-            z-index: 200;
+            z-index: 600;
             max-width: 400px;
         }
         .flash {
             background: rgba(255,255,255,0.95);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255,255,255,0.9);
-            border-radius: 16px;
-            padding: 14px 20px;
+            border-radius: 14px;
+            padding: 12px 18px;
             margin-bottom: 10px;
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 14px;
+            font-size: 13.5px;
             font-weight: 500;
-            box-shadow: 0 10px 40px rgba(30,58,95,0.15);
+            box-shadow: 0 10px 40px rgba(30,58,95,0.14);
             animation: slideInRight 0.4s ease-out;
         }
-        .flash-success { border-left: 4px solid var(--teal); color: var(--text); }
-        .flash-error { border-left: 4px solid var(--orange); color: var(--text); }
-        .flash-info { border-left: 4px solid var(--purple); color: var(--text); }
+        .flash-success { border-left: 4px solid var(--teal); }
+        .flash-error   { border-left: 4px solid var(--orange); }
+        .flash-info    { border-left: 4px solid var(--purple); }
         @keyframes slideInRight {
             from { opacity: 0; transform: translateX(50px); }
-            to { opacity: 1; transform: translateX(0); }
+            to   { opacity: 1; transform: translateX(0); }
         }
 
-        /* ═══ FOOTER ═══ */
+        /* ══════════════════════════════════════════════
+           USER DROPDOWN
+        ══════════════════════════════════════════════ */
+        .user-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.7);
+            border: 1px solid rgba(255,255,255,0.9);
+            border-radius: 100px;
+            padding: 5px 14px 5px 5px;
+            cursor: pointer;
+            font-family: var(--font-sans);
+            font-size: 13.5px;
+            font-weight: 500;
+            color: var(--text);
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .user-btn:hover { background: rgba(255,255,255,0.95); }
+        .user-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--navy), #2D4D7A);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 11px;
+        }
+        .user-dropdown {
+            position: absolute;
+            right: 0;
+            top: calc(100% + 10px);
+            background: rgba(255,255,255,0.97);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255,255,255,0.9);
+            border-radius: 18px;
+            padding: 8px;
+            min-width: 228px;
+            box-shadow: 0 20px 50px rgba(30,58,95,0.15);
+            z-index: 600;
+        }
+        .dropdown-header {
+            padding: 10px 12px 12px;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            margin-bottom: 6px;
+        }
+        .dropdown-name  { font-size: 13px; font-weight: 600; }
+        .dropdown-email { font-size: 11px; color: var(--muted); margin-top: 2px; }
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 9px 12px;
+            border-radius: 10px;
+            color: var(--text-soft);
+            font-size: 13px;
+            text-decoration: none;
+            transition: all 0.15s;
+            background: transparent;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+            text-align: left;
+            font-family: var(--font-sans);
+            font-weight: 500;
+        }
+        .dropdown-item i { width: 16px; text-align: center; opacity: 0.75; font-size: 12px; }
+        .dropdown-item:hover { background: rgba(123,111,232,0.08); color: var(--text); }
+        .dropdown-item-danger { color: #D04020; }
+        .dropdown-item-danger:hover { background: rgba(255,138,91,0.08); color: #D04020; }
+
+        /* ══════════════════════════════════════════════
+           FOOTER
+        ══════════════════════════════════════════════ */
         .footer-main {
             margin: 40px 20px 20px;
             background: rgba(255,255,255,0.5);
@@ -241,6 +525,8 @@ body {
             border: 1px solid rgba(255,255,255,0.8);
             border-radius: 24px;
             padding: 40px;
+            position: relative;
+            z-index: 1;
         }
         .footer-grid {
             display: grid;
@@ -280,7 +566,6 @@ body {
             text-decoration: none;
             color: var(--text-soft);
             font-size: 14px;
-            font-weight: 600;
             transition: all 0.2s;
         }
         .footer-social a:hover {
@@ -300,81 +585,26 @@ body {
             color: var(--muted);
         }
 
-        /* ═══ USER DROPDOWN ═══ */
-        .user-btn {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255,255,255,0.7);
-            border: 1px solid rgba(255,255,255,0.9);
-            border-radius: 100px;
-            padding: 6px 14px 6px 6px;
-            cursor: pointer;
-            font-family: var(--font-sans);
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--text);
-            transition: all 0.2s;
+        /* ══════════════════════════════════════════════
+           ANIMATIONS
+        ══════════════════════════════════════════════ */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50%       { opacity: 0.5; transform: scale(1.3); }
         }
-        .user-btn:hover { background: rgba(255,255,255,0.95); }
-        .user-avatar {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--navy), #2D4D7A);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 700;
-            font-size: 12px;
-        }
-        .user-dropdown {
-            position: absolute;
-            right: 0;
-            top: calc(100% + 12px);
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(30px);
-            border: 1px solid rgba(255,255,255,0.9);
-            border-radius: 16px;
-            padding: 8px;
-            min-width: 220px;
-            box-shadow: 0 20px 50px rgba(30,58,95,0.15);
-            z-index: 100;
-        }
-        .dropdown-header {
-            padding: 10px 12px;
-            border-bottom: 1px solid rgba(0,0,0,0.06);
-            margin-bottom: 6px;
-        }
-        .dropdown-name { font-size: 13px; font-weight: 600; }
-        .dropdown-email { font-size: 11px; color: var(--muted); margin-top: 2px; }
-        .dropdown-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 12px;
-            border-radius: 10px;
-            color: var(--text-soft);
-            font-size: 13px;
-            text-decoration: none;
-            transition: all 0.2s;
-            background: transparent;
-            border: none;
-            width: 100%;
-            cursor: pointer;
-            text-align: left;
-            font-family: var(--font-sans);
-            font-weight: 500;
-        }
-        .dropdown-item:hover { background: rgba(123,111,232,0.08); color: var(--text); }
-        .dropdown-item-danger { color: var(--orange); }
-        .dropdown-item-danger:hover { background: rgba(255,138,91,0.08); color: var(--orange); }
 
+        /* ══════════════════════════════════════════════
+           RESPONSIVE
+        ══════════════════════════════════════════════ */
         @media (max-width: 768px) {
-            .nav-links { display: none; }
+            .nav-center { display: none; }
+            .mega-trigger { display: none; }
             .footer-grid { grid-template-columns: 1fr 1fr; }
             .footer-main { padding: 24px; }
+            .mega-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+        }
+        @media (max-width: 480px) {
+            .footer-grid { grid-template-columns: 1fr; }
         }
     </style>
 
@@ -382,265 +612,638 @@ body {
 </head>
 <body>
 
-    {{-- NAVBAR --}}
-    <div class="navbar-wrap" id ="mainNavbar">
+{{-- ══════════════════════════════════════════════════════════ --}}
+{{-- NAVBAR WRAP — berisi promo banner + pill nav + mega menu  --}}
+{{-- ══════════════════════════════════════════════════════════ --}}
+<div class="navbar-wrap" id="mainNavbar">
+
+    {{-- ── PROMO BANNER ──────────────────────────────────────── --}}
+    <div id="promo-bar" class="promo-bar">
+        <span class="promo-dot"></span>
+        Mulai belajar hari ini! Dapatkan <strong>30% off</strong> untuk semua kursus premium hingga 31 Mei.
+        Gunakan kode <span class="promo-code">BELAJAR30</span>.
+        <a href="#pricing">Pelajari lebih lanjut </a>
+        <button class="promo-close" onclick="closePromoBanner()" aria-label="Tutup banner">×</button>
+    </div>
+
+    {{-- ── NAVBAR PILL ────────────────────────────────────────── --}}
+    <div class="navbar-inner">
         <nav class="navbar">
+
+            {{-- Logo --}}
             <a href="{{ route('home') }}" class="logo">
                 <img src="{{ asset('images/logo.png') }}" alt="Coursify" class="logo-img">
                 <span class="logo-text">Coursify</span>
             </a>
 
-            <div class="nav-links">
-                <a href="{{ route('courses.index') }}" class="nav-link {{ request()->routeIs('courses.*') ? 'active' : '' }}">Courses</a>
-                <a href="{{ route('home') }}#how" class="nav-link">How It Works</a>
-                <a href="{{ route('home') }}#pricing" class="nav-link">Pricing</a>
+            {{-- Center: Mega trigger + nav links --}}
+            <div class="nav-center">
+
+                {{-- ▸ MEGA NAV TRIGGER --}}
+                <button
+                    class="mega-trigger"
+                    id="mega-btn"
+                    onclick="toggleMega()"
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    aria-controls="mega-menu"
+                >
+                    <i class="fa-solid fa-grid-2" style="font-size:11px;"></i>
+                    Jelajahi
+                    <svg class="mega-chevron" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M3 5L7 9L11 5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+
+                {{-- Regular links --}}
+                <a href="{{ route('courses.index') }}"
+                   class="nav-link {{ request()->routeIs('courses.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    Courses
+                </a>
+
+                <a href="{{ route('home') }}#how" class="nav-link">
+                    <i class="fa-solid fa-circle-info"></i>
+                    How It Works
+                </a>
+
+                <a href="{{ route('home') }}#pricing" class="nav-link">
+                    <i class="fa-solid fa-tag"></i>
+                    Pricing
+                </a>
             </div>
 
+            {{-- Right: Auth --}}
             @guest
-                <a href="{{ route('login') }}" class="btn btn-dark">Get Started</a>
+                <a href="{{ route('login') }}" class="btn btn-dark" style="flex-shrink:0;">
+                    Get Started
+                </a>
             @else
-                <div style="position:relative;" x-data="{ userOpen: false }">
+                <div style="position:relative;flex-shrink:0;" x-data="{ userOpen: false }">
                     <button @click="userOpen = !userOpen" class="user-btn">
                         <div class="user-avatar">
                             {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                         </div>
-                        <span>{{ Str::limit(auth()->user()->name, 10) }}</span>
+                        <span>{{ Str::limit(auth()->user()->name, 12) }}</span>
+                        <i class="fa-solid fa-chevron-down" style="font-size:10px;opacity:0.5;"></i>
                     </button>
 
-                    <div x-show="userOpen" @click.away="userOpen = false" x-transition class="user-dropdown">
+                    <div x-show="userOpen"
+                         @click.away="userOpen = false"
+                         x-transition:enter="transition ease-out duration-150"
+                         x-transition:enter-start="opacity-0 transform -translate-y-2"
+                         x-transition:enter-end="opacity-100 transform translate-y-0"
+                         x-transition:leave="transition ease-in duration-100"
+                         x-transition:leave-start="opacity-100"
+                         x-transition:leave-end="opacity-0"
+                         class="user-dropdown">
 
-    {{-- User Info Header --}}
-    <div class="dropdown-header">
-        <div class="dropdown-name">{{ auth()->user()->name }}</div>
-        <div class="dropdown-email">{{ auth()->user()->email }}</div>
-        <div style="margin-top:6px;">
-            @php
-                $roleColors = [
-                    'admin' => ['bg' => 'linear-gradient(135deg,#1E3A5F,#2D4D7A)', 'text' => 'white', 'label' => '⚙️ Administrator'],
-                    'instructor' => ['bg' => 'rgba(0,200,150,0.15)', 'text' => '#00805F', 'label' => '👨‍🏫 Instructor'],
-                    'student' => ['bg' => 'rgba(123,111,232,0.15)', 'text' => '#5B4FD4', 'label' => '🎓 Student'],
-                ];
-                $userRole = auth()->user()->role;
-                $roleStyle = $roleColors[$userRole] ?? $roleColors['student'];
-            @endphp
-            <span style="display:inline-block; padding:3px 10px; background:{{ $roleStyle['bg'] }}; color:{{ $roleStyle['text'] }}; border-radius:100px; font-size:10px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase;">
-                {{ $roleStyle['label'] }}
-            </span>
-        </div>
-    </div>
+                        {{-- Header --}}
+                        <div class="dropdown-header">
+                            <div class="dropdown-name">{{ auth()->user()->name }}</div>
+                            <div class="dropdown-email">{{ auth()->user()->email }}</div>
+                            <div style="margin-top:8px;">
+                                @php
+                                    $roleMap = [
+                                        'admin'      => ['bg' => 'linear-gradient(135deg,#1E3A5F,#2D4D7A)', 'color' => 'white',   'icon' => 'fa-user-shield',     'label' => 'Administrator'],
+                                        'instructor' => ['bg' => 'rgba(0,200,150,0.14)',                   'color' => '#00705A',  'icon' => 'fa-chalkboard-user', 'label' => 'Instructor'],
+                                        'student'    => ['bg' => 'rgba(123,111,232,0.14)',                 'color' => '#5B4FD4',  'icon' => 'fa-graduation-cap',  'label' => 'Student'],
+                                    ];
+                                    $r = $roleMap[auth()->user()->role] ?? $roleMap['student'];
+                                @endphp
+                                <span style="display:inline-block;padding:3px 10px;background:{{ $r['bg'] }};color:{{ $r['color'] }};border-radius:100px;font-size:10px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;">
+                                    <i class="fa-solid {{ $r['icon'] }}"></i> {{ $r['label'] }}
+                                </span>
+                            </div>
+                        </div>
 
-    {{-- ═══ ADMIN MENU ═══ --}}
-    @if(auth()->user()->role === 'admin')
-        <a href="{{ route('admin.dashboard') }}" class="dropdown-item">
-            📊 Dashboard
-        </a>
-        <a href="#" class="dropdown-item">
-            👥 Manage Users
-        </a>
-        <a href="#" class="dropdown-item">
-            📚 Manage Courses
-        </a>
-        <a href="#" class="dropdown-item">
-            ✅ Pending Approvals
-        </a>
-        <a href="#" class="dropdown-item">
-            💰 Transactions
-        </a>
-        <a href="#" class="dropdown-item">
-            ⚙️ Settings
-        </a>
-    @endif
+                        {{-- ═══ ADMIN MENU ═══ --}}
+                        @if(auth()->user()->role === 'admin')
+                            <a href="{{ route('admin.dashboard') }}" class="dropdown-item">
+                                <i class="fa-solid fa-chart-pie"></i> Dashboard
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <i class="fa-solid fa-users-gear"></i> Manage Users
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <i class="fa-solid fa-book-stack"></i> Manage Courses
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <i class="fa-solid fa-file-shield"></i> Pending Approvals
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <i class="fa-solid fa-money-bill-transfer"></i> Transactions
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <i class="fa-solid fa-gears"></i> Settings
+                            </a>
+                        @endif
 
-    {{-- ═══ INSTRUCTOR MENU ═══ --}}
-    @if(auth()->user()->role === 'instructor')
-        <a href="{{ route('instructor.dashboard') }}" class="dropdown-item">
-            📊 Dashboard
-        </a>
-        <a href="#" class="dropdown-item">
-            📚 My Courses
-        </a>
-        <a href="#" class="dropdown-item">
-            👥 My Students
-        </a>
-        <a href="#" class="dropdown-item">
-            ✏️ Create Course
-        </a>
-        <a href="#" class="dropdown-item">
-            💰 Earnings
-        </a>
-        <a href="#" class="dropdown-item">
-            👤 Profile Settings
-        </a>
-    @endif
+                        {{-- ═══ INSTRUCTOR MENU ═══ --}}
+                        @if(auth()->user()->role === 'instructor')
+                            <a href="{{ route('instructor.dashboard') }}" class="dropdown-item">
+                                <i class="fa-solid fa-chart-line"></i> Dashboard
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <i class="fa-solid fa-chalkboard-user"></i> My Courses
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <i class="fa-solid fa-users"></i> My Students
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <i class="fa-solid fa-square-plus"></i> Create Course
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <i class="fa-solid fa-wallet"></i> Earnings
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <i class="fa-solid fa-user-gear"></i> Profile Settings
+                            </a>
+                        @endif
 
-    {{-- ═══ STUDENT MENU ═══ --}}
-    @if(auth()->user()->role === 'student')
-        <a href="{{ route('student.index') }}" class="dropdown-item">
-            🎓 My Dashboard
-        </a>
-        <a href="{{ route('student.courses') }}" class="dropdown-item">
-            📖 My Courses
-        </a>
-        <a href="{{ route('student.wishlist') }}" class="dropdown-item">❤️ Wishlist</a>
-        </a>
-        <a href="{{ route('student.certificates') }}" class="dropdown-item">
-            🏆 Certificates
-        </a>
-        <a href="{{ route('student.profile') }}" class="dropdown-item">
-            👤 Profile Settings
-        </a>
-    @endif
+                        {{-- ═══ STUDENT MENU ═══ --}}
+                        @if(auth()->user()->role === 'student')
+                            <a href="{{ route('student.index') }}" class="dropdown-item">
+                                <i class="fa-solid fa-gauge-high"></i> My Dashboard
+                            </a>
+                            <a href="{{ route('student.courses') }}" class="dropdown-item">
+                                <i class="fa-solid fa-book-open"></i> My Courses
+                            </a>
+                            <a href="{{ route('student.wishlist') }}" class="dropdown-item">
+                                <i class="fa-solid fa-heart"></i> Wishlist
+                            </a>
+                            <a href="{{ route('student.certificates') }}" class="dropdown-item">
+                                <i class="fa-solid fa-award"></i> Certificates
+                            </a>
+                            <a href="{{ route('student.profile') }}" class="dropdown-item">
+                                <i class="fa-solid fa-user-pen"></i> Profile Settings
+                            </a>
+                        @endif
 
-    {{-- Logout (semua role) --}}
-    <div style="border-top: 1px solid rgba(0,0,0,0.06); margin-top: 6px; padding-top: 6px;">
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button type="submit" class="dropdown-item dropdown-item-danger">
-                🚪 Sign Out
-            </button>
-        </form>
-    </div>
-</div>
+                        {{-- Logout --}}
+                        <div style="border-top:1px solid rgba(0,0,0,0.06);margin-top:6px;padding-top:6px;">
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="dropdown-item dropdown-item-danger">
+                                    <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+                                </button>
+                            </form>
+                        </div>
+
+                    </div>
                 </div>
             @endguest
+
         </nav>
+    </div>{{-- /.navbar-inner --}}
+
+    {{-- ── MEGA MENU (drops below the pill) ──────────────────── --}}
+    <div class="mega-menu-wrap">
+        <div class="mega-menu" id="mega-menu" role="dialog" aria-label="Menu navigasi utama">
+            <div class="mega-grid">
+
+                {{-- ▸ Kolom 1: Jelajahi Topik --}}
+                <div class="mega-col">
+                    <div class="mega-col-title">Jelajahi Topik</div>
+                    <a href="{{ route('courses.index') }}?category=ai" class="mega-link">
+                        Kecerdasan Buatan <span class="mega-badge badge-hot">Populer</span>
+                    </a>
+                    <a href="{{ route('courses.index') }}?category=programming" class="mega-link">Pemrograman</a>
+                    <a href="{{ route('courses.index') }}?category=data-science" class="mega-link">Data Science</a>
+                    <a href="{{ route('courses.index') }}?category=design" class="mega-link">Desain UI/UX</a>
+                    <a href="{{ route('courses.index') }}?category=business" class="mega-link">Bisnis & Manajemen</a>
+                    <a href="{{ route('courses.index') }}?category=cybersecurity" class="mega-link">
+                        Keamanan Siber <span class="mega-badge badge-new">Baru</span>
+                    </a>
+                    <a href="{{ route('courses.index') }}?category=languages" class="mega-link">Bahasa Asing</a>
+                    <a href="{{ route('courses.index') }}" class="mega-link mega-link-cta">Lihat semua topik </a>
+                    <div class="mega-group-label">Untuk Pemula</div>
+                    <a href="{{ route('courses.index') }}?q=python+pemula" class="mega-link">Python untuk Pemula</a>
+                    <a href="{{ route('courses.index') }}?q=excel+pemula" class="mega-link">Excel untuk Pemula</a>
+                    <a href="{{ route('courses.index') }}?q=web+dasar" class="mega-link">Web Dev Dasar</a>
+                </div>
+
+                {{-- ▸ Kolom 2: Raih Sertifikat --}}
+                <div class="mega-col">
+                    <div class="mega-col-title">Raih Sertifikat</div>
+                    <a href="{{ route('courses.index') }}?type=certificate&topic=ai" class="mega-link">Artificial Intelligence</a>
+                    <a href="{{ route('courses.index') }}?type=certificate&topic=data" class="mega-link">Data Analysis & Statistik</a>
+                    <a href="{{ route('courses.index') }}?type=certificate&topic=project" class="mega-link">Manajemen Proyek</a>
+                    <a href="{{ route('courses.index') }}?type=certificate&topic=finance" class="mega-link">Keuangan & Akuntansi</a>
+                    <a href="{{ route('courses.index') }}?type=certificate&topic=marketing" class="mega-link">Digital Marketing</a>
+                    <a href="{{ route('courses.index') }}?type=certificate" class="mega-link mega-link-cta">Lihat semua sertifikat </a>
+                    <div class="mega-group-label">Populer</div>
+                    <a href="{{ route('courses.index') }}?q=ai+3+bulan" class="mega-link">AI dalam 3 bulan</a>
+                    <a href="{{ route('courses.index') }}?q=data+analyst" class="mega-link">Data Analyst Bootcamp</a>
+                    <a href="{{ route('courses.index') }}?q=fullstack+laravel" class="mega-link">Fullstack Laravel</a>
+                    <a href="{{ route('courses.index') }}?q=ui+ux+figma" class="mega-link">
+                        UI/UX dengan Figma <span class="mega-badge badge-free">Free</span>
+                    </a>
+                </div>
+
+                {{-- ▸ Kolom 3: Program Gelar --}}
+                <div class="mega-col">
+                    <div class="mega-col-title">Program Gelar</div>
+                    <a href="{{ route('courses.index') }}?type=program&level=bachelor" class="mega-link">Program Sarjana (S1)</a>
+                    <a href="{{ route('courses.index') }}?type=program&level=master" class="mega-link">Program Magister (S2)</a>
+                    <a href="{{ route('courses.index') }}?type=program&level=diploma" class="mega-link">Program Diploma (D3/D4)</a>
+                    <a href="{{ route('courses.index') }}?type=program" class="mega-link mega-link-cta">Lihat semua program </a>
+                    <div class="mega-group-label">Populer</div>
+                    <a href="{{ route('courses.index') }}?q=mba+online" class="mega-link">MBA Online</a>
+                    <a href="{{ route('courses.index') }}?q=master+data+science" class="mega-link">Master Data Science</a>
+                    <a href="{{ route('courses.index') }}?q=computer+science+master" class="mega-link">Master Ilmu Komputer</a>
+                    <a href="{{ route('courses.index') }}?q=healthcare+master" class="mega-link">Master Kesehatan</a>
+                    <a href="{{ route('courses.index') }}?q=teknik+informatika" class="mega-link">S1 Teknik Informatika</a>
+                </div>
+
+                {{-- ▸ Kolom 4: Universitas & Karir --}}
+                <div class="mega-col">
+                    <div class="mega-col-title">Universitas Partner</div>
+                    <a href="{{ route('courses.index') }}?university=ui" class="mega-link">Universitas Indonesia</a>
+                    <a href="{{ route('courses.index') }}?university=itb" class="mega-link">Institut Teknologi Bandung</a>
+                    <a href="{{ route('courses.index') }}?university=ugm" class="mega-link">Universitas Gadjah Mada</a>
+                    <a href="{{ route('courses.index') }}?university=its" class="mega-link">ITS Surabaya</a>
+                    <a href="{{ route('courses.index') }}?university=unair" class="mega-link">Universitas Airlangga</a>
+                    <a href="{{ route('universities') }}" class="mega-link mega-link-cta">Lihat semua universitas </a>
+                    <div class="mega-group-label">Jalur Karir</div>
+                    <a href="{{ route('courses.index') }}?career=software-engineer" class="mega-link">Software Engineer</a>
+                    <a href="{{ route('courses.index') }}?career=data-scientist" class="mega-link">Data Scientist</a>
+                    <a href="{{ route('courses.index') }}?career=ui-ux-designer" class="mega-link">UI/UX Designer</a>
+                    <a href="{{ route('courses.index') }}?career=cybersecurity-analyst" class="mega-link">Cybersecurity Analyst</a>
+                </div>
+
+            </div>
+        </div>
+    </div>{{-- /.mega-menu-wrap --}}
+
+</div>{{-- /.navbar-wrap --}}
+
+{{-- Overlay penutup mega menu (di LUAR navbar-wrap) --}}
+<div class="mega-overlay" id="mega-overlay" onclick="closeMega()"></div>
+
+
+{{-- ══════════════════════════════════════════════════════════ --}}
+{{-- FLASH MESSAGES                                             --}}
+{{-- ══════════════════════════════════════════════════════════ --}}
+@if(session('success') || session('error') || session('info'))
+    <div class="flash-wrap">
+        @if(session('success'))
+            <div class="flash flash-success" x-data x-init="setTimeout(() => $el.remove(), 4000)">
+                <i class="fa-solid fa-circle-check" style="color:var(--teal);"></i>
+                {{ session('success') }}
+            </div>
+        @endif
+        @if(session('error'))
+            <div class="flash flash-error" x-data x-init="setTimeout(() => $el.remove(), 4000)">
+                <i class="fa-solid fa-circle-xmark" style="color:var(--orange);"></i>
+                {{ session('error') }}
+            </div>
+        @endif
+        @if(session('info'))
+            <div class="flash flash-info" x-data x-init="setTimeout(() => $el.remove(), 4000)">
+                <i class="fa-solid fa-circle-info" style="color:var(--purple);"></i>
+                {{ session('info') }}
+            </div>
+        @endif
     </div>
+@endif
 
-    {{-- FLASH MESSAGES --}}
-    @if(session('success') || session('error') || session('info'))
-        <div class="flash-wrap">
-            @if(session('success'))
-                <div class="flash flash-success" x-data x-init="setTimeout(() => $el.remove(), 4000)">
-                    ✓ {{ session('success') }}
+
+{{-- ══════════════════════════════════════════════════════════ --}}
+{{-- MAIN CONTENT                                               --}}
+{{-- ══════════════════════════════════════════════════════════ --}}
+<main>
+    @yield('content')
+</main>
+
+
+
+
+<footer>
+
+    {{-- ══ MEGA FOOTER (dark, banyak link) ══ --}}
+    <div style="background:#0F2744;padding:56px 0 0;">
+        <div style="max-width:1160px;margin:0 auto;padding:0 24px;">
+
+            {{-- Row 1: Logo + 4 kolom link --}}
+            <div style="display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr 1fr;gap:40px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,0.08);">
+
+                {{-- Brand --}}
+                <div>
+                    <a href="{{ route('home') }}" style="display:inline-flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:16px;">
+                        <img src="{{ asset('images/logo.png') }}" alt="Coursify"
+                             style="width:36px;height:36px;border-radius:9px;object-fit:cover;box-shadow:0 2px 10px rgba(0,0,0,0.3);">
+                        <span style="font-size:20px;font-weight:700;letter-spacing:-0.02em;color:white;">Coursify</span>
+                    </a>
+                    <p style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;max-width:240px;margin-bottom:20px;">
+                        Platform belajar online terpercaya dari universitas-universitas terkemuka Indonesia. Belajar kapan saja, di mana saja.
+                    </p>
+                    {{-- SDG Badges --}}
+                    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px;">
+                        @foreach([['#4CAF50','SDG 4'],['#2196F3','SDG 8'],['#FF9800','SDG 10']] as [$c,$l])
+                            <span style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);font-size:10px;font-weight:600;padding:4px 10px;border-radius:100px;letter-spacing:0.05em;">
+                                {{ $l }}
+                            </span>
+                        @endforeach
+                    </div>
+                    {{-- Social --}}
+                    <div style="display:flex;gap:8px;">
+                        @foreach([
+                            ['fa-x-twitter','#'],
+                            ['fa-facebook-f','#'],
+                            ['fa-linkedin-in','#'],
+                            ['fa-instagram','#'],
+                        ] as [$icon,$url])
+                            <a href="{{ $url }}"
+                               style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.55);font-size:13px;text-decoration:none;transition:all 0.2s;"
+                               onmouseover="this.style.background='rgba(255,255,255,0.18)';this.style.color='white';"
+                               onmouseout="this.style.background='rgba(255,255,255,0.08)';this.style.color='rgba(255,255,255,0.55)';">
+                                <i class="fa-brands {{ $icon }}"></i>
+                            </a>
+                        @endforeach
+                    </div>
                 </div>
-            @endif
-            @if(session('error'))
-                <div class="flash flash-error" x-data x-init="setTimeout(() => $el.remove(), 4000)">
-                    ✕ {{ session('error') }}
+
+                {{-- Kolom: Jelajahi Topik --}}
+                <div>
+                    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:16px;">
+                        Jelajahi Topik
+                    </div>
+                    @foreach([
+                        ['Kecerdasan Buatan','courses.index','?category=ai'],
+                        ['Web Development','courses.index','?category=web'],
+                        ['Data Science','courses.index','?category=data'],
+                        ['Cybersecurity','courses.index','?category=cyber'],
+                        ['Desain UI/UX','courses.index','?category=design'],
+                        ['Mobile Development','courses.index','?category=mobile'],
+                        ['Bahasa Asing','courses.index','?category=language'],
+                        ['Bisnis & Manajemen','courses.index','?category=business'],
+                        ['Lihat semua topik ','courses.index',''],
+                    ] as $i => [$label, $route, $param])
+                        <a href="{{ route($route) }}{{ $param }}"
+                           style="display:block;font-size:13px;color:{{ $i === 8 ? '#B8AFEB' : 'rgba(255,255,255,0.55)' }};text-decoration:none;padding:4px 0;line-height:1.5;transition:color 0.2s;{{ $i === 8 ? 'margin-top:8px;font-weight:600;' : '' }}"
+                           onmouseover="this.style.color='white'"
+                           onmouseout="this.style.color='{{ $i === 8 ? '#B8AFEB' : 'rgba(255,255,255,0.55)' }}'">
+                            {{ $label }}
+                        </a>
+                    @endforeach
                 </div>
-            @endif
-            @if(session('info'))
-                <div class="flash flash-info" x-data x-init="setTimeout(() => $el.remove(), 4000)">
-                    ℹ {{ session('info') }}
+
+                {{-- Kolom: Program --}}
+                <div>
+                    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:16px;">
+                        Program
+                    </div>
+                    @foreach([
+                        ['Sertifikat Profesional','courses.index','?type=certificate'],
+                        ['MicroMasters','courses.index','?type=micromasters'],
+                        ['Program Diploma','courses.index','?type=diploma'],
+                        ['S1 Online','courses.index','?type=bachelor'],
+                        ['S2 Online','courses.index','?type=master'],
+                        ['MBA Online','courses.index','?q=mba'],
+                        ['Executive Education','courses.index','?type=executive'],
+                        ['Lihat semua program ','courses.index','?type=all'],
+                    ] as $i => [$label, $route, $param])
+                        <a href="{{ route($route) }}{{ $param }}"
+                           style="display:block;font-size:13px;color:{{ $i === 7 ? '#B8AFEB' : 'rgba(255,255,255,0.55)' }};text-decoration:none;padding:4px 0;line-height:1.5;transition:color 0.2s;{{ $i === 7 ? 'margin-top:8px;font-weight:600;' : '' }}"
+                           onmouseover="this.style.color='white'"
+                           onmouseout="this.style.color='{{ $i === 7 ? '#B8AFEB' : 'rgba(255,255,255,0.55)' }}'">
+                            {{ $label }}
+                        </a>
+                    @endforeach
                 </div>
-            @endif
+
+                {{-- Kolom: Universitas --}}
+                <div>
+                    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:16px;">
+                        Universitas
+                    </div>
+                    @foreach([
+                        ['Universitas Indonesia','courses.index','?university=ui'],
+                        ['ITB Bandung','courses.index','?university=itb'],
+                        ['Universitas Gadjah Mada','courses.index','?university=ugm'],
+                        ['ITS Surabaya','courses.index','?university=its'],
+                        ['Universitas Airlangga','courses.index','?university=unair'],
+                        ['IPB University','courses.index','?university=ipb'],
+                        ['BINUS University','courses.index','?university=binus'],
+                        ['Lihat semua Universitas','universities',''],
+                    ] as $i => [$label, $route, $param])
+                        <a href="{{ route($route) }}{{ $param }}"
+                           style="display:block;font-size:13px;color:{{ $i === 7 ? '#B8AFEB' : 'rgba(255,255,255,0.55)' }};text-decoration:none;padding:4px 0;line-height:1.5;transition:color 0.2s;{{ $i === 7 ? 'margin-top:8px;font-weight:600;' : '' }}"
+                           onmouseover="this.style.color='white'"
+                           onmouseout="this.style.color='{{ $i === 7 ? '#B8AFEB' : 'rgba(255,255,255,0.55)' }}'">
+                            {{ $label }}
+                        </a>
+                    @endforeach
+                </div>
+
+                {{-- Kolom: Jalur Karir --}}
+                <div>
+                    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:16px;">
+                        Jalur Karir
+                    </div>
+                    @foreach([
+                        ['Software Engineer','courses.index','?career=software-engineer'],
+                        ['Data Scientist','courses.index','?career=data-scientist'],
+                        ['UI/UX Designer','courses.index','?career=ui-ux'],
+                        ['Cybersecurity Analyst','courses.index','?career=cybersecurity'],
+                        ['Product Manager','courses.index','?career=product-manager'],
+                        ['Cloud Architect','courses.index','?career=cloud'],
+                        ['Digital Marketer','courses.index','?career=marketing'],
+                        ['Lihat semua karir ','courses.index','?type=career'],
+                    ] as $i => [$label, $route, $param])
+                        <a href="{{ route($route) }}{{ $param }}"
+                           style="display:block;font-size:13px;color:{{ $i === 7 ? '#B8AFEB' : 'rgba(255,255,255,0.55)' }};text-decoration:none;padding:4px 0;line-height:1.5;transition:color 0.2s;{{ $i === 7 ? 'margin-top:8px;font-weight:600;' : '' }}"
+                           onmouseover="this.style.color='white'"
+                           onmouseout="this.style.color='{{ $i === 7 ? '#B8AFEB' : 'rgba(255,255,255,0.55)' }}'">
+                            {{ $label }}
+                        </a>
+                    @endforeach
+                </div>
+
+            </div>{{-- /Row 1 --}}
+
+            {{-- ══ SECONDARY FOOTER ROWw ══ --}}
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:40px;padding:40px 0 48px;border-bottom:1px solid rgba(255,255,255,0.08);">
+
+                {{-- Coursify Company --}}
+<div>
+    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:14px;">
+        Coursify
+    </div>
+    <div style="display:block;"> {{-- Pakai block jika ingin berurutan ke bawah --}}
+        @foreach([
+            ['Tentang Kami', '/about'], 
+            ['Partner Kami', '/universities'],
+            ['Blog & Berita', '/blog'],
+        ] as [$label, $url])
+            <a href="{{ url($url) }}"
+               style="display:block;font-size:13px;color:rgba(255,255,255,0.5);text-decoration:none;padding:4px 0;transition:color 0.2s;"
+               onmouseover="this.style.color='white'"
+               onmouseout="this.style.color='rgba(255,255,255,0.5)'">
+                {{ $label }}
+            </a>
+        @endforeach
+    </div>
+</div>
+
+                {{-- Connect --}}
+                <div>
+                    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:14px;">
+                        Connect
+                    </div>
+                    @foreach([
+                        ['Pusat Bantuan','/contact'],
+                        ['Hubungi Kami','/login'],
+                        ['Forum Komunitas','/forum'],
+                        ['FAQ','/faq'],
+                        ['Jadi Instruktur','login'],
+                    ] as [$label, $url])
+                        <a href="{{ $url }}"
+                           style="display:block;font-size:13px;color:rgba(255,255,255,0.5);text-decoration:none;padding:4px 0;transition:color 0.2s;"
+                           onmouseover="this.style.color='white'"
+                           onmouseout="this.style.color='rgba(255,255,255,0.5)'">
+                            {{ $label }}
+                        </a>
+                    @endforeach
+                </div>
+
+                {{-- Legal --}}
+                <div>
+                    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:14px;">
+                        Legal
+                    </div>
+                    @foreach([
+                        ['Syarat & Ketentuan','/terms'],
+                        ['Kebijakan Privasi','/privacy'],
+                        ['Cookie Policy','/cookies'],
+                        ['Kebijakan Aksesibilitas','/accessibility'],
+                        ['Sitemap','/sitemap'],
+                        ['keamanan','/security'],
+                    ] as [$label, $url])
+                        <a href="{{ $url }}"
+                           style="display:block;font-size:13px;color:rgba(255,255,255,0.5);text-decoration:none;padding:4px 0;transition:color 0.2s;"
+                           onmouseover="this.style.color='white'"
+                           onmouseout="this.style.color='rgba(255,255,255,0.5)'">
+                            {{ $label }}
+                        </a>
+                    @endforeach
+                </div>
+
+            </div>{{-- /Secondary row --}}
+
+            {{-- ══ BOTTOM BAR ══ --}}
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 0;flex-wrap:wrap;gap:12px;">
+                <div style="font-size:12px;color:rgba(255,255,255,0.3);">
+                    © {{ date('Y') }} Coursify. All Rights Reserved. 
+                </div>
+                <div style="display:flex;gap:20px;">
+    @foreach([
+        ['Privacy', '/privacy'],
+        ['Terms', '/terms'],
+        ['Cookies', '/cookies'],
+        ['Sitemap', '/sitemap'],
+    ] as [$label, $url])
+        <a href="{{ $url }}"
+           style="font-size:12px;color:rgba(255,255,255,0.3);text-decoration:none;transition:color 0.2s;"
+           onmouseover="this.style.color='rgba(255,255,255,0.7)'"
+           onmouseout="this.style.color='rgba(255,255,255,0.3)'">
+            {{ $label }}
+        </a>
+    @endforeach
+</div>
+            </div>
+
         </div>
-    @endif
+    </div>{{-- /mega footer --}}
 
-    {{-- MAIN CONTENT --}}
-    <main style="position:relative;z-index:1;">
-        @yield('content')
-    </main>
+</footer>
+</footer>
 
-    {{-- FOOTER --}}
-    <footer class="footer-main">
-        <div class="footer-grid">
-            <div>
-                <a href="{{ route('home') }}" class="logo">
-                    <img src="{{ asset('images/logo.png') }}" alt="Coursify" class="logo-img logo-img-sm">
-                    <span class="logo-text">Coursify</span>
-                </a>
-                <p class="footer-brand-desc">Modern learning platform helping you master new skills with world-class instructors. Anytime, anywhere.</p>
-                <div class="footer-social">
-                    <a href="#">𝕏</a>
-                    <a href="#">f</a>
-                    <a href="#">in</a>
-                    <a href="#">ig</a>
-                </div>
-            </div>
+{{-- ══ SCRIPTS ══ --}}
+@stack('scripts')
 
-            <div>
-                <div class="footer-col-title">Platform</div>
-                <div class="footer-links-col">
-                    <a href="{{ route('courses.index') }}" class="footer-link">All Courses</a>
-                    <a href="#" class="footer-link">Categories</a>
-                    <a href="#" class="footer-link">Instructors</a>
-                    <a href="{{ route('home') }}#pricing" class="footer-link">Pricing</a>
-                </div>
-            </div>
+<script>
+/* ─── Adjust body padding ─── */
+function adjustBodyPadding() {
+    var nb = document.getElementById('mainNavbar');
+    if (nb) {
+        document.body.style.paddingTop = (nb.getBoundingClientRect().height + 4) + 'px';
+    }
+}
+adjustBodyPadding();
+window.addEventListener('resize', adjustBodyPadding, { passive: true });
 
-            <div>
-                <div class="footer-col-title">Company</div>
-                <div class="footer-links-col">
-                    <a href="#" class="footer-link">About Us</a>
-                    <a href="#" class="footer-link">Blog</a>
-                    <a href="#" class="footer-link">Careers</a>
-                    <a href="#" class="footer-link">Contact</a>
-                </div>
-            </div>
+/* ─── Promo Banner close ─── */
+(function () {
+    if (localStorage.getItem('coursify_promo_closed_v1') === '1') {
+        var bar = document.getElementById('promo-bar');
+        if (bar) bar.style.display = 'none';
+        adjustBodyPadding();
+    }
+})();
 
-            <div>
-                <div class="footer-col-title">Support</div>
-                <div class="footer-links-col">
-                    <a href="#" class="footer-link">Help Center</a>
-                    <a href="#" class="footer-link">Privacy Policy</a>
-                    <a href="#" class="footer-link">Terms of Service</a>
-                    <a href="#" class="footer-link">Become Instructor</a>
-                </div>
-            </div>
-        </div>
+function closePromoBanner() {
+    var bar = document.getElementById('promo-bar');
+    if (!bar) return;
+    bar.classList.add('promo-closing');
+    setTimeout(function () {
+        bar.style.display = 'none';
+        adjustBodyPadding();
+    }, 360);
+    localStorage.setItem('coursify_promo_closed_v1', '1');
+}
 
-        <div class="footer-bottom">
-            <div>© {{ date('Y') }} Coursify. All Rights Reserved.</div>
-            <div>Supporting SDG 4 · 8 · 10 🌱</div>
-        </div>
-    </footer>
+/* ─── Mega Nav ─── */
+function toggleMega() {
+    var menu = document.getElementById('mega-menu');
+    menu.classList.contains('open') ? closeMega() : openMega();
+}
+function openMega() {
+    document.getElementById('mega-menu').classList.add('open');
+    document.getElementById('mega-btn').classList.add('active');
+    document.getElementById('mega-overlay').classList.add('open');
+    document.getElementById('mega-btn').setAttribute('aria-expanded', 'true');
+}
+function closeMega() {
+    document.getElementById('mega-menu').classList.remove('open');
+    document.getElementById('mega-btn').classList.remove('active');
+    document.getElementById('mega-overlay').classList.remove('open');
+    document.getElementById('mega-btn').setAttribute('aria-expanded', 'false');
+}
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeMega(); }
+});
 
-        @stack('scripts')
+/* ─── Auto-hide navbar on scroll ─── */
+(function () {
+    var navbar = document.getElementById('mainNavbar');
+    if (!navbar) return;
+    var lastScroll = 0, ticking = false, threshold = 80;
+    function updateNavbar() {
+        var cur = window.pageYOffset;
+        navbar.classList.toggle('navbar-scrolled', cur > 20);
+        if (cur < threshold) {
+            navbar.classList.remove('navbar-hidden');
+        } else if (cur > lastScroll + 6) {
+            navbar.classList.add('navbar-hidden');
+            closeMega();
+        } else if (cur < lastScroll - 6) {
+            navbar.classList.remove('navbar-hidden');
+        }
+        lastScroll = cur;
+        ticking = false;
+    }
+    window.addEventListener('scroll', function () {
+        if (!ticking) { window.requestAnimationFrame(updateNavbar); ticking = true; }
+    }, { passive: true });
+})();
 
-    {{-- ═══════════════════════════════════════════════════ --}}
-    {{-- JAVASCRIPT: Fix bfcache + Auto-hide Navbar          --}}
-    {{-- ═══════════════════════════════════════════════════ --}}
-    <script>
-        // Fix browser bfcache (back button stale UI)
-        window.addEventListener('pageshow', function(event) {
-            if (event.persisted) {
-                window.location.reload();
-            }
-        });
+/* ─── Fix bfcache ─── */
+window.addEventListener('pageshow', function (e) {
+    if (e.persisted) window.location.reload();
+});
+</script>
 
-        // Auto hide/show navbar on scroll
-        (function() {
-            const navbar = document.getElementById('mainNavbar');
-            if (!navbar) return;
-
-            let lastScroll = 0;
-            let ticking = false;
-            const scrollThreshold = 100;
-
-            function updateNavbar() {
-                const currentScroll = window.pageYOffset;
-
-                if (currentScroll > 20) {
-                    navbar.classList.add('navbar-scrolled');
-                } else {
-                    navbar.classList.remove('navbar-scrolled');
-                }
-
-                if (currentScroll < scrollThreshold) {
-                    navbar.classList.remove('navbar-hidden');
-                    lastScroll = currentScroll;
-                    ticking = false;
-                    return;
-                }
-
-                if (currentScroll > lastScroll + 5) {
-                    navbar.classList.add('navbar-hidden');
-                } else if (currentScroll < lastScroll - 5) {
-                    navbar.classList.remove('navbar-hidden');
-                }
-
-                lastScroll = currentScroll;
-                ticking = false;
-            }
-
-            window.addEventListener('scroll', function() {
-                if (!ticking) {
-                    window.requestAnimationFrame(updateNavbar);
-                    ticking = true;
-                }
-            }, { passive: true });
-        })();
-    </script>
 </body>
 </html>

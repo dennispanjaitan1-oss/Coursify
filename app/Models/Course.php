@@ -150,4 +150,9 @@ class Course extends Model
     {
         return $this->sections->flatMap->lessons->count();
     }
+
+    public function getRouteKeyName()
+{
+    return 'slug';
+}
 }
