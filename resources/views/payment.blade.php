@@ -1233,6 +1233,7 @@
       const { name, email, plan } = window._strukData || {};
       document.getElementById('successMsg').textContent =
         Selamat ${name}! Akun ${plan} kamu sudah aktif. Konfirmasi dikirim ke ${email}.;
+        `Selamat ${name}! Akun ${plan} kamu sudah aktif. Konfirmasi dikirim ke ${email}.`;182123c803bc7fff4bcd7d8c10a257e799ef707a
       document.getElementById('successOverlay').classList.add('show');
       btn.textContent = 'Bayar Sekarang →';
       btn.disabled = false;
