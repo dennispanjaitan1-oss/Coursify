@@ -499,6 +499,152 @@
     }
     .guarantee svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; color: var(--teal); }
 
+    /* ── STRUK MODAL ── */
+    .struk-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(26,24,37,0.55);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 900;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .struk-backdrop.show { opacity: 1; pointer-events: all; }
+
+    .struk-card {
+      background: rgba(255,255,255,0.97);
+      border: 1px solid rgba(255,255,255,0.95);
+      border-radius: 24px;
+      width: 100%;
+      max-width: 420px;
+      margin: 16px;
+      box-shadow: 0 32px 64px rgba(91,79,212,0.18), 0 8px 24px rgba(0,0,0,0.08);
+      overflow: hidden;
+      transform: translateY(24px) scale(0.97);
+      transition: transform 0.35s cubic-bezier(.34,1.56,.64,1);
+    }
+    .struk-backdrop.show .struk-card { transform: translateY(0) scale(1); }
+
+    .struk-header {
+      background: linear-gradient(135deg, #7B6FE8, #5B4FD4);
+      padding: 28px 28px 26px;
+      text-align: center;
+    }
+    .struk-icon {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.18);
+      border: 2px solid rgba(255,255,255,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      margin: 0 auto 12px;
+    }
+    .struk-header-title {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      font-weight: 400;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .struk-header-sub {
+      font-size: 12px;
+      color: rgba(255,255,255,0.7);
+      font-family: var(--font-sans);
+    }
+
+    .struk-body { padding: 24px 28px; }
+
+    .struk-ref {
+      background: var(--lav-1);
+      border: 1px dashed var(--lav-4);
+      border-radius: 12px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .struk-ref-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500; }
+    .struk-ref-value { font-family: var(--font-sans); font-size: 13px; font-weight: 700; color: var(--purple); letter-spacing: 0.5px; }
+
+    .struk-rows { display: flex; flex-direction: column; gap: 11px; margin-bottom: 20px; }
+    .struk-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+    .struk-row-label { font-size: 13px; color: var(--muted); flex-shrink: 0; }
+    .struk-row-value { font-size: 13px; color: var(--text); text-align: right; font-weight: 500; }
+
+    .struk-divider {
+      height: 1px;
+      background: repeating-linear-gradient(90deg, var(--lav-3) 0, var(--lav-3) 6px, transparent 6px, transparent 12px);
+      margin: 4px 0 18px;
+    }
+
+    .struk-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 16px;
+      background: rgba(0,200,150,0.07);
+      border: 1px solid rgba(0,200,150,0.2);
+      border-radius: 12px;
+      margin-bottom: 18px;
+    }
+    .struk-total-label { font-family: var(--font-sans); font-size: 14px; font-weight: 600; color: var(--text); }
+    .struk-total-amount { font-family: var(--font-serif); font-size: 22px; color: var(--teal); }
+
+    .struk-notice {
+      font-size: 11.5px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+
+    .struk-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .struk-btn-cancel {
+      padding: 13px;
+      border-radius: 12px;
+      border: 1.5px solid var(--lav-3);
+      background: transparent;
+      color: var(--text-soft);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s;
+    }
+    .struk-btn-cancel:hover { border-color: var(--purple); color: var(--purple); background: var(--lav-1); }
+    .struk-btn-confirm {
+      padding: 13px;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(135deg, #7B6FE8, #5B4FD4);
+      color: #fff;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.18s;
+      box-shadow: 0 4px 14px rgba(91,79,212,0.3);
+    }
+    .struk-btn-confirm:hover { box-shadow: 0 6px 18px rgba(91,79,212,0.4); transform: translateY(-1px); }
+    .struk-btn-confirm:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
+
+    .struk-footer {
+      padding: 13px 28px;
+      border-top: 1px solid var(--lav-2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: var(--lav-1);
+    }
+    .struk-footer svg { width: 13px; height: 13px; color: var(--teal); }
+    .struk-footer span { font-size: 11px; color: var(--muted); }
+
     /* SUCCESS OVERLAY */
     .success-overlay {
       position: fixed;
@@ -589,12 +735,84 @@
   </div>
 </nav>
 
+<!-- STRUK MODAL -->
+<div class="struk-backdrop" id="strukBackdrop">
+  <div class="struk-card">
+    <div class="struk-header">
+      <div class="struk-icon">🧾</div>
+      <div class="struk-header-title">Konfirmasi Pembayaran</div>
+      <div class="struk-header-sub">Periksa detail transaksi sebelum melanjutkan</div>
+    </div>
+    <div class="struk-body">
+
+      <div class="struk-ref">
+        <div>
+          <div class="struk-ref-label">No. Referensi</div>
+          <div class="struk-ref-value" id="strukRef">—</div>
+        </div>
+        <div style="text-align:right">
+          <div class="struk-ref-label">Tanggal</div>
+          <div class="struk-ref-value" id="strukDate" style="color:var(--muted);font-size:12px;font-weight:500">—</div>
+        </div>
+      </div>
+
+      <div class="struk-rows">
+        <div class="struk-row">
+          <span class="struk-row-label">Nama</span>
+          <span class="struk-row-value" id="strukName">—</span>
+        </div>
+        <div class="struk-row">
+          <span class="struk-row-label">Email</span>
+          <span class="struk-row-value" id="strukEmail" style="font-size:12px">—</span>
+        </div>
+        <div class="struk-row">
+          <span class="struk-row-label">Paket</span>
+          <span class="struk-row-value" id="strukPaket">—</span>
+        </div>
+        <div class="struk-row">
+          <span class="struk-row-label">Billing</span>
+          <span class="struk-row-value" id="strukBilling">—</span>
+        </div>
+        <div class="struk-row">
+          <span class="struk-row-label">Metode Bayar</span>
+          <span class="struk-row-value" id="strukMetode">—</span>
+        </div>
+        <div class="struk-row" id="strukPromoRow" style="display:none">
+          <span class="struk-row-label">Promo</span>
+          <span class="struk-row-value" style="color:var(--teal)" id="strukPromo">—</span>
+        </div>
+      </div>
+
+      <div class="struk-divider"></div>
+
+      <div class="struk-total-row">
+        <span class="struk-total-label">Total Pembayaran</span>
+        <span class="struk-total-amount" id="strukTotal">—</span>
+      </div>
+
+      <p class="struk-notice">
+        Dengan mengklik <strong>Bayar Sekarang</strong>, kamu menyetujui
+        Syarat &amp; Ketentuan dan Kebijakan Privasi kami.
+      </p>
+
+      <div class="struk-actions">
+        <button class="struk-btn-cancel" onclick="closeStruk()">Batal</button>
+        <button class="struk-btn-confirm" id="strukConfirmBtn" onclick="confirmPayment()">Bayar Sekarang →</button>
+      </div>
+    </div>
+    <div class="struk-footer">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span>Transaksi diproses dengan enkripsi SSL 256-bit</span>
+    </div>
+  </div>
+</div>
+
 <!-- SUCCESS OVERLAY -->
 <div class="success-overlay" id="successOverlay">
   <div class="success-circle">✓</div>
   <div class="success-title">Pembayaran Berhasil! 🎉</div>
   <div class="success-sub" id="successMsg">Selamat! Akun Pro kamu sudah aktif. Cek email untuk konfirmasi.</div>
-  <button class="success-back" onclick="document.getElementById('successOverlay').classList.remove('show')">Kembali ke Dashboard</button>
+  <button class="success-back" onclick="window.location.href='{{ route('student.index') }}'">Kembali ke Dashboard</button>
 </div>
 
 <!-- MAIN -->
@@ -651,16 +869,16 @@
       <div style="height:14px"></div>
 
       <div class="method-tabs">
-        <button class="method-tab active" onclick="switchMethod('qris', this)">
+        <button class="method-tab active" data-method="qris" onclick="switchMethod('qris', this)">
           <span class="method-tab-icon">⚡</span>QRIS
         </button>
-        <button class="method-tab" onclick="switchMethod('gopay', this)">
+        <button class="method-tab" data-method="gopay" onclick="switchMethod('gopay', this)">
           <span class="method-tab-icon">💚</span>GoPay
         </button>
-        <button class="method-tab" onclick="switchMethod('ovo', this)">
+        <button class="method-tab" data-method="ovo" onclick="switchMethod('ovo', this)">
           <span class="method-tab-icon">💜</span>OVO
         </button>
-        <button class="method-tab" onclick="switchMethod('dana', this)">
+        <button class="method-tab" data-method="dana" onclick="switchMethod('dana', this)">
           <span class="method-tab-icon">💙</span>DANA
         </button>
       </div>
@@ -672,7 +890,6 @@
         <p style="font-size:13px;color:var(--text-soft);line-height:1.6">Scan QR di bawah menggunakan aplikasi apapun yang mendukung QRIS (GoPay, OVO, DANA, ShopeePay, dll)</p>
         <div class="qris-box">
           <div class="qris-code">
-            <!-- QR Code SVG placeholder — ganti dengan QR asli dari payment gateway -->
             <svg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
               <rect width="160" height="160" fill="white"/>
               <g fill="#111">
@@ -886,7 +1103,7 @@
     method: 'qris',
     promoApplied: false,
     prices: {
-      pro: { monthly: 99000, yearly: 79200 },
+      pro:      { monthly: 99000,  yearly: 79200 },
       business: { monthly: 499000, yearly: 399200 }
     }
   };
@@ -923,23 +1140,23 @@
   /* ── SUMMARY ── */
   function fmt(n) { return 'Rp ' + n.toLocaleString('id-ID'); }
   function updateSummary() {
-    const base = state.yearly ? state.prices[state.plan].yearly : state.prices[state.plan].monthly;
+    const base     = state.yearly ? state.prices[state.plan].yearly : state.prices[state.plan].monthly;
     const origBase = state.prices[state.plan].monthly;
     const discount = state.yearly ? (origBase - base) : 0;
     const promoAmt = state.promoApplied ? Math.round(base * 0.1) : 0;
     const subtotal = base - promoAmt;
-    const tax = Math.round(subtotal * 0.11);
-    const total = subtotal + tax;
+    const tax      = Math.round(subtotal * 0.11);
+    const total    = subtotal + tax;
 
-    document.getElementById('summaryPlanName').textContent = 'Paket ' + (state.plan === 'pro' ? 'Pro' : 'Business');
-    document.getElementById('summaryPlanDesc').textContent = state.yearly ? 'Tagihan Tahunan' : 'Tagihan Bulanan';
-    document.getElementById('summaryBase').textContent = fmt(origBase);
-    document.getElementById('summaryDiscount').textContent = '−' + fmt(discount);
-    document.getElementById('summaryPromo').textContent = '−' + fmt(promoAmt);
-    document.getElementById('promoRow').style.display = state.promoApplied ? '' : 'none';
-    document.getElementById('summaryTax').textContent = fmt(tax);
-    document.getElementById('summaryTotal').textContent = fmt(total);
-    document.getElementById('payBtn').textContent = 'Bayar ' + fmt(total) + ' →';
+    document.getElementById('summaryPlanName').textContent  = 'Paket ' + (state.plan === 'pro' ? 'Pro' : 'Business');
+    document.getElementById('summaryPlanDesc').textContent  = state.yearly ? 'Tagihan Tahunan' : 'Tagihan Bulanan';
+    document.getElementById('summaryBase').textContent      = fmt(origBase);
+    document.getElementById('summaryDiscount').textContent  = '−' + fmt(discount);
+    document.getElementById('summaryPromo').textContent     = '−' + fmt(promoAmt);
+    document.getElementById('promoRow').style.display       = state.promoApplied ? '' : 'none';
+    document.getElementById('summaryTax').textContent       = fmt(tax);
+    document.getElementById('summaryTotal').textContent     = fmt(total);
+    document.getElementById('payBtn').textContent           = 'Bayar ' + fmt(total) + ' →';
   }
 
   /* ── PROMO ── */
@@ -958,25 +1175,77 @@
     }
   }
 
-  /* ── PAY ── */
-  function handlePay() {
-    const email = document.getElementById('emailInput').value.trim();
-    const name = document.getElementById('nameInput').value.trim();
-    if (!email || !name) { alert('Lengkapi email dan nama kamu terlebih dahulu.'); return; }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('Format email tidak valid.'); return; }
+  /* ── STRUK HELPERS ── */
+  function generateRef() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let ref = 'CRS-';
+    for (let i = 0; i < 8; i++) ref += chars[Math.floor(Math.random() * chars.length)];
+    return ref;
+  }
 
-    const btn = document.getElementById('payBtn');
-    btn.classList.add('loading');
+  function getMethodLabel() {
+    const activeTab = document.querySelector('.method-tab.active');
+    const methodMap = { qris: 'QRIS', gopay: 'GoPay', ovo: 'OVO', dana: 'DANA' };
+    return methodMap[activeTab?.dataset?.method] || '—';
+  }
+
+  function openStruk(name, email) {
+    updateSummary();
+
+    document.getElementById('strukRef').textContent = generateRef();
+    const now = new Date();
+    document.getElementById('strukDate').textContent = now.toLocaleDateString('id-ID', {
+      day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
+    });
+
+    document.getElementById('strukName').textContent    = name;
+    document.getElementById('strukEmail').textContent   = email;
+    document.getElementById('strukPaket').textContent   = 'Paket ' + (state.plan === 'pro' ? 'Pro' : 'Business');
+    document.getElementById('strukBilling').textContent = state.yearly ? 'Tahunan' : 'Bulanan';
+    document.getElementById('strukMetode').textContent  = getMethodLabel();
+
+    const promoCode = document.getElementById('promoInput').value.trim().toUpperCase();
+    if (state.promoApplied && promoCode) {
+      document.getElementById('strukPromoRow').style.display = 'flex';
+      document.getElementById('strukPromo').textContent = promoCode + ' (−10%)';
+    } else {
+      document.getElementById('strukPromoRow').style.display = 'none';
+    }
+
+    document.getElementById('strukTotal').textContent = document.getElementById('summaryTotal').textContent;
+
+    window._strukData = { name, email, plan: state.plan === 'pro' ? 'Pro' : 'Business' };
+    document.getElementById('strukBackdrop').classList.add('show');
+  }
+
+  function closeStruk() {
+    document.getElementById('strukBackdrop').classList.remove('show');
+  }
+
+  function confirmPayment() {
+    const btn = document.getElementById('strukConfirmBtn');
     btn.textContent = 'Memproses...';
+    btn.disabled = true;
 
+    // Simulasi (ganti dengan API call ke payment gateway)
     setTimeout(() => {
-      btn.classList.remove('loading');
-      updateSummary();
-      const plan = state.plan === 'pro' ? 'Pro' : 'Business';
+      document.getElementById('strukBackdrop').classList.remove('show');
+      const { name, email, plan } = window._strukData || {};
       document.getElementById('successMsg').textContent =
         `Selamat ${name}! Akun ${plan} kamu sudah aktif. Konfirmasi dikirim ke ${email}.`;
       document.getElementById('successOverlay').classList.add('show');
-    }, 2200);
+      btn.textContent = 'Bayar Sekarang →';
+      btn.disabled = false;
+    }, 1800);
+  }
+
+  /* ── PAY ── */
+  function handlePay() {
+    const email = document.getElementById('emailInput').value.trim();
+    const name  = document.getElementById('nameInput').value.trim();
+    if (!email || !name) { alert('Lengkapi email dan nama kamu terlebih dahulu.'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('Format email tidak valid.'); return; }
+    openStruk(name, email);
   }
 
   /* ── QRIS TIMER ── */
