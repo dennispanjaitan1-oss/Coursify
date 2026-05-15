@@ -611,24 +611,29 @@ body::before {
 }
 
 .course-menu {
-    width: 38px;
-    height: 38px;
+    position: absolute; /* Ubah dari inline-flex ke absolute */
+    top: 12px;
+    right: 12px;
+    width: 32px; /* Sedikit lebih kecil agar proporsional */
+    height: 32px;
     border-radius: 50%;
-    border: 1.5px solid var(--border);
-    background: white;
-    color: var(--text-soft);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.2); /* Semi transparan */
+    backdrop-filter: blur(10px);
+    color: white; /* Warna putih agar kontras dengan background gradient */
     cursor: pointer;
     font-size: 16px;
     transition: all 0.2s;
-    flex-shrink: 0;
-    display: inline-flex;
+    z-index: 10; /* Pastikan di atas thumbnail */
+    display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .course-menu:hover {
-    border-color: var(--purple);
+    background: white;
     color: var(--purple);
+    border-color: white;
 }
 
 /* ═══ EMPTY STATE ═══ */
@@ -1022,7 +1027,12 @@ body::before {
 
         {{-- Courses Grid --}}
         <div class="courses-grid">
-
+@php
+    // Ambil slug dari object course
+    $courseSlug = $course->slug ?? 'course-error';
+    
+    // Pastikan rute student.learn mendapatkan slug bukan ID
+@endphp
             @forelse($enrollments as $enrollment)
                 @php
                     // Handle both Eloquent & dummy data
@@ -1063,7 +1073,8 @@ if ($progress >= 100 || $status === 'completed') {
                     $icon = $course->icon ?? '📚';
                     $instructorName = $course->instructor_name ?? (isset($course->instructors) && $course->instructors->count() > 0 ? $course->instructors->first()->name : 'Coursify Team');
                     $initial = $course->initial ?? strtoupper(substr($instructorName, 0, 1));
-                    $lessonsTotal = $course->lessons_total ?? 0;
+                    $lessonsTotal = $course->lessons()->count();
+                    $hasLessons = $lessonsTotal > 0;
                     $lessonsDone = $course->lessons_done ?? 0;
                 @endphp
 
@@ -1095,12 +1106,29 @@ if ($progress >= 100 || $status === 'completed') {
                         </div>
 
                         {{-- Footer: Continue Button + Menu --}}
-                        <div class="course-footer">
-                            <a href="{{ $progress >= 100 || $status === 'completed' ? route('student.certificates') : route('courses.show', $courseSlug) }}"
+<div class="course-footer">
+
+@if($hasLessons)
+
+<a href="{{ $progress >= 100 || $status === 'completed' 
+    ? route('student.certificates') 
+    : route('student.learn', ['slug' => $courseSlug]) }}"
    class="btn-continue {{ $btnClass }}">
     {!! $btnLabel !!}
 </a>
-                           <button class="course-menu" title="More options"
+
+@else
+
+<button class="btn-continue"
+        style="background:#B0AEC2; cursor:not-allowed;"
+        disabled>
+    <i class="fa-solid fa-clock"></i>
+    Course Not Ready
+</button>
+
+@endif
+
+<button class="course-menu" title="More options"
     onclick="toggleMenu(this, event)"
     data-enrollment-id="{{ $enrollment->id }}"
     data-course-title="{{ $courseTitle }}"
@@ -1108,7 +1136,8 @@ if ($progress >= 100 || $status === 'completed') {
     data-course-url="{{ url('courses/' . $courseSlug) }}">
     ⋯
 </button>
-                        </div>
+
+</div>
 
                         {{-- Review Form — hanya tampil kalau sudah selesai --}}
                         @if($progress >= 100 || $status === 'completed')
@@ -1294,9 +1323,10 @@ function cdmAction(type, value, el, title) {
     }
 
     if (type === 'resume') {
-        window.location.href = `/courses/${value}`;
-        return;
-    }
+    // Gunakan window.location.origin agar URL absolut dan tidak error saat di sub-folder
+    window.location.href = window.location.origin + "/dashboard/learn/" + value;
+    return;
+}
 
     if (type === 'share') {
         navigator.clipboard.writeText(value).then(() => {

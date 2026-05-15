@@ -1,1784 +1,1961 @@
+{{-- resources/views/student/dashboard.blade.php --}}
 <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<title>Dashboard</title>
-
+<title>Dashboard — Coursify</title>
 <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
-<!-- Font Awesome 6.x (Versi Terbaru) -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;400;500;600&display=swap" rel="stylesheet">
 @vite(['resources/css/app.css', 'resources/js/app.js'])
-<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
 <style>
+/* ════════════════════════════════════════════════════════════
+   DESIGN SYSTEM — Coursify Premium Dashboard
+   Aesthetic: Apple-refined × Linear-precise × Editorial-clean
+   ════════════════════════════════════════════════════════════ */
 :root {
-    --navy: #153759;
-    --navy-dark: #0F2744;
-    --lav-1: #F5F1FC;
-    --lav-2: #E8E1F3;
-    --lav-3: #D4CDF0;
-    --lav-4: #B8AFEB;
-    --purple: #7B6FE8;
-    --purple-dark: #5B4FD4;
-    --teal: #00C896;
-    --teal-light: #E6FBF5;
-    --orange: #FF8A5B;
-    --orange-light: #FFF0E8;
-    --gold: #FFC452;
-    --gold-light: #FFF7E0;
-    --text: #1A1825;
-    --text-soft: #4A4660;
-    --muted: #8B87A8;
-    --border: rgba(30,58,95,0.08);
-    --bg: #FAF8FD;
-    --font-serif: 'Instrument Serif', serif;
-    --font-sans: 'Inter', sans-serif;
+  /* Core palette */
+  --ink:        #0A0A0F;
+  --ink-2:      #1C1C26;
+  --ink-3:      #2E2E3E;
+  --body:       #F2F1F6;        /* iOS system background grey */
+  --surface:    #FFFFFF;
+  --surface-2:  #F8F7FC;
+  --border:     rgba(0,0,0,0.06);
+  --border-2:   rgba(0,0,0,0.10);
+
+  /* Text */
+  --text-1:     #0A0A0F;
+  --text-2:     #3C3C50;
+  --text-3:     #6B6B80;
+  --text-4:     #9898AA;
+
+  /* Accent: deep indigo */
+  --accent:     #4F46E5;
+  --accent-2:   #6D64F0;
+  --accent-fg:  #FFFFFF;
+  --accent-tint:#EEF2FF;
+  --accent-glow:rgba(79,70,229,0.15);
+
+  /* Semantic colors */
+  --green:      #10B981;
+  --green-tint: #ECFDF5;
+  --amber:      #F59E0B;
+  --amber-tint: #FFFBEB;
+  --rose:       #F43F5E;
+  --rose-tint:  #FFF1F2;
+  --sky:        #0EA5E9;
+  --sky-tint:   #F0F9FF;
+
+  /* Typography */
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --font-body:    'DM Sans', -apple-system, sans-serif;
+
+  /* Spacing */
+  --sidebar-w:  252px;
+  --radius-sm:  8px;
+  --radius-md:  12px;
+  --radius-lg:  18px;
+  --radius-xl:  24px;
+
+  /* Shadows */
+  --shadow-sm:  0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:  0 4px 16px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.05);
+  --shadow-lg:  0 12px 40px rgba(0,0,0,0.09), 0 2px 8px rgba(0,0,0,0.05);
+  --shadow-accent: 0 8px 24px rgba(79,70,229,0.25);
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
 
 body {
-    font-family: var(--font-sans);
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
-    display: flex;
+  font-family: var(--font-body);
+  background: var(--body);
+  color: var(--text-1);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  overflow-x: hidden;
 }
 
-/* ═══ SIDEBAR ═══ */
+/* ═══════════════════════════════════════════════
+   SIDEBAR
+   ═══════════════════════════════════════════════ */
 .sidebar {
-    width: 240px;
-    background: white;
-    border-right: 1px solid var(--border);
-    padding: 24px 16px;
-    position: fixed;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    z-index: 50;
+  width: var(--sidebar-w);
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  position: fixed;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  transition: transform 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
 }
 
+.sidebar::-webkit-scrollbar { display: none; }
+
+/* Logo */
 .sidebar-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 0 8px 24px;
-    text-decoration: none;
-    color: var(--text);
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 20px 18px;
+  text-decoration: none;
+  color: var(--text-1);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
 }
 
 .sidebar-logo-img {
-    width: 34px;
-    height: 34px;
-    border-radius: 9px;
-    box-shadow: 0 2px 8px rgba(30,58,95,0.2);
-    object-fit: cover;
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: var(--shadow-sm);
 }
 
-.sidebar-logo-text {
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
+.sidebar-logo-mark {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: -0.3px;
+  color: var(--text-1);
 }
 
-.sidebar-section {
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    padding: 12px 12px 6px;
+/* Nav sections */
+.sidebar-body { flex: 1; padding: 8px 12px; }
+
+.nav-section-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-4);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 14px 8px 6px;
 }
 
-.sidebar-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    margin-bottom: 16px;
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 10px;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: var(--text-3);
+  font-size: 13.5px;
+  font-weight: 500;
+  transition: all 0.15s ease;
+  letter-spacing: -0.1px;
+  margin-bottom: 1px;
 }
 
-.sidebar-link {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 12px;
-    border-radius: 10px;
-    text-decoration: none;
-    color: var(--text-soft);
-    font-size: 13.5px;
-    font-weight: 500;
-    transition: all 0.2s;
-    position: relative;
+.nav-item:hover {
+  background: var(--surface-2);
+  color: var(--text-1);
 }
 
-.sidebar-link:hover {
-    background: var(--lav-1);
-    color: var(--text);
+.nav-item.active {
+  background: var(--accent-tint);
+  color: var(--accent);
+  font-weight: 600;
 }
 
-.sidebar-link.active {
-    background: linear-gradient(135deg, var(--purple), var(--purple-dark));
-    color: white;
-    box-shadow: 0 4px 12px rgba(123,111,232,0.3);
+.nav-item.active .nav-icon { color: var(--accent); }
+
+.nav-icon {
+  width: 16px;
+  font-size: 13px;
+  text-align: center;
+  flex-shrink: 0;
+  color: var(--text-4);
+  transition: color 0.15s;
 }
 
-.sidebar-link-icon {
-    width: 18px;
-    font-size: 16px;
-    text-align: center;
-    flex-shrink: 0;
+.nav-item:hover .nav-icon { color: var(--text-2); }
+
+/* Sidebar user footer */
+.sidebar-footer {
+  border-top: 1px solid var(--border);
+  padding: 12px;
+  flex-shrink: 0;
 }
 
-.sidebar-badge {
-    margin-left: auto;
-    background: var(--orange);
-    color: white;
-    font-size: 10px;
-    font-weight: 700;
-    padding: 2px 7px;
-    border-radius: 100px;
-}
-
-.sidebar-link.active .sidebar-badge {
-    background: white;
-    color: var(--purple);
-}
-
-/* Sidebar user card */
 .sidebar-user {
-    margin-top: auto;
-    padding: 12px;
-    background: linear-gradient(135deg, var(--lav-1), white);
-    border: 1px solid rgba(123,111,232,0.15);
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background 0.15s;
 }
 
-.sidebar-user:hover {
-    border-color: var(--purple);
-    box-shadow: 0 4px 12px rgba(123,111,232,0.1);
-}
+.sidebar-user:hover { background: var(--surface-2); }
 
 .user-avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--navy), #2D4D7A);
-    color: white;
-    font-weight: 700;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), #818CF8);
+  color: white;
+  font-weight: 600;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  letter-spacing: -0.5px;
 }
 
-.user-info {
-    flex: 1;
-    min-width: 0;
-}
+.user-meta { flex: 1; min-width: 0; }
 
 .user-name {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-1);
+  letter-spacing: -0.2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .user-role {
-    font-size: 10px;
-    color: var(--purple);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+  font-size: 11px;
+  color: var(--text-4);
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: capitalize;
 }
 
-/* ═══ MAIN CONTENT ═══ */
+.logout-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-4);
+  font-size: 14px;
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+}
+
+.logout-btn:hover {
+  color: var(--rose);
+  background: var(--rose-tint);
+}
+
+/* ═══════════════════════════════════════════════
+   MAIN LAYOUT
+   ═══════════════════════════════════════════════ */
 .main {
-    flex: 1;
-    margin-left: 240px;
-    padding: 24px 32px;
-    min-height: 100vh;
+  flex: 1;
+  margin-left: var(--sidebar-w);
+  min-height: 100vh;
+  max-width: calc(100vw - var(--sidebar-w));
 }
 
-/* Top Bar */
 .topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 24px;
-    gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(242,241,246,0.85);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border-bottom: 1px solid var(--border);
+  padding: 0 32px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
 }
 
-.topbar-search {
-    flex: 1;
-    max-width: 420px;
-    position: relative;
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.search-wrap {
+  position: relative;
+  width: 280px;
 }
 
 .search-input {
-    width: 100%;
-    padding: 11px 16px 11px 42px;
-    background: white;
-    border: 1.5px solid var(--border);
-    border-radius: 100px;
-    font-family: var(--font-sans);
-    font-size: 13px;
-    color: var(--text);
-    outline: none;
-    transition: all 0.2s;
+  width: 100%;
+  height: 34px;
+  padding: 0 12px 0 34px;
+  background: var(--surface);
+  border: 1px solid var(--border-2);
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--text-1);
+  outline: none;
+  transition: all 0.15s;
 }
 
-.search-input::placeholder { color: var(--muted); }
+.search-input::placeholder { color: var(--text-4); }
 
 .search-input:focus {
-    border-color: var(--purple);
-    box-shadow: 0 0 0 4px rgba(123,111,232,0.1);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
 }
 
 .search-icon {
-    position: absolute;
-    left: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--muted);
-    font-size: 14px;
-    pointer-events: none;
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-4);
+  font-size: 12px;
+  pointer-events: none;
 }
 
-.topbar-actions {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.topbar-actions { display: flex; align-items: center; gap: 6px; }
+
+.topbar-btn {
+  width: 34px; height: 34px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-2);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-3);
+  font-size: 14px;
+  transition: all 0.15s;
+  position: relative;
 }
 
-.icon-btn {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: 1.5px solid var(--border);
-    background: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s;
-    color: var(--text-soft);
-    font-size: 16px;
-    position: relative;
+.topbar-btn:hover {
+  background: var(--surface-2);
+  color: var(--text-1);
+  border-color: var(--border-2);
 }
 
-.icon-btn:hover {
-    background: var(--lav-1);
-    border-color: var(--purple);
-    color: var(--purple);
+.topbar-btn-dot {
+  position: absolute;
+  top: 6px; right: 6px;
+  width: 6px; height: 6px;
+  background: var(--rose);
+  border-radius: 50%;
+  border: 1.5px solid var(--body);
 }
 
-.icon-btn-dot {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    width: 8px;
-    height: 8px;
-    background: var(--orange);
-    border-radius: 50%;
-    border: 2px solid white;
+/* ═══════════════════════════════════════════════
+   PAGE CONTENT
+   ═══════════════════════════════════════════════ */
+.page-content {
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
 }
 
-/* ═══ WELCOME HERO ═══ */
-.welcome-card {
-    background: linear-gradient(135deg, var(--navy) 0%, #1E4A7A 50%, #2D4D7A 100%);
-    border-radius: 24px;
-    padding: 32px;
-    color: white;
-    margin-bottom: 24px;
-    position: relative;
-    overflow: hidden;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 24px;
-    align-items: center;
+/* ── Hero ── */
+.hero {
+  background: linear-gradient(118deg, #0F0F1A 0%, #1A1535 45%, #16213E 100%);
+  border-radius: var(--radius-xl);
+  padding: 36px 40px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 32px;
 }
 
-.welcome-card::before {
-    content: '';
-    position: absolute;
-    top: -100px;
-    right: -100px;
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, rgba(184,175,235,0.25), transparent 70%);
-    pointer-events: none;
+/* Subtle mesh background */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 80% at 80% 50%, rgba(99,102,241,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 60% at 20% 80%, rgba(16,185,129,0.10) 0%, transparent 55%);
+  pointer-events: none;
 }
 
-.welcome-card::after {
-    content: '';
-    position: absolute;
-    bottom: -50px;
-    left: 40%;
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, rgba(0,200,150,0.15), transparent 70%);
-    pointer-events: none;
+/* Grid texture */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  opacity: 0.5;
 }
 
-.welcome-content {
-    position: relative;
-    z-index: 1;
+.hero-content { position: relative; z-index: 1; }
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 100px;
+  padding: 4px 12px 4px 8px;
+  margin-bottom: 16px;
 }
 
-.welcome-greeting {
-    font-size: 13px;
-    color: var(--lav-4);
-    margin-bottom: 8px;
-    font-weight: 500;
-    letter-spacing: 0.02em;
+.hero-eyebrow-dot {
+  width: 6px; height: 6px;
+  background: var(--green);
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 
-.welcome-title {
-    font-family: var(--font-serif);
-    font-size: 36px;
-    font-weight: 400;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    margin-bottom: 12px;
+.hero-eyebrow-text {
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.7);
+  letter-spacing: 0.02em;
 }
 
-.welcome-title em {
-    font-style: italic;
-    color: var(--lav-4);
+.hero-title {
+  font-family: var(--font-display);
+  font-size: 38px;
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.5px;
+  margin-bottom: 10px;
+  color: white;
 }
 
-.welcome-subtitle {
-    font-size: 14px;
-    color: rgba(255,255,255,0.75);
-    line-height: 1.6;
-    max-width: 420px;
-    margin-bottom: 18px;
+.hero-title em {
+  font-style: italic;
+  color: #A5B4FC;
 }
 
-.welcome-actions {
-    display: flex;
-    gap: 10px;
+.hero-sub {
+  font-size: 14px;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.6;
+  max-width: 400px;
+  margin-bottom: 24px;
+  font-weight: 300;
 }
 
-.btn-welcome {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 10px 20px;
-    border-radius: 100px;
-    font-family: var(--font-sans);
-    font-size: 13px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.2s;
-    border: none;
-    cursor: pointer;
+.hero-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 20px;
+  height: 38px;
+  border-radius: 100px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.18s ease;
+  cursor: pointer;
+  border: none;
+  white-space: nowrap;
+  letter-spacing: -0.1px;
 }
 
-.btn-welcome-primary {
-    background: white;
-    color: var(--navy);
+.btn-white {
+  background: white;
+  color: var(--ink);
 }
 
-.btn-welcome-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+.btn-white:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
 }
 
-.btn-welcome-ghost {
-    background: rgba(255,255,255,0.15);
-    color: white;
-    border: 1px solid rgba(255,255,255,0.25);
+.btn-ghost {
+  background: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.85);
+  border: 1px solid rgba(255,255,255,0.15);
 }
 
-.btn-welcome-ghost:hover {
-    background: rgba(255,255,255,0.25);
+.btn-ghost:hover {
+  background: rgba(255,255,255,0.17);
 }
 
-.welcome-visual {
-    position: relative;
-    z-index: 1;
+.btn-accent {
+  background: var(--accent);
+  color: white;
+  box-shadow: var(--shadow-accent);
 }
 
-.welcome-img {
-    width: 140px;
-    height: 140px;
-    border-radius: 20px;
-    background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255,255,255,0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 64px;
+.btn-accent:hover {
+  background: var(--accent-2);
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(79,70,229,0.35);
 }
 
-/* ═══ STATS GRID ═══ */
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    margin-bottom: 28px;
+.hero-visual {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-icon-ring {
+  width: 100px; height: 100px;
+  border-radius: 28px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 46px;
+}
+
+/* ── Stats strip ── */
+.stats-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
 }
 
 .stat-card {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 20px;
-    transition: all 0.2s;
-    position: relative;
-    overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  transition: all 0.2s ease;
+  cursor: default;
 }
 
 .stat-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 30px rgba(30,58,95,0.08);
-    border-color: var(--purple);
+  border-color: var(--border-2);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
-.stat-icon-wrap {
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    margin-bottom: 14px;
+.stat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
 }
-
-.stat-icon-purple { background: rgba(123,111,232,0.12); }
-.stat-icon-teal { background: var(--teal-light); }
-.stat-icon-orange { background: var(--orange-light); }
-.stat-icon-gold { background: var(--gold-light); }
 
 .stat-label {
-    font-size: 12px;
-    color: var(--muted);
-    font-weight: 500;
-    margin-bottom: 4px;
+  font-size: 12px;
+  color: var(--text-3);
+  font-weight: 500;
+  letter-spacing: -0.1px;
 }
 
+.stat-icon {
+  width: 32px; height: 32px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.si-indigo { background: var(--accent-tint); color: var(--accent); }
+.si-green  { background: var(--green-tint);  color: var(--green); }
+.si-amber  { background: var(--amber-tint);  color: var(--amber); }
+.si-sky    { background: var(--sky-tint);    color: var(--sky); }
+
 .stat-value {
-    font-family: var(--font-serif);
-    font-size: 32px;
-    font-weight: 400;
-    color: var(--text);
-    letter-spacing: -0.02em;
-    line-height: 1;
-    margin-bottom: 6px;
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.5px;
+  color: var(--text-1);
+  margin-bottom: 6px;
+}
+
+.stat-value small {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-3);
+  font-weight: 400;
+  letter-spacing: 0;
 }
 
 .stat-trend {
-    font-size: 11px;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
+  font-size: 11.5px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  letter-spacing: -0.1px;
 }
 
-.stat-trend-up { color: var(--teal); }
-.stat-trend-down { color: var(--orange); }
-.stat-trend-neutral { color: var(--muted); }
+.trend-up      { color: var(--green); }
+.trend-neutral { color: var(--text-4); }
 
-/* ═══ SECTION HEADER ═══ */
-.section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 16px;
+/* ── Section head ── */
+.sec-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 14px;
 }
 
-.section-title {
-    font-family: var(--font-serif);
-    font-size: 24px;
-    font-weight: 400;
-    letter-spacing: -0.01em;
-    color: var(--text);
+.sec-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: -0.3px;
+  color: var(--text-1);
 }
 
-.section-title em {
-    font-style: italic;
-    color: var(--purple);
+.sec-title em {
+  font-style: italic;
+  color: var(--accent);
 }
 
-.section-link {
-    font-size: 13px;
-    color: var(--purple);
-    text-decoration: none;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    transition: all 0.2s;
+.sec-link {
+  font-size: 12.5px;
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  letter-spacing: -0.1px;
+  transition: gap 0.15s;
 }
 
-.section-link:hover {
-    color: var(--purple-dark);
-    gap: 8px;
-}
+.sec-link:hover { gap: 6px; }
 
-/* ═══ CONTINUE LEARNING ═══ */
+/* ── Continue learning card ── */
 .continue-card {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 24px;
-    margin-bottom: 28px;
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    gap: 24px;
-    align-items: center;
-    transition: all 0.2s;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 22px;
+  transition: all 0.2s;
 }
 
 .continue-card:hover {
-    border-color: var(--purple);
-    box-shadow: 0 12px 30px rgba(30,58,95,0.08);
+  border-color: var(--border-2);
+  box-shadow: var(--shadow-md);
 }
 
 .continue-thumb {
-    width: 120px;
-    height: 80px;
-    border-radius: 14px;
-    background: linear-gradient(135deg, #667EEA, #764BA2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 36px;
-    position: relative;
-    flex-shrink: 0;
+  width: 110px; height: 74px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--accent) 0%, #818CF8 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
 }
 
-.continue-thumb-play {
-    position: absolute;
-    bottom: 8px;
-    right: 8px;
-    width: 28px;
-    height: 28px;
-    background: rgba(255,255,255,0.95);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--navy);
-    font-size: 11px;
+.continue-thumb-icon {
+  font-size: 28px;
+  color: rgba(255,255,255,0.9);
 }
 
-.continue-info {
-    flex: 1;
-    min-width: 0;
+.continue-play {
+  position: absolute;
+  bottom: 7px; right: 7px;
+  width: 24px; height: 24px;
+  background: rgba(255,255,255,0.95);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  font-size: 9px;
 }
 
-.continue-label {
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--purple);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 6px;
+.continue-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 5px;
 }
+
+.continue-dot {
+  width: 5px; height: 5px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+.continue-tag.done { color: var(--green); }
+.continue-tag.done .continue-dot { background: var(--green); }
 
 .continue-title {
-    font-family: var(--font-serif);
-    font-size: 22px;
-    font-weight: 400;
-    letter-spacing: -0.01em;
-    margin-bottom: 6px;
-    line-height: 1.2;
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 400;
+  letter-spacing: -0.2px;
+  line-height: 1.2;
+  margin-bottom: 5px;
+  color: var(--text-1);
 }
 
-.continue-meta {
-    font-size: 12px;
-    color: var(--muted);
-    margin-bottom: 12px;
+.continue-sub {
+  font-size: 12px;
+  color: var(--text-3);
+  margin-bottom: 12px;
 }
 
-.continue-progress {
-    height: 6px;
-    background: var(--lav-2);
-    border-radius: 100px;
-    overflow: hidden;
-    margin-bottom: 4px;
+.progress-track {
+  height: 4px;
+  background: var(--surface-2);
+  border-radius: 100px;
+  overflow: hidden;
+  margin-bottom: 5px;
 }
 
-.continue-progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--purple), var(--lav-4));
-    border-radius: 100px;
-    transition: width 0.6s ease;
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), #818CF8);
+  border-radius: 100px;
+  transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.continue-progress-label {
-    font-size: 11px;
-    color: var(--muted);
-    font-weight: 500;
+.progress-fill.complete {
+  background: linear-gradient(90deg, var(--green), #34D399);
 }
 
-.btn-continue {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 11px 20px;
-    background: #1A1825;
-    color: white;
-    border: none;
-    border-radius: 100px;
-    font-family: var(--font-sans);
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    text-decoration: none;
-    transition: all 0.2s;
-    flex-shrink: 0;
+.progress-label {
+  font-size: 11px;
+  color: var(--text-4);
+  font-weight: 500;
 }
 
-.btn-continue:hover {
-    background: #2A2840;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(26,24,37,0.3);
+/* ── My Courses grid ── */
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(272px, 1fr));
+  gap: 14px;
 }
 
-/* Responsive */
-@media (max-width: 1100px) {
-    .stats-grid { grid-template-columns: repeat(2, 1fr); }
-    .continue-card {
-        grid-template-columns: 1fr;
-        gap: 16px;
-    }
-    .continue-thumb { width: 100%; height: 140px; }
+.course-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  text-decoration: none;
+  color: var(--text-1);
+  transition: all 0.22s;
+  display: flex;
+  flex-direction: column;
+}
+
+.course-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--border-2);
+}
+
+.course-thumb {
+  aspect-ratio: 16/9;
+  position: relative;
+  overflow: hidden;
+  background: var(--surface-2);
+}
+
+.course-thumb img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.course-card:hover .course-thumb img { transform: scale(1.04); }
+
+.course-thumb-fallback {
+  width: 100%; height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+}
+
+.course-badge {
+  position: absolute;
+  top: 10px; right: 10px;
+  padding: 3px 9px;
+  border-radius: 100px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.badge-done { background: var(--green); color: white; }
+.badge-wip  { background: rgba(255,255,255,0.94); color: var(--accent); }
+
+.course-body {
+  padding: 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.course-cat {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--text-4);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 6px;
+}
+
+.course-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: -0.2px;
+  margin-bottom: 6px;
+}
+
+.course-instructor {
+  font-size: 12px;
+  color: var(--text-3);
+  margin-bottom: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.course-progress { margin-top: auto; }
+
+.course-prog-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-3);
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+/* ── Two-col: Activity + Upcoming ── */
+.two-col {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 14px;
+  align-items: start;
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 22px 24px;
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.panel-title {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 400;
+  letter-spacing: -0.2px;
+  color: var(--text-1);
+}
+
+.panel-title em { font-style: italic; color: var(--accent); }
+
+.tab-group {
+  display: flex;
+  gap: 2px;
+  background: var(--surface-2);
+  border-radius: 100px;
+  padding: 3px;
+  border: 1px solid var(--border);
+}
+
+.tab {
+  padding: 4px 12px;
+  border: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--text-3);
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.tab.active {
+  background: var(--surface);
+  color: var(--text-1);
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Activity summary */
+.activity-kpi {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.kpi-big {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.5px;
+}
+
+.kpi-big span { font-family: var(--font-body); font-size: 16px; color: var(--text-3); }
+
+.kpi-label {
+  font-size: 11.5px;
+  color: var(--text-4);
+  margin-top: 4px;
+  font-weight: 400;
+}
+
+/* Bar chart */
+.bar-chart {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  height: 120px;
+  align-items: end;
+  margin-bottom: 12px;
+}
+
+.bar-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  height: 100%;
+  justify-content: flex-end;
+  position: relative;
+}
+
+.bar-tip {
+  position: absolute;
+  top: -28px;
+  background: var(--ink);
+  color: white;
+  padding: 2px 7px;
+  border-radius: 5px;
+  font-size: 10px;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.15s;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.bar-tip::after {
+  content: '';
+  position: absolute;
+  top: 100%; left: 50%;
+  transform: translateX(-50%);
+  border: 3px solid transparent;
+  border-top-color: var(--ink);
+}
+
+.bar-col:hover .bar-tip { opacity: 1; }
+
+.bar-track {
+  width: 100%;
+  height: 88px;
+  background: var(--surface-2);
+  border-radius: 5px 5px 0 0;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+.bar-col:hover .bar-track { transform: translateY(-2px); }
+
+.bar-fill {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: linear-gradient(180deg, var(--accent) 0%, var(--accent-2) 100%);
+  border-radius: 5px 5px 0 0;
+  transition: height 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bar-col.today .bar-fill {
+  background: linear-gradient(180deg, var(--green) 0%, #34D399 100%);
+}
+
+.bar-col.zero .bar-track { opacity: 0.4; }
+
+.bar-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-4);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.bar-col.today .bar-label { color: var(--green); font-weight: 700; }
+
+.activity-legend {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  color: var(--text-3);
+  font-weight: 400;
+}
+
+.legend-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+/* Up next list */
+.upcoming-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.upcoming-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background 0.15s;
+  text-decoration: none;
+  color: var(--text-1);
+}
+
+.upcoming-item:hover { background: var(--surface-2); }
+
+.upcoming-time-block {
+  text-align: center;
+  min-width: 44px;
+  flex-shrink: 0;
+}
+
+.up-day {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--text-4);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1px;
+}
+
+.up-clock {
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--text-1);
+}
+
+.up-icon {
+  width: 36px; height: 36px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.icon-video   { background: var(--accent-tint); color: var(--accent); }
+.icon-quiz    { background: var(--amber-tint);  color: var(--amber); }
+.icon-project { background: var(--green-tint);  color: var(--green); }
+.icon-reading { background: var(--sky-tint);    color: var(--sky); }
+
+.up-info { flex: 1; min-width: 0; }
+
+.up-title {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.1px;
+  margin-bottom: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.up-meta { font-size: 11px; color: var(--text-4); }
+
+.up-empty {
+  text-align: center;
+  padding: 32px 16px;
+  color: var(--text-4);
+  font-size: 13px;
+}
+
+/* ── Achievements grid ── */
+.ach-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 12px;
+}
+
+.ach-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  text-align: center;
+  transition: all 0.22s;
+  cursor: default;
+}
+
+.ach-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-2);
+}
+
+.ach-icon {
+  width: 52px; height: 52px;
+  border-radius: 16px;
+  margin: 0 auto 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  transition: transform 0.25s;
+}
+
+.ach-card:hover .ach-icon { transform: scale(1.1) rotate(-6deg); }
+
+.ai-indigo { background: var(--accent-tint); color: var(--accent); }
+.ai-amber  { background: var(--amber-tint);  color: var(--amber); }
+.ai-green  { background: var(--green-tint);  color: var(--green); }
+.ai-sky    { background: var(--sky-tint);    color: var(--sky); }
+
+.ach-title {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 400;
+  margin-bottom: 3px;
+  letter-spacing: -0.1px;
+}
+
+.ach-desc {
+  font-size: 11.5px;
+  color: var(--text-3);
+  line-height: 1.45;
+  margin-bottom: 8px;
+  min-height: 30px;
+}
+
+.ach-date {
+  font-size: 10.5px;
+  color: var(--text-4);
+  font-weight: 500;
+}
+
+.ach-empty {
+  grid-column: 1/-1;
+  text-align: center;
+  padding: 36px;
+  color: var(--text-4);
+  font-size: 13px;
+}
+
+/* ── Recommended grid ── */
+.rec-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(272px, 1fr));
+  gap: 14px;
+}
+
+.rec-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  text-decoration: none;
+  color: var(--text-1);
+  transition: all 0.22s;
+  display: flex;
+  flex-direction: column;
+}
+
+.rec-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--border-2);
+}
+
+.rec-thumb {
+  aspect-ratio: 16/9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 44px;
+  position: relative;
+  overflow: hidden;
+}
+
+.rec-thumb img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+
+.rec-thumb-fallback {
+  width: 100%; height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 44px;
+}
+
+.grad-1 { background: linear-gradient(135deg, #FA709A 0%, #FEE140 100%); }
+.grad-2 { background: linear-gradient(135deg, #30CFD0 0%, #330867 100%); }
+.grad-3 { background: linear-gradient(135deg, #A8EDEA 0%, #FED6E3 100%); }
+.grad-4 { background: linear-gradient(135deg, #4776E6 0%, #8E54E9 100%); }
+
+.rec-body {
+  padding: 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.rec-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: -0.2px;
+  margin-bottom: 4px;
+}
+
+.rec-instructor {
+  font-size: 12px;
+  color: var(--text-3);
+  margin-bottom: 8px;
+}
+
+.rec-meta {
+  display: flex;
+  gap: 10px;
+  font-size: 11.5px;
+  color: var(--text-4);
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.rec-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+
+.rec-price {
+  font-family: var(--font-display);
+  font-size: 17px;
+  letter-spacing: -0.2px;
+}
+
+.price-free { color: var(--green); }
+
+.rec-arrow {
+  color: var(--text-4);
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.rec-card:hover .rec-arrow {
+  color: var(--accent);
+  transform: translateX(3px);
+}
+
+/* ═══════════════════════════════════════════════
+   EMPTY STATES
+   ═══════════════════════════════════════════════ */
+.empty-continue {
+  text-align: center;
+  padding: 28px;
+  color: var(--text-3);
+}
+
+.empty-continue p { font-size: 14px; margin-bottom: 14px; }
+
+/* ═══════════════════════════════════════════════
+   MOBILE OVERLAY + HAMBURGER
+   ═══════════════════════════════════════════════ */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  z-index: 90;
+  backdrop-filter: blur(3px);
+}
+
+.hamburger {
+  display: none;
+  position: fixed;
+  bottom: 20px; right: 20px;
+  z-index: 110;
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: white;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  transition: all 0.2s;
+}
+
+.hamburger:hover { background: var(--ink-3); transform: scale(1.05); }
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════ */
+@media (max-width: 1200px) {
+  .two-col { grid-template-columns: 1fr; }
+  .stats-strip { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 900px) {
+  :root { --sidebar-w: 240px; }
 }
 
 @media (max-width: 768px) {
-    .sidebar {
-        transform: translateX(-100%);
-        transition: transform 0.3s;
-    }
-    .sidebar.open { transform: translateX(0); }
-    .main { margin-left: 0; padding: 16px; }
-    .welcome-card {
-        grid-template-columns: 1fr;
-        padding: 24px;
-    }
-    .welcome-title { font-size: 28px; }
-    .welcome-visual { display: none; }
-    .topbar-search { max-width: 100%; }
+  .sidebar {
+    transform: translateX(-100%);
+    box-shadow: none;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+    box-shadow: 4px 0 32px rgba(0,0,0,0.12);
+  }
+
+  .sidebar-overlay.open { display: block; }
+  .hamburger { display: flex; }
+
+  .main {
+    margin-left: 0;
+    max-width: 100vw;
+  }
+
+  .topbar { padding: 0 16px; }
+  .search-wrap { display: none; }
+  .page-content { padding: 16px; gap: 20px; }
+
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 28px 24px;
+    gap: 20px;
+  }
+
+  .hero-title { font-size: 28px; }
+  .hero-visual { display: none; }
+
+  .stats-strip { grid-template-columns: repeat(2, 1fr); }
+
+  .continue-card {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .continue-thumb { width: 100%; height: 120px; }
+}
+
+@media (max-width: 480px) {
+  .stats-strip { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .courses-grid { grid-template-columns: 1fr; }
+  .ach-grid { grid-template-columns: repeat(2, 1fr); }
+  .rec-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
 
-{{-- SIDEBAR --}}
-<aside class="sidebar">
-    <a href="{{ route('home') }}" class="sidebar-logo">
-        <img src="{{ asset('images/logo.png') }}" alt="Coursify" class="sidebar-logo-img">
-        <span class="sidebar-logo-text">Coursify</span>
-    </a>
+{{-- Mobile overlay --}}
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
 
-    <div class="sidebar-section">Menu</div>
-    <nav class="sidebar-nav">
-        <a href="{{ route('student.index') }}" class="sidebar-link {{ request()->routeIs('student.index') ? 'active' : '' }}">
-            <i class="fa-solid fa-gauge-high sidebar-link-icon"></i>
-            <span>Dashboard</span>
-        </a>
-        <a href="{{ route('student.courses') }}" class="sidebar-link {{ request()->routeIs('student.courses') ? 'active' : '' }}">
-            <i class="fa-solid fa-book-open sidebar-link-icon"></i>
-            <span>My Courses</span>
-        </a>
-        <a href="{{ route('courses.index') }}" class="sidebar-link {{ request()->routeIs('courses.*') ? 'active' : '' }}">
-            <i class="fa-solid fa-magnifying-glass sidebar-link-icon"></i>
-            <span>Browse</span>
-        </a>
-        <a href="{{ route('student.wishlist') }}" class="sidebar-link {{ request()->routeIs('student.wishlist') ? 'active' : '' }}">
-            <i class="fa-solid fa-heart sidebar-link-icon"></i>
-            <span>Wishlist</span>
-        </a>
-        <a href="{{ route('student.certificates') }}" class="sidebar-link {{ request()->routeIs('student.certificates') ? 'active' : '' }}">
-            <i class="fa-solid fa-trophy sidebar-link-icon"></i>
-            <span>Certificates</span>
-        </a>
+{{-- ═══ SIDEBAR ═══ --}}
+<aside class="sidebar" id="sidebar">
+  <a href="{{ route('home') }}" class="sidebar-logo">
+    <img src="{{ asset('images/logo.png') }}" alt="Coursify" class="sidebar-logo-img">
+    <span class="sidebar-logo-mark">Coursify</span>
+  </a>
+
+  <div class="sidebar-body">
+    <div class="nav-section-label">Menu</div>
+    <nav>
+      <a href="{{ route('student.index') }}"
+         class="nav-item {{ request()->routeIs('student.index') ? 'active' : '' }}">
+        <i class="fa-solid fa-gauge-high nav-icon"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="{{ route('student.courses') }}"
+         class="nav-item {{ request()->routeIs('student.courses') ? 'active' : '' }}">
+        <i class="fa-solid fa-book-open nav-icon"></i>
+        <span>My Courses</span>
+      </a>
+      <a href="{{ route('courses.index') }}"
+         class="nav-item {{ request()->routeIs('courses.*') ? 'active' : '' }}">
+        <i class="fa-solid fa-compass nav-icon"></i>
+        <span>Browse</span>
+      </a>
+      <a href="{{ route('student.wishlist') }}"
+         class="nav-item {{ request()->routeIs('student.wishlist') ? 'active' : '' }}">
+        <i class="fa-solid fa-heart nav-icon"></i>
+        <span>Wishlist</span>
+      </a>
+      <a href="{{ route('student.certificates') }}"
+         class="nav-item {{ request()->routeIs('student.certificates') ? 'active' : '' }}">
+        <i class="fa-solid fa-certificate nav-icon"></i>
+        <span>Certificates</span>
+      </a>
     </nav>
 
-    <div class="sidebar-section">Account</div>
-    <nav class="sidebar-nav">
-        <a href="{{ route('student.profile') }}" class="sidebar-link {{ request()->routeIs('student.profile') ? 'active' : '' }}">
-            <i class="fa-solid fa-user-pen sidebar-link-icon"></i>
-            <span>Profile</span>
-        </a>
-
+    <div class="nav-section-label">Account</div>
+    <nav>
+      <a href="{{ route('student.profile') }}"
+         class="nav-item {{ request()->routeIs('student.profile') ? 'active' : '' }}">
+        <i class="fa-solid fa-user nav-icon"></i>
+        <span>Profile</span>
+      </a>
     </nav>
+  </div>
 
-    {{-- User Card --}}
-<div class="sidebar-user">
-    <div class="user-avatar">
-        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
-    </div>
-    <div class="user-info">
-        <div class="user-name">{{ auth()->user()->name }}</div>
-        <div class="user-role">{{ auth()->user()->role }}</div>
-    </div>
-    <form method="POST" action="{{ route('logout') }}" style="margin:0;">
+  <div class="sidebar-footer">
+    <div class="sidebar-user">
+      <div class="user-avatar">{{ strtoupper(substr($user->name, 0, 1)) }}</div>
+      <div class="user-meta">
+        <div class="user-name">{{ $user->name }}</div>
+        <div class="user-role">{{ $user->role }}</div>
+      </div>
+      <form method="POST" action="{{ route('logout') }}" style="margin:0;display:flex;">
         @csrf
-        <button type="submit" style="background:none;border:none;cursor:pointer;color:var(--muted);padding:4px;" title="Logout">
-            <i class="fa-solid fa-right-from-bracket"></i>
+        <button type="submit" class="logout-btn" title="Logout">
+          <i class="fa-solid fa-right-from-bracket"></i>
         </button>
-    </form>
-</div>
+      </form>
+    </div>
+  </div>
 </aside>
 
-{{-- MAIN CONTENT --}}
+{{-- Hamburger --}}
+<button class="hamburger" id="hamburger" onclick="toggleSidebar()">
+  <i class="fa-solid fa-bars" id="hamburger-icon"></i>
+</button>
+
+{{-- ═══ MAIN ═══ --}}
 <main class="main">
 
-    {{-- TOP BAR --}}
-<div class="topbar">
-    <div class="topbar-search">
-        <span class="search-icon">
-            <i class="fa-solid fa-magnifying-glass"></i>
-        </span>
-            <input type="text" class="search-input" placeholder="Search courses, lessons, instructors...">
-        </div>
-
-        <div class="topbar-actions">
-    {{-- Notifications --}}
-    <button class="icon-btn" title="Notifications">
+  {{-- Topbar --}}
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="search-wrap">
+        <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+        <input type="text" class="search-input" placeholder="Search courses, lessons…">
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <button class="topbar-btn" title="Notifications">
         <i class="fa-solid fa-bell"></i>
-        <span class="icon-btn-dot"></span>
-    </button>
-
-    {{-- Messages --}}
-    <button class="icon-btn" title="Messages">
-        <i class="fa-solid fa-envelope"></i>
-    </button>
-
-    {{-- Help --}}
-    <button class="icon-btn" title="Help">
+        <span class="topbar-btn-dot"></span>
+      </button>
+      <button class="topbar-btn" title="Help">
         <i class="fa-solid fa-circle-question"></i>
-    </button>
-</div>
+      </button>
     </div>
+  </header>
 
-    {{-- WELCOME HERO --}}
-    <div class="welcome-card">
-        <div class="welcome-content">
-            <div class="welcome-greeting">
-                {{ now()->format('l, d F Y') }} <br> Good {{ now()->hour < 12 ? 'morning' : (now()->hour < 18 ? 'afternoon' : 'evening') }}
-            </div>
-            <h1 class="welcome-title">
-                Welcome back, <em>{{ explode(' ', auth()->user()->name)[0] }}</em>
-            </h1>
-            <p class="welcome-subtitle">
-                Continue your learning journey. You're just a few lessons away from completing your next milestone.
-            </p>
-            <div class="welcome-actions">
-                <a href="#" class="btn-welcome btn-welcome-primary">
-                    ▶ Continue Learning
-                </a>
-                <a href="{{ route('courses.index') }}" class="btn-welcome btn-welcome-ghost">
-                    Browse Courses
-                </a>
-            </div>
+  <div class="page-content">
+
+    {{-- ── HERO ── --}}
+    <div class="hero">
+      <div class="hero-content">
+        <div class="hero-eyebrow">
+          <span class="hero-eyebrow-dot"></span>
+          <span class="hero-eyebrow-text">
+            {{ now()->format('l, d F Y') }} ·
+            {{ now()->hour < 12 ? 'Good morning' : (now()->hour < 17 ? 'Good afternoon' : 'Good evening') }}
+          </span>
         </div>
-
-        <div class="welcome-visual">
-    <div class="welcome-img">
-        <i class="fa-solid fa-graduation-cap"></i>
-    </div>
-</div>
-    </div>
-
-    {{-- STATS GRID --}}
-<div class="stats-grid">
-    {{-- Enrolled Courses --}}
-    <div class="stat-card">
-        <div class="stat-icon-wrap stat-icon-purple">
-            <i class="fa-solid fa-book"></i>
+        <h1 class="hero-title">
+          Welcome back,<br><em>{{ explode(' ', $user->name)[0] }}</em>
+        </h1>
+        <p class="hero-sub">
+          @if($lastEnrollment)
+            You're {{ $lastEnrollment->real_progress_percent ?? 0 }}% through
+            <strong style="color:rgba(255,255,255,0.85)">{{ $lastEnrollment->course->title }}</strong>.
+            Keep going!
+          @else
+            Start your learning journey today. Thousands of courses are waiting for you.
+          @endif
+        </p>
+        <div class="hero-btns">
+          <a href="{{ $lastEnrollment ? route('student.learn', $lastEnrollment->course->slug) : route('courses.index') }}"
+             class="btn btn-white">
+            <i class="fa-solid fa-play" style="font-size:10px;"></i>
+            {{ $lastEnrollment ? 'Continue Learning' : 'Browse Courses' }}
+          </a>
+          <a href="{{ route('courses.index') }}" class="btn btn-ghost">
+            <i class="fa-solid fa-compass" style="font-size:11px;"></i>
+            Explore
+          </a>
         </div>
-        <div class="stat-label">Enrolled Courses</div>
-        <div class="stat-value">{{ $enrolledCount ?? 3 }}</div>
-        <div class="stat-trend stat-trend-up">
-            <i class="fa-solid fa-arrow-up"></i> 1 this month
-        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="hero-icon-ring">🎓</div>
+      </div>
     </div>
 
-    {{-- Completed --}}
-    <div class="stat-card">
-        <div class="stat-icon-wrap stat-icon-teal">
-            <i class="fa-solid fa-circle-check"></i>
+    {{-- ── STATS ── --}}
+    <div class="stats-strip">
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-label">Enrolled</span>
+          <div class="stat-icon si-indigo"><i class="fa-solid fa-book-open"></i></div>
         </div>
-        <div class="stat-label">Completed</div>
-        <div class="stat-value">{{ $completedCount ?? 1 }}</div>
-        <div class="stat-trend stat-trend-neutral">
-            <i class="fa-solid fa-minus"></i>
+        <div class="stat-value">{{ $stats['enrolled'] }}</div>
+        <div class="stat-trend trend-up">
+          <i class="fa-solid fa-arrow-up" style="font-size:9px;"></i>
+          Active courses
         </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-label">Completed</span>
+          <div class="stat-icon si-green"><i class="fa-solid fa-circle-check"></i></div>
+        </div>
+        <div class="stat-value">{{ $stats['completed'] }}</div>
+        <div class="stat-trend trend-neutral">
+          <i class="fa-solid fa-minus" style="font-size:9px;"></i>
+          Courses finished
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-label">Study Time</span>
+          <div class="stat-icon si-amber"><i class="fa-solid fa-clock"></i></div>
+        </div>
+        <div class="stat-value">
+          {{ $stats['study_hours'] }}<small>h</small>
+        </div>
+        <div class="stat-trend {{ ($weekTrend ?? 0) >= 0 ? 'trend-up' : '' }}">
+          @if($weekTrend !== null)
+            <i class="fa-solid fa-arrow-{{ $weekTrend >= 0 ? 'up' : 'down' }}" style="font-size:9px;"></i>
+            {{ abs($weekTrend) }}% vs last week
+          @else
+            <i class="fa-solid fa-minus" style="font-size:9px;"></i>
+            Total tracked
+          @endif
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-header">
+          <span class="stat-label">Certificates</span>
+          <div class="stat-icon si-sky"><i class="fa-solid fa-certificate"></i></div>
+        </div>
+        <div class="stat-value">{{ $stats['certificates'] }}</div>
+        <div class="stat-trend trend-neutral">
+          <i class="fa-solid fa-award" style="font-size:9px;"></i>
+          Earned
+        </div>
+      </div>
     </div>
 
-    {{-- Study Time --}}
-    <div class="stat-card">
-        <div class="stat-icon-wrap stat-icon-orange">
-            <i class="fa-solid fa-clock"></i>
-        </div>
-        <div class="stat-label">Study Time</div>
-        <div class="stat-value">{{ $studyHours ?? 24 }}<span style="font-size:16px;color:var(--muted);">h</span></div>
-        <div class="stat-trend stat-trend-up">
-            <i class="fa-solid fa-arrow-up"></i> 5h this week
-        </div>
-    </div>
+    {{-- ── CONTINUE LEARNING ── --}}
+    <div>
+      <div class="sec-head">
+        <h2 class="sec-title">Continue <em>learning</em></h2>
+        <a href="{{ route('student.courses') }}" class="sec-link">All courses →</a>
+      </div>
 
-    {{-- Certificates --}}
-    <div class="stat-card">
-        <div class="stat-icon-wrap stat-icon-gold">
-            <i class="fa-solid fa-trophy"></i>
-        </div>
-        <div class="stat-label">Certificates</div>
-        <div class="stat-value">{{ $certificatesCount ?? 1 }}</div>
-        <div class="stat-trend stat-trend-up">
-            <i class="fa-solid fa-star"></i> Ready to claim
-        </div>
-    </div>
-</div>
-
-    {{-- CONTINUE LEARNING --}}
-    <div class="section-header">
-        <h2 class="section-title">Continue <em>learning</em></h2>
-        <a href="{{ route('student.courses') }}" class="section-link">
-            View all courses →
-        </a>
-    </div>
-
-    <div class="continue-card">
-        <div class="continue-thumb">
-    <i class="fa-solid fa-laptop-code" style="color: white; font-size: 40px;"></i>
-    <div class="continue-thumb-play">
-        <i class="fa-solid fa-play" style="font-size: 10px;"></i>
-    </div>
-</div>
-
-        <div class="continue-info">
-            <div class="continue-label">In Progress</div>
-            <div class="continue-title">Fullstack Web Development with Laravel 12</div>
-            <div class="continue-meta">
-                Lesson 12 of 40 · Building Authentication · ⏱ 12:45
-            </div>
-            <div class="continue-progress">
-                <div class="continue-progress-fill" style="width: 30%;"></div>
-            </div>
-            <div class="continue-progress-label">30% complete · 28 lessons left</div>
-        </div>
-
-        <a href="#" class="btn-continue">
-            ▶ Resume
-        </a>
-    </div>
-
-    
-    {{-- ═══════════════════════════════════════════════════ --}}
-    {{-- MY COURSES GRID                                     --}}
-    {{-- ═══════════════════════════════════════════════════ --}}
-    <div class="section-header">
-        <h2 class="section-title">My <em>courses</em></h2>
-        <a href="{{ route('student.courses') }}" class="section-link">
-            View all →
-        </a>
-    </div>
-
-    <div class="courses-grid">
+      @if($lastEnrollment)
         @php
-            $myCourses = [
-    [
-        'thumb' => 'programming-bg.jpg', // Nama file gambar asli
-        'icon' => 'fa-solid fa-laptop-code', 
-        'category' => 'Programming',
-        'title' => 'Fullstack Web Development with Laravel 12',
-        'instructor' => 'Budi Santoso',
-        'progress' => 30, 'lessons_done' => 12, 'lessons_total' => 40,
-        'duration' => '40h', 'status' => 'in_progress',
-    ],
-    [
-        'thumb' => 'design-uiux.jpeg.jpg', // Nama file gambar asli
-        'icon' => 'fa-solid fa-palette', 
-        'category' => 'Design',
-        'title' => 'UI/UX Design Fundamentals for Beginners',
-        'instructor' => 'Sari Dewi',
-        'progress' => 75, 'lessons_done' => 18, 'lessons_total' => 24,
-        'duration' => '25h', 'status' => 'in_progress',
-    ],
-    [
-        'thumb' => 'data-science.jpeg', // Nama file gambar asli
-        'icon' => 'fa-solid fa-chart-pie', 
-        'category' => 'Data Science',
-        'title' => 'Python for Data Analysis',
-        'instructor' => 'Rio Ahmad',
-        'progress' => 100, 'lessons_done' => 20, 'lessons_total' => 20,
-        'duration' => '20h', 'status' => 'completed',
-    ],
-];
+          $prog   = $lastEnrollment->real_progress_percent ?? 0;
+          $isDone = $prog >= 100;
         @endphp
-
-        @foreach($myCourses as $course)
-    <a href="#" class="course-card">
-        <div class="course-thumb">
-            {{-- Menampilkan gambar asli sebagai background atau img tag --}}
-            <img src="{{ asset('images/' . $course['thumb']) }}" 
-                 alt="{{ $course['title'] }}" 
-                 style="width: 100%; height: 100%; object-fit: cover;">
-            
-            {{-- Overlay ikon kecil di pojok agar tetap ada identitas kategori (Opsional) --}}
-            <div class="course-category-icon" style="position: absolute; left: 12px; bottom: 12px; background: rgba(255,255,255,0.9); padding: 5px; border-radius: 8px; font-size: 14px;">
-                <i class="{{ $course['icon'] }}"></i>
-            </div>
-
-            @if($course['status'] === 'completed')
-                <div class="course-badge-status completed">
-                    <i class="fa-solid fa-check"></i> Completed
-                </div>
-            @else
-                <div class="course-badge-status in-progress">
-                    In Progress
-                </div>
+        <div class="continue-card">
+          <div class="continue-thumb">
+            <i class="fa-solid fa-laptop-code continue-thumb-icon"></i>
+            @if(!$isDone)
+              <div class="continue-play"><i class="fa-solid fa-play" style="font-size:8px;margin-left:1px;"></i></div>
             @endif
-        </div>
-                <div class="course-card-body">
-                    <div class="course-card-category">{{ $course['category'] }}</div>
-                    <div class="course-card-title">{{ $course['title'] }}</div>
-                    <div class="course-card-instructor">👨‍🏫 {{ $course['instructor'] }}</div>
+          </div>
 
-                    <div class="course-progress">
-                        <div class="course-progress-header">
-                            <span>{{ $course['progress'] }}% complete</span>
-                            <span>{{ $course['lessons_done'] }}/{{ $course['lessons_total'] }} lessons</span>
-                        </div>
-                        <div class="course-progress-bar">
-                            <div class="course-progress-fill
-                                {{ $course['status'] === 'completed' ? 'completed' : '' }}"
-                                style="width: {{ $course['progress'] }}%;"></div>
-                        </div>
-                    </div>
-                </div>
+          <div>
+            <div class="continue-tag {{ $isDone ? 'done' : '' }}">
+              <span class="continue-dot"></span>
+              {{ $isDone ? 'Completed' : 'In Progress' }}
+            </div>
+            <div class="continue-title">{{ $lastEnrollment->course->title }}</div>
+            <div class="continue-sub">
+              {{ $lastEnrollment->real_completed_lessons ?? 0 }} of
+              {{ $lastEnrollment->real_total_lessons ?? 0 }} lessons
+              @if(!$isDone) · {{ max(($lastEnrollment->real_total_lessons ?? 0) - ($lastEnrollment->real_completed_lessons ?? 0), 0) }} remaining @endif
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill {{ $isDone ? 'complete' : '' }}"
+                   style="width: {{ $prog }}%"></div>
+            </div>
+            <div class="progress-label">{{ $prog }}% complete</div>
+          </div>
+
+          <a href="{{ $isDone
+              ? route('student.certificates')
+              : route('student.learn', $lastEnrollment->course->slug) }}"
+             class="btn btn-accent">
+            @if($isDone)
+              <i class="fa-solid fa-certificate" style="font-size:11px;"></i> View Certificate
+            @else
+              <i class="fa-solid fa-play" style="font-size:10px;"></i> Resume
+            @endif
+          </a>
+        </div>
+      @else
+        <div class="continue-card">
+          <div class="empty-continue">
+            <p>You haven't enrolled in any course yet.</p>
+            <a href="{{ route('courses.index') }}" class="btn btn-accent">
+              <i class="fa-solid fa-compass" style="font-size:11px;"></i>
+              Browse Courses
             </a>
-        @endforeach
+          </div>
+        </div>
+      @endif
     </div>
 
-    {{-- ═══════════════════════════════════════════════════ --}}
-    {{-- TWO COLUMN: ACTIVITY + UPCOMING                      --}}
-    {{-- ═══════════════════════════════════════════════════ --}}
-    <div class="two-col-grid">
-
-        {{-- LEFT: Weekly Activity Chart --}}
-        <div class="card-wrap">
-            <div class="card-head">
-                <h3 class="card-title">Weekly <em>activity</em></h3>
-                <div class="card-tabs">
-                    <button class="card-tab active">Week</button>
-                    <button class="card-tab">Month</button>
+    {{-- ── MY COURSES ── --}}
+    @if($myCourses->count() > 0)
+    <div>
+      <div class="sec-head">
+        <h2 class="sec-title">My <em>courses</em></h2>
+        <a href="{{ route('student.courses') }}" class="sec-link">View all →</a>
+      </div>
+      <div class="courses-grid">
+        @foreach($myCourses as $item)
+          <a href="{{ route('student.learn', $item->slug) }}" class="course-card">
+            <div class="course-thumb">
+              @if($item->course->thumbnail)
+                <img src="{{ asset('storage/' . $item->course->thumbnail) }}"
+                     alt="{{ $item->course->title }}">
+              @else
+                <div class="course-thumb-fallback"
+                     style="background: linear-gradient(135deg, hsl({{ (ord($item->course->title[0]) * 7) % 360 }},70%,60%) 0%, hsl({{ (ord($item->course->title[0]) * 7 + 60) % 360 }},70%,50%) 100%);">
+                  📚
                 </div>
+              @endif
+              @if($item->status === 'completed')
+                <div class="course-badge badge-done">
+                  <i class="fa-solid fa-check"></i> Done
+                </div>
+              @else
+                <div class="course-badge badge-wip">In Progress</div>
+              @endif
             </div>
-
-            <div class="activity-summary">
-                <div>
-                    <div class="activity-hours">5.2<span>h</span></div>
-                    <div class="activity-label">Total this week</div>
+            <div class="course-body">
+              <div class="course-cat">{{ $item->course->category ?? 'Course' }}</div>
+              <div class="course-title">{{ $item->course->title }}</div>
+              <div class="course-instructor">
+                {{ $item->course->instructor->name ?? 'Instructor' }}
+              </div>
+              <div class="course-progress">
+                <div class="course-prog-header">
+                  <span>{{ $item->progress }}%</span>
+                  <span>{{ $item->completed_count }}/{{ $item->total_lessons }}</span>
                 </div>
-                <div class="activity-trend">
-                    <span class="stat-trend stat-trend-up">↑ 24% vs last week</span>
+                <div class="progress-track">
+                  <div class="progress-fill {{ $item->status === 'completed' ? 'complete' : '' }}"
+                       style="width: {{ $item->progress }}%"></div>
                 </div>
+              </div>
             </div>
+          </a>
+        @endforeach
+      </div>
+    </div>
+    @endif
 
-            <div class="chart-container">
-                @php
-                    $activity = [
-                        ['day' => 'Mon', 'value' => 45, 'hours' => '0.8h'],
-                        ['day' => 'Tue', 'value' => 70, 'hours' => '1.2h'],
-                        ['day' => 'Wed', 'value' => 30, 'hours' => '0.5h'],
-                        ['day' => 'Thu', 'value' => 90, 'hours' => '1.5h'],
-                        ['day' => 'Fri', 'value' => 55, 'hours' => '0.9h'],
-                        ['day' => 'Sat', 'value' => 20, 'hours' => '0.3h'],
-                        ['day' => 'Sun', 'value' => 0, 'hours' => '0h'],
-                    ];
-                @endphp
+    {{-- ── TWO COL: ACTIVITY + UPCOMING ── --}}
+    <div class="two-col">
 
-                @foreach($activity as $day)
-                    <div class="chart-bar-wrap">
-                        <div class="chart-tooltip">{{ $day['hours'] }}</div>
-                        <div class="chart-bar" style="height: {{ max($day['value'], 5) }}%;">
-                            @if($day['value'] > 0)
-                                <div class="chart-bar-fill"></div>
-                            @endif
-                        </div>
-                        <div class="chart-label">{{ $day['day'] }}</div>
-                    </div>
-                @endforeach
-            </div>
-
-            <div class="activity-meta">
-                <div class="meta-item">
-                    <span class="meta-dot meta-purple"></span>
-                    <span>Video lessons · 3.5h</span>
-                </div>
-                <div class="meta-item">
-                    <span class="meta-dot meta-teal"></span>
-                    <span>Exercises · 1.2h</span>
-                </div>
-                <div class="meta-item">
-                    <span class="meta-dot meta-orange"></span>
-                    <span>Reading · 0.5h</span>
-                </div>
-            </div>
+      {{-- Weekly Activity --}}
+      <div class="panel">
+        <div class="panel-head">
+          <h3 class="panel-title">Weekly <em>activity</em></h3>
+          <div class="tab-group">
+            <button class="tab active">Week</button>
+            <button class="tab">Month</button>
+          </div>
         </div>
 
-        {{-- RIGHT: Upcoming Schedule --}}
-        <div class="card-wrap">
-            <div class="card-head">
-                <h3 class="card-title">Up <em>next</em></h3>
-                <a href="#" class="section-link">Schedule →</a>
+        <div class="activity-kpi">
+          <div>
+            <div class="kpi-big">{{ $weekTotalHours }}<span>h</span></div>
+            <div class="kpi-label">Total this week</div>
+          </div>
+          @if($weekTrend !== null)
+            <div class="stat-trend {{ $weekTrend >= 0 ? 'trend-up' : '' }}" style="margin-bottom:8px;">
+              <i class="fa-solid fa-arrow-{{ $weekTrend >= 0 ? 'up' : 'down' }}" style="font-size:9px;"></i>
+              {{ abs($weekTrend) }}% vs last week
             </div>
-
-            @php
-                $upcoming = [
-                    ['day' => 'Today', 'time' => '15:00', 'title' => 'Building Authentication', 'course' => 'Laravel 12', 'type' => 'video', 'duration' => '12m'],
-                    ['day' => 'Today', 'time' => '19:30', 'title' => 'Design Principles Quiz', 'course' => 'UI/UX Design', 'type' => 'quiz', 'duration' => '15m'],
-                    ['day' => 'Tomorrow', 'time' => '10:00', 'title' => 'React Hooks Deep Dive', 'course' => 'React.js', 'type' => 'video', 'duration' => '24m'],
-                    ['day' => 'Fri, 19 Jan', 'time' => '14:00', 'title' => 'Final Project Review', 'course' => 'Laravel 12', 'type' => 'project', 'duration' => '45m'],
-                ];
-            @endphp
-
-            <div class="upcoming-list">
-                @foreach($upcoming as $item)
-                    <div class="upcoming-item">
-                        <div class="upcoming-time">
-                            <div class="upcoming-day">{{ $item['day'] }}</div>
-                            <div class="upcoming-clock">{{ $item['time'] }}</div>
-                        </div>
-                        <div class="upcoming-icon
-                            {{ $item['type'] === 'quiz' ? 'upcoming-icon-orange' : '' }}
-                            {{ $item['type'] === 'project' ? 'upcoming-icon-teal' : '' }}">
-                            @if($item['type'] === 'video') <i class="fa-solid fa-video"></i>
-                            @elseif($item['type'] === 'quiz') <i class="fa-solid fa-file-alt"></i>
-                            @else <i class="fa-solid fa-box"></i>
-                            @endif
-                        </div>
-                        <div class="upcoming-info">
-                            <div class="upcoming-title">{{ $item['title'] }}</div>
-                            <div class="upcoming-meta">{{ $item['course'] }} · {{ $item['duration'] }}</div>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
+          @endif
         </div>
-    </div>
 
-    {{-- ═══════════════════════════════════════════════════ --}}
-    {{-- ACHIEVEMENTS                                         --}}
-    {{-- ═══════════════════════════════════════════════════ --}}
-    <div class="section-header">
-        <h2 class="section-title">Recent <em>achievements</em></h2>
-        <a href="#" class="section-link">All badges →</a>
-    </div>
-
-    @php
-    $achievements = [
-        [
-            'icon' => 'fa-solid fa-bullseye', 
-            'title' => 'First Lesson', 
-            'desc' => 'Completed your first lesson', 
-            'date' => 'Unlocked · 2 weeks ago', 
-            'bg' => 'purple'
-        ],
-        [
-            'icon' => 'fa-solid fa-fire', 
-            'title' => '7-Day Streak', 
-            'desc' => 'Study 7 consecutive days', 
-            'date' => 'Unlocked · yesterday', 
-            'bg' => 'orange'
-        ],
-        [
-            'icon' => 'fa-solid fa-trophy', 
-            'title' => 'Course Complete', 
-            'desc' => 'Finished Python for Data', 
-            'date' => 'Unlocked · 3 days ago', 
-            'bg' => 'gold'
-        ],
-        [
-            'icon' => 'fa-solid fa-star', 
-            'title' => 'Top Reviewer', 
-            'desc' => 'Gave 5 thoughtful reviews', 
-            'date' => 'Unlocked · today', 
-            'bg' => 'teal'
-        ],
-    ];
-@endphp
-    <div class="achievements-grid">
-        @foreach($achievements as $ach)
-            <div class="achievement-card">
-                <div class="achievement-icon achievement-{{ $ach['bg'] }}">
-                    <i class="{{ $ach['icon'] }}"></i>
-                </div>
-                <div class="achievement-title">{{ $ach['title'] }}</div>
-                <div class="achievement-desc">{{ $ach['desc'] }}</div>
-                <div class="achievement-date">{{ $ach['date'] }}</div>
+        <div class="bar-chart">
+          @foreach($weekActivity as $day)
+            <div class="bar-col {{ $day['is_today'] ? 'today' : '' }} {{ $day['seconds'] == 0 ? 'zero' : '' }}">
+              @if($day['seconds'] > 0)
+                <div class="bar-tip">{{ $day['label'] }}</div>
+              @endif
+              <div class="bar-track">
+                @if($day['seconds'] > 0)
+                  <div class="bar-fill" style="height: {{ $day['percentage'] }}%;"></div>
+                @endif
+              </div>
+              <div class="bar-label">{{ $day['day'] }}</div>
             </div>
-        @endforeach
-    </div>
+          @endforeach
+        </div>
 
-    {{-- ═══════════════════════════════════════════════════ --}}
-    {{-- RECOMMENDED COURSES                                  --}}
-    {{-- ═══════════════════════════════════════════════════ --}}
-    <div class="section-header">
-        <h2 class="section-title">Recommended <em>for you</em></h2>
-        <a href="{{ route('courses.index') }}" class="section-link">Browse all →</a>
-    </div>
+        <div class="activity-legend">
+          @if(($weekBreakdown['video'] ?? 0) > 0)
+            <div class="legend-item">
+              <span class="legend-dot" style="background: var(--accent);"></span>
+              Video · {{ $weekBreakdown['video'] }}h
+            </div>
+          @endif
+          @if(($weekBreakdown['exercise'] ?? 0) > 0)
+            <div class="legend-item">
+              <span class="legend-dot" style="background: var(--green);"></span>
+              Exercise · {{ $weekBreakdown['exercise'] }}h
+            </div>
+          @endif
+          @if(($weekBreakdown['reading'] ?? 0) > 0)
+            <div class="legend-item">
+              <span class="legend-dot" style="background: var(--amber);"></span>
+              Reading · {{ $weekBreakdown['reading'] }}h
+            </div>
+          @endif
+          @if(($weekBreakdown['video'] ?? 0) + ($weekBreakdown['exercise'] ?? 0) + ($weekBreakdown['reading'] ?? 0) == 0)
+            <div class="legend-item" style="color: var(--text-4);">
+              No activity breakdown tracked yet
+            </div>
+          @endif
+        </div>
+      </div>
 
-    <div class="recommended-grid">
-        @php
-            $recommended = [
-                ['thumb' => 4, 'icon' => '⚛️', 'category' => 'Programming', 'title' => 'React.js from Zero to Hero', 'instructor' => 'Budi Santoso', 'rating' => '4.9', 'students' => '12.3k', 'price' => 'Rp 249k'],
-                ['thumb' => 5, 'icon' => '🚀', 'category' => 'Business', 'title' => 'Startup Fundamentals: Idea to Launch', 'instructor' => 'Maya Putri', 'rating' => '4.8', 'students' => '5.2k', 'price' => 'Rp 349k'],
-                ['thumb' => 6, 'icon' => '🎵', 'category' => 'Music', 'title' => 'Music Production with FL Studio', 'instructor' => 'Dimas Wijaya', 'rating' => '4.7', 'students' => '3.1k', 'price' => 'Free'],
-            ];
-        @endphp
+      {{-- Up Next --}}
+      <div class="panel">
+        <div class="panel-head">
+          <h3 class="panel-title">Up <em>next</em></h3>
+          <a href="{{ route('student.courses') }}" class="sec-link">Schedule →</a>
+        </div>
 
-        @foreach($recommended as $rec)
-            <a href="#" class="recommend-card">
-                <div class="recommend-thumb course-thumb-{{ $rec['thumb'] }}">
-                    <span>{{ $rec['icon'] }}</span>
+        @if($upNext->count() > 0)
+          <div class="upcoming-list">
+            @foreach($upNext->take(5) as $item)
+              <a href="{{ route('student.learn', $item['course_slug']) }}"
+                 class="upcoming-item">
+                <div class="upcoming-time-block">
+                  <div class="up-day">Next</div>
+                  <div class="up-clock">
+                    @if($item['lesson_type'] === 'video') 🎬
+                    @elseif($item['lesson_type'] === 'quiz') 📝
+                    @elseif($item['lesson_type'] === 'project') 🛠
+                    @else 📖
+                    @endif
+                  </div>
                 </div>
-                <div class="recommend-body">
-                    <div class="course-card-category">{{ $rec['category'] }}</div>
-                    <div class="recommend-title">{{ $rec['title'] }}</div>
-                    <div class="recommend-instructor">{{ $rec['instructor'] }}</div>
-                    <div class="recommend-meta">
-                        <span>⭐ {{ $rec['rating'] }}</span>
-                        <span>👥 {{ $rec['students'] }}</span>
-                    </div>
-                    <div class="recommend-footer">
-                        <div class="recommend-price {{ $rec['price'] === 'Free' ? 'price-free' : '' }}">
-                            {{ $rec['price'] }}
-                        </div>
-                        <span class="recommend-arrow">→</span>
-                    </div>
+                <div class="up-icon icon-{{ $item['lesson_type'] ?? 'video' }}">
+                  @if($item['lesson_type'] === 'quiz')
+                    <i class="fa-solid fa-clipboard-question"></i>
+                  @elseif($item['lesson_type'] === 'project')
+                    <i class="fa-solid fa-code"></i>
+                  @elseif($item['lesson_type'] === 'reading')
+                    <i class="fa-solid fa-book-open"></i>
+                  @else
+                    <i class="fa-solid fa-play"></i>
+                  @endif
                 </div>
-            </a>
-        @endforeach
+                <div class="up-info">
+                  <div class="up-title">{{ $item['lesson_title'] }}</div>
+                  <div class="up-meta">{{ $item['course_title'] }} · {{ $item['duration'] }}</div>
+                </div>
+              </a>
+            @endforeach
+          </div>
+        @else
+          <div class="up-empty">
+            <i class="fa-solid fa-check-circle" style="font-size:24px;color:var(--green);margin-bottom:8px;display:block;"></i>
+            All caught up! Browse new courses to continue learning.
+          </div>
+        @endif
+      </div>
     </div>
 
-    {{-- Footer spacer --}}
-    <div style="height: 40px;"></div>
+    {{-- ── ACHIEVEMENTS ── --}}
+    <div>
+      <div class="sec-head">
+        <h2 class="sec-title">Recent <em>achievements</em></h2>
+        <a href="{{ route('student.certificates') }}" class="sec-link">All badges →</a>
+      </div>
 
+      @php
+        $colorMap = [
+          'purple' => 'ai-indigo',
+          'indigo' => 'ai-indigo',
+          'orange' => 'ai-amber',
+          'gold'   => 'ai-amber',
+          'green'  => 'ai-green',
+          'teal'   => 'ai-green',
+          'sky'    => 'ai-sky',
+          'blue'   => 'ai-sky',
+        ];
+      @endphp
+
+      <div class="ach-grid">
+        @forelse($achievements as $ach)
+          <div class="ach-card">
+            <div class="ach-icon {{ $colorMap[$ach['color']] ?? 'ai-indigo' }}">
+              <i class="{{ $ach['icon'] }}"></i>
+            </div>
+            <div class="ach-title">{{ $ach['title'] }}</div>
+            <div class="ach-desc">{{ $ach['description'] }}</div>
+            <div class="ach-date">{{ $ach['date_label'] }}</div>
+          </div>
+        @empty
+          <div class="ach-empty">
+            <i class="fa-solid fa-trophy" style="font-size:24px;color:var(--text-4);margin-bottom:8px;display:block;"></i>
+            Complete lessons to earn your first badge!
+          </div>
+        @endforelse
+      </div>
+    </div>
+
+    {{-- ── RECOMMENDED ── --}}
+    @if($recommended->count() > 0)
+    <div>
+      <div class="sec-head">
+        <h2 class="sec-title">Recommended <em>for you</em></h2>
+        <a href="{{ route('courses.index') }}" class="sec-link">Browse all →</a>
+      </div>
+      <div class="rec-grid">
+        @foreach($recommended as $i => $rec)
+          <a href="{{ route('courses.show', $rec['slug']) }}" class="rec-card">
+            <div class="rec-thumb">
+              @if($rec['thumbnail'] ?? null)
+                <img src="{{ asset('storage/' . $rec['thumbnail']) }}"
+                     alt="{{ $rec['title'] }}">
+              @else
+                <div class="rec-thumb-fallback grad-{{ ($i % 4) + 1 }}">
+                  {{ $rec['emoji'] }}
+                </div>
+              @endif
+            </div>
+            <div class="rec-body">
+              <div class="course-cat">{{ $rec['category'] }}</div>
+              <div class="rec-title">{{ $rec['title'] }}</div>
+              <div class="rec-instructor">{{ $rec['instructor'] }}</div>
+              <div class="rec-meta">
+                <span>⭐ {{ $rec['rating'] }}</span>
+                <span>👥 {{ $rec['students_count'] }}</span>
+              </div>
+              <div class="rec-footer">
+                <div class="rec-price {{ $rec['is_free'] ? 'price-free' : '' }}">
+                  {{ $rec['price'] }}
+                </div>
+                <span class="rec-arrow">→</span>
+              </div>
+            </div>
+          </a>
+        @endforeach
+      </div>
+    </div>
+    @endif
+
+    <div style="height: 32px;"></div>
+
+  </div>{{-- /page-content --}}
 </main>
 
-{{-- ═══════════════════════════════════════════════════ --}}
-{{-- ADDITIONAL STYLES (LANJUTAN)                          --}}
-{{-- ═══════════════════════════════════════════════════ --}}
-<style>
-/* ═══ COURSES GRID ═══ */
-.courses-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    margin-bottom: 32px;
-}
-
-.course-card {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    overflow: hidden;
-    text-decoration: none;
-    color: var(--text);
-    transition: all 0.3s;
-    display: flex;
-    flex-direction: column;
-    cursor: pointer;
-}
-
-.course-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 16px 40px rgba(30,58,95,0.1);
-    border-color: var(--purple);
-}
-
-.course-thumb {
-    aspect-ratio: 16/9;
-    position: relative;
-    overflow: hidden; /* Memastikan gambar tidak keluar dari radius kartu */
-    background: #eee; /* Warna cadangan jika gambar gagal load */
-}
-
-/* Pastikan gambar mengisi seluruh area */
-.course-thumb img {
-    transition: transform 0.5s ease;
-}
-
-.course-card:hover .course-thumb img {
-    transform: scale(1.1); /* Efek zoom saat kartu di-hover */
-}
-
-.course-badge-status {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    background: rgba(255,255,255,0.95);
-    backdrop-filter: blur(10px);
-    padding: 4px 10px;
-    border-radius: 100px;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-}
-
-.course-badge-status.completed {
-    background: var(--teal);
-    color: white;
-}
-
-.course-badge-status.in-progress {
-    background: rgba(255,255,255,0.95);
-    color: var(--purple);
-}
-
-.course-card-body {
-    padding: 18px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.course-card-category {
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 8px;
-}
-
-.course-card-title {
-    font-family: var(--font-serif);
-    font-size: 18px;
-    font-weight: 400;
-    line-height: 1.25;
-    letter-spacing: -0.01em;
-    margin-bottom: 8px;
-}
-
-.course-card-instructor {
-    font-size: 12px;
-    color: var(--text-soft);
-    margin-bottom: 16px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid var(--border);
-}
-
-.course-progress {
-    margin-top: auto;
-}
-
-.course-progress-header {
-    display: flex;
-    justify-content: space-between;
-    font-size: 11px;
-    color: var(--muted);
-    font-weight: 500;
-    margin-bottom: 6px;
-}
-
-.course-progress-bar {
-    height: 5px;
-    background: var(--lav-2);
-    border-radius: 100px;
-    overflow: hidden;
-}
-
-.course-progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--purple), var(--lav-4));
-    border-radius: 100px;
-    transition: width 0.6s ease;
-}
-
-.course-progress-fill.completed {
-    background: linear-gradient(90deg, var(--teal), #00E5A8);
-}
-
-/* ═══ TWO COL GRID ═══ */
-.two-col-grid {
-    display: grid;
-    grid-template-columns: 1.4fr 1fr;
-    gap: 16px;
-    margin-bottom: 32px;
-}
-
-.card-wrap {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 24px;
-}
-
-.card-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
-
-.card-title {
-    font-family: var(--font-serif);
-    font-size: 22px;
-    font-weight: 400;
-    letter-spacing: -0.01em;
-}
-
-.card-title em { font-style: italic; color: var(--purple); }
-
-.card-tabs {
-    display: flex;
-    gap: 4px;
-    background: var(--lav-1);
-    border-radius: 100px;
-    padding: 3px;
-}
-
-.card-tab {
-    padding: 5px 12px;
-    border: none;
-    background: transparent;
-    font-family: var(--font-sans);
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--muted);
-    border-radius: 100px;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.card-tab.active {
-    background: white;
-    color: var(--text);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-}
-
-/* Activity Chart */
-.activity-summary {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 20px;
-}
-
-.activity-hours {
-    font-family: var(--font-serif);
-    font-size: 40px;
-    font-weight: 400;
-    letter-spacing: -0.02em;
-    line-height: 1;
-    color: var(--text);
-}
-
-.activity-hours span {
-    font-size: 20px;
-    color: var(--muted);
-    margin-left: 2px;
-}
-
-.activity-label {
-    font-size: 11px;
-    color: var(--muted);
-    font-weight: 500;
-    margin-top: 4px;
-}
-
-.chart-container {
-    display: flex;
-    align-items: flex-end;
-    gap: 8px;
-    height: 140px;
-    padding: 12px 0;
-    margin-bottom: 16px;
-}
-
-.chart-bar-wrap {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    position: relative;
-    height: 100%;
-    justify-content: flex-end;
-}
-
-.chart-tooltip {
-    position: absolute;
-    top: -28px;
-    background: var(--text);
-    color: white;
-    padding: 3px 8px;
-    border-radius: 6px;
-    font-size: 10px;
-    font-weight: 600;
-    opacity: 0;
-    transition: opacity 0.2s;
-    white-space: nowrap;
-    pointer-events: none;
-}
-
-.chart-tooltip::after {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    border: 4px solid transparent;
-    border-top-color: var(--text);
-}
-
-.chart-bar-wrap:hover .chart-tooltip { opacity: 1; }
-
-.chart-bar {
-    width: 100%;
-    max-width: 32px;
-    background: var(--lav-2);
-    border-radius: 8px 8px 0 0;
-    overflow: hidden;
-    position: relative;
-    transition: all 0.3s;
-    cursor: pointer;
-}
-
-.chart-bar-wrap:hover .chart-bar {
-    transform: translateY(-2px);
-}
-
-.chart-bar-fill {
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(180deg, var(--purple), var(--purple-dark));
-    border-radius: 8px 8px 0 0;
-    animation: growBar 1s ease-out;
-}
-
-@keyframes growBar {
-    from { transform: scaleY(0); transform-origin: bottom; }
-    to { transform: scaleY(1); }
-}
-
-.chart-label {
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--muted);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-}
-
-.activity-meta {
-    display: flex;
-    gap: 16px;
-    padding-top: 16px;
-    border-top: 1px solid var(--border);
-    flex-wrap: wrap;
-}
-
-.meta-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 11px;
-    color: var(--text-soft);
-    font-weight: 500;
-}
-
-.meta-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-}
-
-.meta-purple { background: var(--purple); }
-.meta-teal { background: var(--teal); }
-.meta-orange { background: var(--orange); }
-
-/* Upcoming List */
-.upcoming-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.upcoming-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px;
-    border-radius: 12px;
-    transition: all 0.2s;
-    cursor: pointer;
-}
-
-.upcoming-item:hover {
-    background: var(--lav-1);
-}
-
-.upcoming-time {
-    text-align: center;
-    min-width: 52px;
-    flex-shrink: 0;
-}
-
-.upcoming-day {
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 2px;
-}
-
-.upcoming-clock {
-    font-family: var(--font-serif);
-    font-size: 18px;
-    font-weight: 400;
-    color: var(--text);
-    letter-spacing: -0.01em;
-}
-
-.upcoming-icon {
-    width: 40px;
-    height: 40px;
-    background: rgba(123,111,232,0.12);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
-}
-
-.upcoming-icon-orange { background: var(--orange-light); }
-.upcoming-icon-teal { background: var(--teal-light); }
-
-.upcoming-info {
-    flex: 1;
-    min-width: 0;
-}
-
-.upcoming-title {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 2px;
-    line-height: 1.3;
-}
-
-.upcoming-meta {
-    font-size: 11px;
-    color: var(--muted);
-}
-
-/* ═══ ACHIEVEMENTS ═══ */
-.achievements-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    margin-bottom: 32px;
-}
-
-.achievement-card {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px;
-    text-align: center;
-    transition: all 0.3s;
-    cursor: pointer;
-}
-
-.achievement-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 30px rgba(30,58,95,0.08);
-    border-color: var(--purple);
-}
-
-.achievement-icon {
-    width: 60px;
-    height: 60px;
-    border-radius: 18px;
-    margin: 0 auto 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-    transition: transform 0.3s;
-}
-
-.achievement-card:hover .achievement-icon {
-    transform: scale(1.08) rotate(-5deg);
-}
-
-.achievement-purple { background: linear-gradient(135deg, rgba(123,111,232,0.15), rgba(184,175,235,0.1)); }
-.achievement-orange { background: linear-gradient(135deg, var(--orange-light), rgba(255,200,150,0.3)); }
-.achievement-gold { background: linear-gradient(135deg, var(--gold-light), rgba(255,215,100,0.3)); }
-.achievement-teal { background: linear-gradient(135deg, var(--teal-light), rgba(150,230,200,0.3)); }
-
-.achievement-title {
-    font-family: var(--font-serif);
-    font-size: 16px;
-    font-weight: 400;
-    margin-bottom: 4px;
-    letter-spacing: -0.01em;
-}
-
-.achievement-desc {
-    font-size: 11px;
-    color: var(--text-soft);
-    line-height: 1.4;
-    margin-bottom: 8px;
-    min-height: 32px;
-}
-
-.achievement-date {
-    font-size: 10px;
-    color: var(--muted);
-    font-weight: 500;
-    letter-spacing: 0.02em;
-}
-
-/* ═══ RECOMMENDED ═══ */
-.recommended-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-}
-
-.recommend-card {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    overflow: hidden;
-    text-decoration: none;
-    color: var(--text);
-    transition: all 0.3s;
-    display: flex;
-    flex-direction: column;
-}
-
-.recommend-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 16px 40px rgba(30,58,95,0.1);
-    border-color: var(--purple);
-}
-
-.recommend-thumb {
-    aspect-ratio: 16/9;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 48px;
-}
-
-.recommend-body {
-    padding: 18px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.recommend-title {
-    font-family: var(--font-serif);
-    font-size: 17px;
-    font-weight: 400;
-    line-height: 1.25;
-    letter-spacing: -0.01em;
-    margin-bottom: 6px;
-}
-
-.recommend-instructor {
-    font-size: 12px;
-    color: var(--text-soft);
-    margin-bottom: 10px;
-}
-
-.recommend-meta {
-    display: flex;
-    gap: 12px;
-    font-size: 11px;
-    color: var(--muted);
-    margin-bottom: 14px;
-    padding-bottom: 14px;
-    border-bottom: 1px solid var(--border);
-}
-
-.recommend-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: auto;
-}
-
-.recommend-price {
-    font-family: var(--font-serif);
-    font-size: 18px;
-    font-weight: 400;
-    color: var(--text);
-    letter-spacing: -0.01em;
-}
-
-.price-free { color: var(--teal); }
-
-.recommend-arrow {
-    color: var(--purple);
-    font-size: 16px;
-    transition: transform 0.3s;
-}
-
-.recommend-card:hover .recommend-arrow {
-    transform: translateX(4px);
-}
-
-/* Responsive */
-@media (max-width: 1100px) {
-    .courses-grid,
-    .recommended-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    .achievements-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    .two-col-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 768px) {
-    .courses-grid,
-    .recommended-grid,
-    .achievements-grid {
-        grid-template-columns: 1fr;
-    }
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-</style>
-
+<script>
+function toggleSidebar() {
+  const open = document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('open', open);
+  document.getElementById('hamburger-icon').className =
+    open ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+}
+
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('hamburger-icon').className = 'fa-solid fa-bars';
+}
+
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 768) closeSidebar();
+});
+
+// Animate bars on load
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.bar-fill').forEach(el => {
+    const target = el.style.height;
+    el.style.height = '0';
+    requestAnimationFrame(() => {
+      el.style.transition = 'height 0.9s cubic-bezier(0.16,1,0.3,1)';
+      el.style.height = target;
+    });
+  });
+
+  document.querySelectorAll('.progress-fill').forEach(el => {
+    const target = el.style.width;
+    el.style.width = '0';
+    requestAnimationFrame(() => {
+      el.style.transition = 'width 1s cubic-bezier(0.16,1,0.3,1)';
+      el.style.width = target;
+    });
+  });
+});
+</script>
 </body>
 </html>

@@ -12,17 +12,29 @@ use Illuminate\Http\Request;
 class LearningController extends Controller
 {
     public function index(string $slug)
-    {
-        $course = Course::where('slug', $slug)->firstOrFail();
-        $this->checkEnrollment($course);
+{
+    $course = Course::where('slug', $slug)->firstOrFail();
+    $this->checkEnrollment($course);
 
-        $sections    = $course->sections()->with('lessons')->orderBy('order_index')->get();
-        $firstLesson = $sections->first()?->lessons->first();
+    $sections = $course->sections()
+    ->with('lessons')
+    ->orderBy('order_index')
+    ->get();
 
-        return redirect()->route('student.learn.lesson', [
-            $course->slug, $firstLesson?->id
-        ]);
+$firstLesson = $sections
+    ->flatMap->lessons
+    ->sortBy('order_index')
+    ->first();
+
+    if (! $firstLesson) {
+        return redirect()->route('student.courses')
+            ->with('warning', 'Course "' . $course->title . '" belum memiliki materi. Silakan cek kembali nanti.');
     }
+
+    return redirect()->route('student.learn.lesson', [
+        $course->slug, $firstLesson->id
+    ]);
+}
 
     public function lesson(string $slug, Lesson $lesson)
     {

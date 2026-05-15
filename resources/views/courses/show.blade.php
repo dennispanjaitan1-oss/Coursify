@@ -566,9 +566,15 @@ section { position: relative; z-index: 1; }
                         </a>
                     @endif
 
-                    <button class="btn-wishlist" onclick="toggleWishlistBtn(this)">
-                        🤍 Add to Wishlist
-                    </button>
+                    @php
+    $isWishlisted = auth()->check() && auth()->user()
+        ->wishlists()->where('course_id', $course->id)->exists();
+@endphp
+
+<button class="btn-wishlist {{ $isWishlisted ? 'active' : '' }}"
+    onclick="toggleWishlistBtn(this, {{ $course->id }})">
+    {{ $isWishlisted ? '❤️ Added to Wishlist' : '🤍 Add to Wishlist' }}
+</button>
 
                     <div class="guarantee-box">
                         <div class="guarantee-icon">✓</div>
@@ -930,11 +936,24 @@ function toggleAllSections() {
     text.textContent = allExpanded ? 'Expand all' : 'Collapse all';
 }
 
-function toggleWishlistBtn(btn) {
-    btn.classList.toggle('active');
-    btn.innerHTML = btn.classList.contains('active')
-        ? '❤️ Added to Wishlist'
-        : '🤍 Add to Wishlist';
+function toggleWishlistBtn(btn, courseId) {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+    if (!csrfToken) { window.location.href = '/login'; return; }
+    
+    btn.disabled = true;
+    
+    fetch(`/wishlist/toggle/${courseId}`, {
+        method: 'POST',
+        headers: { 'X-CSRF-TOKEN': csrfToken, 'Accept': 'application/json' },
+    })
+    .then(res => res.json())
+    .then(data => {
+        btn.disabled = false;
+        const added = data.status === 'added';
+        btn.classList.toggle('active', added);
+        btn.innerHTML = added ? '❤️ Added to Wishlist' : '🤍 Add to Wishlist';
+    })
+    .catch(() => { btn.disabled = false; });
 }
 
 document.querySelectorAll('.share-btn').forEach(btn => {

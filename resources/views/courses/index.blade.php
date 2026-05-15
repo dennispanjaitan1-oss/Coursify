@@ -682,9 +682,16 @@
                                     </span>
                                 @endif
                                 @auth
-                                    <button class="course-wishlist"
-                                        onclick="event.preventDefault(); event.stopPropagation(); toggleWishlist(this, {{ $course->id }});"
-                                        title="Add to wishlist" type="button">🤍</button>
+                                    @php
+    $isWishlisted = auth()->check() && auth()->user()
+        ->wishlists()->where('course_id', $course->id)->exists();
+@endphp
+
+<button class="course-wishlist {{ $isWishlisted ? 'active' : '' }}"
+    onclick="event.preventDefault(); event.stopPropagation(); toggleWishlist(this, {{ $course->id }});"
+    title="{{ $isWishlisted ? 'Remove from wishlist' : 'Add to wishlist' }}">
+    {{ $isWishlisted ? '❤️' : '🤍' }}
+</button>
                                 @endauth
                                 @if($course->thumbnail_url)
                                     <img src="{{ $course->thumbnail_url }}" alt="{{ $course->title }}"

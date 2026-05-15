@@ -54,4 +54,17 @@ class Lesson extends Model
         $secs = $this->duration_seconds % 60;
         return sprintf('%d:%02d', $mins, $secs);
     }
+
+    public function progresses()
+{
+    return $this->hasMany(LessonProgress::class);
+}
+
+public function isCompletedBy($user)
+{
+    return $this->progresses()
+        ->where('user_id', $user->id)
+        ->exists();
+}
+
 }

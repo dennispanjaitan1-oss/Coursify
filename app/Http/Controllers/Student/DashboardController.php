@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
 use App\Models\Certificate;
+use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
 
 class DashboardController extends Controller
@@ -20,20 +22,210 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        $enrollments = Enrollment::where('user_id', $user->id)
-            ->with(['course.category', 'course.instructors'])
+        // ── Last enrollment (for "Continue Learning" section) ──────────────
+        $lastEnrollment = Enrollment::with(['course.lessons.progresses'])
+            ->where('user_id', $user->id)
             ->latest()
-            ->take(6)
-            ->get();
+            ->first();
 
+        if ($lastEnrollment && $lastEnrollment->course) {
+            $totalLessons = $lastEnrollment->course->lessons->count();
+
+            $completedLessons = $lastEnrollment->course->lessons
+                ->filter(fn($lesson) => $lesson->progresses
+                    ->where('user_id', $user->id)
+                    ->count() > 0
+                )->count();
+
+            $completedLessons = min($completedLessons, $totalLessons);
+
+            $progressPercent = $totalLessons > 0
+                ? round(($completedLessons / $totalLessons) * 100)
+                : 0;
+
+            // Expose with consistent naming used in the blade
+            $lastEnrollment->real_total_lessons     = $totalLessons;
+            $lastEnrollment->real_completed_lessons = $completedLessons;
+            $lastEnrollment->real_progress_percent  = $progressPercent;
+        }
+
+        // ── Stats strip ────────────────────────────────────────────────────
         $stats = [
             'enrolled'     => Enrollment::where('user_id', $user->id)->count(),
             'in_progress'  => Enrollment::where('user_id', $user->id)->where('status', 'active')->count(),
             'completed'    => Enrollment::where('user_id', $user->id)->where('status', 'completed')->count(),
             'certificates' => Certificate::where('user_id', $user->id)->count(),
+            'study_hours'  => 0, // Replace with real tracking logic when available
         ];
 
-        return view('student.index', compact('enrollments', 'stats'));
+        // ── My Courses (up to 6, for dashboard grid) ───────────────────────
+        $allEnrollments = Enrollment::where('user_id', $user->id)
+            ->with(['course.category', 'course.instructors', 'course.lessons.progresses'])
+            ->latest()
+            ->get();
+
+        $myCourses = $allEnrollments->take(6)->map(function ($enrollment) use ($user) {
+            $course       = $enrollment->course;
+            $totalLessons = $course?->lessons?->count() ?? 0;
+
+            $completedCount = $course?->lessons
+                ->filter(fn($l) => $l->progresses->where('user_id', $user->id)->count() > 0)
+                ->count() ?? 0;
+
+            $completedCount = min($completedCount, $totalLessons);
+            $progress       = $totalLessons > 0 ? round(($completedCount / $totalLessons) * 100) : 0;
+
+            // Attach helpers directly to enrollment object for easy blade access
+            $enrollment->slug            = $course?->slug;
+            $enrollment->progress        = $progress;
+            $enrollment->completed_count = $completedCount;
+            $enrollment->total_lessons   = $totalLessons;
+
+            return $enrollment;
+        });
+
+        // ── Weekly activity (last 7 days) ──────────────────────────────────
+        // Replace the stub below with real DB queries if you have a
+        // study_sessions / lesson_progresses table with timestamps.
+        $weekActivity = collect(range(0, 6))->map(function ($i) {
+            $day = Carbon::now()->startOfWeek()->addDays($i);
+            return [
+                'day'        => $day->format('D'),
+                'seconds'    => 0,
+                'percentage' => 0,
+                'label'      => '0m',
+                'is_today'   => $day->isToday(),
+            ];
+        });
+
+        $weekTotalHours = 0;
+        $weekTrend      = null; // Set to int (%) when real data is available
+        $weekBreakdown  = ['video' => 0, 'exercise' => 0, 'reading' => 0];
+
+        // ── Up Next (next unfinished lesson per enrolled course) ───────────
+        $upNext = $allEnrollments
+            ->filter(fn($e) => $e->status !== 'completed')
+            ->map(function ($enrollment) use ($user) {
+                $course = $enrollment->course;
+                if (!$course) return null;
+
+                // Find first lesson the student hasn't completed yet
+                $nextLesson = $course->lessons
+                    ->first(fn($l) => $l->progresses->where('user_id', $user->id)->count() === 0);
+
+                if (!$nextLesson) return null;
+
+                return [
+                    'course_slug'  => $course->slug,
+                    'course_title' => $course->title,
+                    'lesson_title' => $nextLesson->title,
+                    'lesson_type'  => $nextLesson->type ?? 'video', // video|quiz|project|reading
+                    'duration'     => $nextLesson->duration
+                        ? gmdate('i:s', $nextLesson->duration)
+                        : '—',
+                ];
+            })
+            ->filter()
+            ->values()
+            ->take(5);
+
+        // ── Achievements ──────────────────────────────────────────────────
+        $achievements = $this->buildAchievements($user);
+
+        // ── Recommended courses (not yet enrolled) ────────────────────────
+        $enrolledCourseIds = $allEnrollments->pluck('course_id');
+
+        $recommended = Course::with(['category', 'instructors'])
+            ->whereNotIn('id', $enrolledCourseIds)
+            ->inRandomOrder()
+            ->take(4)
+            ->get()
+            ->map(function ($course) {
+                $instructor = $course->instructors->first();
+                $price      = $course->price ?? 0;
+
+                return [
+                    'slug'           => $course->slug,
+                    'title'          => $course->title,
+                    'thumbnail'      => $course->thumbnail,
+                    'category'       => optional($course->category)->name ?? 'Course',
+                    'instructor'     => $instructor?->name ?? 'Instructor',
+                    'rating'         => number_format($course->rating ?? 0, 1),
+                    'students_count' => number_format($course->enrollments_count ?? 0),
+                    'price'          => $price > 0 ? 'Rp ' . number_format($price, 0, ',', '.') : 'Free',
+                    'is_free'        => $price == 0,
+                    'emoji'          => '📚',
+                ];
+            });
+
+        return view('student.index', compact(
+            'user',
+            'lastEnrollment',
+            'stats',
+            'myCourses',
+            'weekActivity',
+            'weekTotalHours',
+            'weekTrend',
+            'weekBreakdown',
+            'upNext',
+            'achievements',
+            'recommended',
+        ));
+    }
+
+    // ── Achievement builder ────────────────────────────────────────────────
+    private function buildAchievements($user): array
+    {
+        $achievements = [];
+
+        $completedCount = Enrollment::where('user_id', $user->id)
+            ->where('status', 'completed')
+            ->count();
+
+        $enrolledCount = Enrollment::where('user_id', $user->id)->count();
+
+        if ($enrolledCount >= 1) {
+            $achievements[] = [
+                'icon'        => 'fa-solid fa-rocket',
+                'color'       => 'indigo',
+                'title'       => 'First Step',
+                'description' => 'Enrolled in your first course.',
+                'date_label'  => 'Achieved',
+            ];
+        }
+
+        if ($completedCount >= 1) {
+            $achievements[] = [
+                'icon'        => 'fa-solid fa-graduation-cap',
+                'color'       => 'green',
+                'title'       => 'Graduate',
+                'description' => 'Completed your first course.',
+                'date_label'  => 'Achieved',
+            ];
+        }
+
+        if ($completedCount >= 3) {
+            $achievements[] = [
+                'icon'        => 'fa-solid fa-trophy',
+                'color'       => 'gold',
+                'title'       => 'Hat-trick',
+                'description' => 'Completed 3 courses.',
+                'date_label'  => 'Achieved',
+            ];
+        }
+
+        $certCount = Certificate::where('user_id', $user->id)->count();
+        if ($certCount >= 1) {
+            $achievements[] = [
+                'icon'        => 'fa-solid fa-certificate',
+                'color'       => 'sky',
+                'title'       => 'Certified',
+                'description' => 'Earned your first certificate.',
+                'date_label'  => 'Achieved',
+            ];
+        }
+
+        return $achievements;
     }
 
     // ═══════════════════════════════════════════════════
