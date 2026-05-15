@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CourseController extends Controller
 {
@@ -12,17 +13,17 @@ class CourseController extends Controller
     {
         // ── Ambil semua kategori (untuk sidebar filter + stats bar) ──────────
         $categories = Category::withCount(['courses' => function ($q) {
-            $q->where('is_published', true);
+            $q->withTrashed(); // ikutkan soft deleted
         }])->orderBy('name')->get();
 
         // ── Total course untuk stats bar ─────────────────────────────────────
-        $totalCourses = Course::where('is_published', true)->count();
+        $totalCourses = Course::withTrashed()->count();
 
         // ── Build query utama ─────────────────────────────────────────────────
         $courses = null;
 
         try {
-            $query = Course::where('is_published', true)
+            $query = Course::withTrashed()  // tampilkan semua (soft deleted + unpublished)
                 ->with(['category', 'institution', 'instructors'])
                 ->withCount('enrollments')
                 ->withAvg('reviews', 'rating');
@@ -36,8 +37,7 @@ class CourseController extends Controller
                 });
             }
 
-            // ── CATEGORY (array: ?category[]=programming&category[]=design) ──
-            // Blade mengirim: name="category[]"
+            // ── CATEGORY ─────────────────────────────────────────────────────
             $categoryFilter = array_filter((array) $request->input('category', []));
             if (!empty($categoryFilter)) {
                 $query->whereHas('category', function ($q) use ($categoryFilter) {
@@ -45,15 +45,13 @@ class CourseController extends Controller
                 });
             }
 
-            // ── DIFFICULTY (array: ?difficulty[]=beginner&difficulty[]=advanced)
-            // Blade mengirim: name="difficulty[]"
+            // ── DIFFICULTY ───────────────────────────────────────────────────
             $difficultyFilter = array_filter((array) $request->input('difficulty', []));
             if (!empty($difficultyFilter)) {
                 $query->whereIn('difficulty', $difficultyFilter);
             }
 
-            // ── PRICE (array: ?price[]=free&price[]=paid) ────────────────────
-            // Blade mengirim: name="price[]"
+            // ── PRICE ────────────────────────────────────────────────────────
             $priceFilter = array_filter((array) $request->input('price', []));
             if (!empty($priceFilter)) {
                 $query->where(function ($q) use ($priceFilter) {
@@ -66,30 +64,23 @@ class CourseController extends Controller
                 });
             }
 
-            // ── MAX PRICE (slider: ?max_price=200000) ────────────────────────
-            // Hanya aktif kalau nilainya < 500000 (batas atas slider)
+            // ── MAX PRICE ────────────────────────────────────────────────────
             if ($request->filled('max_price') && (int) $request->max_price < 500000) {
                 $query->where(function ($q) use ($request) {
-                    // Kursus gratis selalu lolos, atau harganya ≤ max_price
                     $q->where('price', 0)
                       ->orWhere('price', '<=', (int) $request->max_price);
                 });
             }
 
-            // ── RATING (radio: ?rating=4) ─────────────────────────────────────
+            // ── RATING ───────────────────────────────────────────────────────
             if ($request->filled('rating')) {
                 $minRating = (int) $request->rating;
-                // Hanya tampilkan kursus yang rata-rata rating ≥ pilihan
                 $query->whereHas('reviews', function ($q) use ($minRating) {
                     $q->havingRaw('AVG(rating) >= ?', [$minRating]);
                 });
-                // Alternatif lebih akurat (subquery):
-                // $query->withAvg sudah di-attach di atas;
-                // bisa juga pakai HAVING setelah groupBy jika perlu.
             }
 
-            // ── LANGUAGE (array: ?language[]=id&language[]=en) ───────────────
-            // Asumsi Course model punya kolom 'language'
+            // ── LANGUAGE ─────────────────────────────────────────────────────
             $languageFilter = array_filter((array) $request->input('language', []));
             if (!empty($languageFilter)) {
                 $query->whereIn('language', $languageFilter);
@@ -107,7 +98,6 @@ class CourseController extends Controller
                     $query->orderBy('price', 'desc');
                     break;
                 case 'rating':
-                    // ORDER BY rata-rata rating (kolom alias dari withAvg)
                     $query->orderBy('reviews_avg_rating', 'desc');
                     break;
                 case 'popular':
@@ -117,12 +107,10 @@ class CourseController extends Controller
             }
 
             $courses = $query->paginate(12)->withQueryString();
-            // withQueryString() → URL pagination menyertakan semua filter aktif
 
         } catch (\Exception $e) {
-            // Log error untuk debugging; blade akan tampilkan empty state
-            \Log::error('CourseController@index error: ' . $e->getMessage());
-            $courses = Course::where('id', 0)->paginate(12); // empty paginator
+            Log::error('CourseController@index error: ' . $e->getMessage());
+            $courses = Course::withTrashed()->where('id', 0)->paginate(12);
         }
 
         return view('courses.index', compact('courses', 'categories', 'totalCourses'));
@@ -132,14 +120,14 @@ class CourseController extends Controller
     {
         $course = null;
         try {
-            $course = Course::where('slug', $slug)
-                ->where('is_published', true)
+            $course = Course::withTrashed()  // tampilkan meski soft deleted
+                ->where('slug', $slug)
                 ->with([
                     'category',
                     'institution',
                     'instructors',
                     'sections.lessons',
-                    'reviews.user',      // untuk menampilkan review di halaman show
+                    'reviews.user',
                 ])
                 ->withCount('enrollments')
                 ->withAvg('reviews', 'rating')

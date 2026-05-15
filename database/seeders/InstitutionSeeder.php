@@ -1,54 +1,53 @@
 <?php
 
 namespace Database\Seeders;
- 
+
 use App\Models\Institution;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
- 
+
 class InstitutionSeeder extends Seeder
 {
     public function run(): void
     {
-        $institutions = [
-            [
-                'name'        => 'Coursify Team',
-                'description' => 'Tim internal Coursify yang membuat kursus berkualitas tinggi.',
+        Schema::disableForeignKeyConstraints();
+        Institution::truncate();
+        Schema::enableForeignKeyConstraints();
+
+        $csvFile = database_path('data/csv/institutions_raw.csv');
+
+        if (File::exists($csvFile)) {
+            $handle = fopen($csvFile, 'r');
+            fgetcsv($handle, 0, ',', '"', '\\');
+
+            while (($row = fgetcsv($handle, 0, ',', '"', '\\')) !== false) {
+                DB::table('institutions')->insertOrIgnore([
+                    'id'          => $row[0],
+                    'name'        => $row[1],
+                    'slug' => Str::slug($row[1]) . '-' . $row[0],
+                    'logo_url'    => !empty($row[3]) ? $row[3] : null,
+                    'website_url' => !empty($row[4]) ? $row[4] : null,
+                    'description' => !empty($row[5]) ? $row[5] : null,
+                    'is_verified' => (bool)($row[6] ?? false),
+                    'created_at'  => now(),
+                    'updated_at'  => now(),
+                ]);
+            }
+            fclose($handle);
+
+            $maxId = DB::table('institutions')->max('id') + 1;
+            DB::statement("ALTER TABLE institutions AUTO_INCREMENT = $maxId;");
+
+        } else {
+            DB::table('institutions')->insert([
+                'name'        => 'Coursify Institution',
+                'slug'        => 'coursify-institution',
                 'is_verified' => true,
-            ],
-            [
-                'name'        => 'Institut Teknologi Nusantara',
-                'description' => 'Institusi pendidikan teknologi terkemuka di Indonesia.',
-                'is_verified' => true,
-            ],
-            [
-                'name'        => 'Universitas Digital Indonesia',
-                'description' => 'Universitas berbasis digital untuk era modern.',
-                'is_verified' => true,
-            ],
-            [
-                'name'        => 'Google Developer Experts',
-                'description' => 'Program developer experts dari Google Indonesia.',
-                'is_verified' => true,
-            ],
-            [
-                'name'        => 'Microsoft Learn Indonesia',
-                'description' => 'Platform belajar resmi Microsoft untuk Indonesia.',
-                'is_verified' => true,
-            ],
-            [
-                'name'        => 'Komunitas Open Source Indonesia',
-                'description' => 'Komunitas developer open source terbesar di Indonesia.',
-                'is_verified' => false,
-            ],
-        ];
- 
-        foreach ($institutions as $inst) {
-            Institution::create([
-                'name'        => $inst['name'],
-                'slug'        => Str::slug($inst['name']),
-                'description' => $inst['description'],
-                'is_verified' => $inst['is_verified'],
+                'created_at'  => now(),
+                'updated_at'  => now(),
             ]);
         }
     }

@@ -1,60 +1,75 @@
 <?php
 
 namespace Database\Seeders;
- 
+
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
- 
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
+
 class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        // ── Akun tetap (untuk login saat demo) ──────────────────────
+        Schema::disableForeignKeyConstraints();
+        User::truncate();
+        Schema::enableForeignKeyConstraints();
+
+        $maxId = 0; // default jika CSV tidak ada
+
+        // Data dari file CSV
+        $csvFile = database_path('data/csv/users_instructors.csv');
+        if (File::exists($csvFile)) {
+            $handle = fopen($csvFile, 'r');
+            fgetcsv($handle, 0, ',', '"', '\\');
+
+            while (($row = fgetcsv($handle, 0, ',', '"', '\\')) !== false) {
+                DB::table('users')->insert([
+                    'id'                => $row[0],
+                    'name'              => $row[1],
+                    'email'             => $row[2],
+                    'password'          => Hash::make('password'),
+                    'role'              => 'instructor',
+                    'email_verified_at' => now(),
+                    'created_at'        => now(),
+                    'updated_at'        => now(),
+                ]);
+            }
+            fclose($handle);
+            $maxId = DB::table('users')->max('id');
+        }
+
+        // 2. Akun Demo
         User::create([
+            'id'                => $maxId + 1,
             'name'              => 'Admin Coursify',
             'email'             => 'admin@coursify.com',
             'password'          => Hash::make('password'),
             'role'              => 'admin',
             'email_verified_at' => now(),
         ]);
- 
+
         User::create([
-            'name'              => 'Budi Instruktur',
+            'id'                => $maxId + 2,
+            'name'              => 'Instructor Demo',
             'email'             => 'instructor@coursify.com',
             'password'          => Hash::make('password'),
             'role'              => 'instructor',
             'email_verified_at' => now(),
         ]);
- 
+
         User::create([
-            'name'              => 'Siti Mahasiswa',
+            'id'                => $maxId + 3,
+            'name'              => 'Student Demo',
             'email'             => 'student@coursify.com',
             'password'          => Hash::make('password'),
             'role'              => 'student',
             'email_verified_at' => now(),
         ]);
- 
-        // ── Instruktur tambahan ──────────────────────────────────────
-        $instructorNames = [
-            ['Andi Pratama',    'andi@coursify.com'],
-            ['Dewi Rahayu',     'dewi@coursify.com'],
-            ['Rizky Firmansyah','rizky@coursify.com'],
-            ['Nadia Kusuma',    'nadia@coursify.com'],
-            ['Hendra Wijaya',   'hendra@coursify.com'],
-        ];
- 
-        foreach ($instructorNames as [$name, $email]) {
-            User::create([
-                'name'              => $name,
-                'email'             => $email,
-                'password'          => Hash::make('password'),
-                'role'              => 'instructor',
-                'email_verified_at' => now(),
-            ]);
-        }
- 
-        // ── 30 student dummy ─────────────────────────────────────────
-        User::factory()->count(30)->student()->create();
+
+        $finalMaxId = DB::table('users')->max('id') + 1;
+        DB::statement("ALTER TABLE users AUTO_INCREMENT = $finalMaxId;");
     }
 }

@@ -11,6 +11,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             CategorySeeder::class,      // 1. Kategori dulu
             InstitutionSeeder::class,   // 2. Institusi
+            ProgramSeeder::class,
             UserSeeder::class,          // 3. User (admin, instructor, student)
             CourseSeeder::class,        // 4. Kursus + Section + Lesson
             EnrollmentSeeder::class,    // 5. Enrollment + Payment + LessonProgress
