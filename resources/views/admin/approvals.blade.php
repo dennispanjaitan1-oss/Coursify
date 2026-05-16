@@ -40,8 +40,7 @@
                         <span>👥</span>
                         <span class="font-medium text-sm">Users</span>
                     </a>
-
-                    <a href="{{ route('admin.courses') }}"
+                    <a href="{{ route('admin.courses.index') }}"
                        class="flex items-center gap-3 px-4 py-3 rounded-2xl text-gray-600 hover:bg-gray-100 transition">
                         <span>📖</span>
                         <span class="font-medium text-sm">Courses</span>

@@ -122,7 +122,10 @@ Route::middleware(['auth', 'role:admin'])
         Route::put('/users/{id}', [App\Http\Controllers\Admin\UserController::class, 'update'])->name('users.update');
         Route::delete('/users/{id}', [App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('users.destroy');
 
-        Route::view('/courses', 'admin.courses')->name('courses');
+        Route::resource(
+    'courses',
+    App\Http\Controllers\Admin\CourseController::class
+);
 
         Route::view('/institutions', 'admin.institutions')->name('institutions');
 

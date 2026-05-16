@@ -438,7 +438,7 @@
 
                         </a>
 
-                        <a href="{{ route('admin.courses') }}"
+                        <a href="{{ route('admin.courses.index') }}"
                            class="flex items-center gap-3 bg-gray-100 hover:bg-gray-200 transition rounded-2xl p-4">
 
                             <span class="text-xl">📚</span>

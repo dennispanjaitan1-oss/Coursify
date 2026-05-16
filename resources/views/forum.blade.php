@@ -1164,7 +1164,7 @@
                         data-category="{{ $thread['cat'] }}"
                         data-title="{{ strtolower($thread['title']) }}"
                         data-excerpt="{{ strtolower($thread['excerpt']) }}"
-                        onclick="window.location='#thread-{{ $thread['id'] }}'"
+                        onclick="window.location='#thread-{{ $thread['id'] }}';"
                     >
                         {{-- Vote --}}
                         <div class="forum-thread-vote">
