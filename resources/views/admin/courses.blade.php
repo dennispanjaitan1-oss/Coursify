@@ -53,7 +53,7 @@
                     </a>
 
                     {{-- ACTIVE MENU --}}
-                    <a href="{{ route('admin.courses') }}"
+                    <a href="{{ route('admin.courses.index') }}"
                        class="flex items-center justify-between px-4 py-3 rounded-2xl bg-gradient-to-r from-violet-500 to-indigo-500 text-white shadow-md">
 
                         <div class="flex items-center gap-3">
