@@ -1,279 +1,510 @@
 id,name,email,password,role,email_verified_at,created_at,updated_at
-10,David J. Malan,david.j..malan@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-11,Brian Yu,brian.yu@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-12,Alyssa Goodman,alyssa.goodman@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-13,Thomas Barnett,thomas.barnett@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-14,John Johnson,john.johnson@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-15,Peter Der Manuelian,peter.der.manuelian@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-16,Hjalti Snær Ægisson,hjalti.snr.gisson@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-17,Beth Rogers,beth.rogers@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-18,Dr Sarah Steele,dr.sarah.steele@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-19,Alison Goldsworthy,alison.goldsworthy@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-20,Laura Osborne,laura.osborne@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-21,Alexandra Chesterfield,alexandra.chesterfield@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-22,Emily Frazier-Rath,emily.frazierrath@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-23,Lauren Duncan,lauren.duncan@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-24,Gerlo Borghuis MSc,gerlo.borghuis@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-25,Petra Hellegers,petra.hellegers@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-26,Harm Boesveld,harm.boesveld@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-27,Dr. Ir. Henk Ritzema,ir..henk.ritzema@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-28,Alex Bolding,alex.bolding@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-29,Dr. Ir. Klaas Metselaar,ir..klaas.metselaar@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-30,Dr. Ir. Jos van Dam,ir..jos.van.dam@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-31,Dr. Ir. Lodewijk Stuyt,ir..lodewijk.stuyt@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-32,Jianning Dong,jianning.dong@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-33,Pavol Bauer,pavol.bauer@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-34,Hassan HosseinNia,hassan.hosseinnia@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-35,Marta Marrón-Romera,marta.marrnromera@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-36,Felipe Espinosa-Zapata,felipe.espinosazapata@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-37,Cristina Losada-Gutiérrez,cristina.losadagutirrez@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-38,David Fuentes-Jiménez,david.fuentesjimnez@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-39,Daniel Pizarro-Pérez,daniel.pizarroprez@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-40,Dimitris Georgopoulos,dimitris.georgopoulos@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-41,Konstantina Salagianni,konstantina.salagianni@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-42,Panagiotis Aivaliotis,panagiotis.aivaliotis@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-43,Gašper Škulj,gaper.kulj@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-44,Primož Podržaj,primo.podraj@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-45,Gerrie van de Ven,gerrie.van.de.ven@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-46,I.J.M. de Boer,i.j.m..de.boer@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-47,Carolien Kroeze,carolien.kroeze@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-48,Eddie Bokkers,eddie.bokkers@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-49,Khaled Benkrid,khaled.benkrid@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-50,Shuojin Hang,shuojin.hang@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-51,Mark Allen,mark.allen@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-52,Tim Wilmshurst,tim.wilmshurst@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-53,Tom Spink,tom.spink@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-54,Manuel Belgioioso,manuel.belgioioso@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-55,Ricardo R. Trujeque,ricardo.r..trujeque@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-56,Rav Ahuja,rav.ahuja@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-57,Upkar Lidder,upkar.lidder@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-58,Joseph Santarcangelo,joseph.santarcangelo@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-59,Ramesh Sannareddy,ramesh.sannareddy@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-60,Yan Luo,yan.luo@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-61,Alex Parker,alex.parker@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-62,Heather Nelson,heather.nelson@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-63,Antonio Cangiano,antonio.cangiano@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-64,Thomas Forrest Kelly,thomas.forrest.kelly@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-65,Peter K. Bol,peter.k..bol@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-66,William C.,william.c.@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-67,Kirby,kirby@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-68,John Appleby,john.appleby@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-69,Jerome Wong,jerome.wong@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-70,Wouter Bossu,wouter.bossu@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-71,Hans Weenink,hans.weenink@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-72,Catalina Margulis,catalina.margulis@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-73,Jess  Cheng,jess..cheng@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-74,Rossi Arthur Dominique Pierre,rossi.arthur.dominique.pierre@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-75,Jack Farmer,jack.farmer@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-76,Chris Thomas,chris.thomas@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-77,Daniel Wolfenzon,daniel.wolfenzon@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-78,Yang Yang,yang.yang@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-79,Erland Stevens,erland.stevens@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-80,Piter Bijma,piter.bijma@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-81,Mario Calus,mario.calus@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-82,Han Mulder,han.mulder@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-83,Hans Komen,hans.komen@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-84,John Bastiaansen,john.bastiaansen@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-85,Bart Ducro,bart.ducro@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-86,Jonathan Gershoni,jonathan.gershoni@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-87,Daniel Byman,daniel.byman@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-88,Christine Fair,christine.fair@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-89,Bruce Hoffman,bruce.hoffman@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-90,Paul Pillar,paul.pillar@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-91,Jordan Abu-Sirriya,jordan.abusirriya@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-92,William Perry,william.perry@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-93,?lter Turan,lter.turan@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-94,Mehmet Ali Tu?tan,mehmet.ali.tutan@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-95,Regina Barzilay,regina.barzilay@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-96,Karene Chu,karene.chu@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-97,Tommi Jaakkola,tommi.jaakkola@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-98,Alex Aklson,alex.aklson@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-99,Dr. Michael Brown,michael.brown@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-100,Dr. Augusto Casas,augusto.casas@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-101,Lin Joyner,lin.joyner@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-102,Rose Malcolm,rose.malcolm@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-103,Steve Ryan,steve.ryan@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-104,Juan Pablo García Cifuentes,juan.pablo.garca.cifuentes@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-105,Montserrat Gispert Rodríguez,montserrat.gispert.rodrguez@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-106,Jacco M. Hoekstra,jacco.m..hoekstra@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-107,Jos Sinke,jos.sinke@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-108,Mark Voskujl,mark.voskujl@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-109,Nando Timmer,nando.timmer@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-110,Calvin Rans,calvin.rans@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-111,Gillian Saunders-Smits,gillian.saunderssmits@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-112,René Alderliesten,ren.alderliesten@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-113,Julie Teuwen,julie.teuwen@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-114,Katharina Ertman,katharina.ertman@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-115,Henri Werij,henri.werij@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-116,Irene Fernandez Villegas,irene.fernandez.villegas@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-117,Arvind Gangoli Rao,arvind.gangoli.rao@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-118,Bruno Santos,bruno.santos@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-119,Roelof Vos,roelof.vos@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-120,Maurice Hoogreef,maurice.hoogreef@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-121,Joris Melkert,joris.melkert@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-122,Irene Dedoussi,irene.dedoussi@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-123,Carmine Varriale,carmine.varriale@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-124,Fred Chong,fred.chong@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-125,Jonathan Baker,jonathan.baker@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-126,Yongshan Ding,yongshan.ding@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-127,Casey Duckering,casey.duckering@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-128,Brian McCandless,brian.mccandless@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-129,Abby Wentworth,abby.wentworth@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-130,Alyssa Neville,alyssa.neville@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-131,Yannick Radi,yannick.radi@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-132,Raphaël Van Steenberghe,raphal.van.steenberghe@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-133,Jerôme de Hemptinne,jerme.de.hemptinne@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-134,Olivier De Schutter,olivier.de.schutter@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-135,Olga Espinoza,olga.espinoza@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-136,Eduardo Pazinato,eduardo.pazinato@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-137,Alejandra Mera,alejandra.mera@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-138,Hung-En Sung,hungen.sung@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-139,Rosemary Barberet,rosemary.barberet@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-140,Juan Carlos Ruíz,juan.carlos.ruz@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-141,Liliana Mazano,liliana.mazano@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-142,Diego Piñol,diego.piol@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-143,Carter Zenke,carter.zenke@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-144,Doug Lloyd,doug.lloyd@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-145,Benedict Gross,benedict.gross@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-146,Joseph Harris,joseph.harris@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-147,Emily Riehl,emily.riehl@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-148,Pavlos Protopapas,pavlos.protopapas@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-149,Katie Gaertner,katie.gaertner@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-150,Cody Baldwin,cody.baldwin@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-151,Coen J. Ritsema,coen.j..ritsema@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-152,Michael Riksen,michael.riksen@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-153,Jerry Maroulis,jerry.maroulis@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-154,Ken Giller,ken.giller@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-155,Harrie Lovenstein,harrie.lovenstein@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-156,Elena Moltchanova,elena.moltchanova@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-157,Anant Agarwal,anant.agarwal@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-158,Gerald Sussman,gerald.sussman@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-159,Piotr Mitros,piotr.mitros@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-160,Chris Terman,chris.terman@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-161,Bonnie Lam,bonnie.lam@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-162,Ken Webster,ken.webster@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-163,Conny Bakker,conny.bakker@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-164,David Peck,david.peck@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-165,Ester van der Voet,ester.van.der.voet@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-166,Ruud Balkenende,ruud.balkenende@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-167,Erwin van der Laan,erwin.van.der.laan@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-168,Peter Palensky,peter.palensky@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-169,Simon Tindemans,simon.tindemans@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-170,Pedro P. Vergara,pedro.p..vergara@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-171,Kees Vuik,kees.vuik@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-172,Marieke Kootte,marieke.kootte@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-173,Jochen Lorenz Cremer,jochen.lorenz.cremer@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-174,Alexandru Stevanof,alexandru.stevanof@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-175,Rudi Hakvoort,rudi.hakvoort@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-176,Zofia Lukszo,zofia.lukszo@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-177,Milos Cvetkovic,milos.cvetkovic@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-178,Gautham Ram,gautham.ram@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-179,Ivo Pothof,ivo.pothof@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-180,Yashar Ghiassi,yashar.ghiassi@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-181,Ayman Abdelwahed,ayman.abdelwahed@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-182,Mohammad Ansarin,mohammad.ansarin@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-183,Sven Andersson,sven.andersson@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-184,Anders Grauers,anders.grauers@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-185,Mansun Chan,mansun.chan@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-186,Stefan Auer,stefan.auer@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-187,Nicole Scicluna,nicole.scicluna@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-188,Tobias Theiler,tobias.theiler@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-189,Martin Sebena,martin.sebena@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-190,Alejandro Vergara,alejandro.vergara@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-191,David Cox,david.cox@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-192,Blake McKimmie,blake.mckimmie@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-193,Roy Baumester,roy.baumester@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-194,Virginia Slaughter,virginia.slaughter@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-195,Mark Nielsen,mark.nielsen@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-196,Nicole Nelson,nicole.nelson@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-197,Nancy Pachana,nancy.pachana@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-198,Vanessa Cobham,vanessa.cobham@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-199,Wen Wu,wen.wu@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-200,Rita Dwan,rita.dwan@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-201,"Yitong Yu, Ph.D.",yitong.yu..@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-202,"Ada Lo, Ph.D.",ada.lo..@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-203,"Dan Wang, Ph.D.",dan.wang..@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-204,"Catherine Cheung, Ph.D.",catherine.cheung..@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-205,Qiao Liu,qiao.liu@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-206,Li Ma,li.ma@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-207,Qiaowei Shen,qiaowei.shen@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-208,Yao Tang,yao.tang@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-209,John Kline,john.kline@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-210,Patrick Pasture,patrick.pasture@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-211,Fred Truyen,fred.truyen@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-212,Lien Verpoest,lien.verpoest@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-213,Umar Ryad,umar.ryad@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-214,Kris Van Heuckelom,kris.van.heuckelom@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-215,Sara Cosemans,sara.cosemans@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-216,Idesbald Goddeeris,idesbald.goddeeris@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-217,Sascha Bru,sascha.bru@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-218,Tom Verschaffel,tom.verschaffel@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-219,Martin Kohlrausch,martin.kohlrausch@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-220,Beatrijs Van Acker,beatrijs.van.acker@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-221,Lieke van Deinsen,lieke.van.deinsen@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-222,Elise Muir,elise.muir@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-223,Bert Keirsbilck,bert.keirsbilck@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-224,Jan Wouters,jan.wouters@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-225,Teresa Cabrita,teresa.cabrita@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-226,Katja Biedenkopf,katja.biedenkopf@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-227,Kolja Raube,kolja.raube@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-228,Wouter Wolfs,wouter.wolfs@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-229,Christina Ireton,christina.ireton@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-230,Naoko Kinoshita,naoko.kinoshita@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-231,Kengo Kuma,kengo.kuma@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-232,Yusuke Obuchi,yusuke.obuchi@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-233,Dr David Butler,dr.david.butler@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-234,Nicholas Crouch,nicholas.crouch@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-235,Dr Danny Stevenson,dr.danny.stevenson@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-236,Melissa Humphries,melissa.humphries@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-237,Dr Brendan Harding,dr.brendan.harding@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-238,Gregory Nagy,gregory.nagy@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-239,Leonard Muellner,leonard.muellner@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-240,Kevin McGrath,kevin.mcgrath@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-241,Keith DeStone,keith.destone@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-242,Martin Grunow,martin.grunow@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-243,Holly Ott,holly.ott@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-244,Dr. Reiner Hutwelker,reiner.hutwelker@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-245,Jonas Skutka,jonas.skutka@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-246,Arend de Haas,arend.de.haas@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-247,Lina Dilly,lina.dilly@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-248,Miia Hakkinen,miia.hakkinen@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-249,Haoyu Yang,haoyu.yang@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-250,Matthias Krins,matthias.krins@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-251,Merel Witteman,merel.witteman@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-252,Tossa Harding,tossa.harding@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-253,Robin van der Sluijs,robin.van.der.sluijs@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-254,Judith Lesschen,judith.lesschen@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-255,Sarah Foley,sarah.foley@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-256,Mark Bellingham,mark.bellingham@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-257,Anuj Sehgal,anuj.sehgal@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-258,Kenneth Lopez-Loo,kenneth.lopezloo@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-259,Roberto A. Peiretti,roberto.a..peiretti@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-260,Santiago Lorenzatti,santiago.lorenzatti@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-261,Omar Bachmeier,omar.bachmeier@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-262,Susana Hang,susana.hang@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-263,Juergen Brugger,juergen.brugger@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-264,Martin Gijs,martin.gijs@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-265,Javier Orozco-Messana,javier.orozcomessana@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-266,Elena de la Poza-Plaza,elena.de.la.pozaplaza@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-267,Dai Morgan,dai.morgan@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-268,Ana María Gonzálvez,ana.mara.gonzlvez@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-269,Maggie Sokolik,maggie.sokolik@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-270,Bugao Wang,bugao.wang@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-271,Abigail Docherty,abigail.docherty@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-272,Lucy Potter,lucy.potter@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-273,Joy McEntee,joy.mcentee@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-274,Galen Cuthbertson,galen.cuthbertson@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-275,Edward Palmer,edward.palmer@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-276,Aidan Coleman,aidan.coleman@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-277,Mahendra Chitrarasu,mahendra.chitrarasu@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-278,Prasanna Nidumolu,prasanna.nidumolu@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-279,Laurens de Vries,laurens.de.vries@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-280,Mark Miodownik,mark.miodownik@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-281,Jonathan Rogers,jonathan.rogers@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-282,Jonathan Valvano,jonathan.valvano@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-283,Ramesh Yerraballi,ramesh.yerraballi@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-284,Eric Simard,eric.simard@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-285,Joan Abou-Haidar,joan.abouhaidar@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-286,Rajesh Bhaskaran,rajesh.bhaskaran@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
-287,Maria  Garlock,maria..garlock@coursify.com,password,instructor,5/15/2026 14:00,5/15/2026 14:00,5/15/2026 14:00
+1,David J. Malan,david.j..malan@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+2,Brian Yu,brian.yu@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+3,Alyssa Goodman,alyssa.goodman@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+4,Thomas Barnett,thomas.barnett@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+5,John Johnson,john.johnson@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+6,Peter Der Manuelian,peter.der.manuelian@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+7,Hjalti SnÃ¦r Ã†gisson,hjalti.snr.gisson@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+8,Beth Rogers,beth.rogers@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+9,Dr Sarah Steele,dr.sarah.steele@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+10,Alison Goldsworthy,alison.goldsworthy@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+11,Laura Osborne,laura.osborne@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+12,Alexandra Chesterfield,alexandra.chesterfield@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+13,Emily Frazier-Rath,emily.frazierrath@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+14,Lauren Duncan,lauren.duncan@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+15,Gerlo Borghuis MSc,gerlo.borghuis@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+16,Petra Hellegers,petra.hellegers@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+17,Harm Boesveld,harm.boesveld@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+18,Dr. Ir. Henk Ritzema,ir..henk.ritzema@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+19,Alex Bolding,alex.bolding@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+20,Dr. Ir. Klaas Metselaar,ir..klaas.metselaar@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+21,Dr. Ir. Jos van Dam,ir..jos.van.dam@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+22,Dr. Ir. Lodewijk Stuyt,ir..lodewijk.stuyt@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+23,Jianning Dong,jianning.dong@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+24,Pavol Bauer,pavol.bauer@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+25,Hassan HosseinNia,hassan.hosseinnia@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+26,Marta MarrÃ³n-Romera,marta.marrnromera@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+27,Felipe Espinosa-Zapata,felipe.espinosazapata@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+28,Cristina Losada-GutiÃ©rrez,cristina.losadagutirrez@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+29,David Fuentes-JimÃ©nez,david.fuentesjimnez@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+30,Daniel Pizarro-PÃ©rez,daniel.pizarroprez@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+31,Dimitris Georgopoulos,dimitris.georgopoulos@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+32,Konstantina Salagianni,konstantina.salagianni@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+33,Panagiotis Aivaliotis,panagiotis.aivaliotis@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+34,GaÅ¡per Å kulj,gaper.kulj@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+35,PrimoÅ¾ PodrÅ¾aj,primo.podraj@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+36,Gerrie van de Ven,gerrie.van.de.ven@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+37,I.J.M. de Boer,i.j.m..de.boer@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+38,Carolien Kroeze,carolien.kroeze@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+39,Eddie Bokkers,eddie.bokkers@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+40,Khaled Benkrid,khaled.benkrid@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+41,Shuojin Hang,shuojin.hang@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+42,Mark Allen,mark.allen@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+43,Tim Wilmshurst,tim.wilmshurst@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+44,Tom Spink,tom.spink@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+45,Manuel Belgioioso,manuel.belgioioso@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+46,Ricardo R. Trujeque,ricardo.r..trujeque@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+47,Rav Ahuja,rav.ahuja@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+48,Upkar Lidder,upkar.lidder@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+49,Joseph Santarcangelo,joseph.santarcangelo@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+50,Ramesh Sannareddy,ramesh.sannareddy@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+51,Yan Luo,yan.luo@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+52,Alex Parker,alex.parker@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+53,Heather Nelson,heather.nelson@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+54,Antonio Cangiano,antonio.cangiano@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+55,Thomas Forrest Kelly,thomas.forrest.kelly@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+56,Peter K. Bol,peter.k..bol@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+57,William C.,william.c.@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+58,Kirby,kirby@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+59,John Appleby,john.appleby@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+60,Jerome Wong,jerome.wong@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+61,Wouter Bossu,wouter.bossu@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+62,Hans Weenink,hans.weenink@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+63,Catalina Margulis,catalina.margulis@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+64,Jess  Cheng,jess..cheng@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+65,Rossi Arthur Dominique Pierre,rossi.arthur.dominique.pierre@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+66,Jack Farmer,jack.farmer@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+67,Chris Thomas,chris.thomas@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+68,Daniel Wolfenzon,daniel.wolfenzon@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+69,Yang Yang,yang.yang@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+70,Erland Stevens,erland.stevens@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+71,Piter Bijma,piter.bijma@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+72,Mario Calus,mario.calus@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+73,Han Mulder,han.mulder@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+74,Hans Komen,hans.komen@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+75,John Bastiaansen,john.bastiaansen@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+76,Bart Ducro,bart.ducro@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+77,Jonathan Gershoni,jonathan.gershoni@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+78,Daniel Byman,daniel.byman@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+79,Christine Fair,christine.fair@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+80,Bruce Hoffman,bruce.hoffman@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+81,Paul Pillar,paul.pillar@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+82,Jordan Abu-Sirriya,jordan.abusirriya@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+83,William Perry,william.perry@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+84,?lter Turan,lter.turan@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+85,Mehmet Ali Tu?tan,mehmet.ali.tutan@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+86,Regina Barzilay,regina.barzilay@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+87,Karene Chu,karene.chu@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+88,Tommi Jaakkola,tommi.jaakkola@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+89,Alex Aklson,alex.aklson@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+90,Dr. Michael Brown,michael.brown@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+91,Dr. Augusto Casas,augusto.casas@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+92,Lin Joyner,lin.joyner@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+93,Rose Malcolm,rose.malcolm@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+94,Steve Ryan,steve.ryan@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+95,Juan Pablo GarcÃ­a Cifuentes,juan.pablo.garca.cifuentes@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+96,Montserrat Gispert RodrÃ­guez,montserrat.gispert.rodrguez@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+97,Jacco M. Hoekstra,jacco.m..hoekstra@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+98,Jos Sinke,jos.sinke@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+99,Mark Voskujl,mark.voskujl@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+100,Nando Timmer,nando.timmer@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+101,Calvin Rans,calvin.rans@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+102,Gillian Saunders-Smits,gillian.saunderssmits@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+103,RenÃ© Alderliesten,ren.alderliesten@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+104,Julie Teuwen,julie.teuwen@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+105,Katharina Ertman,katharina.ertman@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+106,Henri Werij,henri.werij@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+107,Irene Fernandez Villegas,irene.fernandez.villegas@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+108,Arvind Gangoli Rao,arvind.gangoli.rao@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+109,Bruno Santos,bruno.santos@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+110,Roelof Vos,roelof.vos@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+111,Maurice Hoogreef,maurice.hoogreef@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+112,Joris Melkert,joris.melkert@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+113,Irene Dedoussi,irene.dedoussi@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+114,Carmine Varriale,carmine.varriale@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+115,Fred Chong,fred.chong@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+116,Jonathan Baker,jonathan.baker@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+117,Yongshan Ding,yongshan.ding@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+118,Casey Duckering,casey.duckering@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+119,Brian McCandless,brian.mccandless@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+120,Abby Wentworth,abby.wentworth@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+121,Alyssa Neville,alyssa.neville@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+122,Yannick Radi,yannick.radi@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+123,RaphaÃ«l Van Steenberghe,raphal.van.steenberghe@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+124,JerÃ´me de Hemptinne,jerme.de.hemptinne@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+125,Olivier De Schutter,olivier.de.schutter@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+126,Olga Espinoza,olga.espinoza@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+127,Eduardo Pazinato,eduardo.pazinato@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+128,Alejandra Mera,alejandra.mera@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+129,Hung-En Sung,hungen.sung@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+130,Rosemary Barberet,rosemary.barberet@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+131,Juan Carlos RuÃ­z,juan.carlos.ruz@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+132,Liliana Mazano,liliana.mazano@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+133,Diego PiÃ±ol,diego.piol@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+134,Carter Zenke,carter.zenke@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+135,Doug Lloyd,doug.lloyd@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+136,Benedict Gross,benedict.gross@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+137,Joseph Harris,joseph.harris@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+138,Emily Riehl,emily.riehl@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+139,Pavlos Protopapas,pavlos.protopapas@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+140,Katie Gaertner,katie.gaertner@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+141,Cody Baldwin,cody.baldwin@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+142,Coen J. Ritsema,coen.j..ritsema@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+143,Michael Riksen,michael.riksen@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+144,Jerry Maroulis,jerry.maroulis@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+145,Ken Giller,ken.giller@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+146,Harrie Lovenstein,harrie.lovenstein@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+147,Elena Moltchanova,elena.moltchanova@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+148,Anant Agarwal,anant.agarwal@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+149,Gerald Sussman,gerald.sussman@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+150,Piotr Mitros,piotr.mitros@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+151,Chris Terman,chris.terman@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+152,Bonnie Lam,bonnie.lam@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+153,Ken Webster,ken.webster@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+154,Conny Bakker,conny.bakker@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+155,David Peck,david.peck@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+156,Ester van der Voet,ester.van.der.voet@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+157,Ruud Balkenende,ruud.balkenende@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+158,Erwin van der Laan,erwin.van.der.laan@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+159,Peter Palensky,peter.palensky@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+160,Simon Tindemans,simon.tindemans@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+161,Pedro P. Vergara,pedro.p..vergara@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+162,Kees Vuik,kees.vuik@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+163,Marieke Kootte,marieke.kootte@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+164,Jochen Lorenz Cremer,jochen.lorenz.cremer@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+165,Alexandru Stevanof,alexandru.stevanof@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+166,Rudi Hakvoort,rudi.hakvoort@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+167,Zofia Lukszo,zofia.lukszo@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+168,Milos Cvetkovic,milos.cvetkovic@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+169,Gautham Ram,gautham.ram@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+170,Ivo Pothof,ivo.pothof@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+171,Yashar Ghiassi,yashar.ghiassi@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+172,Ayman Abdelwahed,ayman.abdelwahed@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+173,Mohammad Ansarin,mohammad.ansarin@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+174,Sven Andersson,sven.andersson@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+175,Anders Grauers,anders.grauers@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+176,Mansun Chan,mansun.chan@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+177,Stefan Auer,stefan.auer@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+178,Nicole Scicluna,nicole.scicluna@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+179,Tobias Theiler,tobias.theiler@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+180,Martin Sebena,martin.sebena@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+181,Alejandro Vergara,alejandro.vergara@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+182,David Cox,david.cox@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+183,Blake McKimmie,blake.mckimmie@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+184,Roy Baumester,roy.baumester@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+185,Virginia Slaughter,virginia.slaughter@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+186,Mark Nielsen,mark.nielsen@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+187,Nicole Nelson,nicole.nelson@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+188,Nancy Pachana,nancy.pachana@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+189,Vanessa Cobham,vanessa.cobham@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+190,Wen Wu,wen.wu@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+191,Rita Dwan,rita.dwan@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+192,"Yitong Yu, Ph.D.",yitong.yu..@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+193,"Ada Lo, Ph.D.",ada.lo..@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+194,"Dan Wang, Ph.D.",dan.wang..@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+195,"Catherine Cheung, Ph.D.",catherine.cheung..@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+196,Qiao Liu,qiao.liu@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+197,Li Ma,li.ma@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+198,Qiaowei Shen,qiaowei.shen@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+199,Yao Tang,yao.tang@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+200,John Kline,john.kline@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+201,Patrick Pasture,patrick.pasture@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+202,Fred Truyen,fred.truyen@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+203,Lien Verpoest,lien.verpoest@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+204,Umar Ryad,umar.ryad@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+205,Kris Van Heuckelom,kris.van.heuckelom@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+206,Sara Cosemans,sara.cosemans@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+207,Idesbald Goddeeris,idesbald.goddeeris@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+208,Sascha Bru,sascha.bru@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+209,Tom Verschaffel,tom.verschaffel@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+210,Martin Kohlrausch,martin.kohlrausch@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+211,Beatrijs Van Acker,beatrijs.van.acker@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+212,Lieke van Deinsen,lieke.van.deinsen@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+213,Elise Muir,elise.muir@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+214,Bert Keirsbilck,bert.keirsbilck@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+215,Jan Wouters,jan.wouters@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+216,Teresa Cabrita,teresa.cabrita@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+217,Katja Biedenkopf,katja.biedenkopf@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+218,Kolja Raube,kolja.raube@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+219,Wouter Wolfs,wouter.wolfs@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+220,Christina Ireton,christina.ireton@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+221,Naoko Kinoshita,naoko.kinoshita@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+222,Kengo Kuma,kengo.kuma@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+223,Yusuke Obuchi,yusuke.obuchi@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+224,Dr David Butler,dr.david.butler@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+225,Nicholas Crouch,nicholas.crouch@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+226,Dr Danny Stevenson,dr.danny.stevenson@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+227,Melissa Humphries,melissa.humphries@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+228,Dr Brendan Harding,dr.brendan.harding@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+229,Gregory Nagy,gregory.nagy@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+230,Leonard Muellner,leonard.muellner@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+231,Kevin McGrath,kevin.mcgrath@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+232,Keith DeStone,keith.destone@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+233,Martin Grunow,martin.grunow@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+234,Holly Ott,holly.ott@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+235,Dr. Reiner Hutwelker,reiner.hutwelker@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+236,Jonas Skutka,jonas.skutka@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+237,Arend de Haas,arend.de.haas@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+238,Lina Dilly,lina.dilly@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+239,Miia Hakkinen,miia.hakkinen@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+240,Haoyu Yang,haoyu.yang@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+241,Matthias Krins,matthias.krins@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+242,Merel Witteman,merel.witteman@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+243,Tossa Harding,tossa.harding@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+244,Robin van der Sluijs,robin.van.der.sluijs@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+245,Judith Lesschen,judith.lesschen@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+246,Sarah Foley,sarah.foley@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+247,Mark Bellingham,mark.bellingham@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+248,Anuj Sehgal,anuj.sehgal@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+249,Kenneth Lopez-Loo,kenneth.lopezloo@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+250,Roberto A. Peiretti,roberto.a..peiretti@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+251,Santiago Lorenzatti,santiago.lorenzatti@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+252,Omar Bachmeier,omar.bachmeier@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+253,Susana Hang,susana.hang@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+254,Juergen Brugger,juergen.brugger@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+255,Martin Gijs,martin.gijs@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+256,Javier Orozco-Messana,javier.orozcomessana@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+257,Elena de la Poza-Plaza,elena.de.la.pozaplaza@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+258,Dai Morgan,dai.morgan@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+259,Ana MarÃ­a GonzÃ¡lvez,ana.mara.gonzlvez@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+260,Maggie Sokolik,maggie.sokolik@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+261,Bugao Wang,bugao.wang@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+262,Abigail Docherty,abigail.docherty@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+263,Lucy Potter,lucy.potter@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+264,Joy McEntee,joy.mcentee@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+265,Galen Cuthbertson,galen.cuthbertson@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+266,Edward Palmer,edward.palmer@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+267,Aidan Coleman,aidan.coleman@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+268,Mahendra Chitrarasu,mahendra.chitrarasu@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+269,Prasanna Nidumolu,prasanna.nidumolu@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+270,Laurens de Vries,laurens.de.vries@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+271,Mark Miodownik,mark.miodownik@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+272,Jonathan Rogers,jonathan.rogers@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+273,Jonathan Valvano,jonathan.valvano@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+274,Ramesh Yerraballi,ramesh.yerraballi@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+275,Eric Simard,eric.simard@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+276,Joan Abou-Haidar,joan.abouhaidar@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+277,Rajesh Bhaskaran,rajesh.bhaskaran@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+278,Maria  Garlock,maria..garlock@coursify.com,password,instructor,2026-05-15 14:00:00,2026-05-15 14:00:00,2026-05-15 14:00:00
+279,Chris Caplice,chris.caplice@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+280,Ravindra Goonetilleke,ravindra.goonetilleke@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+281,Sai-Kit Yeung,sai-kit.yeung@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+282,Michel Buffa,michel.buffa@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+283,Lorenz Hurni,lorenz.hurni@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+284,Aren Maeir,aren.maeir@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+285,Diane L. Moore,diane.l..moore@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+286,Robert Kaba Alhassan ,robert.kaba.alhassan.@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+287,Martin Ayanore,martin.ayanore@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+288,Samuel Nii Ardey Codjoe,samuel.nii.ardey.codjoe@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+289,Phildelia Theresa Doegah,phildelia.theresa.doegah@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+290,John Gyapong,john.gyapong@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+291,Mandy Kader Kondé,mandy.kader.kondé@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+292,Jessica Kritz,jessica.kritz@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+293,Bernhard Liese,bernhard.liese@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+294,John Page,john.page@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+295,Alex Pelchat-White,alex.pelchat-white@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+296,Jessica Peng,jessica.peng@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+297,Jake Artz,jake.artz@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+298,Kasey Champion,kasey.champion@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+299,Marwa Hussein,marwa.hussein@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+300,Andrew Byrne,andrew.byrne@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+301,Adrian Leven,adrian.leven@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+302,Gerry O'Brien,gerry.obrien@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+303,Jurgen P. Schulze,jurgen.p..schulze@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+304,Ravi Ramamoorthi,ravi.ramamoorthi@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+305,María Canal Caicedo,maría.canal.caicedo@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+306,Lina Rocío Torres Rincón,lina.rocío.torres.rincón@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+307,Dr. Il-Horn Hann,dr..il-horn.hann@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+308,John Jhonson,john.jhonson@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+309,Marisela Ponce de León,marisela.ponce.de.león@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+310,Claudia Franchesca de los Santos,claudia.franchesca.de.los.santos@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+311,Neil Pederson,neil.pederson@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+312,Defny Geldorp,defny.geldorp@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+313,Sharon Inglefield,sharon.inglefield@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+314,Edoardo Gianotti,edoardo.gianotti@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+315,Alejandro Furas,alejandro.furas@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+316,Marvin Gonzales,marvin.gonzales@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+317,Eugenia Rodrigues,eugenia.rodrigues@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+318,Brent Batson,brent.batson@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+319,Corina Puppo,corina.puppo@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+320,Pablo Martínez Carignano,pablo.martínez.carignano@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+321,Edgar Zamora,edgar.zamora@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+322,Mauricio Pineda Rivera,mauricio.pineda.rivera@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+323,Elías Rubinstein,elías.rubinstein@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+324,Rob McInerney,rob.mcinerney@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+325,Julio Urzua,julio.urzua@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+326,Claudia Adriazola-Steil,claudia.adriazola-steil@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+327,Leticia Sabino,leticia.sabino@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+328,Luis David Rojas Guerrero,luis.david.rojas.guerrero@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+329,Laura Ballesteros,laura.ballesteros@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+330,Natalie Draisin,natalie.draisin@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+331,Shannon Wip,shannon.wip@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+332,Guirlaine Denis,guirlaine.denis@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+333,Charles Severance,charles.severance@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+334,Rafael Irizarry,rafael.irizarry@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+335,Chris Gumb,chris.gumb@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+336,Rajendra Sisodia,rajendra.sisodia@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+337,Jeffrey D. Sachs,jeffrey.d..sachs@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+338,Prof. Dr. Malte Brettel,prof..dr..malte.brettel@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+339,Sreelata Jonnalagedda,sreelata.jonnalagedda@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+340,John McArthur,john.mcarthur@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+341,Chandrika Bahadur,chandrika.bahadur@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+342,Sabina Alkire,sabina.alkire@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+343,Homi Kharas,homi.kharas@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+344,Carol Graham,carol.graham@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+345,Makada Henry-Nickie,makada.henry-nickie@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+346,Caren Grown,caren.grown@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+347,Alpa Shah,alpa.shah@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+348,Haroon Bhorat,haroon.bhorat@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+349,Rashawn Ray,rashawn.ray@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+350,Andre Perry,andre.perry@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+351,Heriberto Tapia,heriberto.tapia@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+352,Amar Bhattacharya,amar.bhattacharya@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+353,Dany Bahar,dany.bahar@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+354,Nora Lustig,nora.lustig@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+355,Michael Cooke,michael.cooke@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+356,Wing Thye Woo,wing.thye.woo@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+357,Addisu Lashitew,addisu.lashitew@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+358,Axel Marx,axel.marx@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+359,Charline Depoorter,charline.depoorter@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+360,Miet Maertens,miet.maertens@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+361,Janne Behelmans,janne.behelmans@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+362,Eva Boonaert,eva.boonaert@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+363,Maja Tampe,maja.tampe@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+364,Dominic Coppens,dominic.coppens@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+365,Santiago Fernandez de Cordoba,santiago.fernandez.de.cordoba@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+366,André Decoster,andré.decoster@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+367,Hilde Heynen,hilde.heynen@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+368,Bart Kerremans,bart.kerremans@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+369,Bart Muys,bart.muys@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+370,Constanza Parra,constanza.parra@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+372,Luc Sels,luc.sels@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+373,Ilse Smets,ilse.smets@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+374,Karel Van Acker,karel.van.acker@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+375,Chris Van Geet,chris.van.geet@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+376,Kurt Willems,kurt.willems@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+377,Preeti Krishnan Lyndem,preeti.krishnan.lyndem@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+378,Lola Kaiki,lola.kaiki@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+379,Shainesh G,shainesh.g@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+380,Ashis Mishra,ashis.mishra@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+381,Prithwiraj Mukherjee,prithwiraj.mukherjee@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+382,Fernando Sierra Saavedra,fernando.sierra.saavedra@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+383,Brenda Aranda,brenda.aranda@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+384,Leah Waldo,leah.waldo@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+385,Professor Connson Locke,professor.connson.locke@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+386,Arnout Fischer,arnout.fischer@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+387,Emiel Wubben,emiel.wubben@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+388,Justus Wesseler,justus.wesseler@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+389,Argyris Kanellopoulos,argyris.kanellopoulos@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+390,Dmytro Krushynskyi,dmytro.krushynskyi@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+391,Ellen Slegers,ellen.slegers@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+392,Costas Nikiforidis,costas.nikiforidis@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+393,Corjan van den Berg,corjan.van.den.berg@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+394,Harry Bitter,harry.bitter@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+395,Marian Vermue,marian.vermue@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+396,Daniella Duran,daniella.duran@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+397,Michael Brenner,michael.brenner@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+398,David Weitz,david.weitz@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+399,Pia Sörensen,pia.sörensen@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+400,Peter Cohan,peter.cohan@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+401,Bill George,bill.george@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+402,Raj Raghunathan,raj.raghunathan@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+403,Sandrine Muller,sandrine.muller@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+404,Marshall Goldsmith,marshall.goldsmith@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+405,Ahsan Vency,ahsan.vency@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+406,Michael Pittman,michael.pittman@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+407,Xu Xing,xu.xing@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+408,Diego Pol,diego.pol@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+409,Sarah Carter,sarah.carter@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+410,Ivan Gaskell,ivan.gaskell@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+411,Sara Schechner,sara.schechner@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+412,Laurel Thatcher Ulrich,laurel.thatcher.ulrich@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+413,Elizabeth Eich,elizabeth.eich@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+414,Daniel J. Catanese,daniel.j..catanese@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+415,Pavel Pevzner,pavel.pevzner@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+416,Phillip Compeau,phillip.compeau@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+417,Michael Love,michael.love@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+418,Vincent Carey,vincent.carey@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+419,Carola Hein,carola.hein@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+420,Stephan Hauser,stephan.hauser@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+421,Rachel Lee,rachel.lee@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+422,Paolo De Martino,paolo.de.martino@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+423,Bart van den Dries,bart.van.den.dries@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+424,Marleen Keijzer,marleen.keijzer@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+425,Iris Smit,iris.smit@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+426,Niek de Kleijn,niek.de.kleijn@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+427,Willem Schouten-Straatman,willem.schouten-straatman@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+428,Johannes Maks,johannes.maks@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+429,David Goldsman,david.goldsman@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+430,Pilar Candelas Valiente,pilar.candelas.valiente@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+431,M. Ángeles Hernández Fenollosa,m..ángeles.hernández.fenollosa@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+432,Constanza Rubio Michavila,constanza.rubio.michavila@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+433,Marcos Giménez Valentín,marcos.giménez.valentín@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+434,Joaquín Cerdá Boluda,joaquín.cerdá.boluda@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+435,"Alberth Alvarado, Ph.D.","alberth.alvarado,.ph.d.@coursify.com",password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+436,Guillermo Cotto,guillermo.cotto@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+437,Yves Weinand,yves.weinand@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+438,Aryan Rezaei Rad,aryan.rezaei.rad@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+439,Petras Vestartas,petras.vestartas@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+440,Junhui Deng,junhui.deng@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+441,Thomas E. Patterson,thomas.e..patterson@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+442,Danielle Allen,danielle.allen@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+443,Darwin Cortés,darwin.cortés@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+444,Diana Isabel Londoño Aguirre,diana.isabel.londoño.aguirre@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+445,Carlos Alberto Tena Sánchez,carlos.alberto.tena.sánchez@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+446,Daniel Meade Monteverde,daniel.meade.monteverde@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+447,Luz María Vargas Reguer,luz.maría.vargas.reguer@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+448,Elliott Kruse,elliott.kruse@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+449,Santiago José Vázquez Blanco,santiago.josé.vázquez.blanco@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+450,Eduardo Pérez Gorostieta,eduardo.pérez.gorostieta@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+451,Norma Palomino,norma.palomino@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+452,Xenia Cotón,xenia.cotón@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+453,Mauricio García Moreno,mauricio.garcía.moreno@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+454,Agustín Sarría,agustín.sarría@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+455,Claudia Baca,claudia.baca@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+456,Claudia Useche Melo,claudia.useche.melo@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+457,Reid Whitaker,reid.whitaker@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+458,Matt Wilson,matt.wilson@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+459,Yu An,yu.an@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+460,Liuwan Zhang,liuwan.zhang@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+461,Xinyi Chen,xinyi.chen@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+462,Emilia Frazzoli,emilia.frazzoli@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+463,Jacopo Tani,jacopo.tani@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+464,Andrea Censi,andrea.censi@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+465,Federica Saliola,federica.saliola@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+466,Aart Kraay,aart.kraay@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+467,Truman G. Packard,truman.g..packard@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+468,Shwetlena Sabarwal,shwetlena.sabarwal@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+469,Shu Yu,shu.yu@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+470,Ugo Gentilini,ugo.gentilini@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+471,Nagaraja Rao Harshadeep,nagaraja.rao.harshadeep@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+472,Roberta Gatti,roberta.gatti@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+473,Mark Andrew Dutz,mark.andrew.dutz@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+474,Sheila Jagannathan,sheila.jagannathan@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+475,Brendan McNulty,brendan.mcnulty@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+476,Kate DeMoss,kate.demoss@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+477,William “Bill” Dennison,william.bill.dennison@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+478,Bill Brantley,bill.brantley@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+479,Richard Arnold,richard.arnold@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+480,Vanessa Vargas-Nguyen,vanessa.vargas-nguyen@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+481,Neil Schulman,neil.schulman@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+482,Kerry Wilkinson,kerry.wilkinson@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+483,Cassandra Collins,cassandra.collins@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+484,David Jeffery,david.jeffery@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+485,Paul Grbin,paul.grbin@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+486,Anke Audenaert,anke.audenaert@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+487,Petra Bonfert-Taylor,petra.bonfert-taylor@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+488,Rémi Sharrock,rémi.sharrock@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+489,Jerry Cooperstein,jerry.cooperstein@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+490,David A. Wheeler,david.a..wheeler@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+491,Hamed Behairy,hamed.behairy@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+492,Jessica Neuville,jessica.neuville@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+493,Lydia Yu,lydia.yu@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+494,Kevin King,kevin.king@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+495,Jim Pautz,jim.pautz@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+496,Dacher Keltner,dacher.keltner@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+497,Emiliana Simon-Thomas,emiliana.simon-thomas@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+498,Zubin Jacob,zubin.jacob@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+499,Iain Mathieson,iain.mathieson@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+500,Martin Dutton,martin.dutton@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+501,Megan Yucel,megan.yucel@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+502,Stephen Walker,stephen.walker@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+503,Philippa Coleman,philippa.coleman@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+504,Michael Knab,michael.knab@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+505,Cynthia Newman,cynthia.newman@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+506,Shawn Gorman,shawn.gorman@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+507,Molly Palmer,molly.palmer@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+508,Faye Weidner,faye.weidner@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+509,Insook Chung,insook.chung@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
+510,"Jukka-Pekka ""JP"" Onnela",jukka-pekka.jp.onnela@coursify.com,password,instructor,2026-05-16 14:03:00,2026-05-16 14:03:00,2026-05-16 14:03:00
