@@ -281,8 +281,8 @@
     }
     .method-tab-icon { font-size: 18px; display: block; margin-bottom: 3px; }
 
-    /* QRIS SECTION */
-    .qris-panel { display: flex; flex-direction: column; gap: 16px; }
+    /* PAYMENT PANELS */
+    .payment-panel { display: flex; flex-direction: column; gap: 16px; }
     .ewallet-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -344,37 +344,6 @@
     }
     input::placeholder { color: var(--muted); }
 
-    .qris-box {
-      border: 1px solid rgba(255,255,255,0.9);
-      border-radius: 16px;
-      padding: 24px;
-      background: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      box-shadow: 0 4px 16px rgba(123,111,232,0.1);
-    }
-    .qris-code {
-      width: 160px; height: 160px;
-      background: white;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .qris-code svg { width: 160px; height: 160px; }
-    .qris-info { text-align: center; }
-    .qris-info p { font-size: 13px; color: var(--text); font-weight: 500; }
-    .qris-info small { font-size: 11px; color: var(--muted); }
-    .qris-timer {
-      background: #fef3c7;
-      color: #92400e;
-      font-size: 12px;
-      font-weight: 600;
-      padding: 6px 14px;
-      border-radius: 20px;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
 
     /* ── RIGHT PANEL (ORDER SUMMARY) ── */
     .right-panel {
@@ -869,10 +838,7 @@
       <div style="height:14px"></div>
 
       <div class="method-tabs">
-        <button class="method-tab active" data-method="qris" onclick="switchMethod('qris', this)">
-          <span class="method-tab-icon">⚡</span>QRIS
-        </button>
-        <button class="method-tab" data-method="gopay" onclick="switchMethod('gopay', this)">
+        <button class="method-tab active" data-method="gopay" onclick="switchMethod('gopay', this)">
           <span class="method-tab-icon">💚</span>GoPay
         </button>
         <button class="method-tab" data-method="ovo" onclick="switchMethod('ovo', this)">
@@ -885,100 +851,8 @@
 
       <div style="height:16px"></div>
 
-      <!-- QRIS PANEL -->
-      <div class="qris-panel" id="panel-qris">
-        <p style="font-size:13px;color:var(--text-soft);line-height:1.6">Scan QR di bawah menggunakan aplikasi apapun yang mendukung QRIS (GoPay, OVO, DANA, ShopeePay, dll)</p>
-        <div class="qris-box">
-          <div class="qris-code">
-            <svg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
-              <rect width="160" height="160" fill="white"/>
-              <g fill="#111">
-                <rect x="10" y="10" width="50" height="50" rx="4"/>
-                <rect x="100" y="10" width="50" height="50" rx="4"/>
-                <rect x="10" y="100" width="50" height="50" rx="4"/>
-                <rect x="18" y="18" width="34" height="34" fill="white" rx="2"/>
-                <rect x="108" y="18" width="34" height="34" fill="white" rx="2"/>
-                <rect x="18" y="108" width="34" height="34" fill="white" rx="2"/>
-                <rect x="26" y="26" width="18" height="18" rx="1"/>
-                <rect x="116" y="26" width="18" height="18" rx="1"/>
-                <rect x="26" y="116" width="18" height="18" rx="1"/>
-                <rect x="70" y="10" width="8" height="8"/>
-                <rect x="82" y="10" width="8" height="8"/>
-                <rect x="70" y="22" width="8" height="8"/>
-                <rect x="70" y="34" width="8" height="8"/>
-                <rect x="82" y="34" width="8" height="8"/>
-                <rect x="70" y="46" width="8" height="8"/>
-                <rect x="82" y="22" width="8" height="8"/>
-                <rect x="10" y="70" width="8" height="8"/>
-                <rect x="22" y="70" width="8" height="8"/>
-                <rect x="34" y="70" width="8" height="8"/>
-                <rect x="46" y="70" width="8" height="8"/>
-                <rect x="58" y="70" width="8" height="8"/>
-                <rect x="10" y="82" width="8" height="8"/>
-                <rect x="34" y="82" width="8" height="8"/>
-                <rect x="58" y="82" width="8" height="8"/>
-                <rect x="70" y="70" width="8" height="8"/>
-                <rect x="82" y="70" width="8" height="8"/>
-                <rect x="94" y="70" width="8" height="8"/>
-                <rect x="70" y="82" width="8" height="8"/>
-                <rect x="94" y="82" width="8" height="8"/>
-                <rect x="106" y="70" width="8" height="8"/>
-                <rect x="118" y="70" width="8" height="8"/>
-                <rect x="130" y="70" width="8" height="8"/>
-                <rect x="142" y="70" width="8" height="8"/>
-                <rect x="106" y="82" width="8" height="8"/>
-                <rect x="130" y="82" width="8" height="8"/>
-                <rect x="70" y="94" width="8" height="8"/>
-                <rect x="82" y="94" width="8" height="8"/>
-                <rect x="94" y="94" width="8" height="8"/>
-                <rect x="70" y="106" width="8" height="8"/>
-                <rect x="94" y="106" width="8" height="8"/>
-                <rect x="106" y="94" width="8" height="8"/>
-                <rect x="118" y="94" width="8" height="8"/>
-                <rect x="130" y="94" width="8" height="8"/>
-                <rect x="142" y="94" width="8" height="8"/>
-                <rect x="118" y="106" width="8" height="8"/>
-                <rect x="142" y="106" width="8" height="8"/>
-                <rect x="70" y="118" width="8" height="8"/>
-                <rect x="82" y="118" width="8" height="8"/>
-                <rect x="94" y="118" width="8" height="8"/>
-                <rect x="70" y="130" width="8" height="8"/>
-                <rect x="94" y="130" width="8" height="8"/>
-                <rect x="82" y="130" width="8" height="8"/>
-                <rect x="70" y="142" width="8" height="8"/>
-                <rect x="82" y="142" width="8" height="8"/>
-                <rect x="106" y="118" width="8" height="8"/>
-                <rect x="118" y="118" width="8" height="8"/>
-                <rect x="130" y="118" width="8" height="8"/>
-                <rect x="142" y="118" width="8" height="8"/>
-                <rect x="106" y="130" width="8" height="8"/>
-                <rect x="142" y="130" width="8" height="8"/>
-                <rect x="118" y="130" width="8" height="8"/>
-                <rect x="130" y="130" width="8" height="8"/>
-                <rect x="106" y="142" width="8" height="8"/>
-                <rect x="118" y="142" width="8" height="8"/>
-                <rect x="130" y="142" width="8" height="8"/>
-                <rect x="142" y="142" width="8" height="8"/>
-              </g>
-              <rect x="64" y="64" width="32" height="32" fill="white" rx="4"/>
-              <text x="80" y="85" text-anchor="middle" font-size="18" fill="#7B6FE8">✦</text>
-            </svg>
-          </div>
-          <div class="qris-info">
-            <p>Scan untuk membayar</p>
-            <small>QR ini berlaku selama 15 menit</small>
-          </div>
-          <div class="qris-timer">
-            ⏱️ Berakhir dalam <span id="qrisTimer">14:59</span>
-          </div>
-        </div>
-        <p style="font-size:11.5px;color:var(--muted);text-align:center">
-          ⚠️ Ganti QR di atas dengan QR asli dari payment gateway (Midtrans, Xendit, dll)
-        </p>
-      </div>
-
       <!-- GOPAY PANEL -->
-      <div class="qris-panel" id="panel-gopay" style="display:none">
+      <div class="payment-panel" id="panel-gopay">
         <p style="font-size:13px;color:var(--text-soft);line-height:1.6">Masukkan nomor HP yang terdaftar di GoPay kamu</p>
         <div class="phone-field">
           <div class="phone-prefix">🇮🇩 +62</div>
@@ -990,7 +864,7 @@
       </div>
 
       <!-- OVO PANEL -->
-      <div class="qris-panel" id="panel-ovo" style="display:none">
+      <div class="payment-panel" id="panel-ovo" style="display:none">
         <p style="font-size:13px;color:var(--text-soft);line-height:1.6">Masukkan nomor HP yang terdaftar di OVO kamu</p>
         <div class="phone-field">
           <div class="phone-prefix">🇮🇩 +62</div>
@@ -1002,7 +876,7 @@
       </div>
 
       <!-- DANA PANEL -->
-      <div class="qris-panel" id="panel-dana" style="display:none">
+      <div class="payment-panel" id="panel-dana" style="display:none">
         <p style="font-size:13px;color:var(--text-soft);line-height:1.6">Masukkan nomor HP yang terdaftar di DANA kamu</p>
         <div class="phone-field">
           <div class="phone-prefix">🇮🇩 +62</div>
@@ -1100,7 +974,7 @@
   const state = {
     plan: 'pro',
     yearly: false,
-    method: 'qris',
+    method: 'gopay',
     promoApplied: false,
     prices: {
       pro:      { monthly: 99000,  yearly: 79200 },
@@ -1132,7 +1006,7 @@
     state.method = m;
     document.querySelectorAll('.method-tab').forEach(t => t.classList.remove('active'));
     tab.classList.add('active');
-    ['qris','gopay','ovo','dana'].forEach(id => {
+    ['gopay','ovo','dana'].forEach(id => {
       document.getElementById('panel-' + id).style.display = id === m ? '' : 'none';
     });
   }
@@ -1185,7 +1059,7 @@
 
   function getMethodLabel() {
     const activeTab = document.querySelector('.method-tab.active');
-    const methodMap = { qris: 'QRIS', gopay: 'GoPay', ovo: 'OVO', dana: 'DANA' };
+    const methodMap = { gopay: 'GoPay', ovo: 'OVO', dana: 'DANA' };
     return methodMap[activeTab?.dataset?.method] || '—';
   }
 
@@ -1232,8 +1106,7 @@
       document.getElementById('strukBackdrop').classList.remove('show');
       const { name, email, plan } = window._strukData || {};
       document.getElementById('successMsg').textContent =
-        Selamat ${name}! Akun ${plan} kamu sudah aktif. Konfirmasi dikirim ke ${email}.;
-        `Selamat ${name}! Akun ${plan} kamu sudah aktif. Konfirmasi dikirim ke ${email}.`;182123c803bc7fff4bcd7d8c10a257e799ef707a
+        `Selamat ${name}! Akun ${plan} kamu sudah aktif. Konfirmasi dikirim ke ${email}.`;
       document.getElementById('successOverlay').classList.add('show');
       btn.textContent = 'Bayar Sekarang →';
       btn.disabled = false;
@@ -1249,15 +1122,6 @@
     openStruk(name, email);
   }
 
-  /* ── QRIS TIMER ── */
-  let secs = 14 * 60 + 59;
-  setInterval(() => {
-    if (secs <= 0) { document.getElementById('qrisTimer').textContent = 'Kedaluwarsa'; return; }
-    secs--;
-    const m = String(Math.floor(secs / 60)).padStart(2, '0');
-    const s = String(secs % 60).padStart(2, '0');
-    document.getElementById('qrisTimer').textContent = m + ':' + s;
-  }, 1000);
 
   /* ── INIT ── */
   updateSummary();
