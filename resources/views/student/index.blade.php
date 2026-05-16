@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;400;500;600&display=swap" rel="stylesheet">
+<<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;400;500;600&display=swap" rel="stylesheet">
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 <style>
 /* ════════════════════════════════════════════════════════════
@@ -22,9 +22,9 @@
   --ink:        #0A0A0F;
   --ink-2:      #1C1C26;
   --ink-3:      #2E2E3E;
-  --body:       #F2F1F6;        /* iOS system background grey */
+  --body:       #EDE5F9;       /* iOS system background grey */
   --surface:    #FFFFFF;
-  --surface-2:  #F8F7FC;
+  --surface-2:  #F5F1FC;       /* Hover/active state for surface elements */
   --border:     rgba(0,0,0,0.06);
   --border-2:   rgba(0,0,0,0.10);
 
@@ -52,8 +52,8 @@
   --sky-tint:   #F0F9FF;
 
   /* Typography */
-  --font-display: 'DM Serif Display', Georgia, serif;
-  --font-body:    'DM Sans', -apple-system, sans-serif;
+  --font-display: 'Instrument Serif', Georgia, serif;
+--font-body:    'Inter', -apple-system, sans-serif;
 
   /* Spacing */
   --sidebar-w:  252px;
@@ -75,7 +75,8 @@ html { scroll-behavior: smooth; }
 
 body {
   font-family: var(--font-body);
-  background: var(--body);
+  background: linear-gradient(180deg, #EDE5F9 0%, #D8CEEE 50%, #C4B8E8 100%);
+  background-attachment: fixed;
   color: var(--text-1);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
@@ -267,7 +268,7 @@ body {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(242,241,246,0.85);
+  background: rgba(237,229,249,0.85);
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
   border-bottom: 1px solid var(--border);
@@ -1693,11 +1694,11 @@ body {
               @endif
             </div>
             <div class="course-body">
-              <div class="course-cat">{{ $item->course->category ?? 'Course' }}</div>
+              <div class="course-cat">{{ optional($item->course->category)->name ?? 'Course' }}</div>
               <div class="course-title">{{ $item->course->title }}</div>
               <div class="course-instructor">
-                {{ $item->course->instructor->name ?? 'Instructor' }}
-              </div>
+    {{ optional($item->course->instructors->first())->name ?? 'Instructor' }}
+</div>
               <div class="course-progress">
                 <div class="course-prog-header">
                   <span>{{ $item->progress }}%</span>

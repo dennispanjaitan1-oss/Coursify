@@ -1274,34 +1274,39 @@ body::before {
                            style="font-size:11px; transition: transform 0.2s;"></i>
                     </button>
                     <div class="sort-menu" x-show="open" x-transition role="listbox"
-                         style="display:none;" @click="open = false">
-                        <a href="{{ route('student.wishlist', array_merge(request()->query(), ['sort' => 'newest'])) }}"
-                           class="sort-option {{ request('sort', 'newest') === 'newest' ? 'active' : '' }}" role="option">
-                            <i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i>
-                            Terbaru ditambahkan
-                        </a>
-                        <a href="{{ route('student.wishlist', array_merge(request()->query(), ['sort' => 'oldest'])) }}"
-                           class="sort-option {{ request('sort') === 'oldest' ? 'active' : '' }}" role="option">
-                            <i class="fa-solid fa-clock" aria-hidden="true"></i>
-                            Terlama ditambahkan
-                        </a>
-                        <a href="{{ route('student.wishlist', array_merge(request()->query(), ['sort' => 'price_low'])) }}"
-                           class="sort-option {{ request('sort') === 'price_low' ? 'active' : '' }}" role="option">
-                            <i class="fa-solid fa-arrow-up-1-9" aria-hidden="true"></i>
-                            Harga: Rendah ke Tinggi
-                        </a>
-                        <a href="{{ route('student.wishlist', array_merge(request()->query(), ['sort' => 'price_high'])) }}"
-                           class="sort-option {{ request('sort') === 'price_high' ? 'active' : '' }}" role="option">
-                            <i class="fa-solid fa-arrow-down-9-1" aria-hidden="true"></i>
-                            Harga: Tinggi ke Rendah
-                        </a>
-                        <a href="{{ route('student.wishlist', array_merge(request()->query(), ['sort' => 'rating'])) }}"
-                           class="sort-option {{ request('sort') === 'rating' ? 'active' : '' }}" role="option">
-                            <i class="fa-solid fa-star" aria-hidden="true"></i>
-                            Rating tertinggi
-                        </a>
-                    </div>
-                </div>
+     style="display:none;" @click="open = false">
+
+    <a href="{{ route('student.wishlist', array_merge(array_filter(request()->only(['filter', 'search'])), ['sort' => 'newest'])) }}"
+       class="sort-option {{ request('sort', 'newest') === 'newest' ? 'active' : '' }}" role="option">
+        <i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i>
+        Terbaru ditambahkan
+    </a>
+
+    <a href="{{ route('student.wishlist', array_merge(array_filter(request()->only(['filter', 'search'])), ['sort' => 'oldest'])) }}"
+       class="sort-option {{ request('sort') === 'oldest' ? 'active' : '' }}" role="option">
+        <i class="fa-solid fa-clock" aria-hidden="true"></i>
+        Terlama ditambahkan
+    </a>
+
+    <a href="{{ route('student.wishlist', array_merge(array_filter(request()->only(['filter', 'search'])), ['sort' => 'price_low'])) }}"
+       class="sort-option {{ request('sort') === 'price_low' ? 'active' : '' }}" role="option">
+        <i class="fa-solid fa-arrow-up-1-9" aria-hidden="true"></i>
+        Harga: Rendah ke Tinggi
+    </a>
+
+    <a href="{{ route('student.wishlist', array_merge(array_filter(request()->only(['filter', 'search'])), ['sort' => 'price_high'])) }}"
+       class="sort-option {{ request('sort') === 'price_high' ? 'active' : '' }}" role="option">
+        <i class="fa-solid fa-arrow-down-9-1" aria-hidden="true"></i>
+        Harga: Tinggi ke Rendah
+    </a>
+
+    <a href="{{ route('student.wishlist', array_merge(array_filter(request()->only(['filter', 'search'])), ['sort' => 'rating'])) }}"
+       class="sort-option {{ request('sort') === 'rating' ? 'active' : '' }}" role="option">
+        <i class="fa-solid fa-star" aria-hidden="true"></i>
+        Rating tertinggi
+    </a>
+
+</div>
 
                 {{-- Search --}}
                 <form action="{{ route('student.wishlist') }}" method="GET" class="search-wishlist"
@@ -1396,13 +1401,15 @@ body::before {
                         </span>
 
                         {{-- Tombol Remove — icon-only, WAJIB aria-label --}}
-                        <button
-                            class="btn-remove"
-                            onclick="event.preventDefault(); openRemoveModal({{ $wishlistId }}, '{{ addslashes($courseTitle) }}')"
-                            aria-label="Hapus {{ $courseTitle }} dari wishlist"
-                            title="Hapus dari wishlist">
-                            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
-                        </button>
+                    <button
+                    class="btn-remove"
+                    data-id="{{ $wishlistId }}"
+                    data-delete-url="{{ route('wishlist.destroy', $wishlistId) }}"
+                    onclick="event.preventDefault(); event.stopPropagation(); openRemoveModal({{ $wishlistId }}, '{{ addslashes($courseTitle) }}')"
+                    aria-label="Hapus {{ $courseTitle }} dari wishlist"
+                    title="Hapus dari wishlist">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                    </button>
 
                         {{-- Course Thumbnail Icon --}}
                         <span class="course-thumb-icon" aria-hidden="true">{{ $courseIcon }}</span>
@@ -1708,8 +1715,15 @@ function confirmRemove() {
 // Submit DELETE ke server
 // ──────────────────────────────────────────────
 function submitDelete(wishlistId) {
-    const form   = document.getElementById('delete-form');
-    form.action  = `/wishlist/${wishlistId}`;
+    const form = document.getElementById('delete-form');
+    const btn  = document.querySelector(`[data-id="${wishlistId}"]`);
+
+    if (!btn || !btn.dataset.deleteUrl) {
+        console.error('delete URL tidak ditemukan untuk wishlist id:', wishlistId);
+        return;
+    }
+
+    form.action = btn.dataset.deleteUrl;
     form.submit();
 }
 

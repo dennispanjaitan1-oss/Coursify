@@ -859,7 +859,7 @@
                 {{-- ▸ Kolom 4: Universitas & Karir --}}
                 <div class="mega-col">
                     <div class="mega-col-title">Universitas Partner</div>
-                    <a href="{{ route('courses.index') }}?university=ui" class="mega-link">Universitas Indonesia</a>
+                    <a href="{{ route('courses.index') }}?university=ui" class="mega-link">Harvard University</a>
                     <a href="{{ route('courses.index') }}?university=itb" class="mega-link">Institut Teknologi Bandung</a>
                     <a href="{{ route('courses.index') }}?university=ugm" class="mega-link">Universitas Gadjah Mada</a>
                     <a href="{{ route('courses.index') }}?university=its" class="mega-link">ITS Surabaya</a>
@@ -1019,13 +1019,13 @@
                         Universitas
                     </div>
                     @foreach([
-                        ['Universitas Indonesia','courses.index','?university=ui'],
-                        ['ITB Bandung','courses.index','?university=itb'],
-                        ['Universitas Gadjah Mada','courses.index','?university=ugm'],
-                        ['ITS Surabaya','courses.index','?university=its'],
-                        ['Universitas Airlangga','courses.index','?university=unair'],
-                        ['IPB University','courses.index','?university=ipb'],
-                        ['BINUS University','courses.index','?university=binus'],
+                        ['Harvard University','courses.index','?university=ui'],
+                        ['Adelaide University','courses.index','?university=itb'],
+                        ['Stanford University','courses.index','?university=ugm'],
+                        ['Tsinghua University','courses.index','?university=its'],
+                        ['University of Oxford','courses.index','?university=unair'],
+                        ['Massachusetts Institute of Technology','courses.index','?university=ipb'],
+                        ['University of Toronto','courses.index','?university=binus'],
                         ['Lihat semua Universitas','universities',''],
                     ] as $i => [$label, $route, $param])
                         <a href="{{ route($route) }}{{ $param }}"

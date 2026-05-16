@@ -334,6 +334,51 @@
 .empty-title { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-bottom: 8px; letter-spacing: -0.01em; }
 .empty-desc { font-size: 13px; color: var(--muted); max-width: 380px; margin: 0 auto 20px; line-height: 1.6; }
 
+/* ═══ CATEGORY ACCORDION ═══ */
+.cat-accordion {
+    border-radius: 10px;
+    margin-bottom: 2px;
+    transition: background 0.15s;
+}
+.cat-accordion.open {
+    background: rgba(123,111,232,0.04);
+    border: 1px solid rgba(123,111,232,0.08);
+}
+.cat-parent-row {
+    display: flex; align-items: center;
+    justify-content: space-between;
+    padding: 7px 10px; border-radius: 8px;
+    cursor: pointer; transition: background 0.15s;
+    gap: 6px;
+}
+.cat-parent-row:hover { background: var(--lav-1); }
+.cat-parent-left { flex: 1; min-width: 0; }
+.cat-parent-right {
+    display: flex; align-items: center; gap: 6px;
+    flex-shrink: 0;
+}
+.cat-chevron {
+    font-size: 14px; color: var(--muted);
+    transition: transform 0.2s; display: inline-block;
+    line-height: 1; user-select: none;
+    width: 14px; text-align: center;
+}
+.cat-accordion.open .cat-chevron { transform: none; }
+.cat-children {
+    padding: 4px 0 6px 26px;
+    border-left: 2px solid var(--lav-2);
+    margin-left: 22px;
+    margin-bottom: 4px;
+}
+.cat-child-row {
+    padding: 5px 8px !important;
+    border-radius: 6px !important;
+    margin-bottom: 1px !important;
+}
+.cat-child-row .filter-option-label {
+    font-size: 12px !important;
+}
+
 /* ═══ RESPONSIVE ═══ */
 @media (max-width: 1100px) {
     .layout-grid { grid-template-columns: 240px 1fr; }
@@ -438,36 +483,97 @@
                         <a href="{{ route('courses.index') }}" class="filter-clear">Clear all</a>
                     </div>
 
-                    {{-- Categories (dari DB) --}}
-                    <div class="filter-group">
-                        <div class="filter-group-title">
+                    {{-- Categories Accordion (parent → sub) --}}
+                    @php
+                        $iconMap = [
+                            'Technology' => '💻', 'Programming' => '💻', 'Design' => '🎨',
+                            'Business' => '📊', 'Marketing' => '📈', 'Data Science' => '🔬',
+                            'Video' => '🎬', 'Languages' => '🌍', 'Language' => '🌍',
+                            'Music' => '🎵', 'Finance' => '💰', 'Health' => '🏃',
+                            'Photography' => '📷', 'DevOps' => '🐳', 'Architecture' => '🏛️',
+                            'Art' => '🎨', 'Science' => '🔬', 'Engineering' => '⚙️',
+                            'Mathematics' => '📐', 'Social Science' => '👥', 'Economics' => '📊',
+                            'Psychology' => '🧠', 'Education' => '🎓', 'Law' => '⚖️',
+                            'Medicine' => '🏥', 'Environmental' => '🌿', 'History' => '📜',
+                            'Philosophy' => '💭', 'Literature' => '📖', 'Cybersecurity' => '🔒',
+                        ];
+                        $activeCats = (array) request('category', []);
+                    @endphp
+
+                    <div class="filter-group" style="padding-bottom:0;border-bottom:none;">
+                        <div class="filter-group-title" style="margin-bottom:10px;">
                             <span>Category</span>
-                            <span class="filter-group-count">{{ $categories->count() }}</span>
+                            <span class="filter-group-count">{{ $parentCategories->count() }}</span>
                         </div>
-                        @php
-                            $iconMap = [
-                                'Programming' => '💻', 'Design' => '🎨', 'Business' => '📊',
-                                'Marketing' => '📈', 'Data Science' => '🔬', 'Video' => '🎬',
-                                'Languages' => '🌍', 'Music' => '🎵', 'Finance' => '💰',
-                                'Health' => '🏃', 'Photography' => '📷', 'DevOps' => '🐳',
-                            ];
-                        @endphp
-                        @forelse($categories as $cat)
-                            <label class="filter-option">
-                                <div class="filter-option-left">
-                                    <input type="checkbox"
-                                        class="filter-checkbox"
-                                        name="category[]"
-                                        value="{{ $cat->slug }}"
-                                        @checked(in_array($cat->slug, (array) request('category', [])))
-                                        onchange="document.getElementById('filterForm').submit()">
-                                    <span class="filter-option-label">
-                                        <span>{{ $iconMap[$cat->name] ?? '📚' }}</span>
-                                        <span>{{ $cat->name }}</span>
-                                    </span>
+
+                        @forelse($parentCategories as $parent)
+                            @php
+                                $parentIcon = $iconMap[$parent->name] ?? '📚';
+                                $hasChildren = $parent->children->count() > 0;
+                                $isParentChecked = in_array($parent->slug, $activeCats);
+                                $anyChildActive = $parent->children->contains(fn($c) => in_array($c->slug, $activeCats));
+                                $isOpen = $isParentChecked || $anyChildActive;
+                                $totalCount = $parent->courses_count + $parent->children->sum('courses_count');
+                            @endphp
+
+                            <div class="cat-accordion {{ $isOpen ? 'open' : '' }}" data-id="cat-{{ $parent->id }}">
+
+                                {{-- Parent row --}}
+                                <div class="cat-parent-row" onclick="toggleCat('cat-{{ $parent->id }}')">
+                                    <div class="cat-parent-left">
+                                        <label class="filter-option" style="padding:0;margin:0;flex:1;" onclick="event.stopPropagation()">
+                                            <div class="filter-option-left">
+                                                <input type="checkbox"
+                                                    class="filter-checkbox"
+                                                    name="category[]"
+                                                    value="{{ $parent->slug }}"
+                                                    @checked($isParentChecked)
+                                                    onchange="document.getElementById('filterForm').submit()">
+                                                <span class="filter-option-label">
+                                                    <span>{{ $parentIcon }}</span>
+                                                    <span style="font-weight:{{ $isParentChecked || $anyChildActive ? '700' : '500' }};color:{{ $isParentChecked || $anyChildActive ? 'var(--purple)' : 'var(--text-soft)' }}">{{ $parent->name }}</span>
+                                                </span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div class="cat-parent-right">
+                                        @if($totalCount > 0)
+                                            <span class="filter-option-count">{{ $totalCount }}</span>
+                                        @endif
+                                        @if($hasChildren)
+                                            <span class="cat-chevron">{{ $isOpen ? '▾' : '›' }}</span>
+                                        @endif
+                                    </div>
                                 </div>
-                                <span class="filter-option-count">{{ $cat->courses_count }}</span>
-                            </label>
+
+                                {{-- Children --}}
+                                @if($hasChildren)
+                                    <div class="cat-children" style="{{ $isOpen ? '' : 'display:none;' }}">
+                                        @foreach($parent->children as $child)
+                                            @php
+                                                $isChildChecked = in_array($child->slug, $activeCats);
+                                            @endphp
+                                            <label class="filter-option cat-child-row">
+                                                <div class="filter-option-left">
+                                                    <input type="checkbox"
+                                                        class="filter-checkbox"
+                                                        name="category[]"
+                                                        value="{{ $child->slug }}"
+                                                        @checked($isChildChecked)
+                                                        onchange="document.getElementById('filterForm').submit()">
+                                                    <span class="filter-option-label" style="color:{{ $isChildChecked ? 'var(--purple)' : '' }}">
+                                                        {{ $child->name }}
+                                                    </span>
+                                                </div>
+                                                @if($child->courses_count > 0)
+                                                    <span class="filter-option-count">{{ $child->courses_count }}</span>
+                                                @endif
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                @endif
+
+                            </div>{{-- end .cat-accordion --}}
                         @empty
                             <p style="font-size:12px;color:var(--muted);padding:8px 10px;">No categories found</p>
                         @endforelse
@@ -805,6 +911,18 @@
 
 @push('scripts')
 <script>
+// ── Category accordion toggle ──────────────────────────
+function toggleCat(id) {
+    const el = document.querySelector(`[data-id="${id}"]`);
+    if (!el) return;
+    const children = el.querySelector('.cat-children');
+    const chevron  = el.querySelector('.cat-chevron');
+    const isOpen   = el.classList.contains('open');
+    el.classList.toggle('open', !isOpen);
+    if (children) children.style.display = isOpen ? 'none' : 'block';
+    if (chevron)  chevron.textContent     = isOpen ? '›' : '▾';
+}
+
 // ── Wishlist toggle (AJAX, tanpa reload) ──────────────
 function toggleWishlist(btn, courseId) {
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;

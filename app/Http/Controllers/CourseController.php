@@ -11,9 +11,22 @@ class CourseController extends Controller
 {
     public function index(Request $request)
     {
-        // ── Ambil semua kategori (untuk sidebar filter + stats bar) ──────────
+        // ── Ambil parent categories dengan children (untuk accordion sidebar) ─
+        $parentCategories = Category::whereNull('parent_id')
+            ->with(['children' => function ($q) {
+                $q->withCount(['courses' => function ($sq) {
+                    $sq->withTrashed();
+                }])->orderBy('name');
+            }])
+            ->withCount(['courses' => function ($q) {
+                $q->withTrashed();
+            }])
+            ->orderBy('name')
+            ->get();
+
+        // ── Flat list semua kategori (untuk backward compat stats bar) ────────
         $categories = Category::withCount(['courses' => function ($q) {
-            $q->withTrashed(); // ikutkan soft deleted
+            $q->withTrashed();
         }])->orderBy('name')->get();
 
         // ── Total course untuk stats bar ─────────────────────────────────────
@@ -113,7 +126,7 @@ class CourseController extends Controller
             $courses = Course::withTrashed()->where('id', 0)->paginate(12);
         }
 
-        return view('courses.index', compact('courses', 'categories', 'totalCourses'));
+        return view('courses.index', compact('courses', 'categories', 'parentCategories', 'totalCourses'));
     }
 
     public function show($slug)

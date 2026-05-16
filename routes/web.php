@@ -54,12 +54,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/enrollments/{enrollment}', [EnrollmentController::class, 'unenroll'])
         ->name('student.unenroll');
 
-    // Wishlist
-    Route::post('/wishlist/toggle/{course}', [WishlistController::class, 'toggle'])
-        ->name('wishlist.toggle');
-
-    Route::delete('/wishlist/{wishlist}', [WishlistController::class, 'destroy'])
-        ->name('wishlist.destroy');
 });
 
 // ═══════════════════════════════════════════════════════════
@@ -87,6 +81,11 @@ Route::middleware(['auth', 'role:student,instructor,admin'])
         Route::get('/profile', [StudentDashboard::class, 'profile'])->name('profile');
         Route::post('/profile/update', [StudentDashboard::class, 'updateProfile'])->name('profile.update');
         Route::post('/profile/password', [StudentDashboard::class, 'updatePassword'])->name('profile.password');
+
+        Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
+        Route::post('/wishlist/toggle/{course}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
+        Route::delete('/wishlist/{id}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
+
     });
 
 // ═══════════════════════════════════════════════════════════
@@ -153,8 +152,11 @@ Route::post('/student/course/{course}/review', [EnrollmentController::class, 'su
     ->name('student.course.review.submit')
     ->middleware('auth');
 
-Route::get('/universities', fn() => view('pages.universities'))
+Route::get('/universities', [App\Http\Controllers\UniversityController::class, 'index'])
     ->name('universities');
+    
+Route::get('/universities/{slug}', [App\Http\Controllers\UniversityController::class, 'show'])
+    ->name('universities.show');
 
 Route::view('/about', 'about')->name('about');
 

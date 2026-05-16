@@ -547,6 +547,52 @@
     }
     .btn-cta-secondary:hover { background: rgba(255,255,255,0.18); }
 
+    /* ═══ PATCH: Results info ═══ */
+    .univ-results-info {
+        max-width: 1160px;
+        margin: 0 auto 18px;
+        padding: 0 20px;
+        font-size: 13px;
+        color: #8B87A8;
+    }
+    .univ-results-info strong { color: #1A1825; }
+    .univ-results-info em { color: #7B6FE8; font-style: normal; }
+
+    /* ═══ PATCH: Empty state improved ═══ */
+    .univ-empty-wrap {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 64px 20px;
+    }
+    .univ-empty-wrap .univ-empty-icon { font-size: 40px; opacity: .25; margin-bottom: 16px; }
+    .univ-empty-wrap .univ-empty-title { font-size: 18px; font-weight: 700; color: #1A1825; margin-bottom: 8px; }
+    .univ-empty-wrap .univ-empty-desc { font-size: 14px; color: #8B87A8; margin-bottom: 24px; }
+    .univ-reset-btn {
+        display: inline-flex; align-items: center; gap: 8px;
+        background: #1E3A5F; color: white; font-size: 13px; font-weight: 600;
+        padding: 10px 22px; border-radius: 100px; text-decoration: none;
+        transition: background .2s;
+    }
+    .univ-reset-btn:hover { background: #2D4E7C; color: white; }
+
+    /* ═══ PATCH: Pagination ═══ */
+    .univ-pagination {
+        display: flex; justify-content: center; align-items: center;
+        gap: 6px; margin: 48px 0 24px; padding: 0 20px; flex-wrap: wrap;
+    }
+    .page-btn {
+        display: inline-flex; align-items: center; justify-content: center;
+        min-width: 40px; height: 40px; padding: 0 8px;
+        border-radius: 12px; font-size: 14px; font-weight: 500;
+        color: #4A4660; background: rgba(255,255,255,0.7);
+        border: 1px solid rgba(255,255,255,0.9);
+        backdrop-filter: blur(10px); text-decoration: none;
+        transition: all .18s;
+    }
+    .page-btn:hover { background: rgba(123,111,232,0.1); color: #5B4FD4; border-color: rgba(123,111,232,0.3); }
+    .page-btn-active { background: #1E3A5F !important; color: white !important; border-color: #1E3A5F !important; font-weight: 700; }
+    .page-btn-disabled { opacity: .35; cursor: not-allowed; pointer-events: none; }
+
     /* ═══ RESPONSIVE ═══ */
     @media (max-width: 1024px) {
         .univ-grid { grid-template-columns: repeat(2, 1fr); }
@@ -581,479 +627,214 @@
             Coursify bermitra dengan universitas-universitas terkemuka untuk menghadirkan pendidikan berkualitas tinggi yang dapat diakses oleh siapa saja, di mana saja.
         </p>
 
-        {{-- Stats --}}
-        <div class="univ-stats">
+        {{-- GANTIAN 1 — Stats real-time dari DB --}}
+        <div class="univ-stats" style="display:flex;">
             <div class="univ-stat">
-                <div class="univ-stat-val"><em>9+</em></div>
-                <div class="univ-stat-label">Universitas</div>
+                <div class="univ-stat-val"><em>{{ $totalInstitutions }}</em></div>
+                <div class="univ-stat-label">Institusi</div>
             </div>
             <div class="univ-stat">
-                <div class="univ-stat-val"><em>200+</em></div>
+                <div class="univ-stat-val"><em>{{ $totalCourses }}</em></div>
                 <div class="univ-stat-label">Kursus</div>
             </div>
             <div class="univ-stat">
-                <div class="univ-stat-val"><em>50K+</em></div>
+                <div class="univ-stat-val"><em>{{ $totalStudents }}</em></div>
                 <div class="univ-stat-label">Mahasiswa</div>
             </div>
             <div class="univ-stat">
-                <div class="univ-stat-val"><em>15+</em></div>
-                <div class="univ-stat-label">Kota</div>
+                <div class="univ-stat-val"><em>{{ $institutions->total() }}</em></div>
+                <div class="univ-stat-label">Hasil Filter</div>
             </div>
         </div>
     </div>
 </section>
 
 {{-- ═══════════════════════════════════════════ --}}
-{{-- FILTER BAR                                  --}}
+{{-- GANTIAN 2 — FILTER BAR (server-side)        --}}
 {{-- ═══════════════════════════════════════════ --}}
 <div class="univ-filter-wrap">
-    <div class="univ-filter-bar">
-        <span class="univ-filter-label">Filter</span>
-        <div class="univ-filter-pills">
-            <button class="filter-pill active" onclick="filterUniv('all', this)">Semua</button>
-            <button class="filter-pill" onclick="filterUniv('negeri', this)">PTN</button>
-            <button class="filter-pill" onclick="filterUniv('swasta', this)">PTS</button>
-            <button class="filter-pill" onclick="filterUniv('teknik', this)">Teknik</button>
-            <button class="filter-pill" onclick="filterUniv('bisnis', this)">Bisnis</button>
-            <button class="filter-pill" onclick="filterUniv('kesehatan', this)">Kesehatan</button>
+    <form method="GET" action="{{ route('universities') }}" id="filterForm" style="margin:0;">
+        <div class="univ-filter-bar">
+            <span class="univ-filter-label">Filter</span>
+            <div class="univ-filter-pills">
+                @php
+                    $filters = [
+                        'all'         => 'Semua',
+                        'universitas' => 'Universitas',
+                        'teknologi'   => 'Institut/Teknik',
+                        'bisnis'      => 'Bisnis',
+                        'lainnya'     => 'Lainnya',
+                    ];
+                @endphp
+                @foreach($filters as $key => $label)
+                <button type="submit" name="type" value="{{ $key }}"
+                        class="filter-pill {{ ($typeFilter === $key || ($key==='all' && !$typeFilter)) ? 'active' : '' }}">
+                    {{ $label }}
+                </button>
+                @endforeach
+            </div>
+            <div class="univ-search-wrap">
+                <i class="fa-solid fa-magnifying-glass univ-search-icon"></i>
+                <input type="text" name="search" id="univSearch"
+                       class="univ-search"
+                       placeholder="Cari institusi..."
+                       value="{{ $search }}"
+                       onkeydown="if(event.key==='Enter'){this.form.submit()}">
+            </div>
         </div>
-        <div class="univ-search-wrap">
-            <i class="fa-solid fa-magnifying-glass univ-search-icon"></i>
-            <input type="text" class="univ-search" placeholder="Cari universitas..." oninput="searchUniv(this.value)" id="univSearch">
-        </div>
-    </div>
+    </form>
 </div>
 
 {{-- ═══════════════════════════════════════════ --}}
-{{-- UNIVERSITY GRID                             --}}
+{{-- GANTIAN 3 — GRID UTAMA + PAGINATION         --}}
 {{-- ═══════════════════════════════════════════ --}}
 <section class="univ-section">
+
+    {{-- Info hasil --}}
+    <div class="univ-results-info">
+        @if($institutions->total() > 0)
+            Menampilkan <strong>{{ $institutions->firstItem() }}–{{ $institutions->lastItem() }}</strong>
+            dari <strong>{{ $institutions->total() }}</strong> institusi
+            @if($search) · pencarian "<em>{{ $search }}</em>" @endif
+            @if($typeFilter && $typeFilter !== 'all') · filter: <em>{{ ['universitas'=>'Universitas','teknologi'=>'Institut/Teknik','bisnis'=>'Bisnis','lainnya'=>'Lainnya'][$typeFilter] ?? $typeFilter }}</em> @endif
+        @endif
+    </div>
+
     <div class="univ-grid" id="univGrid">
 
-        {{--
-        ═══════════════════════════════════════════════════════════════════
-        CARA MENAMBAHKAN GAMBAR UNIVERSITAS:
+        @forelse ($institutions as $inst)
+        <a href="{{ route('universities.show', $inst['slug']) }}"
+           class="univ-card {{ $loop->first && $institutions->currentPage() === 1 ? 'univ-card-featured' : '' }}"
+           data-type="{{ $inst['type_key'] }}">
 
-        Pilihan 1 — Gambar lokal (taruh di public/images/universities/):
-            <img src="{{ asset('images/universities/ui-logo.png') }}" alt="UI">
-
-        Pilihan 2 — URL eksternal:
-            <img src="https://upload.wikimedia.org/.../UI_logo.png" alt="UI">
-
-        Untuk banner (foto kampus), ganti class banner-* dengan:
-            style="background-image: url('{{ asset('images/universities/ui-banner.jpg') }}');
-                   background-size: cover; background-position: center;"
-
-        atau hapus class banner-* dan tambahkan inline style di atas.
-        ═══════════════════════════════════════════════════════════════════
-        --}}
-
-        {{-- ══ FEATURED: Universitas Indonesia ══ --}}
-        <a href="{{ route('courses.index', ['university' => 'ui']) }}"
-           class="univ-card univ-card-featured"
-           data-type="negeri teknik">
-            <div class="univ-card-banner banner-ui">
-                <span class="univ-card-tag tag-featured">⭐ Featured</span>
-                <img src="{{ asset('images/universities/ui-logo.png') }}" alt="UI"
-                     style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block;">
-            </div>
-            <div class="univ-card-body">
-                <div class="univ-card-type">Perguruan Tinggi Negeri</div>
-                <div class="univ-card-name">Universitas Indonesia</div>
-                <div class="univ-card-location">
-                    <i class="fa-solid fa-location-dot"></i> Depok, Jawa Barat
-                </div>
-                <p class="univ-card-desc">
-                    Universitas terkemuka di Indonesia dengan reputasi internasional. Menawarkan program-program unggulan di bidang sains, teknologi, humaniora, dan sosial yang diakui secara global.
-                </p>
-                <div class="univ-card-stats">
-                    <div class="univ-card-stat">
-                        <div class="univ-card-stat-val">38</div>
-                        <div class="univ-card-stat-label">Kursus</div>
-                    </div>
-                    <div class="univ-card-stat">
-                        <div class="univ-card-stat-val">12K+</div>
-                        <div class="univ-card-stat-label">Pelajar</div>
-                    </div>
-                    <div class="univ-card-stat">
-                        <div class="univ-card-stat-val">4.8</div>
-                        <div class="univ-card-stat-label">Rating</div>
-                    </div>
-                </div>
-                <div class="univ-card-footer">
-                    <div class="univ-card-programs">
-                        <span class="prog-badge">S1</span>
-                        <span class="prog-badge">S2</span>
-                        <span class="prog-badge">Sertifikat</span>
-                        <span class="prog-badge">MOOC</span>
-                    </div>
-                    <div class="univ-card-cta">
-                        Lihat Kursus <i class="fa-solid fa-arrow-right"></i>
-                    </div>
-                </div>
-            </div>
-        </a>
-
-        {{-- ══ ITB ══ --}}
-        <a href="{{ route('courses.index', ['university' => 'itb']) }}"
-           class="univ-card"
-           data-type="negeri teknik">
-            <div class="univ-card-banner banner-itb">
-                <span class="univ-card-tag tag-partner">Partner</span>
+            {{-- Banner --}}
+            <div class="univ-card-banner"
+                 style="background:{{ $inst['banner_color'] }};position:relative;overflow:hidden;">
+                @if($loop->first && $institutions->currentPage() === 1)
+                    <span class="univ-card-tag tag-featured">⭐ Featured</span>
+                @elseif($inst['is_verified'])
+                    <span class="univ-card-tag tag-partner">✓ Verified</span>
+                @endif
                 <div class="univ-logo-placeholder">
-                    <img src="{{ asset('images/universities/itb-logo.png') }}" alt="ITB"> 
-                    <i class="fa-solid fa-flask" style="font-size:30px;color:rgba(255,255,255,0.9);"></i>
+                    @if(!empty($inst['logo_url']))
+                        <img src="{{ $inst['logo_url'] }}"
+                             alt="{{ $inst['name'] }}"
+                             style="max-width:80px;max-height:80px;object-fit:contain;border-radius:8px;background:white;padding:6px;"
+                             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                        <span style="display:none;width:64px;height:64px;background:rgba(255,255,255,0.15);border-radius:12px;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:white;">
+                            {{ $inst['initials'] }}
+                        </span>
+                    @else
+                        <span style="display:flex;width:64px;height:64px;background:rgba(255,255,255,0.15);border-radius:12px;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:white;">
+                            {{ $inst['initials'] }}
+                        </span>
+                    @endif
                 </div>
             </div>
+
+            {{-- Body --}}
             <div class="univ-card-body">
-                <div class="univ-card-type">Perguruan Tinggi Negeri</div>
-                <div class="univ-card-name">Institut Teknologi Bandung</div>
+                <div class="univ-card-type">{{ $inst['type_label'] }}</div>
+                <div class="univ-card-name">{{ $inst['name'] }}</div>
+                @if(!empty($inst['website_url']))
                 <div class="univ-card-location">
-                    <i class="fa-solid fa-location-dot"></i> Bandung, Jawa Barat
+                    <i class="fa-solid fa-globe" style="font-size:11px;opacity:.6;"></i>
+                    {{ parse_url($inst['website_url'], PHP_URL_HOST) ?? $inst['website_url'] }}
                 </div>
-                <p class="univ-card-desc">Institut teknologi terbaik di Asia Tenggara dengan spesialisasi teknik, sains terapan, dan inovasi.</p>
+                @endif
+                @if(!empty($inst['description']))
+                <p class="univ-card-desc">{{ Str::limit($inst['description'], 100) }}</p>
+                @else
+                <p class="univ-card-desc" style="opacity:.4;font-style:italic;">Klik untuk melihat detail institusi.</p>
+                @endif
                 <div class="univ-card-stats">
                     <div class="univ-card-stat">
-                        <div class="univ-card-stat-val">29</div>
+                        <div class="univ-card-stat-val">{{ $inst['courses_count'] }}</div>
                         <div class="univ-card-stat-label">Kursus</div>
                     </div>
                     <div class="univ-card-stat">
-                        <div class="univ-card-stat-val">8.4K</div>
+                        <div class="univ-card-stat-val">{{ $inst['students_count'] }}</div>
                         <div class="univ-card-stat-label">Pelajar</div>
                     </div>
                     <div class="univ-card-stat">
-                        <div class="univ-card-stat-val">4.9</div>
+                        <div class="univ-card-stat-val">{{ $inst['avg_rating'] }}</div>
                         <div class="univ-card-stat-label">Rating</div>
                     </div>
                 </div>
                 <div class="univ-card-footer">
                     <div class="univ-card-programs">
-                        <span class="prog-badge">S2</span>
-                        <span class="prog-badge">Sertifikat</span>
+                        @if($inst['is_verified'])
+                            <span class="prog-badge">✓ Verified</span>
+                        @endif
+                        <span class="prog-badge">{{ $inst['type_label'] }}</span>
                     </div>
                     <div class="univ-card-cta">
-                        Lihat <i class="fa-solid fa-arrow-right"></i>
+                        Lihat Detail <i class="fa-solid fa-arrow-right"></i>
                     </div>
                 </div>
             </div>
+
         </a>
 
-        {{-- ══ UGM ══ --}}
-        <a href="{{ route('courses.index', ['university' => 'ugm']) }}"
-           class="univ-card"
-           data-type="negeri bisnis">
-            <div class="univ-card-banner banner-ugm">
-                <span class="univ-card-tag tag-partner">Partner</span>
-                <div class="univ-logo-placeholder">
-                     <img src="{{ asset('images/universities/ugm-logo.png') }}" alt="UGM"> 
-                    <i class="fa-solid fa-landmark" style="font-size:30px;color:rgba(255,255,255,0.9);"></i>
-                </div>
-            </div>
-            <div class="univ-card-body">
-                <div class="univ-card-type">Perguruan Tinggi Negeri</div>
-                <div class="univ-card-name">Universitas Gadjah Mada</div>
-                <div class="univ-card-location">
-                    <i class="fa-solid fa-location-dot"></i> Yogyakarta, DIY
-                </div>
-                <p class="univ-card-desc">Salah satu universitas tertua dan terprestisius di Indonesia dengan keunggulan riset multidisiplin.</p>
-                <div class="univ-card-stats">
-                    <div class="univ-card-stat">
-                        <div class="univ-card-stat-val">24</div>
-                        <div class="univ-card-stat-label">Kursus</div>
-                    </div>
-                    <div class="univ-card-stat">
-                        <div class="univ-card-stat-val">7.1K</div>
-                        <div class="univ-card-stat-label">Pelajar</div>
-                    </div>
-                    <div class="univ-card-stat">
-                        <div class="univ-card-stat-val">4.7</div>
-                        <div class="univ-card-stat-label">Rating</div>
-                    </div>
-                </div>
-                <div class="univ-card-footer">
-                    <div class="univ-card-programs">
-                        <span class="prog-badge">S1</span>
-                        <span class="prog-badge">S2</span>
-                    </div>
-                    <div class="univ-card-cta">
-                        Lihat <i class="fa-solid fa-arrow-right"></i>
-                    </div>
-                </div>
-            </div>
-        </a>
-
-        {{-- ══ ITS ══ --}}
-        <a href="{{ route('courses.index', ['university' => 'its']) }}"
-           class="univ-card"
-           data-type="negeri teknik">
-            <div class="univ-card-banner banner-its">
-                <span class="univ-card-tag tag-partner">Partner</span>
-                <div class="univ-logo-placeholder">
-                     <img src="{{ asset('images/universities/its-logo.png') }}" alt="ITS"> 
-                    <i class="fa-solid fa-microchip" style="font-size:30px;color:rgba(255,255,255,0.9);"></i>
-                </div>
-            </div>
-            <div class="univ-card-body">
-                <div class="univ-card-type">Perguruan Tinggi Negeri</div>
-                <div class="univ-card-name">ITS Surabaya</div>
-                <div class="univ-card-location">
-                    <i class="fa-solid fa-location-dot"></i> Surabaya, Jawa Timur
-                </div>
-                <p class="univ-card-desc">Institut teknologi unggulan di Jawa Timur dengan fokus pada inovasi teknologi kelautan, informatika, dan teknik industri.</p>
-                <div class="univ-card-stats">
-                    <div class="univ-card-stat">
-                        <div class="univ-card-stat-val">18</div>
-                        <div class="univ-card-stat-label">Kursus</div>
-                    </div>
-                    <div class="univ-card-stat">
-                        <div class="univ-card-stat-val">5.2K</div>
-                        <div class="univ-card-stat-label">Pelajar</div>
-                    </div>
-                    <div class="univ-card-stat">
-                        <div class="univ-card-stat-val">4.8</div>
-                        <div class="univ-card-stat-label">Rating</div>
-                    </div>
-                </div>
-                <div class="univ-card-footer">
-                    <div class="univ-card-programs">
-                        <span class="prog-badge">S2</span>
-                        <span class="prog-badge">Sertifikat</span>
-                    </div>
-                    <div class="univ-card-cta">
-                        Lihat <i class="fa-solid fa-arrow-right"></i>
-                    </div>
-                </div>
-            </div>
-        </a>
-
-        {{-- ══ UNAIR ══ --}}
-        <a href="{{ route('courses.index', ['university' => 'unair']) }}"
-           class="univ-card"
-           data-type="negeri kesehatan">
-            <div class="univ-card-banner banner-unair">
-                <span class="univ-card-tag tag-partner">Partner</span>
-                <div class="univ-logo-placeholder">
-                    <img src="{{ asset('images/universities/unair-logo.png') }}" alt="Unair"> 
-                    <i class="fa-solid fa-stethoscope" style="font-size:30px;color:rgba(255,255,255,0.9);"></i>
-                </div>
-            </div>
-            <div class="univ-card-body">
-                <div class="univ-card-type">Perguruan Tinggi Negeri</div>
-                <div class="univ-card-name">Universitas Airlangga</div>
-                <div class="univ-card-location">
-                    <i class="fa-solid fa-location-dot"></i> Surabaya, Jawa Timur
-                </div>
-                <p class="univ-card-desc">Universitas terkemuka dengan keunggulan di bidang kesehatan, kedokteran, ilmu sosial, dan ekonomi bisnis.</p>
-                <div class="univ-card-stats">
-                    <div class="univ-card-stat">
-                        <div class="univ-card-stat-val">16</div>
-                        <div class="univ-card-stat-label">Kursus</div>
-                    </div>
-                    <div class="univ-card-stat">
-                        <div class="univ-card-stat-val">4.8K</div>
-                        <div class="univ-card-stat-label">Pelajar</div>
-                    </div>
-                    <div class="univ-card-stat">
-                        <div class="univ-card-stat-val">4.6</div>
-                        <div class="univ-card-stat-label">Rating</div>
-                    </div>
-                </div>
-                <div class="univ-card-footer">
-                    <div class="univ-card-programs">
-                        <span class="prog-badge">S1</span>
-                        <span class="prog-badge">Sertifikat</span>
-                    </div>
-                    <div class="univ-card-cta">
-                        Lihat <i class="fa-solid fa-arrow-right"></i>
-                    </div>
-                </div>
-            </div>
-        </a>
-
-        {{-- ══ IPB ══ --}}
-        <a href="{{ route('courses.index', ['university' => 'ipb']) }}"
-           class="univ-card"
-           data-type="negeri">
-            <div class="univ-card-banner banner-ipb">
-                <span class="univ-card-tag tag-partner">Partner</span>
-                <div class="univ-logo-placeholder">
-                    <img src="{{ asset('images/universities/ipb-logo.png') }}" alt="IPB"> 
-                    <i class="fa-solid fa-leaf" style="font-size:30px;color:rgba(255,255,255,0.9);"></i>
-                </div>
-            </div>
-            <div class="univ-card-body">
-                <div class="univ-card-type">Perguruan Tinggi Negeri</div>
-                <div class="univ-card-name">IPB University</div>
-                <div class="univ-card-location">
-                    <i class="fa-solid fa-location-dot"></i> Bogor, Jawa Barat
-                </div>
-                <p class="univ-card-desc">Institusi riset terkemuka di bidang pertanian, lingkungan, dan ilmu hayati dengan standar penelitian kelas dunia.</p>
-                <div class="univ-card-stats">
-                    <div class="univ-card-stat">
-                        <div class="univ-card-stat-val">14</div>
-                        <div class="univ-card-stat-label">Kursus</div>
-                    </div>
-                    <div class="univ-card-stat">
-                        <div class="univ-card-stat-val">3.5K</div>
-                        <div class="univ-card-stat-label">Pelajar</div>
-                    </div>
-                    <div class="univ-card-stat">
-                        <div class="univ-card-stat-val">4.7</div>
-                        <div class="univ-card-stat-label">Rating</div>
-                    </div>
-                </div>
-                <div class="univ-card-footer">
-                    <div class="univ-card-programs">
-                        <span class="prog-badge">S2</span>
-                        <span class="prog-badge">MOOC</span>
-                    </div>
-                    <div class="univ-card-cta">
-                        Lihat <i class="fa-solid fa-arrow-right"></i>
-                    </div>
-                </div>
-            </div>
-        </a>
-
-        {{-- ══ BINUS ══ --}}
-        <a href="{{ route('courses.index', ['university' => 'binus']) }}"
-           class="univ-card"
-           data-type="swasta teknik bisnis">
-            <div class="univ-card-banner banner-binus">
-                <span class="univ-card-tag tag-partner">Partner</span>
-                <div class="univ-logo-placeholder">
-                    <img src="{{ asset('images/universities/binus-logo.png') }}" alt="BINUS"> 
-                    <i class="fa-solid fa-laptop-code" style="font-size:30px;color:rgba(255,255,255,0.9);"></i>
-                </div>
-            </div>
-            <div class="univ-card-body">
-                <div class="univ-card-type">Perguruan Tinggi Swasta</div>
-                <div class="univ-card-name">BINUS University</div>
-                <div class="univ-card-location">
-                    <i class="fa-solid fa-location-dot"></i> Jakarta, DKI Jakarta
-                </div>
-                <p class="univ-card-desc">Universitas swasta terkemuka dengan spesialisasi teknologi informasi, bisnis digital, dan desain kreatif.</p>
-                <div class="univ-card-stats">
-                    <div class="univ-card-stat">
-                        <div class="univ-card-stat-val">22</div>
-                        <div class="univ-card-stat-label">Kursus</div>
-                    </div>
-                    <div class="univ-card-stat">
-                        <div class="univ-card-stat-val">6.3K</div>
-                        <div class="univ-card-stat-label">Pelajar</div>
-                    </div>
-                    <div class="univ-card-stat">
-                        <div class="univ-card-stat-val">4.5</div>
-                        <div class="univ-card-stat-label">Rating</div>
-                    </div>
-                </div>
-                <div class="univ-card-footer">
-                    <div class="univ-card-programs">
-                        <span class="prog-badge">S1</span>
-                        <span class="prog-badge">Sertifikat</span>
-                    </div>
-                    <div class="univ-card-cta">
-                        Lihat <i class="fa-solid fa-arrow-right"></i>
-                    </div>
-                </div>
-            </div>
-        </a>
-
-        {{-- ══ UNDIP ══ --}}
-        <a href="{{ route('courses.index', ['university' => 'undip']) }}"
-           class="univ-card"
-           data-type="negeri teknik">
-            <div class="univ-card-banner banner-undip">
-                <span class="univ-card-tag tag-partner">Partner</span>
-                <div class="univ-logo-placeholder">
-                    <img src="{{ asset('images/universities/undip-logo.png') }}" alt="Undip">
-                    <i class="fa-solid fa-water" style="font-size:30px;color:rgba(255,255,255,0.9);"></i>
-                </div>
-            </div>
-            <div class="univ-card-body">
-                <div class="univ-card-type">Perguruan Tinggi Negeri</div>
-                <div class="univ-card-name">Universitas Diponegoro</div>
-                <div class="univ-card-location">
-                    <i class="fa-solid fa-location-dot"></i> Semarang, Jawa Tengah
-                </div>
-                <p class="univ-card-desc">Universitas riset dengan keunggulan di bidang teknik, hukum, kedokteran, dan ilmu sosial di Jawa Tengah.</p>
-                <div class="univ-card-stats">
-                    <div class="univ-card-stat">
-                        <div class="univ-card-stat-val">12</div>
-                        <div class="univ-card-stat-label">Kursus</div>
-                    </div>
-                    <div class="univ-card-stat">
-                        <div class="univ-card-stat-val">2.9K</div>
-                        <div class="univ-card-stat-label">Pelajar</div>
-                    </div>
-                    <div class="univ-card-stat">
-                        <div class="univ-card-stat-val">4.6</div>
-                        <div class="univ-card-stat-label">Rating</div>
-                    </div>
-                </div>
-                <div class="univ-card-footer">
-                    <div class="univ-card-programs">
-                        <span class="prog-badge">S2</span>
-                        <span class="prog-badge">MOOC</span>
-                    </div>
-                    <div class="univ-card-cta">
-                        Lihat <i class="fa-solid fa-arrow-right"></i>
-                    </div>
-                </div>
-            </div>
-        </a>
-
-        {{-- ══ UB ══ --}}
-        <a href="{{ route('courses.index', ['university' => 'ub']) }}"
-           class="univ-card"
-           data-type="negeri bisnis">
-            <div class="univ-card-banner banner-ub">
-                <span class="univ-card-tag tag-partner">Partner</span>
-                <div class="univ-logo-placeholder">
-                    <img src="{{ asset('images/universities/ub-logo.png') }}" alt="UB"> 
-                    <i class="fa-solid fa-scale-balanced" style="font-size:30px;color:rgba(255,255,255,0.9);"></i>
-                </div>
-            </div>
-            <div class="univ-card-body">
-                <div class="univ-card-type">Perguruan Tinggi Negeri</div>
-                <div class="univ-card-name">Universitas Brawijaya</div>
-                <div class="univ-card-location">
-                    <i class="fa-solid fa-location-dot"></i> Malang, Jawa Timur
-                </div>
-                <p class="univ-card-desc">Universitas dengan reputasi kuat di bidang ekonomi, pertanian, teknik, dan ilmu sosial di kawasan Jawa Timur.</p>
-                <div class="univ-card-stats">
-                    <div class="univ-card-stat">
-                        <div class="univ-card-stat-val">10</div>
-                        <div class="univ-card-stat-label">Kursus</div>
-                    </div>
-                    <div class="univ-card-stat">
-                        <div class="univ-card-stat-val">2.4K</div>
-                        <div class="univ-card-stat-label">Pelajar</div>
-                    </div>
-                    <div class="univ-card-stat">
-                        <div class="univ-card-stat-val">4.5</div>
-                        <div class="univ-card-stat-label">Rating</div>
-                    </div>
-                </div>
-                <div class="univ-card-footer">
-                    <div class="univ-card-programs">
-                        <span class="prog-badge">S1</span>
-                        <span class="prog-badge">Sertifikat</span>
-                    </div>
-                    <div class="univ-card-cta">
-                        Lihat <i class="fa-solid fa-arrow-right"></i>
-                    </div>
-                </div>
-            </div>
-        </a>
-
-        {{-- Empty state (hidden by default, shown by JS) --}}
-        <div class="univ-empty" id="univEmpty" style="display:none;">
+        @empty
+        {{-- Empty state --}}
+        <div class="univ-empty-wrap">
             <div class="univ-empty-icon"><i class="fa-solid fa-building-columns"></i></div>
-            <div class="univ-empty-title">Universitas tidak ditemukan</div>
-            <p class="univ-empty-desc">Coba kata kunci lain atau hapus filter yang aktif.</p>
+            <div class="univ-empty-title">Tidak ada institusi ditemukan</div>
+            <p class="univ-empty-desc">
+                @if($search)
+                    Tidak ada hasil untuk "<strong>{{ $search }}</strong>".
+                @else
+                    Tidak ada institusi di kategori ini.
+                @endif
+            </p>
+            <a href="{{ route('universities') }}" class="univ-reset-btn">
+                <i class="fa-solid fa-rotate-left"></i> Reset Filter
+            </a>
         </div>
+        @endforelse
 
     </div>
+
+    {{-- Pagination --}}
+    @if($institutions->hasPages())
+    <div class="univ-pagination">
+        @if($institutions->onFirstPage())
+            <span class="page-btn page-btn-disabled"><i class="fa-solid fa-chevron-left"></i></span>
+        @else
+            <a href="{{ $institutions->previousPageUrl() }}" class="page-btn"><i class="fa-solid fa-chevron-left"></i></a>
+        @endif
+
+        @if($institutions->currentPage() > 3)
+            <a href="{{ $institutions->url(1) }}" class="page-btn">1</a>
+            @if($institutions->currentPage() > 4)
+                <span class="page-btn page-btn-disabled">…</span>
+            @endif
+        @endif
+
+        @foreach(range(max(1, $institutions->currentPage()-2), min($institutions->lastPage(), $institutions->currentPage()+2)) as $page)
+            @if($page == $institutions->currentPage())
+                <span class="page-btn page-btn-active">{{ $page }}</span>
+            @else
+                <a href="{{ $institutions->url($page) }}" class="page-btn">{{ $page }}</a>
+            @endif
+        @endforeach
+
+        @if($institutions->currentPage() < $institutions->lastPage() - 2)
+            @if($institutions->currentPage() < $institutions->lastPage() - 3)
+                <span class="page-btn page-btn-disabled">…</span>
+            @endif
+            <a href="{{ $institutions->url($institutions->lastPage()) }}" class="page-btn">{{ $institutions->lastPage() }}</a>
+        @endif
+
+        @if($institutions->hasMorePages())
+            <a href="{{ $institutions->nextPageUrl() }}" class="page-btn"><i class="fa-solid fa-chevron-right"></i></a>
+        @else
+            <span class="page-btn page-btn-disabled"><i class="fa-solid fa-chevron-right"></i></span>
+        @endif
+    </div>
+    @endif
+
 </section>
 
 {{-- ═══════════════════════════════════════════ --}}
@@ -1089,41 +870,7 @@
 
 @push('scripts')
 <script>
-/* ── Filter pills ── */
-function filterUniv(type, btn) {
-    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters(type, document.getElementById('univSearch').value);
-}
-
-/* ── Search ── */
-function searchUniv(query) {
-    const activeType = document.querySelector('.filter-pill.active')?.dataset?.type ?? 'all';
-    applyFilters(activeType, query);
-}
-
-/* ── Combined filter + search ── */
-function applyFilters(type, query) {
-    const cards  = document.querySelectorAll('#univGrid .univ-card');
-    const empty  = document.getElementById('univEmpty');
-    const q      = (query || '').toLowerCase().trim();
-    let   visible = 0;
-
-    cards.forEach(card => {
-        const cardTypes = (card.dataset.type || '').toLowerCase();
-        const cardText  = card.innerText.toLowerCase();
-        const typeMatch = type === 'all' || cardTypes.includes(type);
-        const textMatch = !q || cardText.includes(q);
-
-        if (typeMatch && textMatch) {
-            card.style.display = '';
-            visible++;
-        } else {
-            card.style.display = 'none';
-        }
-    });
-
-    empty.style.display = visible === 0 ? 'block' : 'none';
-}
+/* Filter & search sekarang server-side via form GET.
+   Script ini hanya untuk UX tambahan (opsional). */
 </script>
 @endpush

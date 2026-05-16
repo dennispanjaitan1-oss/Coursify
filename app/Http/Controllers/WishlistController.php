@@ -13,117 +13,107 @@ class WishlistController extends Controller
      * Display wishlist page
      */
     public function index(Request $request)
-    {
-        $user = Auth::user();
+{
+    $user   = Auth::user();
+    $filter = $request->get('filter', 'all');
+    $search = $request->get('search');
+    $sort   = $request->get('sort', 'newest');
 
-        $wishlists = collect();
-        $stats = [
-            'total'   => 0,
-            'free'    => 0,
-            'premium' => 0,
-            'saved_value' => 0,
-        ];
+    // Satu query untuk semua keperluan
+    $all = Wishlist::where('user_id', $user->id)
+        ->with(['course.category', 'course.instructors'])
+        ->latest()
+        ->get();
 
-        try {
-            $query = Wishlist::where('user_id', $user->id)
-                ->with(['course.category', 'course.instructors']);
+    // Hitung stats dari collection — tidak perlu query kedua
+    $stats = [
+        'total'       => $all->count(),
+        'free'        => $all->filter(fn($w) => optional($w->course)->price == 0)->count(),
+        'premium'     => $all->filter(fn($w) => optional($w->course)->price > 0)->count(),
+        'saved_value' => $all->sum(fn($w) => optional($w->course)->price ?? 0),
+    ];
 
-            // Filter
-            $filter = $request->get('filter', 'all');
-            if ($filter === 'free') {
-                $query->whereHas('course', function($q) {
-                    $q->where('price', 0);
-                });
-            } elseif ($filter === 'premium') {
-                $query->whereHas('course', function($q) {
-                    $q->where('price', '>', 0);
-                });
-            }
+    // Filter dari collection yang sudah ada
+    $wishlists = $all->when($filter === 'free', fn($c) =>
+            $c->filter(fn($w) => optional($w->course)->price == 0)
+        )
+        ->when($filter === 'premium', fn($c) =>
+            $c->filter(fn($w) => optional($w->course)->price > 0)
+        )
+        ->when($search, fn($c) =>
+            $c->filter(fn($w) =>
+                str_contains(
+                    strtolower(optional($w->course)->title ?? ''),
+                    strtolower($search)
+                )
+            )
+        );
 
-            // Search
-            if ($request->filled('search')) {
-                $search = $request->search;
-                $query->whereHas('course', function($q) use ($search) {
-                    $q->where('title', 'LIKE', "%{$search}%");
-                });
-            }
+    // Sort dari collection
+    $wishlists = match($sort) {
+        'oldest'     => $wishlists->sortBy('created_at'),
+        'price_low'  => $wishlists->sortBy(fn($w) => optional($w->course)->price ?? 0),
+        'price_high' => $wishlists->sortByDesc(fn($w) => optional($w->course)->price ?? 0),
+        'rating'     => $wishlists->sortByDesc(fn($w) => optional($w->course)->rating ?? 0),
+        default      => $wishlists->sortByDesc('created_at'), // newest
+    };
 
-            $wishlists = $query->latest()->get();
-
-            // Stats
-            $allWishlists = Wishlist::where('user_id', $user->id)
-                ->with('course')->get();
-
-            $stats['total']       = $allWishlists->count();
-            $stats['free']        = $allWishlists->filter(fn($w) => optional($w->course)->price == 0)->count();
-            $stats['premium']     = $allWishlists->filter(fn($w) => optional($w->course)->price > 0)->count();
-            $stats['saved_value'] = $allWishlists->sum(fn($w) => optional($w->course)->price ?? 0);
-
-        } catch (\Exception $e) {
-            $wishlists = collect();
-        }
-
-        return view('student.wishlist', compact('wishlists', 'stats'));
-    }
+    return view('student.wishlist', compact('wishlists', 'stats'));
+}
 
     /**
      * Toggle wishlist (add/remove)
      */
     public function toggle(Request $request, $courseId)
-    {
-        $user = Auth::user();
+{
+    $user = Auth::user();
 
-        if (!$user) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-
-        try {
-            $existing = Wishlist::where('user_id', $user->id)
-                ->where('course_id', $courseId)
-                ->first();
-
-            if ($existing) {
-                $existing->delete();
-                return response()->json([
-                    'status' => 'removed',
-                    'message' => 'Removed from wishlist',
-                ]);
-            }
-
-            Wishlist::create([
-                'user_id'   => $user->id,
-                'course_id' => $courseId,
-            ]);
-
-            return response()->json([
-                'status' => 'added',
-                'message' => 'Added to wishlist',
-            ]);
-
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
+    if (!$user) {
+        return response()->json(['error' => 'Unauthorized'], 401);
     }
+
+    // Validasi course benar-benar ada di database
+    $course = Course::findOrFail($courseId);
+
+    $existing = Wishlist::where('user_id', $user->id)
+        ->where('course_id', $course->id)
+        ->first();
+
+    if ($existing) {
+        $existing->delete();
+        return response()->json([
+            'status'  => 'removed',
+            'message' => 'Removed from wishlist',
+        ]);
+    }
+
+    Wishlist::create([
+        'user_id'   => $user->id,
+        'course_id' => $course->id,
+    ]);
+
+    return response()->json([
+        'status'  => 'added',
+        'message' => 'Added to wishlist',
+    ]);
+}
 
     /**
      * Remove from wishlist (form submit)
      */
-    public function destroy($id)
-    {
-        $user = Auth::user();
+    // GANTI dengan ini:
+public function destroy($id)
+{
+    $user = Auth::user();
 
-        try {
-            Wishlist::where('id', $id)
-                ->where('user_id', $user->id)
-                ->delete();
+    $wishlist = Wishlist::where('id', $id)
+        ->where('user_id', $user->id)
+        ->firstOrFail();
 
-            return redirect()
-                ->route('student.wishlist')
-                ->with('success', 'Course removed from wishlist');
-        } catch (\Exception $e) {
-            return redirect()
-                ->route('student.wishlist')
-                ->with('error', 'Failed to remove course');
-        }
-    }
+    $wishlist->delete();
+
+    return redirect()
+        ->route('student.wishlist')
+        ->with('success', 'Course removed from wishlist');
+}
 }
