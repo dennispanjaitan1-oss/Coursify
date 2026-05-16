@@ -182,3 +182,25 @@ Route::view('/forum', 'forum')->name('forum');
 Route::view('/pusat-bantuan', 'pusat-bantuan')->name('pusat-bantuan');
 
 Route::view('/sitemap', 'sitemap')->name('sitemap');
+
+
+Route::get('/admin/institutions', [App\Http\Controllers\Admin\InstitutionController::class, 'index'])->name('admin.institutions');
+Route::post('/admin/institutions', [App\Http\Controllers\Admin\InstitutionController::class, 'store'])->name('admin.institutions.store');
+Route::put('/admin/institutions/{institution}', [App\Http\Controllers\Admin\InstitutionController::class, 'update'])->name('admin.institutions.update');
+Route::delete('/admin/institutions/{institution}', [App\Http\Controllers\Admin\InstitutionController::class, 'destroy'])->name('admin.institutions.destroy');
+
+Route::get('/admin/approvals', [App\Http\Controllers\Admin\ApprovalController::class, 'index'])->name('admin.approvals');
+Route::post('/admin/approvals/{course}/approve', [App\Http\Controllers\Admin\ApprovalController::class, 'approve'])->name('admin.approvals.approve');
+Route::delete('/admin/approvals/{course}/reject', [App\Http\Controllers\Admin\ApprovalController::class, 'reject'])->name('admin.approvals.reject');
+
+Route::get('/admin/transactions', [App\Http\Controllers\Admin\TransactionController::class, 'index'])->name('admin.transactions');
+Route::delete('/admin/transactions/{payment}', [App\Http\Controllers\Admin\TransactionController::class, 'destroy'])->name('admin.transactions.destroy');
+
+Route::get('/admin/reviews', [App\Http\Controllers\Admin\ReviewController::class, 'index'])->name('admin.reviews');
+Route::delete('/admin/reviews/{review}', [App\Http\Controllers\Admin\ReviewController::class, 'destroy'])->name('admin.reviews.destroy');
+Route::patch('/admin/reviews/{review}/toggle', [App\Http\Controllers\Admin\ReviewController::class, 'toggleVisibility'])->name('admin.reviews.toggle');
+
+// Analytics
+Route::get('/admin/analytics', [App\Http\Controllers\Admin\AnalyticsController::class, 'index'])->name('admin.analytics');
+
+Route::get('/admin/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');  

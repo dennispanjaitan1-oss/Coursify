@@ -6,33 +6,30 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Course;
 use App\Models\Enrollment;
+use App\Models\Payment;
+use App\Models\Review;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $totalUsers = 0;
-        $totalCourses = 0;
-        $totalEnrollments = 0;
+        $stats = [
+            'total_users'    => User::count(),
+            'total_courses'  => Course::count(),
+            'pending_courses'=> Course::where('is_published', false)->count(),
+            'revenue'        => Payment::where('status', 'paid')->sum('amount'),
+        ];
 
-        try {
-            $userCount = User::count();
-            $totalUsers = $userCount > 1000
-                ? number_format($userCount / 1000, 1) . 'K'
-                : (string) $userCount;
+        // Recent users
+        $recentUsers = User::orderBy('created_at', 'desc')->take(5)->get();
 
-            $totalCourses = Course::count();
-            $totalEnrollments = Enrollment::count();
-        } catch (\Exception $e) {
-            $totalUsers = '3.4K';
-            $totalCourses = 20;
-            $totalEnrollments = 1847;
-        }
+        // Top courses by enrollment
+        $topCourses = Course::withCount('enrollments')
+            ->withAvg('reviews', 'rating')
+            ->orderBy('enrollments_count', 'desc')
+            ->take(5)
+            ->get();
 
-        return view('admin.dashboard', compact(
-            'totalUsers',
-            'totalCourses',
-            'totalEnrollments'
-        ));
+        return view('admin.dashboard', compact('stats', 'recentUsers', 'topCourses'));
     }
 }

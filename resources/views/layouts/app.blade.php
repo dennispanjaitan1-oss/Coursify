@@ -725,9 +725,10 @@
                             <a href="#" class="dropdown-item">
                                 <i class="fa-solid fa-users-gear"></i> Manage Users
                             </a>
-                            <a href="#" class="dropdown-item">
-                                <i class="fa-solid fa-book-stack"></i> Manage Courses
+                            <a href="{{ route('admin.courses.index') }}" class="dropdown-item">
+                            <i class="fa-solid fa-book-open"></i> Manage Courses
                             </a>
+
                             <a href="#" class="dropdown-item">
                                 <i class="fa-solid fa-file-shield"></i> Pending Approvals
                             </a>

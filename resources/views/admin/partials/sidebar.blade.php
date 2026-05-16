@@ -35,16 +35,16 @@
         <nav class="space-y-2">
 
             {{-- DASHBOARD --}}
-            <a href="{{ route('admin.courses.index') }}"
-               class="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-100 hover:text-orange-600 text-gray-700 transition">
+           <a href="{{ route('admin.dashboard') }}"
+   class="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-100 hover:text-orange-600 text-gray-700 transition">
 
-                <i class="fa-solid fa-chart-line w-5 text-center"></i>
+    <i class="fa-solid fa-chart-line w-5 text-center"></i>
 
-                <span class="font-medium">
-                    Dashboard
-                </span>
+    <span class="font-medium">
+        Dashboard
+    </span>
 
-            </a>
+</a>
 
             {{-- ANALYTICS --}}
             <a href="{{ route('admin.analytics') }}"
