@@ -121,10 +121,14 @@ Route::middleware(['auth', 'role:admin'])
         Route::put('/users/{id}', [App\Http\Controllers\Admin\UserController::class, 'update'])->name('users.update');
         Route::delete('/users/{id}', [App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('users.destroy');
 
-        Route::resource(
-    'courses',
-    App\Http\Controllers\Admin\CourseController::class
-);
+        Route::get('/courses', [App\Http\Controllers\Admin\CourseController::class, 'index'])->name('courses.index');
+Route::post('/courses', [App\Http\Controllers\Admin\CourseController::class, 'store'])->name('courses.store');
+Route::put('/courses/{course}', [App\Http\Controllers\Admin\CourseController::class, 'update'])->name('courses.update');
+Route::delete('/courses/{course}', [App\Http\Controllers\Admin\CourseController::class, 'destroy'])->name('courses.destroy');
+Route::patch('/courses/{course}/toggle-publish', [App\Http\Controllers\Admin\CourseController::class, 'togglePublish'])->name('courses.toggle-publish');
+
+
+    
 
         Route::view('/institutions', 'admin.institutions')->name('institutions');
 

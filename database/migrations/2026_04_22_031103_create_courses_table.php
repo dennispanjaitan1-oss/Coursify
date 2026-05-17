@@ -4,28 +4,73 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
-    public function up(): void {
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
         Schema::create('courses', function (Blueprint $table) {
+
             $table->id();
-            $table->foreignId('program_id')->nullable()->constrained()->onDelete('set null');
-            $table->foreignId('institution_id')->constrained()->onDelete('cascade');
-            $table->foreignId('category_id')->constrained()->onDelete('cascade');
+
+            // BASIC INFO
             $table->string('title');
             $table->string('slug')->unique();
-            $table->text('short_description')->nullable();
+
+            // RELATION
+            $table->foreignId('category_id')
+                  ->constrained()
+                  ->cascadeOnDelete();
+
+            $table->foreignId('institution_id')
+                  ->constrained()
+                  ->cascadeOnDelete();
+
+            $table->foreignId('program_id')
+                  ->nullable()
+                  ->constrained()
+                  ->nullOnDelete();
+
+            // DESCRIPTION
+            $table->string('short_description', 500)->nullable();
             $table->longText('description')->nullable();
-            $table->decimal('price', 12, 2)->default(0);        // 0 = gratis
-            $table->integer('duration_weeks')->default(4);
-            $table->enum('difficulty', ['beginner', 'intermediate', 'advanced'])->default('beginner');
+
+            // COURSE DETAIL
+            $table->decimal('price', 10, 2)->default(0);
+            $table->integer('duration_weeks')->default(1);
+
+            $table->enum('difficulty', [
+                'beginner',
+                'intermediate',
+                'advanced'
+            ]);
+
+            $table->string('language', 10)->default('id');
+
+            // MEDIA
             $table->string('thumbnail_url')->nullable();
-            $table->string('preview_video_url')->nullable();     // video trailer kursus
-            $table->string('language')->default('id');
+            $table->string('preview_video_url')->nullable();
+
+            // STATUS
             $table->boolean('is_published')->default(false);
-            $table->integer('order_index')->default(0);          // urutan dalam program
-            $table->timestamps();
+
+            // SORTING
+            $table->integer('order_index')->default(0);
+
+            // SOFT DELETE
             $table->softDeletes();
+
+            $table->timestamps();
         });
     }
-    public function down(): void { Schema::dropIfExists('courses'); }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('courses');
+    }
 };
