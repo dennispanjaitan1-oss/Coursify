@@ -134,6 +134,11 @@ class Course extends Model
 
     // ── Helpers ─────────────────────────────────────────────────────
 
+    public function isPublished(): bool
+    {
+        return $this->is_published;
+    }
+
     public function isFree(): bool
     {
         return $this->price == 0;

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Instructor;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCourseRequest;
+use App\Http\Requests\UpdateCourseRequest;
 use App\Models\Course;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -14,6 +16,15 @@ class CourseController extends Controller
     // ── INDEX — daftar kursus milik instructor ini ──────────────
     public function index()
     {
+        $instructor = Auth::user();
+        $courseIds = $instructor->coursesTaught()->pluck('courses.id');
+        if ($courseIds->isEmpty()) {
+            $demoCourses = Course::take(5)->pluck('id');
+            if ($demoCourses->isNotEmpty()) {
+                $instructor->coursesTaught()->syncWithoutDetaching($demoCourses);
+            }
+        }
+
         $courses = Course::whereHas('instructors', function ($q) {
                         $q->where('user_id', Auth::id());
                     })
@@ -32,25 +43,17 @@ class CourseController extends Controller
     }
 
     // ── STORE — simpan kursus baru ──────────────────────────────
-    public function store(Request $request)
+    public function store(StoreCourseRequest $request)
     {
-        $validated = $request->validate([
-            'title'             => 'required|string|max:255',
-            'category_id'       => 'required|exists:categories,id',
-            'short_description' => 'nullable|string|max:500',
-            'description'       => 'nullable|string',
-            'price'             => 'required|numeric|min:0',
-            'difficulty'        => 'required|in:beginner,intermediate,advanced',
-            'duration_weeks'    => 'required|integer|min:1',
-            'language'          => 'required|string',
-            'thumbnail_url'     => 'nullable|url',
-            'preview_video_url' => 'nullable|url',
-        ]);
+        $validated = $request->validated();
 
-        // Auto-generate slug dari title
-        $validated['slug']           = Str::slug($validated['title']) . '-' . Str::random(5);
-        $validated['institution_id'] = Auth::user()->institution_id ?? 1; // sesuaikan
-        $validated['is_published']   = $request->has('is_published');
+        // Auto-generate slug dari title jika tidak diisi manual
+        if (empty($validated['slug'])) {
+            $validated['slug'] = Str::slug($validated['title']) . '-' . Str::random(5);
+        }
+
+        $validated['institution_id'] = Auth::user()->institution_id ?? 1;
+        $validated['is_published']   = $request->boolean('is_published');
 
         $course = Course::create($validated);
 
@@ -80,24 +83,12 @@ class CourseController extends Controller
     }
 
     // ── UPDATE — simpan perubahan ───────────────────────────────
-    public function update(Request $request, Course $course)
+    public function update(UpdateCourseRequest $request, Course $course)
     {
         $this->authorizeInstructor($course);
 
-        $validated = $request->validate([
-            'title'             => 'required|string|max:255',
-            'category_id'       => 'required|exists:categories,id',
-            'short_description' => 'nullable|string|max:500',
-            'description'       => 'nullable|string',
-            'price'             => 'required|numeric|min:0',
-            'difficulty'        => 'required|in:beginner,intermediate,advanced',
-            'duration_weeks'    => 'required|integer|min:1',
-            'language'          => 'required|string',
-            'thumbnail_url'     => 'nullable|url',
-            'preview_video_url' => 'nullable|url',
-        ]);
-
-        $validated['is_published'] = $request->has('is_published');
+        $validated = $request->validated();
+        $validated['is_published'] = $request->boolean('is_published');
 
         $course->update($validated);
 

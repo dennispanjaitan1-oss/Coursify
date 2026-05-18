@@ -28,7 +28,7 @@
                     title="Messages">
                 <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
             </button>
-            <a href="#" class="btn-primary" aria-label="Create a new course">
+            <a href="{{ route('instructor.courses.create') }}" class="btn-primary" aria-label="Create a new course">
                 <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i>
                 Create Course
             </a>
@@ -51,11 +51,11 @@
                 Your courses are making a difference. {{ $enrollments->count() }} students enrolled recently, keep up the great work!
             </p>
             <div class="welcome-card__actions">
-                <a href="#" class="btn-welcome btn-welcome--primary">
+                <a href="{{ route('instructor.courses.create') }}" class="btn-welcome btn-welcome--primary">
                     <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i>
                     Create New Course
                 </a>
-                <a href="#" class="btn-welcome btn-welcome--ghost">
+                <a href="#revenue-title" class="btn-welcome btn-welcome--ghost">
                     <i class="fa-solid fa-chart-bar" aria-hidden="true"></i>
                     View Analytics
                 </a>
@@ -66,7 +66,7 @@
             <div class="welcome-earnings" role="status" aria-label="Monthly earnings summary">
                 <div class="welcome-earnings__label">This Month</div>
                 <div class="welcome-earnings__amount">
-                    Rp <em>{{ number_format($monthlyRevenue / 1000000, 1) }}M</em>
+                    Rp <em>{{ number_format($monthlyRevenue, 0, ',', '.') }}</em>
                 </div>
                 <div class="welcome-earnings__trend">
                     <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
@@ -144,19 +144,19 @@
                 <div>
                     <div class="revenue-item-label">Total Revenue</div>
                     <div class="revenue-item-value">
-                        Rp <em>{{ number_format($totalRevenue / 1000000, 1) }}M</em>
+                        Rp <em>{{ number_format($totalRevenue, 0, ',', '.') }}</em>
                     </div>
                 </div>
                 <div>
                     <div class="revenue-item-label">This Month</div>
                     <div class="revenue-item-value">
-                        Rp {{ number_format($monthlyRevenue / 1000000, 1) }}M
+                        Rp {{ number_format($monthlyRevenue, 0, ',', '.') }}
                     </div>
                 </div>
                 <div>
                     <div class="revenue-item-label">Pending Payout</div>
                     <div class="revenue-item-value">
-                        Rp {{ number_format($pendingPayout / 1000000, 1) }}M
+                        Rp {{ number_format($pendingPayout, 0, ',', '.') }}
                     </div>
                 </div>
             </div>
@@ -172,13 +172,13 @@
                     <line x1="0" y1="45" x2="400" y2="45" stroke="#E8E1F3" stroke-dasharray="4,4"/>
                     <line x1="0" y1="90" x2="400" y2="90" stroke="#E8E1F3" stroke-dasharray="4,4"/>
                     <line x1="0" y1="135" x2="400" y2="135" stroke="#E8E1F3" stroke-dasharray="4,4"/>
-                    <path d="M 0,130 L 40,110 L 80,85 L 120,95 L 160,70 L 200,60 L 240,50 L 280,65 L 320,40 L 360,25 L 400,30 L 400,180 L 0,180 Z"
+                    <path d="{{ $svgFillPath }}"
                           fill="url(#lineGrad)"/>
-                    <path d="M 0,130 L 40,110 L 80,85 L 120,95 L 160,70 L 200,60 L 240,50 L 280,65 L 320,40 L 360,25 L 400,30"
+                    <path d="{{ $svgPath }}"
                           stroke="#7B6FE8" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-                    <circle cx="320" cy="40" r="5" fill="white" stroke="#7B6FE8" stroke-width="2.5"/>
-                    <circle cx="360" cy="25" r="5" fill="white" stroke="#7B6FE8" stroke-width="2.5"/>
-                    <circle cx="400" cy="30" r="6" fill="#7B6FE8"/>
+                    @foreach($points as $p)
+                        <circle cx="{{ $p['x'] }}" cy="{{ $p['y'] }}" r="5" fill="white" stroke="#7B6FE8" stroke-width="2.5"/>
+                    @endforeach
                 </svg>
             </div>
 
@@ -216,7 +216,7 @@
                             </div>
                         </div>
                         <div>
-                            <div class="top-course-stat">Rp {{ number_format($course['revenue'] / 1000000, 1) }}M</div>
+                            <div class="top-course-stat">Rp {{ number_format($course['revenue'], 0, ',', '.') }}</div>
                             <div class="top-course-stat-label">Revenue</div>
                         </div>
                     </div>
@@ -289,7 +289,7 @@
                                 @endif
                             </td>
                             <td>
-                                <div class="cell-value">Rp {{ number_format(($course->enrollments_sum_amount ?? 0) / 1000000, 1) }}M</div>
+                                <div class="cell-value">Rp {{ number_format($course->lifetime_revenue, 0, ',', '.') }}</div>
                                 <div class="cell-label">lifetime</div>
                             </td>
                             <td>
@@ -323,22 +323,26 @@
                                          class="actions-menu"
                                          role="menu"
                                          aria-label="Course actions">
-                                        <a href="#" class="actions-menu__item" role="menuitem">
+                                        <a href="{{ route('courses.show', $course->slug) }}" class="actions-menu__item" role="menuitem">
                                             <i class="fa-solid fa-eye" aria-hidden="true"></i> View
                                         </a>
-                                        <a href="#" class="actions-menu__item" role="menuitem">
+                                        <a href="{{ route('instructor.courses.edit', $course->id) }}" class="actions-menu__item" role="menuitem">
                                             <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i> Edit
                                         </a>
-                                        <a href="#" class="actions-menu__item" role="menuitem">
+                                        <a href="#revenue-title" class="actions-menu__item" role="menuitem">
                                             <i class="fa-solid fa-chart-simple" aria-hidden="true"></i> Analytics
                                         </a>
                                         <a href="#" class="actions-menu__item" role="menuitem">
                                             <i class="fa-solid fa-copy" aria-hidden="true"></i> Duplicate
                                         </a>
                                         <div class="actions-menu__divider" role="separator"></div>
-                                        <a href="#" class="actions-menu__item actions-menu__item--danger" role="menuitem">
-                                            <i class="fa-solid fa-trash" aria-hidden="true"></i> Delete
-                                        </a>
+                                        <form action="{{ route('instructor.courses.destroy', $course->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kursus ini?')" style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="actions-menu__item actions-menu__item--danger" style="background:transparent; border:none; width:100%; text-align:left; cursor:pointer;" role="menuitem">
+                                                <i class="fa-solid fa-trash" aria-hidden="true"></i> Delete
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                             </td>
@@ -468,42 +472,42 @@
             </div>
 
             <nav class="actions-grid" aria-label="Quick actions">
-                <a href="#" class="quick-action" aria-label="Create a new course">
-                    <div class="quick-icon quick-icon-purple" aria-hidden="true">
-                        <i class="fa-solid fa-pen-to-square"></i>
-                    </div>
-                    <div class="quick-label">Create Course</div>
-                </a>
-                <a href="#" class="quick-action" aria-label="Upload video content">
-                    <div class="quick-icon quick-icon-teal" aria-hidden="true">
-                        <i class="fa-solid fa-video"></i>
-                    </div>
-                    <div class="quick-label">Upload Video</div>
-                </a>
-                <a href="#" class="quick-action" aria-label="Add a quiz to course">
-                    <div class="quick-icon quick-icon-orange" aria-hidden="true">
-                        <i class="fa-solid fa-clipboard-question"></i>
-                    </div>
-                    <div class="quick-label">Add Quiz</div>
-                </a>
-                <a href="#" class="quick-action" aria-label="Broadcast message to students">
-                    <div class="quick-icon quick-icon-gold" aria-hidden="true">
-                        <i class="fa-solid fa-bullhorn"></i>
-                    </div>
-                    <div class="quick-label">Broadcast</div>
-                </a>
-                <a href="#" class="quick-action" aria-label="Withdraw earnings">
-                    <div class="quick-icon quick-icon-blue" aria-hidden="true">
-                        <i class="fa-solid fa-wallet"></i>
-                    </div>
-                    <div class="quick-label">Withdraw</div>
-                </a>
-                <a href="#" class="quick-action" aria-label="View reports and analytics">
-                    <div class="quick-icon quick-icon-pink" aria-hidden="true">
-                        <i class="fa-solid fa-chart-pie"></i>
-                    </div>
-                    <div class="quick-label">Reports</div>
-                </a>
+                <a href="{{ route('instructor.courses.create') }}" class="quick-action" aria-label="Create a new course">
+                                    <div class="quick-icon quick-icon-purple" aria-hidden="true">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </div>
+                                    <div class="quick-label">Create Course</div>
+                                </a>
+                                <a href="{{ route('instructor.courses.index') }}" class="quick-action" aria-label="Upload video content">
+                                    <div class="quick-icon quick-icon-teal" aria-hidden="true">
+                                        <i class="fa-solid fa-video"></i>
+                                    </div>
+                                    <div class="quick-label">Upload Video</div>
+                                </a>
+                                <a href="{{ route('instructor.courses.index') }}" class="quick-action" aria-label="Add a quiz to course">
+                                    <div class="quick-icon quick-icon-orange" aria-hidden="true">
+                                        <i class="fa-solid fa-clipboard-question"></i>
+                                    </div>
+                                    <div class="quick-label">Add Quiz</div>
+                                </a>
+                                <a href="#messages-title" class="quick-action" aria-label="Broadcast message to students">
+                                    <div class="quick-icon quick-icon-gold" aria-hidden="true">
+                                        <i class="fa-solid fa-bullhorn"></i>
+                                    </div>
+                                    <div class="quick-label">Broadcast</div>
+                                </a>
+                                <a href="#revenue-title" class="quick-action" aria-label="Withdraw earnings">
+                                    <div class="quick-icon quick-icon-blue" aria-hidden="true">
+                                        <i class="fa-solid fa-wallet"></i>
+                                    </div>
+                                    <div class="quick-label">Withdraw</div>
+                                </a>
+                                <a href="#revenue-title" class="quick-action" aria-label="View reports and analytics">
+                                    <div class="quick-icon quick-icon-pink" aria-hidden="true">
+                                        <i class="fa-solid fa-chart-pie"></i>
+                                    </div>
+                                    <div class="quick-label">Reports</div>
+                                </a>
             </nav>
 
             {{-- Tips card --}}

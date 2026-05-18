@@ -5,12 +5,15 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\LessonProgressController;
 
 use App\Http\Controllers\Student\DashboardController as StudentDashboard;
 use App\Http\Controllers\Student\LearningController;
 
 use App\Http\Controllers\Instructor\DashboardController as InstructorDashboard;
 use App\Http\Controllers\Instructor\CourseController as InstructorCourseController;
+
+use App\Http\Middleware\EnsureUserIsEnrolled;
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PaymentController;
@@ -31,6 +34,14 @@ Route::get('/payment', [PaymentController::class, 'index'])
 
 Route::get('/verify/{certificateNumber}', [CertificateController::class, 'verify'])
     ->name('certificates.verify');
+ 
+// Tambahan: form verifikasi via GET /?number=...
+Route::get('/verify', function(\Illuminate\Http\Request $req) {
+    if ($req->has('number')) {
+        return redirect()->route('certificates.verify', $req->number);
+    }
+    return redirect()->route('home');
+})->name('certificates.verify.form');
 
 // ═══════════════════════════════════════════════════════════
 // AUTH
@@ -69,10 +80,17 @@ Route::middleware(['auth', 'role:student,instructor,admin'])
         Route::get('/certificates', [StudentDashboard::class, 'certificates'])->name('certificates');
         Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
 
-        // Learning & Progress
-        Route::get('/learn/{slug}', [LearningController::class, 'index'])->name('learn');
-        Route::get('/learn/{slug}/{lesson}', [LearningController::class, 'lesson'])->name('learn.lesson');
-        Route::post('/progress/{lesson}', [LearningController::class, 'updateProgress'])->name('learn.progress');
+        // Learning & Progress (Dilindungi oleh EnsureUserIsEnrolled middleware)
+        Route::middleware([EnsureUserIsEnrolled::class])->group(function () {
+            Route::get('/learn/{slug}', [LearningController::class, 'index'])->name('learn');
+            Route::get('/learn/{slug}/{lesson}', [LearningController::class, 'lesson'])->name('learn.lesson');
+            Route::post('/progress/{lesson}', [LearningController::class, 'updateProgress'])->name('learn.progress');
+        });
+
+        // LessonProgress API endpoints
+        Route::get('/learn/{course:slug}/progress', [LessonProgressController::class, 'index'])->name('lesson.progress.index');
+        Route::post('/lesson-progress/{lesson}', [LessonProgressController::class, 'store'])->name('lesson.progress.store');
+        Route::get('/lesson-progress/{lesson}', [LessonProgressController::class, 'show'])->name('lesson.progress.show');
 
         // Review Course
         Route::post('/course/review/{course}', [EnrollmentController::class, 'submitReview'])->name('course.review.submit');
@@ -86,6 +104,17 @@ Route::middleware(['auth', 'role:student,instructor,admin'])
         Route::post('/wishlist/toggle/{course}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
         Route::delete('/wishlist/{id}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
 
+        Route::get('/certificates', [\App\Http\Controllers\Student\DashboardController::class, 'certificates'])
+    ->name('certificates');
+ 
+Route::post('/certificates/{course}/generate', [\App\Http\Controllers\CertificateController::class, 'generate'])
+    ->name('certificates.generate');
+ 
+Route::get('/certificates/{certificateNumber}/download', [\App\Http\Controllers\CertificateController::class, 'download'])
+    ->name('certificates.download');
+ 
+Route::get('/certificates/{certificateNumber}/preview', [\App\Http\Controllers\CertificateController::class, 'preview'])
+    ->name('certificates.preview');
     });
 
 // ═══════════════════════════════════════════════════════════

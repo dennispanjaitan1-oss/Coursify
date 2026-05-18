@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Course;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
 {
@@ -25,62 +26,68 @@ class HomeController extends Controller
             : '50,000+';
 
         // Categories dengan course count (gunakan data asli jika ada)
-        $categories = Category::withCount(['courses' => function($q) {
-            $q->where('is_published', true);
-        }])
-        ->whereNull('parent_id')
-        ->take(8)
-        ->get()
-        ->map(function($cat) {
-            return [
-                'icon'  => $cat->icon ?: '📚',
-                'name'  => $cat->name,
-                'slug'  => $cat->slug,
-                'count' => $cat->courses_count,
-            ];
-        })
-        ->toArray();
+        $categories = Cache::remember('home_categories', 3600, function () {
+            return Category::withCount(['courses' => function($q) {
+                $q->published();
+            }])
+            ->whereNull('parent_id')
+            ->take(8)
+            ->get()
+            ->map(function($cat) {
+                return [
+                    'icon'  => $cat->icon ?: 'fa-solid fa-folder-open',
+                    'name'  => $cat->name,
+                    'slug'  => $cat->slug,
+                    'count' => $cat->courses_count,
+                ];
+            })
+            ->toArray();
+        });
 
         // Featured courses (6 kursus terpopuler)
-        $featuredCourses = Course::where('is_published', true)
-            ->with(['instructors', 'category'])
-            ->withCount('enrollments')
-            ->orderBy('enrollments_count', 'desc')
-            ->take(6)
-            ->get()
-            ->map(function($course, $index) {
-                $instructor = $course->instructors->first();
-                return [
-                    'icon'       => '📚',
-                    'title'      => $course->title,
-                    'category'   => $course->category->name ?? 'General',
-                    'instructor' => $instructor ? $instructor->name . ' · ' . ($instructor->headline ?? 'Instructor') : 'Coursify Team',
-                    'rating'     => number_format($course->average_rating ?: 4.8, 1),
-                    'students'   => $this->formatNumber($course->enrollments_count),
-                    'duration'   => $course->duration_weeks . 'w',
-                    'price'      => $course->price == 0 ? 'Free' : 'Rp ' . number_format($course->price, 0, ',', '.'),
-                    'badge'      => $course->price == 0 ? 'free' : ($index < 2 ? 'bestseller' : 'new'),
-                    'thumb'      => ($index % 6) + 1,
-                ];
-            })
-            ->toArray();
+        $featuredCourses = Cache::remember('home_featured_courses', 3600, function () {
+            return Course::published()
+                ->with(['instructors', 'category'])
+                ->withCount('enrollments')
+                ->orderBy('enrollments_count', 'desc')
+                ->take(6)
+                ->get()
+                ->map(function($course, $index) {
+                    $instructor = $course->instructors->first();
+                    return [
+                        'icon'       => 'fa-solid fa-graduation-cap',
+                        'title'      => $course->title,
+                        'category'   => $course->category->name ?? 'General',
+                        'instructor' => $instructor ? $instructor->name . ' · ' . ($instructor->headline ?? 'Instructor') : 'Coursify Team',
+                        'rating'     => number_format($course->average_rating ?: 4.8, 1),
+                        'students'   => $this->formatNumber($course->enrollments_count),
+                        'duration'   => $course->duration_weeks . 'w',
+                        'price'      => $course->price == 0 ? 'Free' : 'Rp ' . number_format($course->price, 0, ',', '.'),
+                        'badge'      => $course->price == 0 ? 'free' : ($index < 2 ? 'bestseller' : 'new'),
+                        'thumb'      => ($index % 6) + 1,
+                    ];
+                })
+                ->toArray();
+        });
 
         // Featured instructors
-        $instructors = User::where('role', 'instructor')
-            ->withCount(['coursesTaught'])
-            ->take(3)
-            ->get()
-            ->map(function($inst) {
-                return [
-                    'avatar'   => '👨‍💻',
-                    'name'     => $inst->name,
-                    'title'    => $inst->headline ?: 'Expert Instructor',
-                    'tags'     => ['Teaching', 'Expert', 'Mentor'],
-                    'courses'  => (string) $inst->courses_taught_count,
-                    'students' => $this->formatNumber(rand(10000, 100000)),
-                ];
-            })
-            ->toArray();
+        $instructors = Cache::remember('home_instructors', 3600, function () {
+            return User::where('role', 'instructor')
+                ->withCount(['coursesTaught'])
+                ->take(3)
+                ->get()
+                ->map(function($inst) {
+                    return [
+                        'avatar'   => 'fa-solid fa-user-tie',
+                        'name'     => $inst->name,
+                        'title'    => $inst->headline ?: 'Expert Instructor',
+                        'tags'     => ['Teaching', 'Expert', 'Mentor'],
+                        'courses'  => (string) $inst->courses_taught_count,
+                        'students' => $this->formatNumber(rand(10000, 100000)),
+                    ];
+                })
+                ->toArray();
+        });
 
         return view('home.index', compact(
             'stats',
