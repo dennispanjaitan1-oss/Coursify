@@ -1368,40 +1368,49 @@
             </div>
 
             <div class="how-grid">
+                {{-- Card 1: Choose Your Path --}}
                 <div class="how-card">
                     <div class="how-number">1</div>
-                    <div class="how-visual">
-                        <div class="avatar-stack">
-                            <div class="avatar-circle" style="background:linear-gradient(135deg,#7B6FE8,#B8AFEB);">👨‍💻</div>
-                            <div class="avatar-circle" style="background:linear-gradient(135deg,#FF8A5B,#FFA07A);">👩‍🎨</div>
-                            <div class="avatar-circle" style="background:linear-gradient(135deg,#00C896,#00E6B0);">👨‍🔬</div>
-                        </div>
+                    <div class="how-visual" style="padding:0;overflow:hidden;">
+                        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&q=80"
+                             alt="Choose your path"
+                             style="width:100%;height:100%;object-fit:cover;border-radius:14px;">
                     </div>
                     <div class="how-title">Choose Your<br>Path</div>
                     <p class="how-desc">Browse 500+ courses across programming, design, business, and more. Find the skill that matches your goals.</p>
                 </div>
 
+                {{-- Card 2: Learn at Your Pace - gambar + animasi wave di atas --}}
                 <div class="how-card">
                     <div class="how-number">2</div>
-                    <div class="how-visual">
-                        <div class="wave-viz">
-                            <div class="wave-bar" style="height:12px;animation-delay:0s;"></div>
-                            <div class="wave-bar" style="height:24px;animation-delay:0.1s;"></div>
-                            <div class="wave-bar" style="height:36px;animation-delay:0.2s;"></div>
-                            <div class="wave-bar" style="height:48px;animation-delay:0.3s;"></div>
-                            <div class="wave-bar" style="height:36px;animation-delay:0.4s;"></div>
-                            <div class="wave-bar" style="height:24px;animation-delay:0.5s;"></div>
-                            <div class="wave-bar" style="height:12px;animation-delay:0.6s;"></div>
+                    <div class="how-visual" style="padding:0;overflow:hidden;position:relative;">
+                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&q=80"
+                             alt="Learn at your pace"
+                             style="width:100%;height:100%;object-fit:cover;border-radius:14px;">
+                        {{-- Wave overlay --}}
+                        <div style="position:absolute;inset:0;background:rgba(30,58,95,0.45);border-radius:14px;display:flex;align-items:center;justify-content:center;">
+                            <div class="wave-viz">
+                                <div class="wave-bar" style="height:12px;animation-delay:0s;background:white;"></div>
+                                <div class="wave-bar" style="height:24px;animation-delay:0.1s;background:white;"></div>
+                                <div class="wave-bar" style="height:36px;animation-delay:0.2s;background:white;"></div>
+                                <div class="wave-bar" style="height:48px;animation-delay:0.3s;background:white;"></div>
+                                <div class="wave-bar" style="height:36px;animation-delay:0.4s;background:white;"></div>
+                                <div class="wave-bar" style="height:24px;animation-delay:0.5s;background:white;"></div>
+                                <div class="wave-bar" style="height:12px;animation-delay:0.6s;background:white;"></div>
+                            </div>
                         </div>
                     </div>
                     <div class="how-title">Learn at<br>Your Pace</div>
                     <p class="how-desc">Watch video lessons, complete exercises, and get instant feedback. Study anytime from any device.</p>
                 </div>
 
+                {{-- Card 3: Earn Your Certificate --}}
                 <div class="how-card">
                     <div class="how-number">3</div>
-                    <div class="how-visual">
-                        <div class="cert-viz"></div>
+                    <div class="how-visual" style="padding:0;overflow:hidden;">
+                        <img src="https://images.unsplash.com/photo-1523289333742-be1143f6b766?w=600&q=80"
+                             alt="Earn your certificate"
+                             style="width:100%;height:100%;object-fit:cover;border-radius:14px;">
                     </div>
                     <div class="how-title">Earn Your<br>Certificate</div>
                     <p class="how-desc">Complete the course and receive a verified certificate you can showcase on LinkedIn and your CV.</p>
@@ -1433,38 +1442,50 @@
                 <p class="why-desc">Learn from industry professionals with real-world experience. All instructors are verified and rated by students.</p>
             </div>
 
+            {{-- Card 2: Learn Anytime - gambar + badge overlay --}}
             <div class="why-card">
-                <div class="why-visual why-visual-center">
-                    <div class="why-viz-badge">
-                        <span style="width:6px;height:6px;background:var(--teal);border-radius:50%;animation:pulse 2s infinite;"></span>
-                        Always Available
+                <div class="why-visual" style="padding:0;overflow:hidden;position:relative;">
+                    <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&q=80"
+                         alt="Learn Anytime"
+                         style="width:100%;height:100%;object-fit:cover;border-radius:16px;">
+                    <div style="position:absolute;top:16px;left:16px;display:flex;align-items:center;gap:8px;background:rgba(30,58,95,0.85);backdrop-filter:blur(10px);color:white;padding:8px 14px;border-radius:100px;font-size:11px;font-weight:600;">
+                        <span style="width:6px;height:6px;background:#00C896;border-radius:50%;animation:pulse 2s infinite;"></span>
+                        24/7 Available
                     </div>
-                    <div class="why-viz-title">24/7 Learning</div>
-                    <div style="font-size:11px;color:var(--muted);">Study on your own schedule</div>
                 </div>
                 <div class="why-title">Learn Anytime</div>
                 <p class="why-desc">No deadlines, no pressure. Watch lessons, pause, rewind — study whenever it fits your schedule.</p>
             </div>
 
+            {{-- Card 3: Verified Certificates - gambar + cert overlay --}}
             <div class="why-card">
-                <div class="why-visual why-cert-visual">
-                    <div class="cert-card">
-                        <div style="font-size:10px;color:var(--muted);margin-bottom:2px;">CERTIFICATE</div>
-                        <div style="font-family:var(--font-serif);font-size:12px;">of Completion</div>
-                        <div style="font-size:9px;color:var(--muted);margin-top:4px;">Verified ID: #CRS-2025</div>
+                <div class="why-visual" style="padding:0;overflow:hidden;position:relative;">
+                    <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=800&q=80"
+                         alt="Verified Certificates"
+                         style="width:100%;height:100%;object-fit:cover;border-radius:16px;">
+                    <div style="position:absolute;bottom:16px;right:16px;background:white;border:2px solid var(--purple);border-radius:10px;padding:10px 14px;text-align:center;box-shadow:0 8px 20px rgba(30,58,95,0.15);transform:rotate(-2deg);">
+                        <div style="font-size:18px;margin-bottom:2px;">🏆</div>
+                        <div style="font-size:9px;color:var(--muted);font-weight:600;">CERTIFICATE</div>
+                        <div style="font-family:var(--font-serif);font-size:10px;">of Completion</div>
                     </div>
                 </div>
                 <div class="why-title">Verified Certificates</div>
                 <p class="why-desc">Earn official digital certificates upon completion. Shareable on LinkedIn and verifiable by employers worldwide.</p>
             </div>
 
+            {{-- Card 4: Vibrant Community - gambar + tags overlay --}}
             <div class="why-card">
-                <div class="why-visual why-tags-wrap">
-                    <div class="why-tag">💻 Code Review</div>
-                    <div class="why-tag">💬 Q&A Forum</div>
-                    <div class="why-tag">🎯 Projects</div>
-                    <div class="why-tag">📚 Study Groups</div>
-                    <div class="why-tag">🏆 Leaderboard</div>
+                <div class="why-visual" style="padding:0;overflow:hidden;position:relative;">
+                    <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80"
+                         alt="Vibrant Community"
+                         style="width:100%;height:100%;object-fit:cover;border-radius:16px;">
+                    <div style="position:absolute;inset:0;background:rgba(30,58,95,0.5);border-radius:16px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center;padding:16px;">
+                        <span style="background:rgba(255,255,255,0.2);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.3);color:white;padding:5px 12px;border-radius:100px;font-size:10px;font-weight:600;">💻 Code Review</span>
+                        <span style="background:rgba(255,255,255,0.2);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.3);color:white;padding:5px 12px;border-radius:100px;font-size:10px;font-weight:600;">💬 Q&A Forum</span>
+                        <span style="background:rgba(255,255,255,0.2);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.3);color:white;padding:5px 12px;border-radius:100px;font-size:10px;font-weight:600;">🎯 Projects</span>
+                        <span style="background:rgba(255,255,255,0.2);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.3);color:white;padding:5px 12px;border-radius:100px;font-size:10px;font-weight:600;">📚 Study Groups</span>
+                        <span style="background:rgba(255,255,255,0.2);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.3);color:white;padding:5px 12px;border-radius:100px;font-size:10px;font-weight:600;">🏆 Leaderboard</span>
+                    </div>
                 </div>
                 <div class="why-title">Vibrant Community</div>
                 <p class="why-desc">Join 50,000+ learners. Ask questions, share projects, and grow together with peers worldwide.</p>
@@ -1486,17 +1507,20 @@
 
         <div class="instructor-grid">
             @php
-                $defaultInstructors = [
-                    ['avatar' => '👨‍💻', 'name' => 'Budi Santoso', 'title' => 'Senior Dev @ Tokopedia', 'tags' => ['Laravel', 'React', 'AWS'], 'courses' => '45', 'students' => '120K'],
-                    ['avatar' => '👩‍🎨', 'name' => 'Sari Dewi', 'title' => 'UX Lead @ Traveloka', 'tags' => ['UI/UX', 'Figma', 'Research'], 'courses' => '12', 'students' => '38K'],
-                    ['avatar' => '👨‍🔬', 'name' => 'Rio Ahmad', 'title' => 'Data Scientist @ Shopee', 'tags' => ['Python', 'ML', 'Analytics'], 'courses' => '28', 'students' => '67K'],
-                ];
-                $instructorsData = $instructors ?? $defaultInstructors;
-            @endphp
+    $defaultInstructors = [
+    ['avatar' => 'https://ui-avatars.com/api/?name=Budi+Santoso&background=1E3A5F&color=fff&size=150&bold=true', 'name' => 'Budi Santoso', 'title' => 'Senior Dev @ Tokopedia', 'tags' => ['Laravel', 'React', 'AWS'], 'courses' => '45', 'students' => '120K'],
+    ['avatar' => 'https://ui-avatars.com/api/?name=Sari+Dewi&background=7B6FE8&color=fff&size=150&bold=true', 'name' => 'Sari Dewi', 'title' => 'UX Lead @ Traveloka', 'tags' => ['UI/UX', 'Figma', 'Research'], 'courses' => '12', 'students' => '38K'],
+    ['avatar' => 'https://ui-avatars.com/api/?name=Rio+Ahmad&background=00C896&color=fff&size=150&bold=true', 'name' => 'Rio Ahmad', 'title' => 'Data Scientist @ Shopee', 'tags' => ['Python', 'ML', 'Analytics'], 'courses' => '28', 'students' => '67K'],
+];
+    $instructorsData = $instructors ?? $defaultInstructors;
+@endphp
 
             @foreach($instructorsData as $inst)
                 <div class="instructor-card">
-                    <div class="instructor-avatar">{{ $inst['avatar'] }}</div>
+                   <div class="instructor-avatar" style="overflow:hidden;padding:0;">
+    <img src="https://ui-avatars.com/api/?name={{ urlencode($inst['name']) }}&background=1E3A5F&color=fff&size=150&bold=true"
+         style="width:100%;height:100%;object-fit:cover;">
+</div>
                     <div class="instructor-name">{{ $inst['name'] }}</div>
                     <div class="instructor-title">{{ $inst['title'] }}</div>
                     <div class="instructor-tags">
@@ -1530,7 +1554,9 @@
                 <div class="testimonial-stars">★★★★★</div>
                 <p class="testimonial-quote">"Coursify helped me transition from marketing to frontend development in 6 months. The certificates were a game-changer for my CV!"</p>
                 <div class="testimonial-author">
-                    <div class="testimonial-avatar">👨</div>
+                    <div class="testimonial-avatar">
+                        <img src="https://i.pravatar.cc/150?img=11" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+                    </div>
                     <div>
                         <div class="testimonial-name">Andi Pratama</div>
                         <div class="testimonial-role">Frontend Dev @ Gojek</div>
@@ -1542,7 +1568,9 @@
                 <div class="testimonial-stars">★★★★★</div>
                 <p class="testimonial-quote">"The instructors are world-class. I learned more in 3 months on Coursify than a year of college. Highly recommended!"</p>
                 <div class="testimonial-author">
-                    <div class="testimonial-avatar">👩</div>
+                    <div class="testimonial-avatar">
+                        <img src="https://i.pravatar.cc/150?img=45" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+                    </div>
                     <div>
                         <div class="testimonial-name">Putri Rahma</div>
                         <div class="testimonial-role">Data Analyst @ Shopee</div>
@@ -1554,7 +1582,9 @@
                 <div class="testimonial-stars">★★★★★</div>
                 <p class="testimonial-quote">"Love the flexibility. I can study during my commute, at night, anytime. Finally platform that respects my schedule."</p>
                 <div class="testimonial-author">
-                    <div class="testimonial-avatar">👨</div>
+                    <div class="testimonial-avatar">
+                        <img src="https://i.pravatar.cc/150?img=15" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+                    </div>
                     <div>
                         <div class="testimonial-name">Dimas Wijaya</div>
                         <div class="testimonial-role">Product Manager</div>

@@ -25,52 +25,37 @@ class HomeController extends Controller
             ? User::where('role', 'student')->count() . '+'
             : '50,000+';
 
-        // Categories dengan course count (gunakan data asli jika ada)
-        $categories = Category::withCount(['courses' => function($q) {
-            $q->where('is_published', true);
-        }])
-        ->whereNull('parent_id')
-        ->take(8)
-        ->get()
-        ->map(function($cat) {
-            return [
-                'icon'  => $cat->icon ?: '📚',
-                'name'  => $cat->name,
-                'slug'  => $cat->slug,
-                'count' => $cat->courses_count,
-            ];
-        })
-        ->toArray();
+        // Categories dengan course count
         $categories = Cache::remember('home_categories', 3600, function () {
             return Category::withCount(['courses' => function($q) {
-                $q->published();
+                $q->where('is_published', true);
             }])
             ->whereNull('parent_id')
             ->take(8)
             ->get()
             ->map(function($cat) {
                 $iconMap = [
-                    'Architecture'           => 'fa-solid fa-building-columns',
-                    'Art'                    => 'fa-solid fa-palette',
-                    'Biology'                => 'fa-solid fa-dna',
-                    'Business Administration'=> 'fa-solid fa-briefcase',
-                    'Chemistry'              => 'fa-solid fa-flask',
-                    'Computer Programming'   => 'fa-solid fa-code',
-                    'Data Analysis'          => 'fa-solid fa-chart-bar',
-                    'Economics'              => 'fa-solid fa-chart-line',
-                    'Engineering'            => 'fa-solid fa-gears',
-                    'Mathematics'            => 'fa-solid fa-square-root-variable',
-                    'Music'                  => 'fa-solid fa-music',
-                    'Physics'                => 'fa-solid fa-atom',
-                    'Design'                 => 'fa-solid fa-pen-nib',
-                    'Marketing'              => 'fa-solid fa-bullhorn',
-                    'Language'               => 'fa-solid fa-language',
-                    'History'                => 'fa-solid fa-landmark',
-                    'Psychology'             => 'fa-solid fa-brain',
-                    'Health'                 => 'fa-solid fa-heart-pulse',
-                    'Finance'                => 'fa-solid fa-coins',
-                    'Law'                    => 'fa-solid fa-scale-balanced',
-                    'General'                => 'fa-solid fa-book-open',
+                    'Architecture'            => 'fa-solid fa-building-columns',
+                    'Art'                     => 'fa-solid fa-palette',
+                    'Biology'                 => 'fa-solid fa-dna',
+                    'Business Administration' => 'fa-solid fa-briefcase',
+                    'Chemistry'               => 'fa-solid fa-flask',
+                    'Computer Programming'    => 'fa-solid fa-code',
+                    'Data Analysis'           => 'fa-solid fa-chart-bar',
+                    'Economics'               => 'fa-solid fa-chart-line',
+                    'Engineering'             => 'fa-solid fa-gears',
+                    'Mathematics'             => 'fa-solid fa-square-root-variable',
+                    'Music'                   => 'fa-solid fa-music',
+                    'Physics'                 => 'fa-solid fa-atom',
+                    'Design'                  => 'fa-solid fa-pen-nib',
+                    'Marketing'               => 'fa-solid fa-bullhorn',
+                    'Language'                => 'fa-solid fa-language',
+                    'History'                 => 'fa-solid fa-landmark',
+                    'Psychology'              => 'fa-solid fa-brain',
+                    'Health'                  => 'fa-solid fa-heart-pulse',
+                    'Finance'                 => 'fa-solid fa-coins',
+                    'Law'                     => 'fa-solid fa-scale-balanced',
+                    'General'                 => 'fa-solid fa-book-open',
                 ];
                 $iconClass = $cat->icon ?: ($iconMap[$cat->name] ?? 'fa-solid fa-book-open');
                 return [
@@ -84,30 +69,8 @@ class HomeController extends Controller
         });
 
         // Featured courses (6 kursus terpopuler)
-        $featuredCourses = Course::where('is_published', true)
-            ->with(['instructors', 'category'])
-            ->withCount('enrollments')
-            ->orderBy('enrollments_count', 'desc')
-            ->take(6)
-            ->get()
-            ->map(function($course, $index) {
-                $instructor = $course->instructors->first();
-                return [
-                    'icon'       => '📚',
-                    'title'      => $course->title,
-                    'category'   => $course->category->name ?? 'General',
-                    'instructor' => $instructor ? $instructor->name . ' · ' . ($instructor->headline ?? 'Instructor') : 'Coursify Team',
-                    'rating'     => number_format($course->average_rating ?: 4.8, 1),
-                    'students'   => $this->formatNumber($course->enrollments_count),
-                    'duration'   => $course->duration_weeks . 'w',
-                    'price'      => $course->price == 0 ? 'Free' : 'Rp ' . number_format($course->price, 0, ',', '.'),
-                    'badge'      => $course->price == 0 ? 'free' : ($index < 2 ? 'bestseller' : 'new'),
-                    'thumb'      => ($index % 6) + 1,
-                ];
-            })
-            ->toArray();
         $featuredCourses = Cache::remember('home_featured_courses', 3600, function () {
-            return Course::published()
+            return Course::where('is_published', true)
                 ->with(['instructors', 'category'])
                 ->withCount('enrollments')
                 ->orderBy('enrollments_count', 'desc')
@@ -134,21 +97,6 @@ class HomeController extends Controller
         });
 
         // Featured instructors
-        $instructors = User::where('role', 'instructor')
-            ->withCount(['coursesTaught'])
-            ->take(3)
-            ->get()
-            ->map(function($inst) {
-                return [
-                    'avatar'   => '👨‍💻',
-                    'name'     => $inst->name,
-                    'title'    => $inst->headline ?: 'Expert Instructor',
-                    'tags'     => ['Teaching', 'Expert', 'Mentor'],
-                    'courses'  => (string) $inst->courses_taught_count,
-                    'students' => $this->formatNumber(rand(10000, 100000)),
-                ];
-            })
-            ->toArray();
         $instructors = Cache::remember('home_instructors', 3600, function () {
             return User::where('role', 'instructor')
                 ->withCount(['coursesTaught'])
@@ -156,7 +104,7 @@ class HomeController extends Controller
                 ->get()
                 ->map(function($inst) {
                     return [
-                        'avatar'   => '👨‍🏫',
+                        'avatar' => 'https://ui-avatars.com/api/?name=' . urlencode($inst->name) . '&background=1E3A5F&color=fff&size=150&bold=true',
                         'name'     => $inst->name,
                         'title'    => $inst->headline ?: 'Expert Instructor',
                         'tags'     => ['Teaching', 'Expert', 'Mentor'],
