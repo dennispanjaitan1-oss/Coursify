@@ -608,21 +608,21 @@
         <div class="cat-grid">
             @php
                 $defaultCategories = [
-                    ['icon' => '💻', 'name' => 'Programming', 'count' => 124, 'slug' => 'programming'],
-                    ['icon' => '🎨', 'name' => 'Design', 'count' => 87, 'slug' => 'design'],
-                    ['icon' => '📊', 'name' => 'Business', 'count' => 96, 'slug' => 'business'],
-                    ['icon' => '📈', 'name' => 'Marketing', 'count' => 54, 'slug' => 'marketing'],
-                    ['icon' => '🎬', 'name' => 'Video & Film', 'count' => 38, 'slug' => 'video'],
-                    ['icon' => '🌍', 'name' => 'Languages', 'count' => 42, 'slug' => 'languages'],
-                    ['icon' => '🎵', 'name' => 'Music', 'count' => 29, 'slug' => 'music'],
-                    ['icon' => '🔬', 'name' => 'Data Science', 'count' => 67, 'slug' => 'data-science'],
-                ];
+    ['icon' => '<i class="fa-solid fa-code"></i>', 'name' => 'Programming', 'count' => 124, 'slug' => 'programming'],
+    ['icon' => '<i class="fa-solid fa-pen-nib"></i>', 'name' => 'Design', 'count' => 87, 'slug' => 'design'],
+    ['icon' => '<i class="fa-solid fa-briefcase"></i>', 'name' => 'Business', 'count' => 96, 'slug' => 'business'],
+    ['icon' => '<i class="fa-solid fa-bullhorn"></i>', 'name' => 'Marketing', 'count' => 54, 'slug' => 'marketing'],
+    ['icon' => '<i class="fa-solid fa-film"></i>', 'name' => 'Video & Film', 'count' => 38, 'slug' => 'video'],
+    ['icon' => '<i class="fa-solid fa-language"></i>', 'name' => 'Languages', 'count' => 42, 'slug' => 'languages'],
+    ['icon' => '<i class="fa-solid fa-music"></i>', 'name' => 'Music', 'count' => 29, 'slug' => 'music'],
+    ['icon' => '<i class="fa-solid fa-chart-bar"></i>', 'name' => 'Data Science', 'count' => 67, 'slug' => 'data-science'],
+];
                 $categoriesData = $categories ?? $defaultCategories;
             @endphp
 
             @foreach($categoriesData as $cat)
                 <a href="{{ route('courses.index') }}?category={{ $cat['slug'] ?? Str::slug($cat['name']) }}" class="cat-card">
-                    <div class="cat-icon">{{ $cat['icon'] ?? '📚' }}</div>
+                    <div class="cat-icon">{!! $cat['icon'] ?? '<i class="fa-solid fa-book-open"></i>' !!}</div>
                     <div class="cat-name">{{ $cat['name'] }}</div>
                     <div class="cat-count">{{ $cat['count'] }} courses</div>
                 </a>
@@ -663,7 +663,12 @@
                                 {{ $course['badge'] === 'bestseller' ? 'Bestseller' : ucfirst($course['badge']) }}
                             </span>
                         @endif
-                        {!! $course['icon'] ?? '<i class="fa-solid fa-book"></i>' !!}
+                        @if(!empty($course['thumbnail_url']))
+    <img src="{{ $course['thumbnail_url'] }}" alt="{{ $course['title'] }}"
+        style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85;">
+@else
+    {!! $course['icon'] ?? '<i class="fa-solid fa-book-open"></i>' !!}
+@endif
                     </div>
                     <div class="course-body">
                         <div class="course-category">{{ $course['category'] }}</div>
