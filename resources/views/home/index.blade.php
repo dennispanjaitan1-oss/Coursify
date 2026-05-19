@@ -19,15 +19,23 @@
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        background: rgba(255,255,255,0.7);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255,255,255,0.9);
-        padding: 6px 16px;
+        background: rgba(255,255,255,0.85);
+        backdrop-filter: blur(30px);
+        border: 1px solid rgba(123,111,232,0.25);
+        padding: 8px 18px;
         border-radius: 100px;
-        font-size: 12px;
+        font-size: 13px;
         font-weight: 500;
         color: var(--text-soft);
         margin-bottom: 20px;
+        box-shadow: 0 8px 24px rgba(30,58,95,0.08);
+        transition: all 0.3s ease;
+    }
+    .hero-badge:hover {
+        background: rgba(255,255,255,0.95);
+        border-color: rgba(123,111,232,0.4);
+        transform: translateY(-2px);
+        box-shadow: 0 12px 32px rgba(30,58,95,0.12);
     }
     .hero-badge-dot {
         width: 6px;
@@ -68,7 +76,7 @@
 
     .hero-cta {
         display: flex;
-        gap: 10px;
+        gap: 14px;
         justify-content: center;
         flex-wrap: wrap;
         margin-bottom: 36px;
@@ -78,28 +86,29 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 20px;
+        gap: 24px;
         flex-wrap: wrap;
         margin-bottom: 50px;
-        opacity: 0.7;
+        opacity: 0.85;
     }
     .trust-label {
         font-size: 11px;
         color: var(--muted);
-        font-weight: 500;
-        letter-spacing: 0.05em;
+        font-weight: 600;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
     }
-    .trust-logos { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; }
+    .trust-logos { display: flex; gap: 24px; flex-wrap: wrap; align-items: center; }
     .trust-logo {
         font-family: var(--font-serif);
         font-style: italic;
-        font-size: 18px;
+        font-size: 16px;
         color: var(--text-soft);
-        opacity: 0.6;
-        transition: opacity 0.3s;
+        opacity: 0.65;
+        transition: all 0.3s ease;
+        font-weight: 500;
     }
-    .trust-logo:hover { opacity: 1; }
+    .trust-logo:hover { opacity: 0.95; transform: translateY(-1px); }
 
     /* ═══ PHONE MOCKUP ═══ */
     .mockup-stage {
@@ -342,19 +351,20 @@
         margin: 0 auto;
     }
     .course-card {
-        background: rgba(255,255,255,0.7);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255,255,255,0.9);
+        background: rgba(255,255,255,0.85);
+        backdrop-filter: blur(30px);
+        border: 1px solid rgba(123,111,232,0.08);
         border-radius: 20px;
         overflow: hidden;
         text-decoration: none;
         color: var(--text);
-        transition: all 0.3s;
+        transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         cursor: pointer;
     }
     .course-card:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 20px 40px rgba(30,58,95,0.12);
+        transform: translateY(-8px);
+        box-shadow: 0 12px 32px rgba(30,58,95,0.14), 0 8px 20px rgba(123,111,232,0.08);
+        border-color: rgba(123,111,232,0.2);
     }
     .course-thumb {
         aspect-ratio: 16/10;
@@ -411,23 +421,24 @@
     }
     .course-meta {
         display: flex;
-        gap: 10px;
-        font-size: 11px;
+        gap: 12px;
+        font-size: 12px;
         color: var(--muted);
         margin-bottom: 14px;
         padding-bottom: 14px;
-        border-bottom: 1px solid rgba(0,0,0,0.08);
+        border-bottom: 1px solid rgba(0,0,0,0.06);
     }
     .course-footer { display: flex; justify-content: space-between; align-items: center; }
     .course-price {
         font-family: var(--font-serif);
-        font-size: 20px;
+        font-size: 18px;
         font-weight: 400;
         letter-spacing: -0.01em;
+        color: var(--text);
     }
-    .course-price-free { color: var(--teal); }
+    .course-price-free { color: var(--teal); font-weight: 600; }
     .course-arrow { font-size: 18px; color: var(--purple); transition: transform 0.3s; }
-    .course-card:hover .course-arrow { transform: translateX(4px); }
+    .course-card:hover .course-arrow { transform: translateX(6px); color: var(--purple-dark); }
 
     @media (max-width: 768px) {
         .stats-bar { grid-template-columns: repeat(2, 1fr); padding: 20px; gap: 16px; }
@@ -645,14 +656,19 @@
             @endphp
 
             @foreach($coursesData as $course)
-                <a href="{{ route('courses.index') }}" class="course-card">
+                <a href="{{ isset($course['slug']) ? route('courses.show', $course['slug']) : route('courses.index') }}" class="course-card">
                     <div class="course-thumb course-thumb-{{ $course['thumb'] ?? 1 }}">
                         @if(!empty($course['badge']))
                             <span class="course-badge badge-{{ $course['badge'] }}">
                                 {{ $course['badge'] === 'bestseller' ? 'Bestseller' : ucfirst($course['badge']) }}
                             </span>
                         @endif
-                        {!! $course['icon'] ?? '<i class="fa-solid fa-book"></i>' !!}
+                        @if(!empty($course['thumbnail_url']))
+                            <img src="{{ $course['thumbnail_url'] }}" alt="{{ $course['title'] }}"
+                                style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85;">
+                        @else
+                            {!! $course['icon'] ?? '<i class="fa-solid fa-book"></i>' !!}
+                        @endif
                     </div>
                     <div class="course-body">
                         <div class="course-category">{{ $course['category'] }}</div>

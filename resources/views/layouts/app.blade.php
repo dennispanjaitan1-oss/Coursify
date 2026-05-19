@@ -14,7 +14,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    {{-- Font Awesome --}}
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css" as="style">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
 
     {{-- Vite Assets --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -82,9 +84,9 @@
            PROMO BANNER
         ══════════════════════════════════════════════ */
         .promo-bar {
-            background: var(--navy);
+            background: linear-gradient(135deg, var(--navy), #2D4D7A);
             color: white;
-            padding: 9px 50px 9px 20px;
+            padding: 10px 50px 10px 20px;
             text-align: center;
             position: relative;
             font-size: 13px;
@@ -92,6 +94,7 @@
             line-height: 1.5;
             transition: max-height 0.35s ease, opacity 0.35s ease, padding 0.35s ease;
             overflow: hidden;
+            box-shadow: 0 4px 12px rgba(30,58,95,0.15);
         }
         .promo-bar.promo-closing {
             max-height: 0 !important;
@@ -218,15 +221,18 @@
     .nav-link {
     font-size: 13px;
     font-weight: 600;
-    color: rgba(26, 24, 37, 0.7);
+    color: rgba(26, 24, 37, 0.65);
     padding: 8px 14px;
-    border-radius: 12px;
-    transition: all 0.2s ease;
+    border-radius: 10px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
-        .nav-link i { font-size: 11px; opacity: 0.65; }
-        .nav-link:hover { background: rgba(255,255,255,0.5); color: var(--navy); transform: translateY(-1px); }
-        .nav-link.active { background: rgba(123,111,232,0.14); color: var(--purple-dark); }
+        .nav-link i { font-size: 11px; opacity: 0.6; }
+        .nav-link:hover { background: rgba(123,111,232,0.08); color: var(--navy); opacity: 0.9; }
+        .nav-link.active { background: rgba(123,111,232,0.16); color: var(--purple-dark); }
        .nav-right {
     display: flex;
     align-items: center;
@@ -241,21 +247,26 @@
         .mega-trigger {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 7px;
             background: var(--navy);
             color: white;
             border: none;
-            padding: 8px 16px;
+            padding: 9px 18px;
             border-radius: 100px;
-            font-size: 13.5px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
             font-family: var(--font-sans);
-            transition: background 0.2s, transform 0.15s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             white-space: nowrap;
             flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(30,58,95,0.1);
         }
-        .mega-trigger:hover { background: #2D4D7A; }
+        .mega-trigger:hover { 
+            background: #2D4D7A;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(30,58,95,0.15);
+        }
         .mega-trigger:active { transform: scale(0.97); }
         .mega-chevron {
             width: 14px;
@@ -380,31 +391,28 @@
         .btn-dark {
     background: #111827;
     color: white;
-    
-
-    border-radius: 14px;
-
-    padding: 12px 20px;
-
-    box-shadow:
-        0 6px 20px rgba(17,24,39,0.18);
-
-    transition: all 0.25s ease;
+    border-radius: 100px;
+    padding: 11px 24px;
+    box-shadow: 0 4px 14px rgba(17,24,39,0.15);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
         .btn-dark:hover {
-            background: #2A2840;
+            background: #1f2937;
             transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(26,24,37,0.4);
+            box-shadow: 0 8px 28px rgba(17,24,39,0.25);
         }
         .btn-light {
-            background: rgba(255,255,255,0.7);
+            background: rgba(255,255,255,0.85);
             color: var(--text);
-            border: 1px solid rgba(255,255,255,0.9);
-            backdrop-filter: blur(10px);
+            border: 1px solid rgba(123,111,232,0.12);
+            backdrop-filter: blur(20px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .btn-light:hover {
             background: rgba(255,255,255,0.95);
+            border-color: rgba(123,111,232,0.25);
             transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(30,58,95,0.1);
         }
 
         /* ══════════════════════════════════════════════
