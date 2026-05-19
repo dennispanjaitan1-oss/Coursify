@@ -70,9 +70,31 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
 
+        // 3. Generate 200 Students
+        $faker = \Faker\Factory::create('id_ID');
+        $students = [];
+        $currentId = $maxId + 4;
+        
+        for ($i = 0; $i < 200; $i++) {
+            $students[] = [
+                'id'                => $currentId++,
+                'name'              => $faker->name,
+                'email'             => $faker->unique()->safeEmail,
+                'password'          => $password,
+                'role'              => 'student',
+                'email_verified_at' => now(),
+                'created_at'        => now(),
+                'updated_at'        => now(),
+            ];
+        }
+        
+        foreach (array_chunk($students, 100) as $chunk) {
+            DB::table('users')->insert($chunk);
+        }
+
         $finalMaxId = DB::table('users')->max('id') + 1;
         DB::statement("ALTER TABLE users AUTO_INCREMENT = $finalMaxId;");
 
-        $this->command->info('✅ Users seeded: ' . DB::table('users')->count() . ' records (instructors + admins)');
+        $this->command->info('✅ Users seeded: ' . DB::table('users')->count() . ' records (instructors + admins + 200 students)');
     }
 }
