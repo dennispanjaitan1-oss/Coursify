@@ -16,7 +16,6 @@ class DatabaseSeeder extends Seeder
             CourseSeeder::class,        // 5. Kursus + Pivot course_instructors (dari CSV)
         ]);
  
-        $this->command->info('');
         $this->command->info('✅ Seeding selesai!');
         $this->command->info('');
         $this->command->info('🔑 Akun login:');

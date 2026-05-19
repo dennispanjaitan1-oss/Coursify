@@ -463,10 +463,10 @@
         <div class="hero-cta">
             @guest
                 <a href="{{ route('register') }}" class="btn btn-dark">Start Learning Free</a>
-                <a href="{{ route('courses.index') }}" class="btn btn-light"><i class="fa-solid fa-play"></i> Browse Courses</a>
+                <a href="{{ route('courses.index') }}" class="btn btn-light">▶ Browse Courses</a>
             @else
                 <a href="{{ route('student.index') }}" class="btn btn-dark">Continue Learning </a>
-                <a href="{{ route('courses.index') }}" class="btn btn-light"><i class="fa-solid fa-play"></i> Browse Courses</a>
+                <a href="{{ route('courses.index') }}" class="btn btn-light">▶ Browse Courses</a>
             @endguest
         </div>
 
@@ -518,7 +518,7 @@
                     <div class="phone-status">9:41</div>
                     <div class="phone-label">Featured Instructor</div>
                     <div class="phone-card">
-                        <div class="phone-avatar"><i class="fa-solid fa-user-tie" style="color: white; font-size: 24px;"></i></div>
+                        <div class="phone-avatar">👨‍💻</div>
                         <div class="phone-name">Meet Andi</div>
                         <div style="font-size:10px;color:var(--muted);text-align:center;margin-top:2px;">Senior Developer · 12k students</div>
                         <div class="phone-skill-tags">
@@ -597,21 +597,21 @@
         <div class="cat-grid">
             @php
                 $defaultCategories = [
-                    ['icon' => '<i class="fa-solid fa-code"></i>', 'name' => 'Programming', 'count' => 124, 'slug' => 'programming'],
-                    ['icon' => '<i class="fa-solid fa-palette"></i>', 'name' => 'Design', 'count' => 87, 'slug' => 'design'],
-                    ['icon' => '<i class="fa-solid fa-chart-simple"></i>', 'name' => 'Business', 'count' => 96, 'slug' => 'business'],
-                    ['icon' => '<i class="fa-solid fa-arrow-trend-up"></i>', 'name' => 'Marketing', 'count' => 54, 'slug' => 'marketing'],
-                    ['icon' => '<i class="fa-solid fa-film"></i>', 'name' => 'Video & Film', 'count' => 38, 'slug' => 'video'],
-                    ['icon' => '<i class="fa-solid fa-earth-americas"></i>', 'name' => 'Languages', 'count' => 42, 'slug' => 'languages'],
-                    ['icon' => '<i class="fa-solid fa-music"></i>', 'name' => 'Music', 'count' => 29, 'slug' => 'music'],
-                    ['icon' => '<i class="fa-solid fa-microscope"></i>', 'name' => 'Data Science', 'count' => 67, 'slug' => 'data-science'],
+                    ['icon' => '💻', 'name' => 'Programming', 'count' => 124, 'slug' => 'programming'],
+                    ['icon' => '🎨', 'name' => 'Design', 'count' => 87, 'slug' => 'design'],
+                    ['icon' => '📊', 'name' => 'Business', 'count' => 96, 'slug' => 'business'],
+                    ['icon' => '📈', 'name' => 'Marketing', 'count' => 54, 'slug' => 'marketing'],
+                    ['icon' => '🎬', 'name' => 'Video & Film', 'count' => 38, 'slug' => 'video'],
+                    ['icon' => '🌍', 'name' => 'Languages', 'count' => 42, 'slug' => 'languages'],
+                    ['icon' => '🎵', 'name' => 'Music', 'count' => 29, 'slug' => 'music'],
+                    ['icon' => '🔬', 'name' => 'Data Science', 'count' => 67, 'slug' => 'data-science'],
                 ];
                 $categoriesData = $categories ?? $defaultCategories;
             @endphp
 
             @foreach($categoriesData as $cat)
                 <a href="{{ route('courses.index') }}?category={{ $cat['slug'] ?? Str::slug($cat['name']) }}" class="cat-card">
-                    <div class="cat-icon">{!! $cat['icon'] ?? '<i class="fa-solid fa-book"></i>' !!}</div>
+                    <div class="cat-icon">{{ $cat['icon'] ?? '📚' }}</div>
                     <div class="cat-name">{{ $cat['name'] }}</div>
                     <div class="cat-count">{{ $cat['count'] }} courses</div>
                 </a>
@@ -634,12 +634,12 @@
         <div class="courses-grid">
             @php
                 $defaultCourses = [
-                    ['icon' => '<i class="fa-solid fa-code"></i>', 'title' => 'Fullstack Web Development with Laravel', 'category' => 'Programming', 'instructor' => 'Andi Saputra · Senior Dev @ Gojek', 'rating' => '4.9', 'students' => '12.3k', 'duration' => '40h', 'price' => 'Rp 299k', 'badge' => 'bestseller', 'thumb' => 1],
-                    ['icon' => '<i class="fa-solid fa-palette"></i>', 'title' => 'UI/UX Design Fundamentals for Beginners', 'category' => 'Design', 'instructor' => 'Sari Dewi · UX Lead @ Traveloka', 'rating' => '4.8', 'students' => '8.1k', 'duration' => '25h', 'price' => 'Rp 199k', 'badge' => 'new', 'thumb' => 2],
-                    ['icon' => '<i class="fa-solid fa-chart-simple"></i>', 'title' => 'Introduction to Python for Data Analysis', 'category' => 'Data Science', 'instructor' => 'Rio Ahmad · Data Sci @ Shopee', 'rating' => '4.9', 'students' => '15.7k', 'duration' => '20h', 'price' => 'Free', 'badge' => 'free', 'thumb' => 3],
-                    ['icon' => '<i class="fa-solid fa-arrow-trend-up"></i>', 'title' => 'Digital Marketing Mastery 2025', 'category' => 'Marketing', 'instructor' => 'Maya Putri · CMO @ Tokopedia', 'rating' => '4.7', 'students' => '9.8k', 'duration' => '30h', 'price' => 'Rp 249k', 'badge' => 'bestseller', 'thumb' => 4],
-                    ['icon' => '<i class="fa-solid fa-rocket"></i>', 'title' => 'Startup Fundamentals: From Idea to Launch', 'category' => 'Business', 'instructor' => 'Budi Hartono · Founder @ Techstars', 'rating' => '4.8', 'students' => '5.2k', 'duration' => '18h', 'price' => 'Rp 349k', 'badge' => 'new', 'thumb' => 5],
-                    ['icon' => '<i class="fa-solid fa-pencil"></i>', 'title' => 'Master Your Time: Productivity for Beginners', 'category' => 'Productivity', 'instructor' => 'Linda Sari · Coach @ YCombinator', 'rating' => '4.9', 'students' => '22k', 'duration' => '8h', 'price' => 'Free', 'badge' => 'free', 'thumb' => 6],
+                    ['icon' => '💻', 'title' => 'Fullstack Web Development with Laravel', 'category' => 'Programming', 'instructor' => 'Andi Saputra · Senior Dev @ Gojek', 'rating' => '4.9', 'students' => '12.3k', 'duration' => '40h', 'price' => 'Rp 299k', 'badge' => 'bestseller', 'thumb' => 1],
+                    ['icon' => '🎨', 'title' => 'UI/UX Design Fundamentals for Beginners', 'category' => 'Design', 'instructor' => 'Sari Dewi · UX Lead @ Traveloka', 'rating' => '4.8', 'students' => '8.1k', 'duration' => '25h', 'price' => 'Rp 199k', 'badge' => 'new', 'thumb' => 2],
+                    ['icon' => '📊', 'title' => 'Introduction to Python for Data Analysis', 'category' => 'Data Science', 'instructor' => 'Rio Ahmad · Data Sci @ Shopee', 'rating' => '4.9', 'students' => '15.7k', 'duration' => '20h', 'price' => 'Free', 'badge' => 'free', 'thumb' => 3],
+                    ['icon' => '📈', 'title' => 'Digital Marketing Mastery 2025', 'category' => 'Marketing', 'instructor' => 'Maya Putri · CMO @ Tokopedia', 'rating' => '4.7', 'students' => '9.8k', 'duration' => '30h', 'price' => 'Rp 249k', 'badge' => 'bestseller', 'thumb' => 4],
+                    ['icon' => '🚀', 'title' => 'Startup Fundamentals: From Idea to Launch', 'category' => 'Business', 'instructor' => 'Budi Hartono · Founder @ Techstars', 'rating' => '4.8', 'students' => '5.2k', 'duration' => '18h', 'price' => 'Rp 349k', 'badge' => 'new', 'thumb' => 5],
+                    ['icon' => '✏️', 'title' => 'Master Your Time: Productivity for Beginners', 'category' => 'Productivity', 'instructor' => 'Linda Sari · Coach @ YCombinator', 'rating' => '4.9', 'students' => '22k', 'duration' => '8h', 'price' => 'Free', 'badge' => 'free', 'thumb' => 6],
                 ];
                 $coursesData = $featuredCourses ?? $defaultCourses;
             @endphp
@@ -652,16 +652,16 @@
                                 {{ $course['badge'] === 'bestseller' ? 'Bestseller' : ucfirst($course['badge']) }}
                             </span>
                         @endif
-                        {!! $course['icon'] ?? '<i class="fa-solid fa-book"></i>' !!}
+                        {{ $course['icon'] ?? '📚' }}
                     </div>
                     <div class="course-body">
                         <div class="course-category">{{ $course['category'] }}</div>
                         <div class="course-title">{{ $course['title'] }}</div>
                         <div class="course-instructor">{{ $course['instructor'] }}</div>
                         <div class="course-meta">
-                            <span><i class="fa-solid fa-star" style="color: #FFD43B;"></i> {{ $course['rating'] }}</span>
-                            <span><i class="fa-solid fa-users"></i> {{ $course['students'] }}</span>
-                            <span><i class="fa-solid fa-clock"></i> {{ $course['duration'] }}</span>
+                            <span>⭐ {{ $course['rating'] }}</span>
+                            <span>👥 {{ $course['students'] }}</span>
+                            <span>🕐 {{ $course['duration'] }}</span>
                         </div>
                         <div class="course-footer">
                             <div class="course-price {{ $course['price'] === 'Free' ? 'course-price-free' : '' }}">
@@ -773,7 +773,7 @@
         align-items: center;
         justify-content: center;
     }
-    .cert-viz::after { content: '\f091'; font-family: "Font Awesome 6 Free"; font-weight: 900; font-size: 24px; color: var(--orange); }
+    .cert-viz::after { content: '🏆'; font-size: 28px; }
     .how-title {
         font-family: var(--font-serif);
         font-size: 22px;
@@ -838,7 +838,44 @@
         background: var(--purple);
         color: white;
     }
-    
+    .why-visual-center {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+    }
+    .why-viz-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--navy);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 100px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+    .why-viz-title { font-family: var(--font-serif); font-size: 26px; letter-spacing: -0.01em; }
+    .why-tags-wrap {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        justify-content: center;
+        padding: 20px;
+        align-items: center;
+    }
+    .why-tag {
+        background: white;
+        padding: 6px 12px;
+        border-radius: 100px;
+        font-size: 11px;
+        color: var(--text-soft);
+        font-weight: 500;
+        box-shadow: 0 2px 6px rgba(30,58,95,0.05);
+        transition: all 0.2s;
+    }
     .why-tag:hover {
         background: var(--purple);
         color: white;
@@ -874,111 +911,6 @@
         letter-spacing: -0.01em;
     }
     .why-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
-
-    /* Override padding untuk visual berisi gambar */
-.how-visual--img {
-    padding: 0;
-    overflow: hidden;
-}
-
-/* Background hitam untuk card Learn at Your Pace */
-.how-visual--dark {
-    background: #111111;
-}
-
-/* Wave bar tetap putih di atas background hitam */
-.how-visual--dark .wave-bar {
-    background: white;
-}
-
-/* Hapus / override class lama ini */
-.why-visual-center,
-.why-viz-badge,
-.why-viz-title,
-.why-tags-wrap,
-.why-tag,
-.why-cert-visual,
-.cert-card {
-    display: none; /* tidak dipakai lagi */
-}
-
-/* Visual berisi gambar — sama pola dengan how-visual--img */
-.why-visual--img {
-    padding: 0;
-    overflow: hidden;
-}
-.why-visual--img img {
-    display: block;
-    border-radius: 16px;
-}
-
-/* Visual community — data/stats layout */
-.why-visual--community {
-    background: var(--navy, #1E3A5F);
-    padding: 24px;
-    justify-content: center;
-    align-items: center;
-}
-.community-stats {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-.community-stat-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-}
-.community-stat-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-    flex: 1;
-}
-.community-stat-num {
-    font-family: var(--font-serif);
-    font-size: 22px;
-    font-weight: 400;
-    color: white;
-    letter-spacing: -0.02em;
-}
-.community-stat-label {
-    font-size: 9px;
-    color: rgba(255,255,255,0.5);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    font-weight: 500;
-    white-space: nowrap;
-}
-.community-stat-divider {
-    width: 1px;
-    height: 32px;
-    background: rgba(255,255,255,0.12);
-    flex-shrink: 0;
-}
-.community-features {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-}
-.community-feature {
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.12);
-    color: rgba(255,255,255,0.75);
-    padding: 5px 11px;
-    border-radius: 6px;
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.02em;
-    transition: all 0.2s;
-}
-.community-feature:hover {
-    background: rgba(255,255,255,0.15);
-    color: white;
-}
 
     /* ═══ INSTRUCTORS ═══ */
     .instructor-grid {
@@ -1420,48 +1352,45 @@
             </div>
 
             <div class="how-grid">
-    {{-- Card 1: Choose Your Path → pakai gambar --}}
-    <div class="how-card">
-        <div class="how-number">1</div>
-        <div class="how-visual how-visual--img">
-            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&q=80"
-                 alt="Choose your learning path"
-                 style="width:100%;height:100%;object-fit:cover;border-radius:10px;">
-        </div>
-        <div class="how-title">Choose Your<br>Path</div>
-        <p class="how-desc">Browse 500+ courses across programming, design, business, and more. Find the skill that matches your goals.</p>
-    </div>
+                <div class="how-card">
+                    <div class="how-number">1</div>
+                    <div class="how-visual">
+                        <div class="avatar-stack">
+                            <div class="avatar-circle" style="background:linear-gradient(135deg,#7B6FE8,#B8AFEB);">👨‍💻</div>
+                            <div class="avatar-circle" style="background:linear-gradient(135deg,#FF8A5B,#FFA07A);">👩‍🎨</div>
+                            <div class="avatar-circle" style="background:linear-gradient(135deg,#00C896,#00E6B0);">👨‍🔬</div>
+                        </div>
+                    </div>
+                    <div class="how-title">Choose Your<br>Path</div>
+                    <p class="how-desc">Browse 500+ courses across programming, design, business, and more. Find the skill that matches your goals.</p>
+                </div>
 
-    {{-- Card 2: Learn at Your Pace → background hitam, animasi tetap --}}
-    <div class="how-card">
-        <div class="how-number">2</div>
-        <div class="how-visual how-visual--dark">
-            <div class="wave-viz">
-                <div class="wave-bar" style="height:12px;animation-delay:0s;"></div>
-                <div class="wave-bar" style="height:24px;animation-delay:0.1s;"></div>
-                <div class="wave-bar" style="height:36px;animation-delay:0.2s;"></div>
-                <div class="wave-bar" style="height:48px;animation-delay:0.3s;"></div>
-                <div class="wave-bar" style="height:36px;animation-delay:0.4s;"></div>
-                <div class="wave-bar" style="height:24px;animation-delay:0.5s;"></div>
-                <div class="wave-bar" style="height:12px;animation-delay:0.6s;"></div>
+                <div class="how-card">
+                    <div class="how-number">2</div>
+                    <div class="how-visual">
+                        <div class="wave-viz">
+                            <div class="wave-bar" style="height:12px;animation-delay:0s;"></div>
+                            <div class="wave-bar" style="height:24px;animation-delay:0.1s;"></div>
+                            <div class="wave-bar" style="height:36px;animation-delay:0.2s;"></div>
+                            <div class="wave-bar" style="height:48px;animation-delay:0.3s;"></div>
+                            <div class="wave-bar" style="height:36px;animation-delay:0.4s;"></div>
+                            <div class="wave-bar" style="height:24px;animation-delay:0.5s;"></div>
+                            <div class="wave-bar" style="height:12px;animation-delay:0.6s;"></div>
+                        </div>
+                    </div>
+                    <div class="how-title">Learn at<br>Your Pace</div>
+                    <p class="how-desc">Watch video lessons, complete exercises, and get instant feedback. Study anytime from any device.</p>
+                </div>
+
+                <div class="how-card">
+                    <div class="how-number">3</div>
+                    <div class="how-visual">
+                        <div class="cert-viz"></div>
+                    </div>
+                    <div class="how-title">Earn Your<br>Certificate</div>
+                    <p class="how-desc">Complete the course and receive a verified certificate you can showcase on LinkedIn and your CV.</p>
+                </div>
             </div>
-        </div>
-        <div class="how-title">Learn at<br>Your Pace</div>
-        <p class="how-desc">Watch video lessons, complete exercises, and get instant feedback. Study anytime from any device.</p>
-    </div>
-
-    {{-- Card 3: Earn Your Certificate → pakai gambar --}}
-    <div class="how-card">
-        <div class="how-number">3</div>
-        <div class="how-visual how-visual--img">
-            <img src="https://images.unsplash.com/photo-1523289333742-be1143f6b766?w=600&q=80"
-                 alt="Earn your certificate"
-                 style="width:100%;height:100%;object-fit:cover;border-radius:10px;">
-        </div>
-        <div class="how-title">Earn Your<br>Certificate</div>
-        <p class="how-desc">Complete the course and receive a verified certificate you can showcase on LinkedIn and your CV.</p>
-    </div>
-</div>
         </div>
     </div>
 </section>
@@ -1488,60 +1417,42 @@
                 <p class="why-desc">Learn from industry professionals with real-world experience. All instructors are verified and rated by students.</p>
             </div>
 
-            {{-- Card 2: Learn Anytime --}}
-<div class="why-card">
-    <div class="why-visual why-visual--img">
-        <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&q=80"
-             alt="Learn anytime"
-             style="width:100%;height:100%;object-fit:cover;">
-    </div>
-    <div class="why-title">Learn Anytime</div>
-    <p class="why-desc">No deadlines, no pressure. Watch lessons, pause, rewind — study whenever it fits your schedule.</p>
-</div>
-
-{{-- Card 3: Verified Certificates --}}
-<div class="why-card">
-    <div class="why-visual why-visual--img">
-        <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=800&q=80"
-             alt="Verified certificates"
-             style="width:100%;height:100%;object-fit:cover;">
-    </div>
-    <div class="why-title">Verified Certificates</div>
-    <p class="why-desc">Earn official digital certificates upon completion. Shareable on LinkedIn and verifiable by employers worldwide.</p>
-</div>
-
-{{-- Card 4: Vibrant Community --}}
-<div class="why-card">
-    <div class="why-visual why-visual--community">
-        <div class="community-stats">
-            <div class="community-stat-row">
-                <div class="community-stat-item">
-                    <span class="community-stat-num">50K+</span>
-                    <span class="community-stat-label">Active Learners</span>
+            <div class="why-card">
+                <div class="why-visual why-visual-center">
+                    <div class="why-viz-badge">
+                        <span style="width:6px;height:6px;background:var(--teal);border-radius:50%;animation:pulse 2s infinite;"></span>
+                        Always Available
+                    </div>
+                    <div class="why-viz-title">24/7 Learning</div>
+                    <div style="font-size:11px;color:var(--muted);">Study on your own schedule</div>
                 </div>
-                <div class="community-stat-divider"></div>
-                <div class="community-stat-item">
-                    <span class="community-stat-num">120+</span>
-                    <span class="community-stat-label">Countries</span>
-                </div>
-                <div class="community-stat-divider"></div>
-                <div class="community-stat-item">
-                    <span class="community-stat-num">4.9</span>
-                    <span class="community-stat-label">Avg Rating</span>
-                </div>
+                <div class="why-title">Learn Anytime</div>
+                <p class="why-desc">No deadlines, no pressure. Watch lessons, pause, rewind — study whenever it fits your schedule.</p>
             </div>
-            <div class="community-features">
-                <div class="community-feature">Code Review</div>
-                <div class="community-feature">Q&amp;A Forum</div>
-                <div class="community-feature">Study Groups</div>
-                <div class="community-feature">Projects</div>
-                <div class="community-feature">Leaderboard</div>
+
+            <div class="why-card">
+                <div class="why-visual why-cert-visual">
+                    <div class="cert-card">
+                        <div style="font-size:10px;color:var(--muted);margin-bottom:2px;">CERTIFICATE</div>
+                        <div style="font-family:var(--font-serif);font-size:12px;">of Completion</div>
+                        <div style="font-size:9px;color:var(--muted);margin-top:4px;">Verified ID: #CRS-2025</div>
+                    </div>
+                </div>
+                <div class="why-title">Verified Certificates</div>
+                <p class="why-desc">Earn official digital certificates upon completion. Shareable on LinkedIn and verifiable by employers worldwide.</p>
             </div>
-        </div>
-    </div>
-    <div class="why-title">Vibrant Community</div>
-    <p class="why-desc">Join 50,000+ learners. Ask questions, share projects, and grow together with peers worldwide.</p>
-</div>
+
+            <div class="why-card">
+                <div class="why-visual why-tags-wrap">
+                    <div class="why-tag">💻 Code Review</div>
+                    <div class="why-tag">💬 Q&A Forum</div>
+                    <div class="why-tag">🎯 Projects</div>
+                    <div class="why-tag">📚 Study Groups</div>
+                    <div class="why-tag">🏆 Leaderboard</div>
+                </div>
+                <div class="why-title">Vibrant Community</div>
+                <p class="why-desc">Join 50,000+ learners. Ask questions, share projects, and grow together with peers worldwide.</p>
+            </div>
         </div>
     </div>
 </section>

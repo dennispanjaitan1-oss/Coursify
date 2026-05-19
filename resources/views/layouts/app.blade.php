@@ -745,19 +745,19 @@
                             <a href="{{ route('instructor.dashboard') }}" class="dropdown-item">
                                 <i class="fa-solid fa-chart-line"></i> Dashboard
                             </a>
-                            <a href="{{ route('instructor.courses.index') }}" class="dropdown-item">
+                            <a href="#" class="dropdown-item">
                                 <i class="fa-solid fa-chalkboard-user"></i> My Courses
                             </a>
-                            <a href="{{ route('instructor.dashboard') }}#enrollments-title" class="dropdown-item">
+                            <a href="#" class="dropdown-item">
                                 <i class="fa-solid fa-users"></i> My Students
                             </a>
-                            <a href="{{ route('instructor.courses.create') }}" class="dropdown-item">
+                            <a href="#" class="dropdown-item">
                                 <i class="fa-solid fa-square-plus"></i> Create Course
                             </a>
-                            <a href="{{ route('instructor.dashboard') }}#revenue-title" class="dropdown-item">
+                            <a href="#" class="dropdown-item">
                                 <i class="fa-solid fa-wallet"></i> Earnings
                             </a>
-                            <a href="{{ route('student.profile') }}" class="dropdown-item">
+                            <a href="#" class="dropdown-item">
                                 <i class="fa-solid fa-user-gear"></i> Profile Settings
                             </a>
                         @endif

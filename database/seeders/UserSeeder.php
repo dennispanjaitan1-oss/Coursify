@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
         $maxId = 0; // default jika CSV tidak ada
         $password = Hash::make('password');
 
-        // 1. Data instruktur dari file CSV
+        // Data dari file CSV
         $csvFile = database_path('data/csv/users_instructors.csv');
         if (File::exists($csvFile)) {
             $handle = fopen($csvFile, 'r');
@@ -42,7 +42,7 @@ class UserSeeder extends Seeder
             $maxId = DB::table('users')->max('id');
         }
 
-        // 2. Akun Demo (admin, instructor, student)
+        // 2. Akun Demo
         User::create([
             'id'                => $maxId + 1,
             'name'              => 'Admin Coursify',
