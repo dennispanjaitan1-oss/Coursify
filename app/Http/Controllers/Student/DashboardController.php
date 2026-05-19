@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UpdateProfileRequest;
 use App\Models\Certificate;
 use App\Models\Course;
 use App\Models\Enrollment;
@@ -269,33 +268,35 @@ class DashboardController extends Controller
     // ═══════════════════════════════════════════════════
     // CERTIFICATES
     // ═══════════════════════════════════════════════════
-    public function certificates()
-{
-    $user = auth()->user();
- 
-    // Ambil semua sertifikat milik user beserta relasi course & institution
-    $certificates = \App\Models\Certificate::where('user_id', $user->id)
-        ->with([
-            'course',
-            'course.institution',
-            'course.category',
-            'course.instructors',
-        ])
-        ->latest('issued_at')
-        ->get();
- 
-    // Kursus yang sudah 100% tapi belum punya sertifikat
-    // (bisa di-generate manual oleh user)
-    $completedWithoutCert = \App\Models\Enrollment::where('user_id', $user->id)
-        ->where('progress_percent', 100)
-        ->whereDoesntHave('certificate', function ($q) use ($user) {
-            $q->where('user_id', $user->id);
-        })
-        ->with(['course', 'course.institution'])
-        ->get();
- 
-    return view('student.certificates', compact('certificates', 'completedWithoutCert'));
-}
+    public function certificates(Request $request)
+    {
+        $user = Auth::user();
+
+        $query = Certificate::where('user_id', $user->id)
+            ->with(['course.category', 'course.instructors']);
+
+        $filter = $request->get('filter', 'all');
+        if ($filter === 'this_year') {
+            $query->whereYear('issued_at', now()->year);
+        }
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->whereHas('course', fn($q) => $q->where('title', 'LIKE', "%{$search}%"));
+        }
+
+        $certificates = $query->latest('issued_at')->get();
+
+        $allCerts = Certificate::where('user_id', $user->id)->with('course')->get();
+        $stats = [
+            'total'         => $allCerts->count(),
+            'this_year'     => $allCerts->filter(fn($c) => $c->issued_at && $c->issued_at->year == now()->year)->count(),
+            'hours_learned' => $allCerts->sum(fn($c) => ($c->course->duration_weeks ?? 0) * 5),
+            'avg_score'     => 92,
+        ];
+
+        return view('student.certificates', compact('certificates', 'stats'));
+    }
 
     // ═══════════════════════════════════════════════════
     // WISHLIST
@@ -340,10 +341,18 @@ class DashboardController extends Controller
         return view('student.profile');
     }
 
-    public function updateProfile(UpdateProfileRequest $request)
+    public function updateProfile(Request $request)
     {
         $user = Auth::user();
-        $user->update($request->validated());
+
+        $validated = $request->validate([
+            'name'     => ['required', 'string', 'max:255'],
+            'email'    => ['required', 'email', Rule::unique('users')->ignore($user->id)],
+            'bio'      => ['nullable', 'string', 'max:500'],
+            'headline' => ['nullable', 'string', 'max:100'],
+        ]);
+
+        $user->update($validated);
 
         return redirect()->route('student.profile')
             ->with('success', 'Profil berhasil diperbarui!');
