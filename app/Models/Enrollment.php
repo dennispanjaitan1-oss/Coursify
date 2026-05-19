@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Enrollment extends Model
 {
@@ -12,8 +11,8 @@ class Enrollment extends Model
         'user_id',
         'course_id',
         'payment_id',
-        'type',
-        'status',
+        'type',             // 'audit' | 'verified'
+        'status',           // 'active' | 'completed' | 'refunded'
         'progress_percent',
         'completed_at',
     ];
@@ -22,6 +21,8 @@ class Enrollment extends Model
         'progress_percent' => 'decimal:2',
         'completed_at'     => 'datetime',
     ];
+
+    // ── Relationships ───────────────────────────────────────
 
     public function user(): BelongsTo
     {
@@ -38,27 +39,7 @@ class Enrollment extends Model
         return $this->belongsTo(Payment::class);
     }
 
-    public function certificate(): HasOne
-    {
-        return $this->hasOne(Certificate::class, 'course_id', 'course_id')
-                    ->where('user_id', $this->user_id);
-    }
-
-    /**
-     * Scope a query to only include active enrollments.
-     */
-    public function scopeActive($query)
-    {
-        return $query->where('status', 'active');
-    }
-
-    /**
-     * Scope a query to only include completed enrollments.
-     */
-    public function scopeCompleted($query)
-    {
-        return $query->where('status', 'completed');
-    }
+    // ── Helpers ─────────────────────────────────────────────────────
 
     public function isCompleted(): bool
     {

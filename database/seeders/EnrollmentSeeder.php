@@ -2,138 +2,132 @@
 
 namespace Database\Seeders;
 
-use App\Models\Course;
-use App\Models\Enrollment;
-use App\Models\Lesson;
-use App\Models\LessonProgress;
-use App\Models\Payment;
-use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use App\Models\Course;
+use App\Models\User;
 
 class EnrollmentSeeder extends Seeder
 {
     public function run(): void
     {
-        // Bersihkan data lama
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        LessonProgress::truncate();
-        Enrollment::truncate();
-        Payment::truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-
-        $students = User::where('role', 'student')->get();
-        $courses  = Course::where('is_published', true)->with('sections.lessons')->get();
-
-        if ($courses->isEmpty()) {
-            $this->command->warn('⚠️  Tidak ada kursus published. Jalankan CourseSeeder dulu.');
+        $this->command->info('Mulai generate Enrollments, Payments, dan Lesson Progress...');
+        
+        $students = DB::table('users')->where('role', 'student')->get();
+        if ($students->isEmpty()) {
+            $this->command->warn('Tidak ada akun student. Lewati enrollment seeder.');
             return;
         }
 
-        $this->command->info("Enrolling {$students->count()} students ke {$courses->count()} courses...");
-
-        // Pastikan student demo ter-enroll ke 4 kursus pertama
-        $defaultStudent = User::where('email', 'student@coursify.com')->first();
-        if ($defaultStudent) {
-            $this->enrollStudent($defaultStudent, $courses->take(4));
+        $courses = DB::table('courses')->where('is_published', 1)->get();
+        if ($courses->isEmpty()) {
+            $this->command->warn('Tidak ada course. Lewati enrollment seeder.');
+            return;
         }
 
-        $progressBar = $this->command->getOutput()->createProgressBar($students->count());
-        $progressBar->start();
+        $payments = [];
+        $paymentItems = [];
+        $enrollments = [];
+        $lessonProgress = [];
+
+        $paymentId = 1;
+        $enrollmentId = 1;
 
         foreach ($students as $student) {
-            // Setiap student enroll ke 2-6 kursus acak
-            $count         = rand(2, min(6, $courses->count()));
-            $randomCourses = $courses->random($count);
-            $this->enrollStudent($student, $randomCourses);
-            $progressBar->advance();
-        }
+            // Tiap student enroll di 4 kursus acak (200 x 4 = 800 enrollments)
+            $randomCourses = $courses->random(4);
 
-        $progressBar->finish();
-        $this->command->newLine();
+            foreach ($randomCourses as $course) {
+                $isFree = $course->price == 0;
+                $isCompleted = rand(0, 1); // 50% chance completed
+                $paymentMethod = $isFree ? 'free' : collect(['transfer_bank', 'gopay', 'ovo', 'dana'])->random();
+                $paidAt = now()->subDays(rand(1, 60));
 
-        $this->command->info('✅ Enrollments seeded: ' . DB::table('enrollments')->count() . ' records');
-        $this->command->info('✅ Payments seeded:     ' . DB::table('payments')->count() . ' records');
-        $this->command->info('✅ LessonProgress:      ' . DB::table('lesson_progress')->count() . ' records');
-    }
-
-    private function enrollStudent(User $student, $courses): void
-    {
-        $paymentMethods = ['transfer_bank', 'gopay', 'ovo', 'dana', 'qris', 'kartu_kredit'];
-
-        foreach ($courses as $course) {
-            // Skip jika sudah enrolled
-            if (Enrollment::where('user_id', $student->id)
-                          ->where('course_id', $course->id)
-                          ->exists()) {
-                continue;
-            }
-
-            // Tentukan progress level: 0=belum mulai, 1=setengah jalan, 2=selesai
-            $progressLevel   = rand(0, 2);
-            $progressPercent = match ($progressLevel) {
-                0 => rand(0, 5),
-                1 => rand(20, 80),
-                2 => 100,
-            };
-
-            $paidAt    = now()->subDays(rand(1, 180));
-            $isPaid    = (rand(1, 10) <= 9); // 90% sukses
-            $isFree    = $course->price == 0;
-            $method    = $isFree ? 'free' : $paymentMethods[array_rand($paymentMethods)];
-
-            // Buat payment record
-            $payment = Payment::create([
-                'user_id'        => $student->id,
-                'amount'         => $isFree ? 0 : $course->price,
-                'currency'       => 'IDR',
-                'method'         => $method,
-                'status'         => $isPaid ? 'paid' : ($isFree ? 'paid' : 'pending'),
-                'transaction_id' => $isFree ? null : strtoupper('TXN-' . uniqid()),
-                'paid_at'        => ($isPaid || $isFree) ? $paidAt : null,
-                'created_at'     => $paidAt,
-                'updated_at'     => $paidAt,
-            ]);
-
-            // Buat enrollment
-            $completedAt = $progressPercent >= 100 ? $paidAt->copy()->addDays(rand(7, 60)) : null;
-
-            $enrollment = Enrollment::create([
-                'user_id'          => $student->id,
-                'course_id'        => $course->id,
-                'payment_id'       => $payment->id,
-                'type'             => $isFree ? 'audit' : 'verified',
-                'status'           => $progressPercent >= 100 ? 'completed' : 'active',
-                'progress_percent' => $progressPercent,
-                'completed_at'     => $completedAt,
-                'created_at'       => $paidAt,
-                'updated_at'       => $completedAt ?? $paidAt,
-            ]);
-
-            // Buat lesson progress sesuai persentase
-            $allLessons    = $course->sections->flatMap->lessons;
-            $totalLessons  = $allLessons->count();
-            if ($totalLessons === 0) continue;
-
-            $completedCount = (int) ($totalLessons * $progressPercent / 100);
-
-            $progressBatch = [];
-            foreach ($allLessons->take($completedCount) as $lesson) {
-                $lessonDate = $paidAt->copy()->addDays(rand(0, 30));
-                $progressBatch[] = [
-                    'user_id'               => $student->id,
-                    'lesson_id'             => $lesson->id,
-                    'is_completed'          => true,
-                    'last_position_seconds' => $lesson->duration_seconds ?? 0,
-                    'created_at'            => $lessonDate,
-                    'updated_at'            => $lessonDate,
+                // Payment
+                $payments[] = [
+                    'id' => $paymentId,
+                    'user_id' => $student->id,
+                    'amount' => $isFree ? 0 : $course->price,
+                    'method' => $paymentMethod,
+                    'status' => 'paid',
+                    'transaction_id' => 'TXN-' . strtoupper(uniqid()),
+                    'paid_at' => $paidAt,
+                    'created_at' => $paidAt,
+                    'updated_at' => $paidAt,
                 ];
-            }
 
-            if (!empty($progressBatch)) {
-                // insertOrIgnore untuk hindari duplikasi
-                DB::table('lesson_progress')->insertOrIgnore($progressBatch);
+                // Payment Item
+                $paymentItems[] = [
+                    'payment_id' => $paymentId,
+                    'course_id' => $course->id,
+                    'item_type' => 'course',
+                    'price' => $isFree ? 0 : $course->price,
+                    'created_at' => $paidAt,
+                    'updated_at' => $paidAt,
+                ];
+
+                // Enrollment
+                $enrollments[] = [
+                    'id' => $enrollmentId,
+                    'user_id' => $student->id,
+                    'course_id' => $course->id,
+                    'payment_id' => $paymentId,
+                    'type' => $isFree ? 'audit' : 'verified',
+                    'status' => $isCompleted ? 'completed' : 'active',
+                    'progress_percent' => $isCompleted ? 100 : rand(10, 80),
+                    'completed_at' => $isCompleted ? $paidAt->copy()->addDays(5) : null,
+                    'created_at' => $paidAt,
+                    'updated_at' => $isCompleted ? $paidAt->copy()->addDays(5) : $paidAt,
+                ];
+
+                // Lesson Progress (Ambil lesson dari course ini)
+                $lessons = DB::table('lessons')
+                    ->join('sections', 'lessons.section_id', '=', 'sections.id')
+                    ->where('sections.course_id', $course->id)
+                    ->select('lessons.id')
+                    ->get();
+
+                $lessonsToComplete = $isCompleted ? $lessons->count() : max(1, (int)($lessons->count() * 0.5));
+                $count = 0;
+
+                foreach ($lessons as $lesson) {
+                    if ($count >= $lessonsToComplete) break;
+                    
+                    $lessonProgress[] = [
+                        'user_id' => $student->id,
+                        'lesson_id' => $lesson->id,
+                        'is_completed' => 1,
+                        'created_at' => $paidAt->copy()->addHours($count),
+                        'updated_at' => $paidAt->copy()->addHours($count),
+                    ];
+                    $count++;
+                }
+
+                $paymentId++;
+                $enrollmentId++;
             }
         }
+
+        $this->command->info('Menyimpan ' . count($payments) . ' payments...');
+        foreach (array_chunk($payments, 500) as $chunk) {
+            DB::table('payments')->insertOrIgnore($chunk);
+        }
+
+        $this->command->info('Menyimpan ' . count($paymentItems) . ' payment_items...');
+        foreach (array_chunk($paymentItems, 500) as $chunk) {
+            DB::table('payment_items')->insertOrIgnore($chunk);
+        }
+
+        $this->command->info('Menyimpan ' . count($enrollments) . ' enrollments...');
+        foreach (array_chunk($enrollments, 500) as $chunk) {
+            DB::table('enrollments')->insertOrIgnore($chunk);
+        }
+
+        $this->command->info('Menyimpan ' . count($lessonProgress) . ' lesson_progress...');
+        foreach (array_chunk($lessonProgress, 1000) as $chunk) {
+            DB::table('lesson_progress')->insertOrIgnore($chunk);
+        }
+
+        $this->command->info('✅ Enrollments & Payments seeded!');
     }
 }

@@ -2,60 +2,72 @@
 
 namespace Database\Seeders;
 
-use App\Models\Course;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use App\Models\Course;
+use Faker\Factory as Faker;
 
 class CourseContentSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
-        $faker = \Faker\Factory::create();
-        
-        // Ambil kursus yang belum punya section
-        $courses = Course::doesntHave('sections')->get();
+        $this->command->info('Mulai generate Sections & Lessons untuk 1000 courses...');
+        $faker = Faker::create('id_ID');
 
-        foreach ($courses as $course) {
-            // 1. Buat beberapa Section (misal 3 section per kursus)
-            $topics = ['Introduction', 'Core Concepts', 'Advanced Modules', 'Final Project'];
-            
-            foreach ($topics as $index => $topic) {
-    $section = $course->sections()->create([
-        'title' => $topic . " to " . $course->title,
-        'order_index' => $index + 1
-    ]);
-
-    for ($i = 1; $i <= 3; $i++) {
-        $lessonTitle = $this->generateLessonTitle($course->title, $topic, $i);
-        
-        \App\Models\Lesson::create([
-            'section_id'       => $section->id,
-            'title'            => $lessonTitle,
-            'type'             => 'video', // Sesuai enum di modelmu
-            'video_url'        => 'https://www.youtube.com/embed/dQw4w9WgXcQ', // Link dummy
-            'content'          => $this->generateDummyContent($course->title, $lessonTitle),
-            'duration_seconds' => rand(300, 1200), // Kita ganti ke detik (5-20 menit)
-            'order_index'      => $i,
-            'is_free_preview'  => ($index == 0 && $i == 1), // Sesuai nama kolom di modelmu
-        ]);
-    }
-}
+        // Ambil semua course id
+        $courseIds = DB::table('courses')->pluck('id')->toArray();
+        if (empty($courseIds)) {
+            $this->command->warn('Tidak ada course ditemukan.');
+            return;
         }
-    }
 
-    // Fungsi pembantu untuk membuat judul materi yang nyambung
-    private function generateLessonTitle($courseTitle, $topic, $num)
-    {
-        $prefixes = ['Understanding', 'Mastering', 'Deep Dive into', 'Practical Guide to'];
-        return $prefixes[array_rand($prefixes)] . " " . $courseTitle . " (Part $num)";
-    }
+        $sections = [];
+        $lessons = [];
+        $sectionId = 1;
+        $lessonId = 1;
 
-    // Fungsi pembantu untuk membuat isi konten yang terlihat niat
-    private function generateDummyContent($courseTitle, $lessonTitle)
-    {
-        return "<h3>Welcome to $lessonTitle</h3>" .
-               "<p>In this lesson, we will explore the fundamentals of <strong>$courseTitle</strong>.</p>" .
-               "<p>Topics covered include best practices, common mistakes, and industry standards related to this field.</p>" .
-               "<ul><li>Key Concept 1</li><li>Key Concept 2</li><li>Implementation Strategy</li></ul>";
+        foreach ($courseIds as $courseId) {
+            // Tiap course kita beri 2 section
+            for ($s = 1; $s <= 2; $s++) {
+                $sections[] = [
+                    'id' => $sectionId,
+                    'course_id' => $courseId,
+                    'title' => 'Bagian ' . $s . ': ' . $faker->sentence(3),
+                    'order_index' => $s,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+
+                // Tiap section beri 2 lesson (jadi total 4 lesson per course)
+                for ($l = 1; $l <= 2; $l++) {
+                    $lessons[] = [
+                        'id' => $lessonId,
+                        'section_id' => $sectionId,
+                        'title' => 'Materi ' . $s . '.' . $l . ': ' . $faker->sentence(4),
+                        'type' => 'video',
+                        'duration_seconds' => rand(180, 1200), // 3-20 menit
+                        'order_index' => $l,
+                        'is_free_preview' => ($s == 1 && $l == 1) ? 1 : 0, // lesson pertama free
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                    $lessonId++;
+                }
+                $sectionId++;
+            }
+        }
+
+        // Insert in chunks agar memory aman
+        $this->command->info('Menyimpan ' . count($sections) . ' sections...');
+        foreach (array_chunk($sections, 1000) as $chunk) {
+            DB::table('sections')->insertOrIgnore($chunk);
+        }
+
+        $this->command->info('Menyimpan ' . count($lessons) . ' lessons...');
+        foreach (array_chunk($lessons, 1000) as $chunk) {
+            DB::table('lessons')->insertOrIgnore($chunk);
+        }
+
+        $this->command->info('✅ Course Content seeded!');
     }
 }
