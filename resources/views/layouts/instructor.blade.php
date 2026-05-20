@@ -53,34 +53,34 @@
         <span class="sidebar__section-title" id="nav-teaching-label">Teaching</span>
         <nav class="sidebar__nav" aria-labelledby="nav-teaching-label">
             <a href="{{ route('instructor.dashboard') }}"
-               class="sidebar__link sidebar__link--active"
+               class="sidebar__link {{ request()->routeIs('instructor.dashboard') ? 'sidebar__link--active' : '' }}"
                aria-current="page">
                 <span class="sidebar__link-icon" aria-hidden="true">
                     <i class="fa-solid fa-chart-pie"></i>
                 </span>
                 <span>Dashboard</span>
             </a>
-            <a href="#" class="sidebar__link">
+            <a href="{{ route('instructor.courses.index') }}" class="sidebar__link {{ request()->routeIs('instructor.courses*') ? 'sidebar__link--active' : '' }}">
                 <span class="sidebar__link-icon" aria-hidden="true">
                     <i class="fa-solid fa-book-open"></i>
                 </span>
                 <span>My Courses</span>
                 <span class="sidebar__badge" aria-label="8 courses">8</span>
             </a>
-            <a href="#" class="sidebar__link">
+            <a href="{{ route('instructor.students') }}" class="sidebar__link {{ request()->routeIs('instructor.students') ? 'sidebar__link--active' : '' }}">
                 <span class="sidebar__link-icon" aria-hidden="true">
                     <i class="fa-solid fa-users"></i>
                 </span>
                 <span>Students</span>
             </a>
-            <a href="#" class="sidebar__link">
+            <a href="{{ route('instructor.messages') }}" class="sidebar__link {{ request()->routeIs('instructor.messages') ? 'sidebar__link--active' : '' }}">
                 <span class="sidebar__link-icon" aria-hidden="true">
                     <i class="fa-solid fa-envelope"></i>
                 </span>
                 <span>Messages</span>
                 <span class="sidebar__badge" aria-label="3 unread messages">3</span>
             </a>
-            <a href="#" class="sidebar__link">
+            <a href="{{ route('instructor.reviews') }}" class="sidebar__link {{ request()->routeIs('instructor.reviews') ? 'sidebar__link--active' : '' }}">
                 <span class="sidebar__link-icon" aria-hidden="true">
                     <i class="fa-solid fa-star"></i>
                 </span>
@@ -91,19 +91,19 @@
         {{-- Analytics Navigation --}}
         <span class="sidebar__section-title" id="nav-analytics-label">Analytics</span>
         <nav class="sidebar__nav" aria-labelledby="nav-analytics-label">
-            <a href="#" class="sidebar__link">
+            <a href="{{ route('instructor.earnings') }}" class="sidebar__link {{ request()->routeIs('instructor.earnings') ? 'sidebar__link--active' : '' }}">
                 <span class="sidebar__link-icon" aria-hidden="true">
                     <i class="fa-solid fa-wallet"></i>
                 </span>
                 <span>Earnings</span>
             </a>
-            <a href="#" class="sidebar__link">
+            <a href="{{ route('instructor.performance') }}" class="sidebar__link {{ request()->routeIs('instructor.performance') ? 'sidebar__link--active' : '' }}">
                 <span class="sidebar__link-icon" aria-hidden="true">
                     <i class="fa-solid fa-chart-line"></i>
                 </span>
                 <span>Performance</span>
             </a>
-            <a href="#" class="sidebar__link">
+            <a href="{{ route('instructor.insights') }}" class="sidebar__link {{ request()->routeIs('instructor.insights') ? 'sidebar__link--active' : '' }}">
                 <span class="sidebar__link-icon" aria-hidden="true">
                     <i class="fa-solid fa-lightbulb"></i>
                 </span>
@@ -115,7 +115,7 @@
         <div class="sidebar__cta" role="region" aria-label="Create new course">
             <div class="sidebar__cta-title">New <em>course</em>?</div>
             <div class="sidebar__cta-desc">Share your knowledge and earn by creating courses.</div>
-            <a href="#" class="sidebar__cta-btn">
+            <a href="{{ route('instructor.courses.create') }}" class="sidebar__cta-btn">
                 <i class="fa-solid fa-plus" aria-hidden="true"></i>
                 Create
             </a>

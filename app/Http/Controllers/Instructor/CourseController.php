@@ -37,8 +37,8 @@ class CourseController extends Controller
         $validated = $request->validate([
             'title'             => 'required|string|max:255',
             'category_id'       => 'required|exists:categories,id',
-            'short_description' => 'nullable|string|max:500',
-            'description'       => 'nullable|string',
+            'short_description' => 'required|string|max:500',
+            'description'       => 'required|string',
             'price'             => 'required|numeric|min:0',
             'difficulty'        => 'required|in:beginner,intermediate,advanced',
             'duration_weeks'    => 'required|integer|min:1',
@@ -50,7 +50,7 @@ class CourseController extends Controller
         // Auto-generate slug dari title
         $validated['slug']           = Str::slug($validated['title']) . '-' . Str::random(5);
         $validated['institution_id'] = Auth::user()->institution_id ?? 1; // sesuaikan
-        $validated['is_published']   = $request->has('is_published');
+        $validated['is_published']   = $request->input('action') === 'publish';
 
         $course = Course::create($validated);
 
@@ -66,7 +66,10 @@ class CourseController extends Controller
     {
         $this->authorizeInstructor($course);
 
-        $course->load(['category', 'sections.lessons', 'enrollments']);
+        $course->load(['category', 'sections.lessons', 'enrollments'])
+               ->loadCount(['enrollments', 'reviews'])
+               ->loadAvg('reviews', 'rating');
+        
         return view('instructor.courses.show', compact('course'));
     }
 
@@ -87,8 +90,8 @@ class CourseController extends Controller
         $validated = $request->validate([
             'title'             => 'required|string|max:255',
             'category_id'       => 'required|exists:categories,id',
-            'short_description' => 'nullable|string|max:500',
-            'description'       => 'nullable|string',
+            'short_description' => 'required|string|max:500',
+            'description'       => 'required|string',
             'price'             => 'required|numeric|min:0',
             'difficulty'        => 'required|in:beginner,intermediate,advanced',
             'duration_weeks'    => 'required|integer|min:1',

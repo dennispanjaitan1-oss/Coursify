@@ -113,7 +113,31 @@ Route::middleware(['auth', 'role:instructor,admin'])
         Route::get('/dashboard', [InstructorDashboard::class, 'index'])
             ->name('dashboard');
 
-        Route::resource('/courses', InstructorCourseController::class);
+        // Teaching Navigation
+        Route::get('/courses', [InstructorCourseController::class, 'index'])->name('courses.index');
+        Route::get('/courses/create', [InstructorCourseController::class, 'create'])->name('courses.create');
+        Route::post('/courses', [InstructorCourseController::class, 'store'])->name('courses.store');
+        Route::get('/courses/{course}/edit', [InstructorCourseController::class, 'edit'])->name('courses.edit');
+        Route::put('/courses/{course}', [InstructorCourseController::class, 'update'])->name('courses.update');
+        Route::get('/courses/{course}', [InstructorCourseController::class, 'show'])->name('courses.show');
+        Route::delete('/courses/{course}', [InstructorCourseController::class, 'destroy'])->name('courses.destroy');
+
+        Route::get('/students', [InstructorDashboard::class, 'students'])->name('students');
+        Route::get('/messages', [InstructorDashboard::class, 'messagesView'])->name('messages');
+        Route::get('/reviews', [InstructorDashboard::class, 'reviewsView'])->name('reviews');
+
+        // Analytics Navigation
+        Route::get('/earnings', [InstructorDashboard::class, 'earnings'])->name('earnings');
+        Route::get('/performance', [InstructorDashboard::class, 'performance'])->name('performance');
+        Route::get('/insights', [InstructorDashboard::class, 'insights'])->name('insights');
+
+        // Quick Actions
+        Route::get('/courses/new', [InstructorCourseController::class, 'create'])->name('create-course');
+        Route::get('/upload-video', [InstructorDashboard::class, 'uploadVideo'])->name('upload-video');
+        Route::get('/add-quiz', [InstructorDashboard::class, 'addQuiz'])->name('add-quiz');
+        Route::get('/broadcast', [InstructorDashboard::class, 'broadcast'])->name('broadcast');
+        Route::get('/withdraw', [InstructorDashboard::class, 'withdraw'])->name('withdraw');
+        Route::get('/reports', [InstructorDashboard::class, 'reports'])->name('reports');
     });
 
 // ═══════════════════════════════════════════════════════════

@@ -167,9 +167,164 @@ public function enrollments()
     return response()->json($enrollments);
 }
 
-public function messages()
+public function messagesApi()
 {
     // Kalau belum ada tabel messages, kembalikan array kosong dulu
     return response()->json([]);
 }
+
+    // ═══════════════════════════════════════════════════════════
+    // Sidebar Navigation Methods
+    // ═══════════════════════════════════════════════════════════
+
+    public function students()
+    {
+        $instructor = Auth::user();
+        $courseIds = $instructor->coursesTaught()->pluck('courses.id');
+
+        $students = Enrollment::whereIn('course_id', $courseIds)
+            ->with('user', 'course')
+            ->distinct('user_id')
+            ->get()
+            ->groupBy('user_id')
+            ->map(function ($enrollments) {
+                return [
+                    'id' => $enrollments->first()->user_id,
+                    'name' => $enrollments->first()->user->name,
+                    'email' => $enrollments->first()->user->email,
+                    'courses_enrolled' => $enrollments->count(),
+                    'joined_at' => $enrollments->first()->created_at,
+                ];
+            });
+
+        return view('instructor.students', [
+            'students' => $students,
+            'totalStudents' => $students->count(),
+        ]);
+    }
+
+    public function messagesView()
+    {
+        return view('instructor.messages', [
+            'messages' => collect(),
+        ]);
+    }
+
+    public function reviewsView()
+    {
+        $instructor = Auth::user();
+        $courseIds = $instructor->coursesTaught()->pluck('courses.id');
+
+        $reviews = Review::whereIn('course_id', $courseIds)
+            ->with(['user', 'course'])
+            ->orderByDesc('created_at')
+            ->paginate(15);
+
+        return view('instructor.reviews', [
+            'reviews' => $reviews,
+        ]);
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // Analytics Navigation Methods
+    // ═══════════════════════════════════════════════════════════
+
+    public function earnings()
+    {
+        $instructor = Auth::user();
+        $courseIds = $instructor->coursesTaught()->pluck('courses.id');
+
+        $totalRevenue = 0;
+        $monthlyRevenue = 0;
+        $weeklyRevenue = 0;
+        $pendingPayout = 0;
+
+        // Chart data for earnings
+        $earningsChart = [
+            ['month' => 'Jan', 'earnings' => 0],
+            ['month' => 'Feb', 'earnings' => 0],
+            ['month' => 'Mar', 'earnings' => 0],
+            ['month' => 'Apr', 'earnings' => 0],
+            ['month' => 'May', 'earnings' => 0],
+            ['month' => 'Jun', 'earnings' => 0],
+        ];
+
+        return view('instructor.earnings', [
+            'totalRevenue' => $totalRevenue,
+            'monthlyRevenue' => $monthlyRevenue,
+            'weeklyRevenue' => $weeklyRevenue,
+            'pendingPayout' => $pendingPayout,
+            'earningsChart' => $earningsChart,
+        ]);
+    }
+
+    public function performance()
+    {
+        $instructor = Auth::user();
+        $courseIds = $instructor->coursesTaught()->pluck('courses.id');
+
+        $courses = Course::whereIn('id', $courseIds)
+            ->with('reviews')
+            ->withCount(['enrollments', 'reviews'])
+            ->withAvg('reviews', 'rating')
+            ->get();
+
+        return view('instructor.performance', [
+            'courses' => $courses,
+        ]);
+    }
+
+    public function insights()
+    {
+        $instructor = Auth::user();
+        $courseIds = $instructor->coursesTaught()->pluck('courses.id');
+
+        $insights = [
+            'total_courses' => Course::whereIn('id', $courseIds)->count(),
+            'total_students' => Enrollment::whereIn('course_id', $courseIds)->distinct('user_id')->count('user_id'),
+            'avg_rating' => Review::whereIn('course_id', $courseIds)->avg('rating') ?? 0,
+            'total_reviews' => Review::whereIn('course_id', $courseIds)->count(),
+        ];
+
+        return view('instructor.insights', $insights);
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // Quick Action Methods
+    // ═══════════════════════════════════════════════════════════
+
+    public function uploadVideo()
+    {
+        return view('instructor.upload-video');
+    }
+
+    public function addQuiz()
+    {
+        return view('instructor.add-quiz');
+    }
+
+    public function broadcast()
+    {
+        return view('instructor.broadcast');
+    }
+
+    public function withdraw()
+    {
+        return view('instructor.withdraw');
+    }
+
+    public function reports()
+    {
+        $instructor = Auth::user();
+        $courseIds = $instructor->coursesTaught()->pluck('courses.id');
+
+        $courses = Course::whereIn('id', $courseIds)
+            ->withCount(['enrollments', 'reviews'])
+            ->withAvg('reviews', 'rating')
+            ->get();
+
+        return view('instructor.reports', [
+            'courses' => $courses,
+        ]);
+    }
 }

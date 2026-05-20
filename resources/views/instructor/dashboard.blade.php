@@ -23,11 +23,11 @@
                 <i class="fa-solid fa-bell" aria-hidden="true"></i>
                 <span class="icon-btn__dot" aria-hidden="true"></span>
             </button>
-            <button class="icon-btn"
+            <a href="{{ route('instructor.messages') }}" class="icon-btn"
                     aria-label="Messages"
                     title="Messages">
                 <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
-            </button>
+            </a>
             <a href="#" class="btn-primary" aria-label="Create a new course">
                 <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i>
                 Create Course
@@ -468,37 +468,37 @@
             </div>
 
             <nav class="actions-grid" aria-label="Quick actions">
-                <a href="#" class="quick-action" aria-label="Create a new course">
+                <a href="{{ route('instructor.courses.create') }}" class="quick-action" aria-label="Create a new course">
                     <div class="quick-icon quick-icon-purple" aria-hidden="true">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </div>
                     <div class="quick-label">Create Course</div>
                 </a>
-                <a href="#" class="quick-action" aria-label="Upload video content">
+                <a href="{{ route('instructor.upload-video') }}" class="quick-action" aria-label="Upload video content">
                     <div class="quick-icon quick-icon-teal" aria-hidden="true">
                         <i class="fa-solid fa-video"></i>
                     </div>
                     <div class="quick-label">Upload Video</div>
                 </a>
-                <a href="#" class="quick-action" aria-label="Add a quiz to course">
+                <a href="{{ route('instructor.add-quiz') }}" class="quick-action" aria-label="Add a quiz to course">
                     <div class="quick-icon quick-icon-orange" aria-hidden="true">
                         <i class="fa-solid fa-clipboard-question"></i>
                     </div>
                     <div class="quick-label">Add Quiz</div>
                 </a>
-                <a href="#" class="quick-action" aria-label="Broadcast message to students">
+                <a href="{{ route('instructor.broadcast') }}" class="quick-action" aria-label="Broadcast message to students">
                     <div class="quick-icon quick-icon-gold" aria-hidden="true">
                         <i class="fa-solid fa-bullhorn"></i>
                     </div>
                     <div class="quick-label">Broadcast</div>
                 </a>
-                <a href="#" class="quick-action" aria-label="Withdraw earnings">
+                <a href="{{ route('instructor.withdraw') }}" class="quick-action" aria-label="Withdraw earnings">
                     <div class="quick-icon quick-icon-blue" aria-hidden="true">
                         <i class="fa-solid fa-wallet"></i>
                     </div>
                     <div class="quick-label">Withdraw</div>
                 </a>
-                <a href="#" class="quick-action" aria-label="View reports and analytics">
+                <a href="{{ route('instructor.reports') }}" class="quick-action" aria-label="View reports and analytics">
                     <div class="quick-icon quick-icon-pink" aria-hidden="true">
                         <i class="fa-solid fa-chart-pie"></i>
                     </div>
