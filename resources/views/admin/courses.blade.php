@@ -3,8 +3,10 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="min-h-screen bg-gray-100 flex">
 
-
+ {{-- SIDEBAR --}}
+        @include('admin.partials.sidebar')
 
 <div class="p-8 space-y-6">
 
