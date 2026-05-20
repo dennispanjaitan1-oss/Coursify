@@ -96,6 +96,9 @@ Route::middleware(['auth', 'role:student,instructor,admin'])
         Route::get('/profile', [StudentDashboard::class, 'profile'])->name('profile');
         Route::post('/profile/update', [StudentDashboard::class, 'updateProfile'])->name('profile.update');
         Route::post('/profile/password', [StudentDashboard::class, 'updatePassword'])->name('profile.password');
+        Route::post('/profile/avatar', [StudentDashboard::class, 'updateAvatar'])->name('profile.avatar');
+        Route::post('/profile/preferences', [StudentDashboard::class, 'updatePreferences'])->name('profile.preferences');
+        Route::post('/profile/delete', [StudentDashboard::class, 'deleteAccount'])->name('profile.delete');
 
         // Wishlist (delete only — toggle is at standalone route above)
         Route::delete('/wishlist/{id}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');

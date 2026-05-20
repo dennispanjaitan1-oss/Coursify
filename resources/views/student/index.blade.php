@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;400;500;600&display=swap" rel="stylesheet">
+<<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;400;500;600&display=swap" rel="stylesheet">
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 <style>
 /* ════════════════════════════════════════════════════════════
@@ -1617,7 +1617,18 @@ body {
         @endphp
         <div class="continue-card">
           <div class="continue-thumb">
-            <i class="fa-solid fa-laptop-code continue-thumb-icon"></i>
+            @php
+              $contThumb = $lastEnrollment->course->thumbnail_url
+                  ?? ($lastEnrollment->course->thumbnail ? asset('storage/' . $lastEnrollment->course->thumbnail) : null);
+            @endphp
+            @if($contThumb)
+              <img src="{{ $contThumb }}" alt="{{ $lastEnrollment->course->title }}"
+                   style="width:100%;height:100%;object-fit:cover;border-radius:inherit;"
+                   onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+              <i class="fa-solid fa-laptop-code continue-thumb-icon" style="display:none;"></i>
+            @else
+              <i class="fa-solid fa-laptop-code continue-thumb-icon"></i>
+            @endif
             @if(!$isDone)
               <div class="continue-play"><i class="fa-solid fa-play" style="font-size:8px;margin-left:1px;"></i></div>
             @endif
@@ -1676,12 +1687,21 @@ body {
         @foreach($myCourses as $item)
           <a href="{{ route('student.learn', $item->slug) }}" class="course-card">
             <div class="course-thumb">
-              @if($item->course->thumbnail)
-                <img src="{{ asset('storage/' . $item->course->thumbnail) }}"
-                     alt="{{ $item->course->title }}">
+              @php
+                $thumbSrc = $item->course->thumbnail_url
+                    ?? ($item->course->thumbnail ? asset('storage/' . $item->course->thumbnail) : null);
+              @endphp
+              @if($thumbSrc)
+                <img src="{{ $thumbSrc }}"
+                     alt="{{ $item->course->title }}"
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                <div class="course-thumb-fallback"
+                     style="display:none;background: linear-gradient(135deg, hsl({{ (ord($item->course->title[0]) * 7) % 360 }},70%,60%) 0%, hsl({{ (ord($item->course->title[0]) * 7 + 60) % 360 }},70%,50%) 100%);">
+                  📚
+                </div>
               @else
                 <div class="course-thumb-fallback"
-                     style="background: linear-gradient(135deg, hsl({{ (ord(!empty($item->course->title) ? $item->course->title[0] : 'C') * 7) % 360 }},70%,60%) 0%, hsl({{ (ord(!empty($item->course->title) ? $item->course->title[0] : 'C') * 7 + 60) % 360 }},70%,50%) 100%);">
+                     style="background: linear-gradient(135deg, hsl({{ (ord($item->course->title[0]) * 7) % 360 }},70%,60%) 0%, hsl({{ (ord($item->course->title[0]) * 7 + 60) % 360 }},70%,50%) 100%);">
                   📚
                 </div>
               @endif
@@ -1885,8 +1905,12 @@ body {
           <a href="{{ route('courses.show', $rec['slug']) }}" class="rec-card">
             <div class="rec-thumb">
               @if($rec['thumbnail'] ?? null)
-                <img src="{{ asset('storage/' . $rec['thumbnail']) }}"
-                     alt="{{ $rec['title'] }}">
+                <img src="{{ $rec['thumbnail'] }}"
+                     alt="{{ $rec['title'] }}"
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                <div class="rec-thumb-fallback grad-{{ ($i % 4) + 1 }}" style="display:none;">
+                  {{ $rec['emoji'] }}
+                </div>
               @else
                 <div class="rec-thumb-fallback grad-{{ ($i % 4) + 1 }}">
                   {{ $rec['emoji'] }}

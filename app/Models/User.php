@@ -18,6 +18,13 @@ class User extends Authenticatable
         'bio',
         'avatar_url',
         'headline',
+        'website_url',
+        'linkedin_url',
+        'language',
+        'timezone',
+        'theme',
+        'playback_speed',
+        'video_quality',
     ];
 
     protected $hidden = [

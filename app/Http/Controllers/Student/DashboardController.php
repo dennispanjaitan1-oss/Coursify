@@ -147,7 +147,7 @@ class DashboardController extends Controller
                 return [
                     'slug'           => $course->slug,
                     'title'          => $course->title,
-                    'thumbnail'      => $course->thumbnail,
+                    'thumbnail' => $course->thumbnail_url ?? $course->thumbnail ?? null,
                     'category'       => optional($course->category)->name ?? 'Course',
                     'instructor'     => $instructor?->name ?? 'Instructor',
                     'rating'         => number_format($course->rating ?? 0, 1),
@@ -346,13 +346,31 @@ class DashboardController extends Controller
         $user = Auth::user();
 
         $validated = $request->validate([
-            'name'     => ['required', 'string', 'max:255'],
-            'email'    => ['required', 'email', Rule::unique('users')->ignore($user->id)],
-            'bio'      => ['nullable', 'string', 'max:500'],
-            'headline' => ['nullable', 'string', 'max:100'],
+            'name'         => ['required', 'string', 'max:255'],
+            'email'        => ['required', 'email', Rule::unique('users')->ignore($user->id)],
+            'bio'          => ['nullable', 'string', 'max:500'],
+            'headline'     => ['nullable', 'string', 'max:100'],
+            'website_url'  => ['nullable', 'url', 'max:255'],
+            'linkedin_url' => ['nullable', 'url', 'max:255'],
         ]);
 
         $user->update($validated);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Profil berhasil diperbarui!',
+                'user'    => [
+                    'name'         => $user->name,
+                    'email'        => $user->email,
+                    'initial'      => strtoupper(substr($user->name, 0, 1)),
+                    'headline'     => $user->headline,
+                    'bio'          => $user->bio,
+                    'website_url'  => $user->website_url,
+                    'linkedin_url' => $user->linkedin_url,
+                ],
+            ]);
+        }
 
         return redirect()->route('student.profile')
             ->with('success', 'Profil berhasil diperbarui!');
@@ -369,7 +387,113 @@ class DashboardController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Password berhasil diperbarui!',
+            ]);
+        }
+
         return redirect()->route('student.profile')
             ->with('success', 'Password berhasil diperbarui!');
+    }
+
+    public function updateAvatar(Request $request)
+    {
+        $request->validate([
+            'avatar' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
+        ]);
+
+        $user = Auth::user();
+
+        if ($request->hasFile('avatar')) {
+            $file = $request->file('avatar');
+            $filename = 'avatar_' . $user->id . '_' . time() . '.' . $file->getClientOriginalExtension();
+            
+            // Simpan ke folder public/uploads/avatars
+            $uploadPath = public_path('uploads/avatars');
+            if (!file_exists($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
+            
+            $file->move($uploadPath, $filename);
+            
+            // Hapus file lama jika ada dan bukan default
+            if ($user->avatar_url && file_exists(public_path($user->avatar_url))) {
+                @unlink(public_path($user->avatar_url));
+            }
+
+            $avatarUrl = 'uploads/avatars/' . $filename;
+            $user->update(['avatar_url' => $avatarUrl]);
+
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success'    => true,
+                    'message'    => 'Foto profil berhasil diperbarui!',
+                    'avatar_url' => asset($avatarUrl),
+                ]);
+            }
+
+            return back()->with('success', 'Foto profil berhasil diperbarui!');
+        }
+
+        if ($request->expectsJson()) {
+            return response()->json(['success' => false, 'message' => 'Gagal mengunggah foto.'], 400);
+        }
+        return back()->with('error', 'Gagal mengunggah foto.');
+    }
+
+    public function updatePreferences(Request $request)
+    {
+        $user = Auth::user();
+
+        $validated = $request->validate([
+            'language'       => ['required', 'string', Rule::in(['id', 'en', 'ja', 'ko'])],
+            'timezone'       => ['required', 'string', Rule::in(['Asia/Jakarta', 'Asia/Makassar', 'Asia/Jayapura', 'UTC'])],
+            'theme'          => ['required', 'string', Rule::in(['light', 'dark', 'auto'])],
+            'playback_speed' => ['required', 'string', Rule::in(['0.5', '0.75', '1', '1.25', '1.5', '2'])],
+            'video_quality'  => ['required', 'string', Rule::in(['auto', '1080p', '720p', '480p'])],
+        ]);
+
+        $user->update($validated);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Preferensi berhasil disimpan!',
+                'user'    => $user
+            ]);
+        }
+
+        return redirect()->route('student.profile')
+            ->with('success', 'Preferensi berhasil disimpan!');
+    }
+
+    /**
+     * Permanent user account deletion.
+     */
+    public function deleteAccount(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$request->has('confirm_phrase') || trim(strtoupper($request->input('confirm_phrase'))) !== 'DELETE MY ACCOUNT') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Frasa konfirmasi tidak cocok. Harap ketik "DELETE MY ACCOUNT".'
+            ], 422);
+        }
+
+        // Delete user row
+        $user->delete();
+
+        // Log out the user and invalidate session
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Akun Anda berhasil dihapus secara permanen. Semua data Anda telah dibersihkan.'
+        ]);
     }
 }

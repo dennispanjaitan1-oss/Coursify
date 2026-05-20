@@ -416,6 +416,28 @@ body::before {
     overflow: hidden;
 }
 
+.course-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    inset: 0;
+    transition: transform 0.4s ease;
+}
+
+.course-card:hover .course-thumb img { transform: scale(1.04); }
+
+.course-thumb-fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 54px;
+    position: absolute;
+    inset: 0;
+}
+
 .course-thumb-1 { background: linear-gradient(135deg, #667EEA, #764BA2); }
 .course-thumb-2 { background: linear-gradient(135deg, #F093FB, #F5576C); }
 .course-thumb-3 { background: linear-gradient(135deg, #4FACFE, #00F2FE); }
@@ -1027,6 +1049,12 @@ body::before {
 
         {{-- Courses Grid --}}
         <div class="courses-grid">
+@php
+    // Ambil slug dari object course
+    $courseSlug = $course->slug ?? 'course-error';
+    
+    // Pastikan rute student.learn mendapatkan slug bukan ID
+@endphp
             @forelse($enrollments as $enrollment)
                 @php
                     // Handle both Eloquent & dummy data
@@ -1065,6 +1093,8 @@ if ($progress >= 100 || $status === 'completed') {
                     $categoryName = is_object($course) && isset($course->category) ? ($course->category->name ?? 'General') : 'General';
                     $thumb = $course->thumb ?? (($loop->index % 6) + 1);
                     $icon = $course->icon ?? '📚';
+                    $thumbnailUrl = $course->thumbnail_url
+                        ?? ($course->thumbnail ? asset('storage/' . $course->thumbnail) : null);
                     $instructorName = $course->instructor_name ?? (isset($course->instructors) && $course->instructors->count() > 0 ? $course->instructors->first()->name : 'Coursify Team');
                     $initial = $course->initial ?? strtoupper(substr($instructorName, 0, 1));
                     $lessonsTotal = $course->lessons()->count();
@@ -1074,7 +1104,14 @@ if ($progress >= 100 || $status === 'completed') {
 
                 <div class="course-card">
                     <div class="course-thumb course-thumb-{{ $thumb }}">
-                        {{ $icon }}
+                        @if($thumbnailUrl)
+                            <img src="{{ $thumbnailUrl }}"
+                                 alt="{{ $courseTitle }}"
+                                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                            <div class="course-thumb-fallback" style="display:none;">{{ $icon }}</div>
+                        @else
+                            <div class="course-thumb-fallback">{{ $icon }}</div>
+                        @endif
                     </div>
 
                     <div class="course-body">

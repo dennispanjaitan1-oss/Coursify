@@ -13,6 +13,17 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+<script>
+    (function() {
+        const theme = "{{ auth()->user()->theme ?? 'light' }}";
+        if (theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+        }
+    })();
+</script>
+
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
@@ -893,12 +904,17 @@ body::before {
 
                     {{-- Avatar Section --}}
                     <div class="avatar-section">
-                        <div class="avatar-large">
-                            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
-                            <button class="avatar-upload-btn" onclick="alert('Upload avatar feature coming soon!')" title="Change photo">
+                        <div class="avatar-large" id="avatar-large-container" style="overflow:hidden;">
+                            @if(auth()->user()->avatar_url)
+                                <img src="{{ asset(auth()->user()->avatar_url) }}" alt="Avatar" id="avatar-large-img" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                            @else
+                                <span id="avatar-large-initial">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+                            @endif
+                            <button class="avatar-upload-btn" onclick="triggerAvatarUpload()" title="Change photo">
                                 📷
                             </button>
                         </div>
+                        <input type="file" id="avatar-file-input" style="display:none;" accept="image/*" onchange="uploadAvatar(this)">
                         <div class="avatar-info">
                             <div class="avatar-name">{{ auth()->user()->name }}</div>
                             <div class="avatar-email">{{ auth()->user()->email }}</div>
@@ -915,7 +931,7 @@ body::before {
                     </div>
 
                     {{-- Profile Form --}}
-                    <form method="POST" action="{{ route('student.profile.update') }}">
+                    <form method="POST" action="{{ route('student.profile.update') }}" id="profile-settings-form">
                         @csrf
 
                         <div class="form-grid">
@@ -1034,7 +1050,7 @@ body::before {
                         <p class="card-desc">Update your password and manage account security.</p>
                     </div>
 
-                    <form method="POST" action="{{ route('student.profile.password') }}" x-data="{ showCurrent: false, showNew: false, showConfirm: false }">
+                    <form method="POST" action="{{ route('student.profile.password') }}" x-data="{ showCurrent: false, showNew: false, showConfirm: false }" id="password-settings-form">
                         @csrf
 
                         <div class="form-grid" style="grid-template-columns: 1fr;">
@@ -1150,7 +1166,7 @@ body::before {
                         <p class="danger-desc">
                             Permanently delete your account and all associated data. This action cannot be undone — all your course progress, certificates, and saved items will be lost forever.
                         </p>
-                        <button type="button" class="btn-danger" onclick="confirmDeleteAccount()">
+                        <button type="button" class="btn-danger" onclick="openDeleteModal()">
                             🗑️ Delete My Account
                         </button>
                     </div>
@@ -1267,82 +1283,87 @@ body::before {
                 {{-- TAB 4: PREFERENCES                          --}}
                 {{-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ --}}
                 <div class="content-card" x-show="activeTab === 'preferences'" x-transition>
-                    <div class="card-header">
-                        <h2 class="card-title">Learning <em>Preferences</em></h2>
-                        <p class="card-desc">Customize your learning experience on Coursify.</p>
-                    </div>
+                    <form id="preferences-settings-form" method="POST" action="{{ route('student.profile.preferences') }}">
+                        @csrf
+                        <input type="hidden" name="theme" id="theme-input" value="{{ auth()->user()->theme ?? 'light' }}">
 
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label class="form-label" for="language">Display Language</label>
-                            <select id="language" name="language" class="form-select">
-                                <option value="id" selected>🇮🇩 Bahasa Indonesia</option>
-                                <option value="en">🇬🇧 English</option>
-                                <option value="ja">🇯🇵 日本語</option>
-                                <option value="ko">🇰🇷 한국어</option>
-                            </select>
-                            <div class="form-help">Language used across the Coursify interface.</div>
+                        <div class="card-header">
+                            <h2 class="card-title">Learning <em>Preferences</em></h2>
+                            <p class="card-desc">Customize your learning experience on Coursify.</p>
                         </div>
 
-                        <div class="form-group">
-                            <label class="form-label" for="timezone">Timezone</label>
-                            <select id="timezone" name="timezone" class="form-select">
-                                <option value="Asia/Jakarta" selected>🌏 Asia/Jakarta (WIB, UTC+7)</option>
-                                <option value="Asia/Makassar">🌏 Asia/Makassar (WITA, UTC+8)</option>
-                                <option value="Asia/Jayapura">🌏 Asia/Jayapura (WIT, UTC+9)</option>
-                                <option value="UTC">🌍 UTC (Universal)</option>
-                            </select>
-                            <div class="form-help">Used for displaying dates and scheduling.</div>
-                        </div>
-
-                        <div class="form-group form-group-full">
-                            <label class="form-label">Theme Preference</label>
-                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 4px;">
-                                <button type="button" class="theme-option active" data-theme="light">
-                                    <div style="background: white; border: 2px solid var(--border); border-radius: 10px; padding: 18px; margin-bottom: 8px; height: 70px; display: flex; align-items: center; justify-content: center; font-size: 28px;">☀️</div>
-                                    <div style="font-size: 12px; font-weight: 600;">Light</div>
-                                </button>
-                                <button type="button" class="theme-option" data-theme="dark">
-                                    <div style="background: linear-gradient(135deg, #1A1825, #2A2840); border: 2px solid var(--border); border-radius: 10px; padding: 18px; margin-bottom: 8px; height: 70px; display: flex; align-items: center; justify-content: center; font-size: 28px;">🌙</div>
-                                    <div style="font-size: 12px; font-weight: 600;">Dark</div>
-                                </button>
-                                <button type="button" class="theme-option" data-theme="auto">
-                                    <div style="background: linear-gradient(135deg, white 50%, #1A1825 50%); border: 2px solid var(--border); border-radius: 10px; padding: 18px; margin-bottom: 8px; height: 70px; display: flex; align-items: center; justify-content: center; font-size: 28px;">💫</div>
-                                    <div style="font-size: 12px; font-weight: 600;">Auto</div>
-                                </button>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label" for="language">Display Language</label>
+                                <select id="language" name="language" class="form-select">
+                                    <option value="id" {{ (auth()->user()->language ?? 'id') == 'id' ? 'selected' : '' }}>🇮🇩 Bahasa Indonesia</option>
+                                    <option value="en" {{ (auth()->user()->language ?? 'id') == 'en' ? 'selected' : '' }}>🇬🇧 English</option>
+                                    <option value="ja" {{ (auth()->user()->language ?? 'id') == 'ja' ? 'selected' : '' }}>🇯🇵 日本語</option>
+                                    <option value="ko" {{ (auth()->user()->language ?? 'id') == 'ko' ? 'selected' : '' }}>🇰🇷 한국어</option>
+                                </select>
+                                <div class="form-help">Language used across the Coursify interface.</div>
                             </div>
-                            <div class="form-help" style="margin-top: 10px;">Choose your preferred color scheme. "Auto" follows your system settings.</div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="timezone">Timezone</label>
+                                <select id="timezone" name="timezone" class="form-select">
+                                    <option value="Asia/Jakarta" {{ (auth()->user()->timezone ?? 'Asia/Jakarta') == 'Asia/Jakarta' ? 'selected' : '' }}>🌏 Asia/Jakarta (WIB, UTC+7)</option>
+                                    <option value="Asia/Makassar" {{ (auth()->user()->timezone ?? 'Asia/Jakarta') == 'Asia/Makassar' ? 'selected' : '' }}>🌏 Asia/Makassar (WITA, UTC+8)</option>
+                                    <option value="Asia/Jayapura" {{ (auth()->user()->timezone ?? 'Asia/Jakarta') == 'Asia/Jayapura' ? 'selected' : '' }}>🌏 Asia/Jayapura (WIT, UTC+9)</option>
+                                    <option value="UTC" {{ (auth()->user()->timezone ?? 'Asia/Jakarta') == 'UTC' ? 'selected' : '' }}>🌍 UTC (Universal)</option>
+                                </select>
+                                <div class="form-help">Used for displaying dates and scheduling.</div>
+                            </div>
+
+                            <div class="form-group form-group-full">
+                                <label class="form-label">Theme Preference</label>
+                                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 4px;">
+                                    <button type="button" class="theme-option {{ (auth()->user()->theme ?? 'light') == 'light' ? 'active' : '' }}" data-theme="light">
+                                        <div style="background: white; border: 2px solid var(--border); border-radius: 10px; padding: 18px; margin-bottom: 8px; height: 70px; display: flex; align-items: center; justify-content: center; font-size: 28px;">☀️</div>
+                                        <div style="font-size: 12px; font-weight: 600;">Light</div>
+                                    </button>
+                                    <button type="button" class="theme-option {{ (auth()->user()->theme ?? 'light') == 'dark' ? 'active' : '' }}" data-theme="dark">
+                                        <div style="background: linear-gradient(135deg, #1A1825, #2A2840); border: 2px solid var(--border); border-radius: 10px; padding: 18px; margin-bottom: 8px; height: 70px; display: flex; align-items: center; justify-content: center; font-size: 28px;">🌙</div>
+                                        <div style="font-size: 12px; font-weight: 600;">Dark</div>
+                                    </button>
+                                    <button type="button" class="theme-option {{ (auth()->user()->theme ?? 'light') == 'auto' ? 'active' : '' }}" data-theme="auto">
+                                        <div style="background: linear-gradient(135deg, white 50%, #1A1825 50%); border: 2px solid var(--border); border-radius: 10px; padding: 18px; margin-bottom: 8px; height: 70px; display: flex; align-items: center; justify-content: center; font-size: 28px;">💫</div>
+                                        <div style="font-size: 12px; font-weight: 600;">Auto</div>
+                                    </button>
+                                </div>
+                                <div class="form-help" style="margin-top: 10px;">Choose your preferred color scheme. "Auto" follows your system settings.</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="playback_speed">Default Video Speed</label>
+                                <select id="playback_speed" name="playback_speed" class="form-select">
+                                    <option value="0.5" {{ (auth()->user()->playback_speed ?? '1') == '0.5' ? 'selected' : '' }}>0.5x (Slow)</option>
+                                    <option value="0.75" {{ (auth()->user()->playback_speed ?? '1') == '0.75' ? 'selected' : '' }}>0.75x</option>
+                                    <option value="1" {{ (auth()->user()->playback_speed ?? '1') == '1' ? 'selected' : '' }}>1x (Normal)</option>
+                                    <option value="1.25" {{ (auth()->user()->playback_speed ?? '1') == '1.25' ? 'selected' : '' }}>1.25x</option>
+                                    <option value="1.5" {{ (auth()->user()->playback_speed ?? '1') == '1.5' ? 'selected' : '' }}>1.5x</option>
+                                    <option value="2" {{ (auth()->user()->playback_speed ?? '1') == '2' ? 'selected' : '' }}>2x (Fast)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="quality">Video Quality</label>
+                                <select id="quality" name="video_quality" class="form-select">
+                                    <option value="auto" {{ (auth()->user()->video_quality ?? 'auto') == 'auto' ? 'selected' : '' }}>Auto</option>
+                                    <option value="1080p" {{ (auth()->user()->video_quality ?? 'auto') == '1080p' ? 'selected' : '' }}>1080p HD</option>
+                                    <option value="720p" {{ (auth()->user()->video_quality ?? 'auto') == '720p' ? 'selected' : '' }}>720p</option>
+                                    <option value="480p" {{ (auth()->user()->video_quality ?? 'auto') == '480p' ? 'selected' : '' }}>480p</option>
+                                </select>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label class="form-label" for="playback_speed">Default Video Speed</label>
-                            <select id="playback_speed" name="playback_speed" class="form-select">
-                                <option value="0.5">0.5x (Slow)</option>
-                                <option value="0.75">0.75x</option>
-                                <option value="1" selected>1x (Normal)</option>
-                                <option value="1.25">1.25x</option>
-                                <option value="1.5">1.5x</option>
-                                <option value="2">2x (Fast)</option>
-                            </select>
+                        <div class="form-actions">
+                            <div class="form-actions-info"></div>
+                            <button type="submit" class="btn-save">
+                                ✓ Save Preferences
+                            </button>
                         </div>
-
-                        <div class="form-group">
-                            <label class="form-label" for="quality">Video Quality</label>
-                            <select id="quality" name="quality" class="form-select">
-                                <option value="auto" selected>Auto</option>
-                                <option value="1080p">1080p HD</option>
-                                <option value="720p">720p</option>
-                                <option value="480p">480p</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-actions">
-                        <div class="form-actions-info"></div>
-                        <button type="button" class="btn-save" onclick="showToast('Preferences saved!', 'success')">
-                            ✓ Save Preferences
-                        </button>
-                    </div>
+                    </form>
                 </div>
 
                 {{-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ --}}
@@ -1387,7 +1408,7 @@ body::before {
                             💳 Payment Methods
                         </div>
 
-                        <div style="padding: 20px; background: rgba(255,255,255,0.5); border: 1px solid var(--border); border-radius: 12px; text-align: center;">
+                        <div class="payment-method-card" style="padding: 20px; background: rgba(255,255,255,0.5); border: 1px solid var(--border); border-radius: 12px; text-align: center;">
                             <div style="font-size: 36px; margin-bottom: 8px;">💳</div>
                             <div style="font-size: 14px; color: var(--text-soft); margin-bottom: 12px;">
                                 No payment methods added yet
@@ -1404,7 +1425,7 @@ body::before {
                             📋 Transaction History
                         </div>
 
-                        <div style="padding: 40px 20px; background: rgba(255,255,255,0.5); border: 1px solid var(--border); border-radius: 12px; text-align: center;">
+                        <div class="transaction-history-card" style="padding: 40px 20px; background: rgba(255,255,255,0.5); border: 1px solid var(--border); border-radius: 12px; text-align: center;">
                             <div style="font-size: 36px; margin-bottom: 8px;">📭</div>
                             <div style="font-family: var(--font-serif); font-size: 18px; margin-bottom: 4px;">No transactions yet</div>
                             <div style="font-size: 12px; color: var(--muted);">
@@ -1444,6 +1465,133 @@ body::before {
 
 .theme-option.active > div:last-child {
     color: var(--purple);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* PREMIUM DARK MODE THEME SYSTEM             */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+html[data-theme="dark"] body {
+    background: linear-gradient(180deg, #100E19 0%, #151322 50%, #1A1828 100%) !important;
+    color: #E2DEFC !important;
+}
+
+html[data-theme="dark"] body::before {
+    background:
+        radial-gradient(ellipse 800px 400px at 20% 10%, rgba(123,111,232,0.12), transparent),
+        radial-gradient(ellipse 600px 300px at 80% 30%, rgba(123,111,232,0.08), transparent),
+        radial-gradient(ellipse 700px 400px at 50% 90%, rgba(123,111,232,0.05), transparent) !important;
+}
+
+html[data-theme="dark"] {
+    --text: #F5F1FC;
+    --text-soft: #B8AFEB;
+    --border: rgba(255,255,255,0.08);
+}
+
+html[data-theme="dark"] .navbar {
+    background: rgba(21,19,34,0.7) !important;
+    border-color: rgba(255,255,255,0.08) !important;
+    backdrop-filter: blur(30px) saturate(180%) !important;
+}
+
+html[data-theme="dark"] .navbar-wrap.navbar-scrolled .navbar {
+    background: rgba(21,19,34,0.95) !important;
+}
+
+html[data-theme="dark"] .profile-sidebar,
+html[data-theme="dark"] .content-card {
+    background: rgba(21,19,34,0.65) !important;
+    border-color: rgba(255,255,255,0.08) !important;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4) !important;
+}
+
+html[data-theme="dark"] .form-input,
+html[data-theme="dark"] .form-textarea,
+html[data-theme="dark"] .form-select {
+    background: rgba(255,255,255,0.03) !important;
+    border-color: rgba(255,255,255,0.1) !important;
+    color: #F5F1FC !important;
+}
+
+html[data-theme="dark"] .form-input:focus,
+html[data-theme="dark"] .form-textarea:focus,
+html[data-theme="dark"] .form-select:focus {
+    background: rgba(255,255,255,0.06) !important;
+    border-color: var(--purple) !important;
+}
+
+html[data-theme="dark"] .card-title {
+    color: #FFFFFF !important;
+}
+
+html[data-theme="dark"] .card-desc {
+    color: #B8AFEB !important;
+}
+
+html[data-theme="dark"] .form-label {
+    color: #B8AFEB !important;
+}
+
+html[data-theme="dark"] .form-help {
+    color: #8B87A8 !important;
+}
+
+html[data-theme="dark"] .sidebar-nav-title {
+    color: #8B87A8 !important;
+}
+
+html[data-theme="dark"] .nav-link {
+    color: #B8AFEB !important;
+}
+
+html[data-theme="dark"] .nav-link:hover {
+    background: rgba(255,255,255,0.04) !important;
+    color: #FFFFFF !important;
+}
+
+html[data-theme="dark"] .nav-link.active {
+    background: rgba(255,255,255,0.08) !important;
+    color: #FFFFFF !important;
+    border-left-color: var(--purple) !important;
+}
+
+html[data-theme="dark"] .profile-stats-card {
+    background: rgba(255,255,255,0.02) !important;
+    border-color: rgba(255,255,255,0.06) !important;
+}
+
+html[data-theme="dark"] .stat-val {
+    color: #FFFFFF !important;
+}
+
+html[data-theme="dark"] .stat-lbl {
+    color: #B8AFEB !important;
+}
+
+html[data-theme="dark"] .payment-method-card,
+html[data-theme="dark"] .transaction-history-card {
+    background: rgba(255,255,255,0.02) !important;
+    border-color: rgba(255,255,255,0.06) !important;
+    color: #B8AFEB !important;
+}
+
+html[data-theme="dark"] .payment-method-card .form-help,
+html[data-theme="dark"] .transaction-history-card .form-help {
+    color: #8B87A8 !important;
+}
+
+html[data-theme="dark"] .btn-cancel {
+    background: rgba(255,255,255,0.05) !important;
+    color: #F5F1FC !important;
+    border-color: rgba(255,255,255,0.08) !important;
+}
+
+html[data-theme="dark"] .btn-cancel:hover {
+    background: rgba(255,255,255,0.1) !important;
+}
+
+html[data-theme="dark"] .theme-option {
+    color: #F5F1FC !important;
 }
 </style>
 
@@ -1504,20 +1652,48 @@ body::before {
         btn.addEventListener('click', function() {
             document.querySelectorAll('.theme-option').forEach(b => b.classList.remove('active'));
             this.classList.add('active');
-            showToast(`Theme set to ${this.dataset.theme}`, 'success');
+            const theme = this.dataset.theme;
+            const themeInput = document.getElementById('theme-input');
+            if (themeInput) {
+                themeInput.value = theme;
+            }
+            
+            // Instantly apply theme preview on document
+            if (theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+            
+            showToast(`Theme set to ${theme}`, 'success');
         });
     });
 
-    // Delete account confirmation
-    function confirmDeleteAccount() {
-        if (confirm('Are you SURE you want to delete your account? This action cannot be undone.\n\nAll your data will be permanently deleted:\n• Course progress\n• Certificates\n• Saved items\n• Reviews\n\nType YES to confirm.')) {
-            const confirmation = prompt('Type "DELETE MY ACCOUNT" to confirm:');
-            if (confirmation === 'DELETE MY ACCOUNT') {
-                alert('Account deletion feature will be implemented soon.');
-            } else {
-                alert('Deletion cancelled.');
-            }
-        }
+    // Delete account modal functions
+    function openDeleteModal() {
+        const modal = document.getElementById('delete-modal');
+        const input = document.getElementById('delete-confirm-input');
+        const btnDelete = document.getElementById('btn-modal-confirm-delete');
+        const error = document.getElementById('delete-error-message');
+        
+        input.value = '';
+        btnDelete.disabled = true;
+        btnDelete.classList.remove('ready');
+        error.style.display = 'none';
+        
+        modal.style.display = 'flex';
+        setTimeout(() => {
+            modal.classList.add('active');
+            input.focus();
+        }, 10);
+    }
+    
+    function closeDeleteModal() {
+        const modal = document.getElementById('delete-modal');
+        modal.classList.remove('active');
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 300);
     }
 
     // Toast helper
@@ -1546,7 +1722,787 @@ body::before {
             setTimeout(() => toast.remove(), 300);
         }, 2500);
     }
+
+    // ────────────────────────────────────────────────────────────────
+    // AVATAR REAL-TIME UPLOAD
+    // ────────────────────────────────────────────────────────────────
+    function triggerAvatarUpload() {
+        document.getElementById('avatar-file-input').click();
+    }
+
+    function uploadAvatar(input) {
+        if (!input.files || !input.files[0]) return;
+
+        const file = input.files[0];
+        if (!file.type.match('image.*')) {
+            showToast('Hanya file gambar yang diperbolehkan!', 'error');
+            return;
+        }
+        if (file.size > 2 * 1024 * 1024) {
+            showToast('Ukuran gambar maksimal adalah 2MB!', 'error');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('avatar', file);
+
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+        if (!csrfToken) return;
+
+        const container = document.getElementById('avatar-large-container');
+        const origHTML = container.innerHTML;
+        container.innerHTML = `
+            <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3);">
+                <i class="fa-solid fa-spinner fa-spin" style="font-size: 24px; color: white;"></i>
+            </div>
+        `;
+
+        showToast('Mengunggah foto profil...', 'info');
+
+        fetch('{{ route('student.profile.avatar') }}', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken,
+                'Accept': 'application/json'
+            },
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                // Update avatar di profile settings secara instan
+                container.innerHTML = `
+                    <img src="${data.avatar_url}" alt="Avatar" id="avatar-large-img" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                    <button class="avatar-upload-btn" onclick="triggerAvatarUpload()" title="Change photo">📷</button>
+                `;
+                
+                // Update avatar di navbar atas
+                const navbarAvatar = document.querySelector('.navbar-wrap button img');
+                const navbarAvatarDiv = document.querySelector('.navbar-wrap button div');
+                if (navbarAvatar) {
+                    navbarAvatar.src = data.avatar_url;
+                } else if (navbarAvatarDiv) {
+                    navbarAvatarDiv.innerHTML = `<img src="${data.avatar_url}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">`;
+                }
+
+                showToast('Foto profil berhasil diperbarui!', 'success');
+            } else {
+                container.innerHTML = origHTML;
+                showToast(data.message || 'Gagal mengunggah foto.', 'error');
+            }
+        })
+        .catch(err => {
+            container.innerHTML = origHTML;
+            console.error(err);
+            showToast('Terjadi kesalahan koneksi saat mengunggah.', 'error');
+        });
+    }
+
+    // ────────────────────────────────────────────────────────────────
+    // AJAX PROFILE FORM SUBMISSION
+    // ────────────────────────────────────────────────────────────────
+    const profileForm = document.getElementById('profile-settings-form');
+    if (profileForm) {
+        profileForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Clear errors
+            profileForm.querySelectorAll('.form-error').forEach(el => el.remove());
+            profileForm.querySelectorAll('.form-input, .form-textarea').forEach(el => el.classList.remove('error'));
+
+            const saveBtn = profileForm.querySelector('.btn-save');
+            const origBtnContent = saveBtn.innerHTML;
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
+
+            const formData = new FormData(profileForm);
+
+            fetch(profileForm.action, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = origBtnContent;
+
+                if (data.errors) {
+                    // Render validation errors
+                    for (const [field, messages] of Object.entries(data.errors)) {
+                        const input = profileForm.querySelector(`[name="${field}"]`);
+                        if (input) {
+                            input.classList.add('error');
+                            const errDiv = document.createElement('div');
+                            errDiv.className = 'form-error';
+                            errDiv.innerHTML = `⚠ ${messages[0]}`;
+                            input.parentNode.appendChild(errDiv);
+                        }
+                    }
+                    showToast('Harap periksa kembali input Anda.', 'error');
+                } else if (data.success) {
+                    showToast(data.message || 'Profil berhasil disimpan!', 'success');
+
+                    // Update nama & email di seluruh halaman secara real-time
+                    const avatarName = document.querySelector('.avatar-name');
+                    if (avatarName) avatarName.textContent = data.user.name;
+
+                    const avatarEmail = document.querySelector('.avatar-email');
+                    if (avatarEmail) avatarEmail.textContent = data.user.email;
+
+                    // Update navbar name
+                    const navName = document.querySelector('.navbar-wrap button span');
+                    if (navName) navName.textContent = data.user.name.length > 10 ? data.user.name.substring(0, 10) + '...' : data.user.name;
+
+                    // Update navbar initials if no avatar_url
+                    const avatarInitial = document.getElementById('avatar-large-initial');
+                    if (avatarInitial) {
+                        avatarInitial.textContent = data.user.initial;
+                    }
+                    const navAvatarDiv = document.querySelector('.navbar-wrap button div');
+                    if (navAvatarDiv && !navAvatarDiv.querySelector('img')) {
+                        navAvatarDiv.textContent = data.user.initial;
+                    }
+                }
+            })
+            .catch(err => {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = origBtnContent;
+                console.error(err);
+                showToast('Terjadi kesalahan koneksi.', 'error');
+            });
+        });
+    }
+
+    // ────────────────────────────────────────────────────────────────
+    // AJAX PASSWORD FORM SUBMISSION
+    // ────────────────────────────────────────────────────────────────
+    const passwordForm = document.getElementById('password-settings-form');
+    if (passwordForm) {
+        passwordForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Clear errors
+            passwordForm.querySelectorAll('.form-error').forEach(el => el.remove());
+            passwordForm.querySelectorAll('.form-input').forEach(el => el.classList.remove('error'));
+
+            const saveBtn = passwordForm.querySelector('.btn-save');
+            const origBtnContent = saveBtn.innerHTML;
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
+
+            const formData = new FormData(passwordForm);
+
+            fetch(passwordForm.action, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = origBtnContent;
+
+                if (data.errors) {
+                    for (const [field, messages] of Object.entries(data.errors)) {
+                        const input = passwordForm.querySelector(`[name="${field}"]`);
+                        if (input) {
+                            input.classList.add('error');
+                            const errDiv = document.createElement('div');
+                            errDiv.className = 'form-error';
+                            errDiv.innerHTML = `⚠ ${messages[0]}`;
+                            // Masukkan ke parent node, tapi perhatikan jika ada input-icon wrapper
+                            const targetParent = input.parentNode.classList.contains('form-input-icon') ? input.parentNode.parentNode : input.parentNode;
+                            targetParent.appendChild(errDiv);
+                        }
+                    }
+                    showToast('Harap periksa kembali password Anda.', 'error');
+                } else if (data.success) {
+                    showToast(data.message || 'Password berhasil diperbarui!', 'success');
+                    passwordForm.reset();
+                }
+            })
+            .catch(err => {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = origBtnContent;
+                console.error(err);
+                showToast('Terjadi kesalahan koneksi.', 'error');
+            });
+        });
+    }
+
+    // ────────────────────────────────────────────────────────────────
+    // AJAX PREFERENCES FORM SUBMISSION
+    // ────────────────────────────────────────────────────────────────
+    const preferencesForm = document.getElementById('preferences-settings-form');
+    if (preferencesForm) {
+        preferencesForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Clear errors
+            preferencesForm.querySelectorAll('.form-error').forEach(el => el.remove());
+            preferencesForm.querySelectorAll('.form-select').forEach(el => el.classList.remove('error'));
+
+            const saveBtn = preferencesForm.querySelector('.btn-save');
+            const origBtnContent = saveBtn.innerHTML;
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
+
+            const formData = new FormData(preferencesForm);
+
+            fetch(preferencesForm.action, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = origBtnContent;
+
+                if (data.errors) {
+                    for (const [field, messages] of Object.entries(data.errors)) {
+                        const input = preferencesForm.querySelector(`[name="${field}"]`);
+                        if (input) {
+                            input.classList.add('error');
+                            const errDiv = document.createElement('div');
+                            errDiv.className = 'form-error';
+                            errDiv.innerHTML = `⚠ ${messages[0]}`;
+                            input.parentNode.appendChild(errDiv);
+                        }
+                    }
+                    showToast('Harap periksa kembali input Anda.', 'error');
+                } else if (data.success) {
+                    showToast(data.message || 'Preferensi berhasil disimpan!', 'success');
+                }
+            })
+            .catch(err => {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = origBtnContent;
+                console.error(err);
+                showToast('Terjadi kesalahan koneksi.', 'error');
+            });
+        });
+    }
+
+    // Bind typing input to check matching phrase
+    const deleteConfirmInput = document.getElementById('delete-confirm-input');
+    if (deleteConfirmInput) {
+        deleteConfirmInput.addEventListener('input', function() {
+            const btnDelete = document.getElementById('btn-modal-confirm-delete');
+            
+            if (this.value.trim().toUpperCase() === 'DELETE MY ACCOUNT') {
+                btnDelete.disabled = false;
+                btnDelete.classList.add('ready');
+                this.classList.add('valid');
+            } else {
+                btnDelete.disabled = true;
+                btnDelete.classList.remove('ready');
+                this.classList.remove('valid');
+            }
+        });
+    }
+    
+    // Confirm delete trigger via AJAX and animated progress
+    const btnModalConfirmDelete = document.getElementById('btn-modal-confirm-delete');
+    if (btnModalConfirmDelete) {
+        btnModalConfirmDelete.addEventListener('click', function() {
+            const input = document.getElementById('delete-confirm-input');
+            if (!input || input.value.trim().toUpperCase() !== 'DELETE MY ACCOUNT') {
+                const error = document.getElementById('delete-error-message');
+                if (error) error.style.display = 'block';
+                return;
+            }
+
+            // Start Deletion Sequence
+            const modalContent = document.querySelector('#delete-modal .modal-content');
+            const mainHeader = document.querySelector('#delete-modal .modal-header');
+            const mainBody = document.querySelector('#delete-modal .modal-body');
+            const mainFooter = document.querySelector('#delete-modal .modal-footer');
+            
+            const processingView = document.getElementById('delete-processing-view');
+            const successView = document.getElementById('delete-success-view');
+            const progressBar = document.getElementById('delete-progress-bar');
+            const progressStatus = document.getElementById('processing-status');
+
+            // Hide standard modal blocks
+            mainHeader.style.display = 'none';
+            mainBody.style.display = 'none';
+            mainFooter.style.display = 'none';
+
+            // Show processing screen with custom glassmorphic styling
+            modalContent.classList.add('processing-state');
+            processingView.style.display = 'block';
+
+            // Progressive statuses with custom timing
+            const steps = [
+                { percent: 15, msg: '🔒 Mengamankan sesi pengguna...' },
+                { percent: 35, msg: '📚 Menghapus data pendaftaran & kemajuan kursus...' },
+                { percent: 60, msg: '🎓 Menarik kembali sertifikat terbit...' },
+                { percent: 80, msg: '💖 Membersihkan daftar keinginan & favorit...' },
+                { percent: 95, msg: '🗑️ Menghapus identitas akun secara permanen...' }
+            ];
+
+            let stepIdx = 0;
+            const progressInterval = setInterval(() => {
+                if (stepIdx < steps.length) {
+                    progressBar.style.width = steps[stepIdx].percent + '%';
+                    progressStatus.style.opacity = '0';
+                    setTimeout(() => {
+                        progressStatus.textContent = steps[stepIdx].msg;
+                        progressStatus.style.opacity = '1';
+                    }, 150);
+                    stepIdx++;
+                }
+            }, 800);
+
+            // Execute Laravel AJAX Delete Account POST Request
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+            
+            fetch("{{ route('student.profile.delete') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({
+                    confirm_phrase: 'DELETE MY ACCOUNT'
+                })
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Penghapusan gagal pada server.');
+                return res.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    // Let the animation finish beautifully
+                    setTimeout(() => {
+                        clearInterval(progressInterval);
+                        progressBar.style.width = '100%';
+                        progressStatus.textContent = '🧹 Menyelesaikan pembersihan data...';
+                        
+                        setTimeout(() => {
+                            // Fade from processing to success view
+                            processingView.style.opacity = '0';
+                            setTimeout(() => {
+                                processingView.style.display = 'none';
+                                modalContent.classList.remove('processing-state');
+                                modalContent.classList.add('success-state');
+                                successView.style.display = 'block';
+                                successView.style.opacity = '0';
+                                setTimeout(() => {
+                                    successView.style.opacity = '1';
+                                    showToast('Akun Anda berhasil dihapus selamanya.', 'success');
+                                }, 50);
+                                
+                                // Redirect to home after 3.5 seconds
+                                setTimeout(() => {
+                                    window.location.href = '/';
+                                }, 3500);
+                            }, 300);
+                        }, 800);
+                    }, Math.max(0, (steps.length - stepIdx) * 800));
+                } else {
+                    throw new Error(data.message || 'Terjadi kesalahan tidak dikenal.');
+                }
+            })
+            .catch(err => {
+                clearInterval(progressInterval);
+                console.error(err);
+                
+                // Return modal to normal warning state
+                processingView.style.display = 'none';
+                modalContent.classList.remove('processing-state');
+                
+                mainHeader.style.display = 'flex';
+                mainBody.style.display = 'block';
+                mainFooter.style.display = 'flex';
+                
+                showToast(err.message || 'Gagal memproses penghapusan akun.', 'error');
+            });
+        });
+    }
 </script>
+
+<!-- Custom Delete Confirmation Modal Overlay -->
+<div id="delete-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+        <!-- Default Modal Header -->
+        <div class="modal-header">
+            <span class="modal-icon">⚠️</span>
+            <h3 class="modal-title">Hapus Akun?</h3>
+        </div>
+        
+        <!-- Default Modal Body -->
+        <div class="modal-body">
+            <p class="modal-warning">Apakah Anda benar-benar yakin ingin menghapus akun Anda? Tindakan ini <strong>tidak dapat dibatalkan</strong>.</p>
+            
+            <div class="modal-data-loss">
+                <h4>Seluruh data Anda akan terhapus secara permanen:</h4>
+                <ul>
+                    <li> Progres belajar & riwayat pendaftaran kelas</li>
+                    <li> Sertifikat kelulusan yang telah diterbitkan</li>
+                    <li> Kelas favorit & item wishlist tersimpan</li>
+                    <li> Ulasan, feedback, & diskusi yang pernah ditulis</li>
+                </ul>
+            </div>
+            
+            <p class="modal-instruction">Untuk melanjutkan, ketik frasa konfirmasi <span class="confirm-phrase">DELETE MY ACCOUNT</span> di bawah:</p>
+            
+            <input type="text" id="delete-confirm-input" class="modal-input" placeholder="Ketik DELETE MY ACCOUNT untuk mengonfirmasi">
+            <div id="delete-error-message" class="modal-error" style="display: none;">⚠ Frasa konfirmasi tidak cocok.</div>
+        </div>
+        
+        <!-- Default Modal Footer -->
+        <div class="modal-footer">
+            <button type="button" class="btn-modal-cancel" onclick="closeDeleteModal()">Batal</button>
+            <button type="button" id="btn-modal-confirm-delete" class="btn-modal-delete" disabled>Hapus Selamanya</button>
+        </div>
+
+        <!-- Processing View (Hidden by Default) -->
+        <div id="delete-processing-view" style="display: none; text-align: center; padding: 20px 0; transition: opacity 0.3s ease;">
+            <div class="processing-spinner-container">
+                <div class="processing-glow-ring"></div>
+                <div class="processing-icon">🗑️</div>
+            </div>
+            <h3 style="font-family: var(--font-serif); font-size: 22px; margin-top: 24px; margin-bottom: 8px;">Menghapus Akun...</h3>
+            <p id="processing-status" style="font-size: 13px; color: var(--text-soft); min-height: 20px; transition: opacity 0.3s ease;">
+                Menghubungkan ke server...
+            </p>
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill" id="delete-progress-bar"></div>
+            </div>
+        </div>
+
+        <!-- Success View (Hidden by Default) -->
+        <div id="delete-success-view" style="display: none; text-align: center; padding: 20px 0; transition: opacity 0.3s ease;">
+            <div class="success-checkmark-container">
+                <div class="success-glow-ring"></div>
+                <div class="success-icon">✨</div>
+            </div>
+            <h3 style="font-family: var(--font-serif); font-size: 24px; color: var(--teal); margin-top: 24px; margin-bottom: 8px;">Selamat Tinggal!</h3>
+            <p style="font-size: 14px; color: var(--text-soft); line-height: 1.6; max-width: 320px; margin: 0 auto;">
+                Akun Anda berhasil dihapus sepenuhnya dari sistem Coursify. Kami sedih melihat Anda pergi, namun kami mendoakan kesuksesan Anda di masa depan!
+            </p>
+            <div style="font-size: 11px; color: var(--muted); margin-top: 24px; letter-spacing: 0.05em; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <i class="fa-solid fa-spinner fa-spin"></i> Mengalihkan halaman...
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Custom Delete Confirmation Modal Styles */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 8, 20, 0.65);
+    backdrop-filter: blur(20px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+}
+
+.modal-content {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 24px;
+    width: 90%;
+    max-width: 500px;
+    padding: 32px;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.15);
+    transform: scale(0.9);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s, border-color 0.3s;
+    font-family: var(--font-sans);
+    color: var(--text);
+    position: relative;
+    overflow: hidden;
+}
+
+html[data-theme="dark"] .modal-content {
+    background: rgba(21, 19, 34, 0.85);
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5);
+    color: #F5F1FC;
+}
+
+.modal-content.processing-state {
+    border-color: rgba(239, 68, 68, 0.3);
+    box-shadow: 0 0 40px rgba(239, 68, 68, 0.15), 0 30px 70px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content.success-state {
+    border-color: rgba(20, 184, 166, 0.3);
+    box-shadow: 0 0 40px rgba(20, 184, 166, 0.15), 0 30px 70px rgba(0, 0, 0, 0.2);
+}
+
+.modal-overlay.active .modal-content {
+    transform: scale(1);
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.modal-icon {
+    font-size: 32px;
+    animation: pulseIcon 2s infinite;
+}
+
+@keyframes pulseIcon {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+}
+
+.modal-title {
+    font-family: var(--font-serif);
+    font-size: 26px;
+    font-weight: 500;
+}
+
+.modal-warning {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.modal-data-loss {
+    background: rgba(239, 68, 68, 0.05);
+    border: 1px solid rgba(239, 68, 68, 0.15);
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 20px;
+}
+
+html[data-theme="dark"] .modal-data-loss {
+    background: rgba(239, 68, 68, 0.08);
+    border-color: rgba(239, 68, 68, 0.25);
+}
+
+.modal-data-loss h4 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--red);
+    margin-bottom: 10px;
+}
+
+.modal-data-loss ul {
+    list-style: none;
+    font-size: 13px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-left: 0;
+}
+
+.modal-instruction {
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.confirm-phrase {
+    font-weight: 700;
+    color: var(--red);
+    background: rgba(239, 68, 68, 0.08);
+    padding: 2px 6px;
+    border-radius: 6px;
+}
+
+.modal-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 13px;
+    background: rgba(255, 255, 255, 0.5);
+    outline: none;
+    transition: all 0.2s;
+    margin-bottom: 12px;
+}
+
+html[data-theme="dark"] .modal-input {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #F5F1FC;
+}
+
+.modal-input:focus {
+    border-color: var(--red);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
+}
+
+.modal-input.valid {
+    border-color: var(--teal) !important;
+    box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.12) !important;
+}
+
+.modal-error {
+    font-size: 12px;
+    color: var(--red);
+    margin-bottom: 10px;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.btn-modal-cancel {
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text);
+}
+
+html[data-theme="dark"] .btn-modal-cancel {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.08);
+    color: #F5F1FC;
+}
+
+.btn-modal-cancel:hover {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+html[data-theme="dark"] .btn-modal-cancel:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.btn-modal-delete {
+    padding: 10px 24px;
+    background: var(--red);
+    color: white;
+    border: none;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: not-allowed;
+    transition: all 0.2s;
+    opacity: 0.5;
+}
+
+.btn-modal-delete.ready {
+    cursor: pointer;
+    opacity: 1;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+}
+
+.btn-modal-delete.ready:hover {
+    background: #DC2626;
+    transform: translateY(-1px);
+}
+
+/* Sleek Processing & Success Animations */
+.processing-spinner-container, .success-checkmark-container {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.processing-glow-ring {
+    position: absolute;
+    inset: -4px;
+    border: 4px solid rgba(239, 68, 68, 0.1);
+    border-top-color: var(--red);
+    border-radius: 50%;
+    animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+.success-glow-ring {
+    position: absolute;
+    inset: -4px;
+    border: 4px solid rgba(20, 184, 166, 0.15);
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(20, 184, 166, 0.3);
+    animation: pulseGlow 2s infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes pulseGlow {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 15px rgba(20, 184, 166, 0.2); }
+    50% { transform: scale(1.08); box-shadow: 0 0 30px rgba(20, 184, 166, 0.5); }
+}
+
+.processing-icon {
+    font-size: 36px;
+    filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.3));
+    animation: floatIcon 2s ease-in-out infinite;
+}
+
+.success-icon {
+    font-size: 36px;
+    filter: drop-shadow(0 0 10px rgba(20, 184, 166, 0.4));
+    animation: bouncePopIcon 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) infinite alternate;
+}
+
+@keyframes floatIcon {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+@keyframes bouncePopIcon {
+    0% { transform: scale(0.9) rotate(-8deg); }
+    100% { transform: scale(1.1) rotate(8deg); }
+}
+
+.progress-bar-container {
+    width: 80%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 100px;
+    margin: 20px auto 0;
+    overflow: hidden;
+    position: relative;
+}
+
+html[data-theme="light"] .progress-bar-container {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--red), var(--pink));
+    border-radius: 100px;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+</style>
 
 </body>
 </html>

@@ -55,8 +55,13 @@
                         font-size:12px;font-weight:700;
                         display:flex;align-items:center;justify-content:center;
                         flex-shrink:0;
+                        overflow:hidden;
                     ">
-                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                        @if(auth()->user()->avatar_url)
+                            <img src="{{ asset(auth()->user()->avatar_url) }}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
+                        @else
+                            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                        @endif
                     </div>
                     <span style="font-size:13px;font-weight:600;color:#1A1825;">
                         {{ Str::limit(auth()->user()->name, 10) }}
