@@ -7,34 +7,36 @@ use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\LessonProgress;
 use App\Models\Enrollment;
+use App\Models\Certificate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class LearningController extends Controller
 {
     public function index(string $slug)
-{
-    $course = Course::where('slug', $slug)->firstOrFail();
-    $this->checkEnrollment($course);
+    {
+        $course = Course::where('slug', $slug)->firstOrFail();
+        $this->checkEnrollment($course);
 
-    $sections = $course->sections()
-    ->with('lessons')
-    ->orderBy('order_index')
-    ->get();
+        $sections = $course->sections()
+            ->with('lessons')
+            ->orderBy('order_index')
+            ->get();
 
-$firstLesson = $sections
-    ->flatMap->lessons
-    ->sortBy('order_index')
-    ->first();
+        $firstLesson = $sections
+            ->flatMap->lessons
+            ->sortBy('order_index')
+            ->first();
 
-    if (! $firstLesson) {
-        return redirect()->route('student.courses')
-            ->with('warning', 'Course "' . $course->title . '" belum memiliki materi. Silakan cek kembali nanti.');
+        if (!$firstLesson) {
+            return redirect()->route('student.courses')
+                ->with('warning', 'Course "' . $course->title . '" belum memiliki materi. Silakan cek kembali nanti.');
+        }
+
+        return redirect()->route('student.learn.lesson', [
+            $course->slug, $firstLesson->id
+        ]);
     }
-
-    return redirect()->route('student.learn.lesson', [
-        $course->slug, $firstLesson->id
-    ]);
-}
 
     public function lesson(string $slug, Lesson $lesson)
     {
@@ -45,16 +47,31 @@ $firstLesson = $sections
             ->where('course_id', $course->id)->first();
 
         $sections = $course->sections()
-            ->with(['lessons' => function($q) {
+            ->with(['lessons' => function ($q) {
                 $q->orderBy('order_index');
             }])->orderBy('order_index')->get();
 
+        $allLessonIds = $sections->flatMap->lessons->pluck('id');
+
         $progress = LessonProgress::where('user_id', auth()->id())
-            ->whereIn('lesson_id', $sections->flatMap->lessons->pluck('id'))
+            ->whereIn('lesson_id', $allLessonIds)
             ->get()
             ->keyBy('lesson_id');
 
-        return view('student.learn', compact('course', 'lesson', 'sections', 'progress', 'enrollment'));
+        $totalLessons    = $allLessonIds->count();
+        $completedCount  = $progress->where('is_completed', true)->count();
+
+        // Cari prev/next lesson
+        $allLessons  = $sections->flatMap->lessons;
+        $currentIdx  = $allLessons->search(fn($l) => $l->id === $lesson->id);
+        $prevLesson  = $currentIdx > 0 ? $allLessons->get($currentIdx - 1) : null;
+        $nextLesson  = $allLessons->get($currentIdx + 1);
+
+        return view('student.learn', compact(
+            'course', 'lesson', 'sections', 'progress',
+            'enrollment', 'totalLessons', 'completedCount',
+            'prevLesson', 'nextLesson'
+        ));
     }
 
     public function updateProgress(Request $request, Lesson $lesson)
@@ -69,11 +86,15 @@ $firstLesson = $sections
             ]
         );
 
-        $course       = $lesson->section->course;
-        $totalLessons = $course->sections()->with('lessons')->get()
-            ->flatMap->lessons->count();
-        $doneLessons  = LessonProgress::where('user_id', auth()->id())
-            ->whereIn('lesson_id', $course->sections->flatMap->lessons->pluck('id'))
+        $course = $lesson->section->course;
+
+        // Eager load sections + lessons sekali saja (hindari N+1 dan bug lazy-load tanpa lessons)
+        $sections     = $course->sections()->with('lessons')->get();
+        $allLessonIds = $sections->flatMap->lessons->pluck('id');
+        $totalLessons = $allLessonIds->count();
+
+        $doneLessons = LessonProgress::where('user_id', auth()->id())
+            ->whereIn('lesson_id', $allLessonIds)
             ->where('is_completed', true)
             ->count();
 
@@ -82,6 +103,8 @@ $firstLesson = $sections
         $enrollment = Enrollment::where('user_id', auth()->id())
             ->where('course_id', $course->id)->first();
 
+        $certificateEarned = false;
+
         if ($enrollment) {
             $enrollment->update([
                 'progress_percent' => $percent,
@@ -89,17 +112,29 @@ $firstLesson = $sections
                 'completed_at'     => $percent >= 100 ? now() : null,
             ]);
 
-            if ($percent >= 100 && !$course->certificates()->where('user_id', auth()->id())->exists()) {
-                \App\Models\Certificate::create([
-                    'user_id'            => auth()->id(),
-                    'course_id'          => $course->id,
-                    'certificate_number' => 'CERT-' . date('Y') . '-' . strtoupper(\Illuminate\Support\Str::random(8)),
-                    'issued_at'          => now(),
-                ]);
+            // Buat sertifikat jika kursus selesai dan belum ada
+            if ($percent >= 100) {
+                $alreadyHasCert = Certificate::where('user_id', auth()->id())
+                    ->where('course_id', $course->id)
+                    ->exists();
+
+                if (!$alreadyHasCert) {
+                    Certificate::create([
+                        'user_id'            => auth()->id(),
+                        'course_id'          => $course->id,
+                        'certificate_number' => 'CERT-' . date('Y') . '-' . strtoupper(Str::random(8)),
+                        'issued_at'          => now(),
+                    ]);
+                    $certificateEarned = true;
+                }
             }
         }
 
-        return response()->json(['progress' => $percent, 'success' => true]);
+        return response()->json([
+            'progress'          => $percent,
+            'success'           => true,
+            'certificate_earned' => $certificateEarned,
+        ]);
     }
 
     private function checkEnrollment(Course $course): void

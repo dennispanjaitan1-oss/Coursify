@@ -726,6 +726,13 @@ body::before {
 }
 
 /* Tombol Remove — icon-only, aksesibel */
+/* Wrapper thumbnail agar btn-remove bisa absolute di atasnya */
+.course-thumb-wrap {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px 20px 0 0;
+}
+
 .btn-remove {
     position: absolute;
     top: 12px;
@@ -745,7 +752,6 @@ body::before {
     transition: all 0.2s;
     z-index: 2;
     box-shadow: 0 4px 12px rgba(255,107,138,0.35);
-    /* aria-label wajib ada di HTML karena ini icon-only button */
 }
 .btn-remove:hover {
     background: #FF4B6E;
@@ -1306,7 +1312,8 @@ body::before {
         Rating tertinggi
     </a>
 
-</div>
+</div>{{-- /sort-menu --}}
+</div>{{-- /sort-dropdown --}}
 
                 {{-- Search --}}
                 <form action="{{ route('student.wishlist') }}" method="GET" class="search-wishlist"
@@ -1390,30 +1397,32 @@ body::before {
                          role="listitem" aria-label="{{ $courseTitle }}">
 
                     {{-- Thumbnail --}}
-                    <a href="{{ route('courses.show', $courseSlug) }}"
-                       class="course-thumb course-thumb-{{ $thumb }}"
-                       aria-label="View {{ $courseTitle }}">
+                    <div class="course-thumb-wrap" style="position:relative;">
+                        <a href="{{ route('courses.show', $courseSlug) }}"
+                           class="course-thumb course-thumb-{{ $thumb }}"
+                           aria-label="Lihat kursus {{ $courseTitle }}">
 
-                        {{-- Badge Saved --}}
-                        <span class="badge-saved">
-                            <i class="fa-solid fa-heart" aria-hidden="true"></i>
-                            Saved
-                        </span>
+                            {{-- Badge Saved --}}
+                            <span class="badge-saved">
+                                <i class="fa-solid fa-heart" aria-hidden="true"></i>
+                                Saved
+                            </span>
 
-                        {{-- Tombol Remove — icon-only, WAJIB aria-label --}}
-                    <button
-                    class="btn-remove"
-                    data-id="{{ $wishlistId }}"
-                    data-delete-url="{{ route('wishlist.destroy', $wishlistId) }}"
-                    onclick="event.preventDefault(); event.stopPropagation(); openRemoveModal({{ $wishlistId }}, '{{ addslashes($courseTitle) }}')"
-                    aria-label="Hapus {{ $courseTitle }} dari wishlist"
-                    title="Hapus dari wishlist">
-                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
-                    </button>
+                            {{-- Course Thumbnail Icon --}}
+                            <span class="course-thumb-icon" aria-hidden="true">{{ $courseIcon }}</span>
+                        </a>
 
-                        {{-- Course Thumbnail Icon --}}
-                        <span class="course-thumb-icon" aria-hidden="true">{{ $courseIcon }}</span>
-                    </a>
+                        {{-- Tombol Remove — di luar <a>, masih dalam wrapper --}}
+                        <button
+                            class="btn-remove"
+                            data-id="{{ $wishlistId }}"
+                            data-delete-url="{{ route('student.wishlist.destroy', $wishlistId) }}"
+                            onclick="openRemoveModal({{ $wishlistId }}, '{{ addslashes($courseTitle) }}')"
+                            aria-label="Hapus {{ $courseTitle }} dari wishlist"
+                            title="Hapus dari wishlist">
+                            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                        </button>
+                    </div>
 
                     {{-- Card Body --}}
                     <div class="course-body">
@@ -1561,13 +1570,6 @@ body::before {
 <div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="false"></div>
 
 
-{{-- ═══ HIDDEN DELETE FORM (Submit secara programmatik) ═══ --}}
-<form id="delete-form" method="POST" style="display:none;">
-    @csrf
-    @method('DELETE')
-</form>
-
-
 {{-- ═══ JAVASCRIPT ═══ --}}
 <script>
 // ──────────────────────────────────────────────
@@ -1664,6 +1666,15 @@ function confirmRemove() {
 
     closeRemoveModal();
 
+    // Simpan deleteUrl SEBELUM card di-remove dari DOM
+    const btn       = card ? card.querySelector(`[data-id="${id}"]`) : null;
+    const deleteUrl = btn ? btn.dataset.deleteUrl : null;
+
+    if (!deleteUrl) {
+        console.error('deleteUrl tidak ditemukan untuk id:', id);
+        return;
+    }
+
     // Simpan HTML kartu untuk fitur Undo
     const cardHTML = card ? card.outerHTML : null;
     const cardNext = card ? card.nextSibling : null;
@@ -1679,7 +1690,7 @@ function confirmRemove() {
 
     // Timer — DELETE request dikirim setelah 5 detik
     let deleteTimer = setTimeout(() => {
-        submitDelete(id);
+        submitDeleteUrl(deleteUrl);
         removeToast(id);
     }, 5000);
 
@@ -1712,19 +1723,29 @@ function confirmRemove() {
 }
 
 // ──────────────────────────────────────────────
-// Submit DELETE ke server
+// Submit DELETE ke server (pakai fetch, bukan form submit)
 // ──────────────────────────────────────────────
-function submitDelete(wishlistId) {
-    const form = document.getElementById('delete-form');
-    const btn  = document.querySelector(`[data-id="${wishlistId}"]`);
-
-    if (!btn || !btn.dataset.deleteUrl) {
-        console.error('delete URL tidak ditemukan untuk wishlist id:', wishlistId);
+function submitDeleteUrl(url) {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+    if (!csrfToken || !url) {
+        console.error('CSRF token atau URL tidak ditemukan');
         return;
     }
 
-    form.action = btn.dataset.deleteUrl;
-    form.submit();
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': csrfToken,
+            'X-HTTP-Method-Override': 'DELETE',
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ _method: 'DELETE' }),
+    })
+    .then(res => {
+        if (!res.ok) console.error('Gagal hapus wishlist, status:', res.status);
+    })
+    .catch(err => console.error('Network error saat hapus wishlist:', err));
 }
 
 // ──────────────────────────────────────────────

@@ -32,6 +32,13 @@ Route::get('/payment', [PaymentController::class, 'index'])
 Route::get('/verify/{certificateNumber}', [CertificateController::class, 'verify'])
     ->name('certificates.verify');
 
+Route::get('/verify', function (\Illuminate\Http\Request $req) {
+    if ($req->has('number')) {
+        return redirect()->route('certificates.verify', $req->number);
+    }
+    return redirect()->route('home');
+})->name('certificates.verify.form');
+
 // ═══════════════════════════════════════════════════════════
 // AUTH
 // ═══════════════════════════════════════════════════════════
@@ -59,6 +66,11 @@ Route::middleware('auth')->group(function () {
 // ═══════════════════════════════════════════════════════════
 // STUDENT ROUTES (prefix /dashboard, name 'student.*')
 // ═══════════════════════════════════════════════════════════
+// ─── Wishlist toggle — standalone route (accessible from any page, e.g. courses/index, courses/show)
+Route::middleware('auth')
+    ->post('/wishlist/toggle/{course}', [WishlistController::class, 'toggle'])
+    ->name('wishlist.toggle');
+
 Route::middleware(['auth', 'role:student,instructor,admin'])
     ->prefix('dashboard')
     ->name('student.')
@@ -67,6 +79,9 @@ Route::middleware(['auth', 'role:student,instructor,admin'])
         Route::get('/', [StudentDashboard::class, 'index'])->name('index');
         Route::get('/my-courses', [StudentDashboard::class, 'myCourses'])->name('courses');
         Route::get('/certificates', [StudentDashboard::class, 'certificates'])->name('certificates');
+        Route::get('/certificates/{certificate}/download', [CertificateController::class, 'download'])->name('certificates.download');
+        Route::get('/certificates/{certificate}/preview', [CertificateController::class, 'preview'])->name('certificates.preview');
+        Route::post('/certificates/{course}/generate', [CertificateController::class, 'generate'])->name('certificates.generate');
         Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
 
         // Learning & Progress
@@ -77,13 +92,12 @@ Route::middleware(['auth', 'role:student,instructor,admin'])
         // Review Course
         Route::post('/course/review/{course}', [EnrollmentController::class, 'submitReview'])->name('course.review.submit');
 
-        // Profile Settings (Hanya satu set rute di sini)
+        // Profile Settings
         Route::get('/profile', [StudentDashboard::class, 'profile'])->name('profile');
         Route::post('/profile/update', [StudentDashboard::class, 'updateProfile'])->name('profile.update');
         Route::post('/profile/password', [StudentDashboard::class, 'updatePassword'])->name('profile.password');
 
-        Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
-        Route::post('/wishlist/toggle/{course}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
+        // Wishlist (delete only — toggle is at standalone route above)
         Route::delete('/wishlist/{id}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
 
     });
@@ -207,4 +221,4 @@ Route::patch('/admin/reviews/{review}/toggle', [App\Http\Controllers\Admin\Revie
 // Analytics
 Route::get('/admin/analytics', [App\Http\Controllers\Admin\AnalyticsController::class, 'index'])->name('admin.analytics');
 
-Route::get('/admin/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');  
+Route::get('/admin/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');

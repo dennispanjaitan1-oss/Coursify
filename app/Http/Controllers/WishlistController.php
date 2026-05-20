@@ -69,7 +69,10 @@ class WishlistController extends Controller
     $user = Auth::user();
 
     if (!$user) {
-        return response()->json(['error' => 'Unauthorized'], 401);
+        if ($request->expectsJson()) {
+            return response()->json(['error' => 'Unauthorized', 'redirect' => route('login')], 401);
+        }
+        return redirect()->route('login');
     }
 
     // Validasi course benar-benar ada di database
@@ -77,13 +80,22 @@ class WishlistController extends Controller
 
     $existing = Wishlist::where('user_id', $user->id)
         ->where('course_id', $course->id)
+        ->withTrashed()
         ->first();
 
     if ($existing) {
+        if ($existing->trashed()) {
+            // Restore jika sebelumnya soft-deleted
+            $existing->restore();
+            return response()->json([
+                'status'  => 'added',
+                'message' => 'Ditambahkan ke wishlist',
+            ]);
+        }
         $existing->delete();
         return response()->json([
             'status'  => 'removed',
-            'message' => 'Removed from wishlist',
+            'message' => 'Dihapus dari wishlist',
         ]);
     }
 
@@ -94,26 +106,33 @@ class WishlistController extends Controller
 
     return response()->json([
         'status'  => 'added',
-        'message' => 'Added to wishlist',
+        'message' => 'Ditambahkan ke wishlist',
     ]);
 }
 
     /**
-     * Remove from wishlist (form submit)
+     * Remove from wishlist (AJAX fetch atau form submit)
      */
-    // GANTI dengan ini:
-public function destroy($id)
-{
-    $user = Auth::user();
+    public function destroy(Request $request, $id)
+    {
+        $user = Auth::user();
 
-    $wishlist = Wishlist::where('id', $id)
-        ->where('user_id', $user->id)
-        ->firstOrFail();
+        $wishlist = Wishlist::where('id', $id)
+            ->where('user_id', $user->id)
+            ->firstOrFail();
 
-    $wishlist->delete();
+        $wishlist->delete();
 
-    return redirect()
-        ->route('student.wishlist')
-        ->with('success', 'Course removed from wishlist');
-}
+        // Kalau request dari fetch (AJAX), return JSON
+        if ($request->expectsJson() || $request->hasHeader('X-HTTP-Method-Override')) {
+            return response()->json([
+                'status'  => 'deleted',
+                'message' => 'Kursus berhasil dihapus dari wishlist',
+            ]);
+        }
+
+        return redirect()
+            ->route('student.wishlist')
+            ->with('success', 'Kursus berhasil dihapus dari wishlist');
+    }
 }

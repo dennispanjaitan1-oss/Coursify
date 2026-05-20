@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;400;500;600&display=swap" rel="stylesheet">
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 <style>
 /* ════════════════════════════════════════════════════════════
@@ -1681,7 +1681,7 @@ body {
                      alt="{{ $item->course->title }}">
               @else
                 <div class="course-thumb-fallback"
-                     style="background: linear-gradient(135deg, hsl({{ (ord($item->course->title[0]) * 7) % 360 }},70%,60%) 0%, hsl({{ (ord($item->course->title[0]) * 7 + 60) % 360 }},70%,50%) 100%);">
+                     style="background: linear-gradient(135deg, hsl({{ (ord(!empty($item->course->title) ? $item->course->title[0] : 'C') * 7) % 360 }},70%,60%) 0%, hsl({{ (ord(!empty($item->course->title) ? $item->course->title[0] : 'C') * 7 + 60) % 360 }},70%,50%) 100%);">
                   📚
                 </div>
               @endif

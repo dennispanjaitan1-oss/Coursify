@@ -572,8 +572,10 @@ section { position: relative; z-index: 1; }
 @endphp
 
 <button class="btn-wishlist {{ $isWishlisted ? 'active' : '' }}"
-    onclick="toggleWishlistBtn(this, {{ $course->id }})">
-    {{ $isWishlisted ? '❤️ Added to Wishlist' : '🤍 Add to Wishlist' }}
+    onclick="toggleWishlistBtn(this, {{ $course->id }})"
+    aria-label="{{ $isWishlisted ? 'Hapus dari wishlist' : 'Simpan ke wishlist' }}">
+    <i class="{{ $isWishlisted ? 'fa-solid' : 'fa-regular' }} fa-heart" style="margin-right:6px;"></i>
+    {{ $isWishlisted ? 'Tersimpan di Wishlist' : 'Simpan ke Wishlist' }}
 </button>
 
                     <div class="guarantee-box">
@@ -938,22 +940,41 @@ function toggleAllSections() {
 
 function toggleWishlistBtn(btn, courseId) {
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
-    if (!csrfToken) { window.location.href = '/login'; return; }
-    
+    if (!csrfToken) {
+        window.location.href = '/login';
+        return;
+    }
+
     btn.disabled = true;
-    
+    const wasActive = btn.classList.contains('active');
+
     fetch(`/wishlist/toggle/${courseId}`, {
         method: 'POST',
         headers: { 'X-CSRF-TOKEN': csrfToken, 'Accept': 'application/json' },
     })
-    .then(res => res.json())
-    .then(data => {
-        btn.disabled = false;
-        const added = data.status === 'added';
-        btn.classList.toggle('active', added);
-        btn.innerHTML = added ? '❤️ Added to Wishlist' : '🤍 Add to Wishlist';
+    .then(res => {
+        if (res.status === 401) {
+            return res.json().then(d => { window.location.href = d.redirect || '/login'; });
+        }
+        return res.json().then(data => {
+            btn.disabled = false;
+            const added = data.status === 'added';
+            btn.classList.toggle('active', added);
+            btn.innerHTML = added
+                ? '<i class="fa-solid fa-heart" style="margin-right:6px;"></i> Tersimpan di Wishlist'
+                : '<i class="fa-regular fa-heart" style="margin-right:6px;"></i> Simpan ke Wishlist';
+
+            // Feedback singkat
+            const orig = btn.innerHTML;
+            btn.style.transition = 'transform 0.2s cubic-bezier(0.34,1.2,0.64,1)';
+            btn.style.transform = 'scale(1.04)';
+            setTimeout(() => { btn.style.transform = 'scale(1)'; }, 200);
+        });
     })
-    .catch(() => { btn.disabled = false; });
+    .catch(() => {
+        btn.disabled = false;
+        btn.classList.toggle('active', wasActive);
+    });
 }
 
 document.querySelectorAll('.share-btn').forEach(btn => {

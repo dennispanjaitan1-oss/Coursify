@@ -1027,12 +1027,6 @@ body::before {
 
         {{-- Courses Grid --}}
         <div class="courses-grid">
-@php
-    // Ambil slug dari object course
-    $courseSlug = $course->slug ?? 'course-error';
-    
-    // Pastikan rute student.learn mendapatkan slug bukan ID
-@endphp
             @forelse($enrollments as $enrollment)
                 @php
                     // Handle both Eloquent & dummy data

@@ -834,7 +834,7 @@ body::before {
 </section>
 
 {{-- MAIN CONTENT --}}
-<section class="main-section" x-data="{ activeTab: 'profile' }">
+<section class="main-section" x-data="{ activeTab: '{{ $errors->has('current_password') || $errors->has('password') ? 'security' : 'profile' }}' }">
     <div class="container">
         <div class="layout-grid">
 

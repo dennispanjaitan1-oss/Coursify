@@ -795,8 +795,9 @@
 
 <button class="course-wishlist {{ $isWishlisted ? 'active' : '' }}"
     onclick="event.preventDefault(); event.stopPropagation(); toggleWishlist(this, {{ $course->id }});"
-    title="{{ $isWishlisted ? 'Remove from wishlist' : 'Add to wishlist' }}">
-    {{ $isWishlisted ? '❤️' : '🤍' }}
+    title="{{ $isWishlisted ? 'Hapus dari wishlist' : 'Simpan ke wishlist' }}"
+    aria-label="{{ $isWishlisted ? 'Hapus dari wishlist' : 'Simpan ke wishlist' }}">
+    <i class="{{ $isWishlisted ? 'fa-solid' : 'fa-regular' }} fa-heart"></i>
 </button>
                                 @endauth
                                 @if($course->thumbnail_url)
@@ -926,21 +927,66 @@ function toggleCat(id) {
 // ── Wishlist toggle (AJAX, tanpa reload) ──────────────
 function toggleWishlist(btn, courseId) {
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
-    if (!csrfToken) return;
+    if (!csrfToken) {
+        window.location.href = '/login';
+        return;
+    }
+    btn.disabled = true;
+    const wasActive = btn.classList.contains('active');
     fetch(`/wishlist/toggle/${courseId}`, {
         method: 'POST',
         headers: { 'X-CSRF-TOKEN': csrfToken, 'Accept': 'application/json' },
     })
-    .then(res => res.json())
-    .then(data => {
-        const added = data.status === 'added';
-        btn.classList.toggle('active', added);
-        btn.textContent = added ? '❤️' : '🤍';
+    .then(res => {
+        if (res.status === 401) {
+            return res.json().then(d => { window.location.href = d.redirect || '/login'; });
+        }
+        return res.json().then(data => {
+            btn.disabled = false;
+            const added = data.status === 'added';
+            btn.classList.toggle('active', added);
+            btn.innerHTML = added
+                ? '<i class="fa-solid fa-heart"></i>'
+                : '<i class="fa-regular fa-heart"></i>';
+            btn.title = added ? 'Hapus dari wishlist' : 'Simpan ke wishlist';
+
+            // Tampilkan mini-toast konfirmasi
+            showWishlistToast(added
+                ? 'Ditambahkan ke wishlist ❤️'
+                : 'Dihapus dari wishlist');
+        });
     })
     .catch(() => {
-        btn.classList.toggle('active');
-        btn.textContent = btn.classList.contains('active') ? '❤️' : '🤍';
+        btn.disabled = false;
+        btn.classList.toggle('active', wasActive); // rollback
     });
+}
+
+// Mini toast untuk konfirmasi wishlist
+function showWishlistToast(msg) {
+    let toast = document.getElementById('wl-toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'wl-toast';
+        toast.style.cssText = `
+            position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px);
+            background:#1A1825; color:white; padding:10px 20px; border-radius:100px;
+            font-size:13px; font-weight:600; z-index:9999; opacity:0;
+            transition:all 0.3s cubic-bezier(0.34,1.2,0.64,1); pointer-events:none;
+            font-family:'Plus Jakarta Sans',sans-serif;
+        `;
+        document.body.appendChild(toast);
+    }
+    toast.textContent = msg;
+    requestAnimationFrame(() => {
+        toast.style.opacity = '1';
+        toast.style.transform = 'translateX(-50%) translateY(0)';
+    });
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(-50%) translateY(20px)';
+    }, 2500);
 }
 
 // ── Price slider display ───────────────────────────────

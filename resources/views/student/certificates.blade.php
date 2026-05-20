@@ -604,57 +604,7 @@ body::before {
         {{-- Certificates Grid --}}
         <div class="certificates-grid">
 
-            @php
-                // Fallback dummy data
-                $defaultCerts = collect([
-                    (object)[
-                        'id' => 1,
-                        'certificate_number' => 'CRS-2025-A7X9K2',
-                        'issued_at' => \Carbon\Carbon::parse('2025-01-10'),
-                        'course' => (object)[
-                            'title' => 'Fullstack Web Development with Laravel 12',
-                            'slug' => 'fullstack-web-development-with-laravel-12',
-                            'thumb' => 1,
-                            'category' => (object)['name' => 'Programming'],
-                            'instructor_name' => 'Budi Santoso',
-                            'initial' => 'B',
-                            'duration_weeks' => 40,
-                        ]
-                    ],
-                    (object)[
-                        'id' => 2,
-                        'certificate_number' => 'CRS-2024-M3Z8N5',
-                        'issued_at' => \Carbon\Carbon::parse('2024-12-22'),
-                        'course' => (object)[
-                            'title' => 'UI/UX Design Fundamentals',
-                            'slug' => 'ui-ux-design-fundamentals',
-                            'thumb' => 2,
-                            'category' => (object)['name' => 'Design'],
-                            'instructor_name' => 'Sari Dewi',
-                            'initial' => 'S',
-                            'duration_weeks' => 25,
-                        ]
-                    ],
-                    (object)[
-                        'id' => 3,
-                        'certificate_number' => 'CRS-2024-P9L4Q1',
-                        'issued_at' => \Carbon\Carbon::parse('2024-11-15'),
-                        'course' => (object)[
-                            'title' => 'Python for Data Analysis',
-                            'slug' => 'python-for-data-analysis',
-                            'thumb' => 3,
-                            'category' => (object)['name' => 'Data Science'],
-                            'instructor_name' => 'Rio Ahmad',
-                            'initial' => 'R',
-                            'duration_weeks' => 20,
-                        ]
-                    ],
-                ]);
-
-                $displayCerts = ($certificates->count() > 0) ? $certificates : $defaultCerts;
-            @endphp
-
-            @forelse($displayCerts as $index => $cert)
+            @forelse($certificates as $index => $cert)
                 @php
                     $course = $cert->course ?? null;
                     if (!$course) continue;
@@ -751,9 +701,22 @@ body::before {
 
                         {{-- Actions --}}
                         <div class="cert-actions">
-                            <button class="btn-cert-primary" onclick="downloadCert({{ $cert->id ?? $index }})">
-                                <i class="fa-solid fa-download"></i> Download PDF
-                            </button>
+                            @if($cert instanceof \App\Models\Certificate)
+                                <a class="btn-cert-primary btn-download-pdf"
+                                   href="{{ route('student.certificates.download', ['certificate' => $cert->id]) }}"
+                                   onclick="handleDownload(event, this)"
+                                   data-cert-id="{{ $cert->id }}">
+                                    <i class="fa-solid fa-download"></i>
+                                    <span class="btn-label">Download PDF</span>
+                                </a>
+                            @else
+                                <button class="btn-cert-primary btn-cert-disabled"
+                                        onclick="showToast('Ini hanyalah contoh tampilan. Selesaikan kursus untuk mendapatkan sertifikat nyata.', 'info')"
+                                        title="Selesaikan kursus untuk mendapatkan sertifikat">
+                                    <i class="fa-solid fa-lock"></i>
+                                    <span class="btn-label">Download PDF</span>
+                                </button>
+                            @endif
                             <button class="btn-cert-share" onclick="shareCert(this, '{{ $courseTitle }}', '{{ $certNumber }}')" title="Share">
                                 <i class="fa-solid fa-share-nodes"></i> 
                             </button>
@@ -786,7 +749,7 @@ body::before {
         </div>
 
         {{-- Pro Tip Card --}}
-        @if($displayCerts->count() > 0)
+        @if($certificates->count() > 0)
             <div class="tip-card">
                 <div class="tip-icon"><i class="fa-solid fa-lightbulb"></i></div>
                 <div class="tip-content">
@@ -1191,6 +1154,14 @@ body::before {
     box-shadow: 0 4px 12px rgba(212,160,23,0.3);
 }
 
+.btn-cert-disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+.btn-cert-disabled:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
 .btn-cert-primary:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(212,160,23,0.4);
@@ -1428,13 +1399,34 @@ body::before {
         });
     }
 
-    // Download certificate (placeholder)
-    function downloadCert(certId) {
-        showToast('📥 Preparing your certificate for download...', 'info');
-        // TODO: Integrate dengan dompdf untuk generate PDF real
+    // Download certificate — klik anchor, tampilkan loading state
+    function handleDownload(e, anchor) {
+        const label = anchor.querySelector('.btn-label');
+        const icon  = anchor.querySelector('i');
+
+        // Cegah double-click
+        if (anchor.dataset.downloading === '1') { e.preventDefault(); return; }
+        anchor.dataset.downloading = '1';
+
+        const origLabel = label ? label.textContent : 'Download PDF';
+        const origIcon  = icon  ? icon.className    : 'fa-solid fa-download';
+
+        if (label) label.textContent = 'Menyiapkan…';
+        if (icon)  { icon.className = 'fa-solid fa-spinner fa-spin'; }
+        anchor.style.opacity = '0.75';
+        anchor.style.pointerEvents = 'none';
+
+        showToast('📥 Menyiapkan sertifikat PDF kamu…', 'info');
+
+        // Reset tampilan setelah 4 detik (download sudah mulai)
         setTimeout(() => {
-            showToast('✓ Certificate downloaded successfully!', 'success');
-        }, 1500);
+            if (label) label.textContent = origLabel;
+            if (icon)  icon.className    = origIcon;
+            anchor.style.opacity = '';
+            anchor.style.pointerEvents = '';
+            anchor.dataset.downloading = '0';
+            showToast('✅ Sertifikat berhasil diunduh!', 'success');
+        }, 4000);
     }
 
     // Share certificate
