@@ -198,6 +198,7 @@ class CourseController extends Controller
                     'instructors',
                     'sections.lessons',
                     'reviews.user',
+                    'syllabus',
                 ])
                 ->withCount('enrollments')
                 ->withAvg('reviews', 'rating')
