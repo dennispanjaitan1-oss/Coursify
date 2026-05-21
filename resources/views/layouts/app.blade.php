@@ -625,14 +625,6 @@
 {{-- ══════════════════════════════════════════════════════════ --}}
 <div class="navbar-wrap" id="mainNavbar">
 
-    {{-- ── PROMO BANNER ──────────────────────────────────────── --}}
-    <div id="promo-bar" class="promo-bar">
-        <span class="promo-dot"></span>
-        Mulai belajar hari ini! Dapatkan <strong>30% off</strong> untuk semua kursus premium hingga 31 Mei.
-        Gunakan kode <span class="promo-code">BELAJAR30</span>.
-        <a href="#pricing">Pelajari lebih lanjut </a>
-        <button class="promo-close" onclick="closePromoBanner()" aria-label="Tutup banner">×</button>
-    </div>
 
     {{-- ── NAVBAR PILL ────────────────────────────────────────── --}}
     <div class="navbar-inner">
@@ -814,71 +806,61 @@
                 {{-- ▸ Kolom 1: Jelajahi Topik --}}
                 <div class="mega-col">
                     <div class="mega-col-title">Jelajahi Topik</div>
-                    <a href="{{ route('courses.index') }}?category=ai" class="mega-link">
-                        Kecerdasan Buatan <span class="mega-badge badge-hot">Populer</span>
-                    </a>
-                    <a href="{{ route('courses.index') }}?category=programming" class="mega-link">Pemrograman</a>
-                    <a href="{{ route('courses.index') }}?category=data-science" class="mega-link">Data Science</a>
-                    <a href="{{ route('courses.index') }}?category=design" class="mega-link">Desain UI/UX</a>
-                    <a href="{{ route('courses.index') }}?category=business" class="mega-link">Bisnis & Manajemen</a>
-                    <a href="{{ route('courses.index') }}?category=cybersecurity" class="mega-link">
-                        Keamanan Siber <span class="mega-badge badge-new">Baru</span>
-                    </a>
-                    <a href="{{ route('courses.index') }}?category=languages" class="mega-link">Bahasa Asing</a>
+                    @forelse($navBrowseTopics as $topic)
+                        <a href="{{ route('courses.index') }}?category={{ $topic['slug'] }}" class="mega-link">{{ $topic['name'] }}</a>
+                    @empty
+                        <p class="mega-empty">Tidak ada topik tersedia</p>
+                    @endforelse
                     <a href="{{ route('courses.index') }}" class="mega-link mega-link-cta">Lihat semua topik </a>
                     <div class="mega-group-label">Untuk Pemula</div>
-                    <a href="{{ route('courses.index') }}?q=python+pemula" class="mega-link">Python untuk Pemula</a>
-                    <a href="{{ route('courses.index') }}?q=excel+pemula" class="mega-link">Excel untuk Pemula</a>
-                    <a href="{{ route('courses.index') }}?q=web+dasar" class="mega-link">Web Dev Dasar</a>
+                    @foreach($navBeginnerTopics as $beginner)
+                        <a href="{{ route('courses.index') }}?q={{ urlencode($beginner['query']) }}" class="mega-link">{{ $beginner['name'] }}</a>
+                    @endforeach
                 </div>
 
                 {{-- ▸ Kolom 2: Raih Sertifikat --}}
                 <div class="mega-col">
                     <div class="mega-col-title">Raih Sertifikat</div>
-                    <a href="{{ route('courses.index') }}?type=certificate&topic=ai" class="mega-link">Artificial Intelligence</a>
-                    <a href="{{ route('courses.index') }}?type=certificate&topic=data" class="mega-link">Data Analysis & Statistik</a>
-                    <a href="{{ route('courses.index') }}?type=certificate&topic=project" class="mega-link">Manajemen Proyek</a>
-                    <a href="{{ route('courses.index') }}?type=certificate&topic=finance" class="mega-link">Keuangan & Akuntansi</a>
-                    <a href="{{ route('courses.index') }}?type=certificate&topic=marketing" class="mega-link">Digital Marketing</a>
+                    @forelse($navCertificatePrograms as $cert)
+                        <a href="{{ route('courses.index') }}?q={{ urlencode($cert['name']) }}" class="mega-link">{{ $cert['name'] }}</a>
+                    @empty
+                        <p class="mega-empty">Tidak ada sertifikat tersedia</p>
+                    @endforelse
                     <a href="{{ route('courses.index') }}?type=certificate" class="mega-link mega-link-cta">Lihat semua sertifikat </a>
                     <div class="mega-group-label">Populer</div>
-                    <a href="{{ route('courses.index') }}?q=ai+3+bulan" class="mega-link">AI dalam 3 bulan</a>
-                    <a href="{{ route('courses.index') }}?q=data+analyst" class="mega-link">Data Analyst Bootcamp</a>
-                    <a href="{{ route('courses.index') }}?q=fullstack+laravel" class="mega-link">Fullstack Laravel</a>
-                    <a href="{{ route('courses.index') }}?q=ui+ux+figma" class="mega-link">
-                        UI/UX dengan Figma <span class="mega-badge badge-free">Free</span>
-                    </a>
+                    @foreach($navPopularCertificateSearches as $search)
+                        <a href="{{ route('courses.index') }}?q={{ urlencode($search['query']) }}" class="mega-link">{{ $search['name'] }}</a>
+                    @endforeach
                 </div>
 
                 {{-- ▸ Kolom 3: Program Gelar --}}
                 <div class="mega-col">
                     <div class="mega-col-title">Program Gelar</div>
-                    <a href="{{ route('courses.index') }}?type=program&level=bachelor" class="mega-link">Program Sarjana (S1)</a>
-                    <a href="{{ route('courses.index') }}?type=program&level=master" class="mega-link">Program Magister (S2)</a>
-                    <a href="{{ route('courses.index') }}?type=program&level=diploma" class="mega-link">Program Diploma (D3/D4)</a>
+                    @forelse($navDegreePrograms as $degree)
+                        <a href="{{ route('courses.index') }}?q={{ urlencode($degree['name']) }}" class="mega-link">{{ $degree['name'] }}</a>
+                    @empty
+                        <p class="mega-empty">Tidak ada program gelar tersedia</p>
+                    @endforelse
                     <a href="{{ route('courses.index') }}?type=program" class="mega-link mega-link-cta">Lihat semua program </a>
                     <div class="mega-group-label">Populer</div>
-                    <a href="{{ route('courses.index') }}?q=mba+online" class="mega-link">MBA Online</a>
-                    <a href="{{ route('courses.index') }}?q=master+data+science" class="mega-link">Master Data Science</a>
-                    <a href="{{ route('courses.index') }}?q=computer+science+master" class="mega-link">Master Ilmu Komputer</a>
-                    <a href="{{ route('courses.index') }}?q=healthcare+master" class="mega-link">Master Kesehatan</a>
-                    <a href="{{ route('courses.index') }}?q=teknik+informatika" class="mega-link">S1 Teknik Informatika</a>
+                    @foreach($navCareerPaths as $career)
+                        <a href="{{ route('courses.index') }}?q={{ urlencode($career['query']) }}" class="mega-link">{{ $career['name'] }}</a>
+                    @endforeach
                 </div>
 
                 {{-- ▸ Kolom 4: Universitas & Karir --}}
                 <div class="mega-col">
                     <div class="mega-col-title">Universitas Partner</div>
-                    <a href="{{ route('courses.index') }}?university=ui" class="mega-link">Harvard University</a>
-                    <a href="{{ route('courses.index') }}?university=itb" class="mega-link">Institut Teknologi Bandung</a>
-                    <a href="{{ route('courses.index') }}?university=ugm" class="mega-link">Universitas Gadjah Mada</a>
-                    <a href="{{ route('courses.index') }}?university=its" class="mega-link">ITS Surabaya</a>
-                    <a href="{{ route('courses.index') }}?university=unair" class="mega-link">Universitas Airlangga</a>
+                    @forelse($navPartnerInstitutions as $inst)
+                        <a href="{{ route('universities.show', $inst['slug']) }}" class="mega-link">{{ $inst['name'] }}</a>
+                    @empty
+                        <p class="mega-empty">Tidak ada universitas tersedia</p>
+                    @endforelse
                     <a href="{{ route('universities') }}" class="mega-link mega-link-cta">Lihat semua universitas </a>
                     <div class="mega-group-label">Jalur Karir</div>
-                    <a href="{{ route('courses.index') }}?career=software-engineer" class="mega-link">Software Engineer</a>
-                    <a href="{{ route('courses.index') }}?career=data-scientist" class="mega-link">Data Scientist</a>
-                    <a href="{{ route('courses.index') }}?career=ui-ux-designer" class="mega-link">UI/UX Designer</a>
-                    <a href="{{ route('courses.index') }}?career=cybersecurity-analyst" class="mega-link">Cybersecurity Analyst</a>
+                    @foreach($navCareerPaths as $career)
+                        <a href="{{ route('courses.index') }}?q={{ urlencode($career['query']) }}" class="mega-link">{{ $career['name'] }}</a>
+                    @endforeach
                 </div>
 
             </div>

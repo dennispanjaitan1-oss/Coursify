@@ -342,6 +342,192 @@
     .cat-name { font-family: var(--font-serif); font-size: 16px; margin-bottom: 2px; }
     .cat-count { font-size: 11px; color: var(--muted); font-weight: 500; }
 
+    /* ═══ EXPLORE SECTION (edX-style) ═══ */
+    .explore-section { padding: 60px 20px; }
+    .subject-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+        margin-bottom: 32px;
+    }
+    .subject-card {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        border-radius: 22px;
+        border: 1px solid rgba(123,111,232,0.16);
+        background: rgba(255,255,255,0.95);
+        padding: 18px 18px;
+        text-decoration: none;
+        color: var(--text);
+        transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .subject-card:hover {
+        transform: translateY(-3px);
+        border-color: rgba(123,111,232,0.3);
+        box-shadow: 0 18px 40px rgba(91,88,137,0.08);
+    }
+    .subject-card-icon {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        border-radius: 14px;
+        display: grid;
+        place-items: center;
+        background: rgba(123,111,232,0.08);
+        color: var(--purple);
+        font-size: 18px;
+    }
+    .subject-card-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 4px;
+    }
+    .subject-card-meta {
+        font-size: 12px;
+        color: var(--muted);
+    }
+    .explore-meta-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 18px;
+        margin-bottom: 28px;
+        color: var(--text-soft);
+        font-size: 14px;
+    }
+    .explore-meta-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 11px 18px;
+        border-radius: 999px;
+        border: 1px solid rgba(123,111,232,0.25);
+        color: var(--purple);
+        text-decoration: none;
+        font-weight: 600;
+        transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .explore-meta-link:hover {
+        background: rgba(123,111,232,0.08);
+        transform: translateY(-1px);
+    }
+    .explore-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 24px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    .explore-column {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        border-radius: 24px;
+        border: 1px solid rgba(123,111,232,0.14);
+        background: rgba(255,255,255,0.95);
+        padding: 22px;
+    }
+    .explore-col-header {
+        display: grid;
+        gap: 8px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .explore-col-title {
+        font-family: var(--font-serif);
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text);
+        margin: 0;
+    }
+    .explore-col-subtitle {
+        font-size: 13px;
+        color: var(--muted);
+        margin: 0;
+        line-height: 1.5;
+    }
+    .explore-col-links {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .explore-link {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 0;
+        text-decoration: none;
+        color: var(--text-soft);
+        font-size: 14px;
+        transition: color 0.2s ease, transform 0.2s ease;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+    .explore-link:last-child {
+        border-bottom: none;
+    }
+    .explore-link:hover {
+        color: var(--purple);
+        transform: translateX(4px);
+    }
+    .explore-link-cta {
+        color: var(--purple);
+        font-weight: 700;
+    }
+    .explore-empty {
+        color: var(--muted);
+        font-size: 13px;
+        margin: 0;
+    }
+    .beginner-bar {
+        margin-top: 28px;
+        padding: 20px 22px;
+        border-radius: 20px;
+        background: rgba(123,111,232,0.07);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        align-items: center;
+    }
+    .beginner-label {
+        font-weight: 700;
+        color: var(--text);
+        min-width: 180px;
+    }
+    .beginner-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        flex: 1;
+    }
+    .beginner-chip {
+        display: inline-flex;
+        align-items: center;
+        padding: 10px 16px;
+        border-radius: 999px;
+        border: 1px solid rgba(123,111,232,0.18);
+        background: white;
+        color: var(--text);
+        text-decoration: none;
+        font-size: 13px;
+        transition: all 0.2s ease;
+    }
+    .beginner-chip:hover {
+        background: rgba(123,111,232,0.1);
+        color: var(--purple);
+    }
+    @media (max-width: 1024px) {
+        .subject-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .explore-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .explore-meta-row { flex-direction: column; align-items: stretch; }
+    }
+    @media (max-width: 768px) {
+        .explore-section { padding: 40px 20px; }
+        .subject-grid, .explore-grid { grid-template-columns: 1fr; }
+        .explore-meta-row { gap: 12px; }
+    }
+
     /* ═══ COURSES ═══ */
     .courses-grid {
         display: grid;
@@ -449,27 +635,684 @@
         .mockup-stage { height: auto; }
         .trust-indicators { flex-direction: column; gap: 10px; }
     }
+    /* ═══ PROMO BANNER SLIDER ═══ */
+.promo-bar {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    height: 460px;
+    background: #0f0c29;
+}
+.promo-slides { position: relative; width: 100%; height: 100%; }
+.promo-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.7s ease;
+    pointer-events: none;
+}
+.promo-slide.active { opacity: 1; pointer-events: all; }
+.promo-slide-bg { position: absolute; inset: 0; z-index: 0; }
+.promo-slide-content {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 50px 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+    height: 100%;
+}
+.promo-slide-left { color: white; }
+.promo-eyebrow {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 12px;
+}
+.promo-slide-title {
+    font-family: var(--font-serif);
+    font-size: clamp(26px, 3vw, 40px);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+    color: white;
+}
+.promo-slide-title em { font-style: italic; color: #b8aef7; }
+.promo-slide-desc {
+    font-size: 14px;
+    color: rgba(255,255,255,0.72);
+    line-height: 1.6;
+    margin-bottom: 24px;
+    max-width: 400px;
+}
+.promo-code {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.28);
+    padding: 2px 9px;
+    border-radius: 6px;
+    font-family: monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: #ffd700;
+    letter-spacing: 0.05em;
+}
+.promo-slide-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.promo-btn-primary {
+    background: white;
+    color: #1a1a2e;
+    padding: 10px 22px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-block;
+}
+.promo-btn-primary:hover { background: #f0ecff; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+.promo-btn-outline {
+    border: 1.5px solid rgba(255,255,255,0.35);
+    color: white;
+    padding: 10px 22px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-block;
+}
+.promo-btn-outline:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.65); transform: translateY(-2px); }
+
+/* Promo Course Cards */
+.promo-slide-right {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    justify-content: flex-end;
+}
+.promo-course-card {
+    background: rgba(255,255,255,0.97);
+    border-radius: 18px;
+    overflow: hidden;
+    width: 220px;
+    flex-shrink: 0;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.25), 0 0 0 1px rgba(123,111,232,0.06);
+    position: relative;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none;
+    color: var(--text);
+    display: block;
+}
+.promo-course-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 28px 60px rgba(0,0,0,0.35), 0 0 0 1px rgba(123,111,232,0.15);
+}
+.promo-card-offset { margin-top: 36px; }
+
+.promo-card-thumb {
+    aspect-ratio: 16/10;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #667EEA, #764BA2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.promo-card-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+.promo-course-card:hover .promo-card-thumb img {
+    transform: scale(1.05);
+}
+.promo-thumb-gradient {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--navy), #2D4D7A);
+}
+.promo-card-badge {
+    position: absolute;
+    top: 10px; left: 10px;
+    z-index: 2;
+    padding: 4px 10px;
+    border-radius: 100px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    backdrop-filter: blur(10px);
+}
+.promo-card-badge.badge-free { background: rgba(0,200,150,0.9); color: white; }
+.promo-card-badge.badge-new { background: rgba(123,111,232,0.92); color: white; }
+.promo-card-badge.badge-bestseller { background: rgba(255,200,50,0.95); color: #5A3A00; }
+.promo-card-badge.badge-cert { background: rgba(247, 151, 30, 0.95); color: white; }
+
+.promo-card-body { padding: 14px 14px 16px; }
+.promo-card-category {
+    font-size: 9px;
+    color: var(--purple);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+.promo-card-title {
+    font-family: var(--font-serif);
+    font-size: 14px;
+    line-height: 1.3;
+    margin-bottom: 5px;
+    color: var(--text);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    letter-spacing: -0.01em;
+}
+.promo-card-instructor {
+    font-size: 10px;
+    color: var(--text-soft);
+    margin-bottom: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.promo-card-meta {
+    display: flex;
+    gap: 8px;
+    font-size: 10px;
+    color: var(--muted);
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+.promo-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.promo-card-price {
+    font-family: var(--font-serif);
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--text);
+    letter-spacing: -0.01em;
+}
+.promo-price-free {
+    color: var(--purple);
+    font-weight: 600;
+    font-style: italic;
+}
+.promo-card-arrow {
+    font-size: 16px;
+    color: var(--purple);
+    transition: transform 0.3s;
+    opacity: 0.6;
+}
+.promo-course-card:hover .promo-card-arrow {
+    transform: translateX(4px);
+    opacity: 1;
+}
+
+/* Dots */
+.promo-dots {
+    position: absolute;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+}
+.promo-dot-btn {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.45);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s;
+    padding: 0;
+}
+.promo-dot-btn.active { background: white; border-color: white; width: 26px; border-radius: 100px; }
+
+/* Arrows */
+.promo-arrow {
+    position: absolute;
+    top: 50%; transform: translateY(-50%);
+    background: rgba(255,255,255,0.1);
+    border: 1.5px solid rgba(255,255,255,0.2);
+    color: white;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    font-size: 15px;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.2s;
+    backdrop-filter: blur(10px);
+    display: flex; align-items: center; justify-content: center;
+}
+.promo-arrow:hover { background: rgba(255,255,255,0.22); transform: translateY(-50%) scale(1.05); }
+.promo-arrow-left { left: 20px; }
+.promo-arrow-right { right: 56px; }
+
+/* Close */
+.promo-close {
+    position: absolute;
+    top: 14px; right: 14px;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: rgba(255,255,255,0.65);
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    font-size: 17px;
+    cursor: pointer;
+    z-index: 20;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    line-height: 1;
+}
+.promo-close:hover { background: rgba(255,255,255,0.22); color: white; }
+
+@media (max-width: 768px) {
+    .promo-bar { height: auto; }
+    .promo-slide-content { grid-template-columns: 1fr; padding: 36px 20px 56px; gap: 20px; }
+    .promo-slide-right { justify-content: center; }
+    .promo-course-card { width: 160px; }
+    .promo-card-thumb { aspect-ratio: 16/10; }
+    .promo-card-body { padding: 10px 10px 12px; }
+    .promo-card-title { font-size: 12px; }
+    .promo-card-meta { gap: 6px; font-size: 9px; margin-bottom: 8px; padding-bottom: 8px; }
+    .promo-card-price { font-size: 13px; }
+    .promo-arrow-right { right: 20px; }
+}
 </style>
 @endpush
 
 @section('content')
 
+{{-- ── PROMO BANNER SLIDER ─────────────────────────────── --}}
+@php
+    $displayCourses = [];
+    $fallbacks = [
+        [
+            'slug' => '#',
+            'title' => 'Fullstack Laravel & React',
+            'thumbnail_url' => null,
+            'category' => 'Technology',
+            'instructor' => 'Coursify Team',
+            'rating' => '4.9',
+            'students' => '1.5K',
+            'duration' => '40 jam',
+            'price' => 'Rp 299.000',
+            'is_free' => false,
+            'badge' => 'Bestseller',
+            'badge_type' => 'bestseller',
+            'icon' => '💻'
+        ],
+        [
+            'slug' => '#',
+            'title' => 'Python for Data Science',
+            'thumbnail_url' => null,
+            'category' => 'Data Science',
+            'instructor' => 'Coursify Team',
+            'rating' => '4.9',
+            'students' => '2.3K',
+            'duration' => '20 jam',
+            'price' => 'Free',
+            'is_free' => true,
+            'badge' => 'Sertifikat',
+            'badge_type' => 'cert',
+            'icon' => '📊'
+        ],
+        [
+            'slug' => '#',
+            'title' => 'UI/UX Design Fundamentals',
+            'thumbnail_url' => null,
+            'category' => 'Design',
+            'instructor' => 'Sari Dewi · UX Lead',
+            'rating' => '4.8',
+            'students' => '980',
+            'duration' => '25 jam',
+            'price' => 'Rp 199.000',
+            'is_free' => false,
+            'badge' => 'Baru',
+            'badge_type' => 'new',
+            'icon' => '🎨'
+        ],
+        [
+            'slug' => '#',
+            'title' => 'Startup dari Nol',
+            'thumbnail_url' => null,
+            'category' => 'Business',
+            'instructor' => 'Budi Hartono · Founder',
+            'rating' => '4.8',
+            'students' => '3.1K',
+            'duration' => '18 jam',
+            'price' => 'Free',
+            'is_free' => true,
+            'badge' => 'Gratis',
+            'badge_type' => 'free',
+            'icon' => '🚀'
+        ],
+        [
+            'slug' => '#',
+            'title' => 'Digital Marketing Mastery',
+            'thumbnail_url' => null,
+            'category' => 'Marketing',
+            'instructor' => 'Maya Putri · CMO',
+            'rating' => '4.7',
+            'students' => '1.2K',
+            'duration' => '30 jam',
+            'price' => 'Rp 249.000',
+            'is_free' => false,
+            'badge' => 'Sertifikat Pro',
+            'badge_type' => 'cert',
+            'icon' => '📈'
+        ],
+        [
+            'slug' => '#',
+            'title' => 'Productivity Mastery',
+            'thumbnail_url' => null,
+            'category' => 'Self Dev',
+            'instructor' => 'Linda Sari · Coach',
+            'rating' => '4.9',
+            'students' => '850',
+            'duration' => '8 jam',
+            'price' => 'Rp 149.000',
+            'is_free' => false,
+            'badge' => 'Bestseller',
+            'badge_type' => 'bestseller',
+            'icon' => '✏️'
+        ]
+    ];
+
+    for ($i = 0; $i < 6; $i++) {
+        if (isset($promoCourses[$i])) {
+            $courseData = $promoCourses[$i];
+            // Format duration
+            $dur = $courseData['duration'];
+            if (str_contains($dur, 'w')) {
+                $weeks = intval(filter_var($dur, FILTER_SANITIZE_NUMBER_INT));
+                $dur = ($weeks * 6) . ' jam';
+            }
+            $displayCourses[$i] = [
+                'slug' => route('courses.show', $courseData['slug']),
+                'title' => $courseData['title'],
+                'thumbnail_url' => $courseData['thumbnail_url'],
+                'category' => $courseData['category'],
+                'instructor' => $courseData['instructor'],
+                'rating' => $courseData['rating'],
+                'students' => $courseData['students'],
+                'duration' => $dur,
+                'price' => $courseData['price'],
+                'is_free' => $courseData['is_free'],
+                'badge' => $courseData['is_free'] ? 'Gratis' : (($i % 3 === 0) ? 'Bestseller' : (($i % 3 === 1) ? 'Baru' : 'Sertifikat')),
+                'badge_type' => $courseData['is_free'] ? 'free' : (($i % 3 === 0) ? 'bestseller' : (($i % 3 === 1) ? 'new' : 'cert')),
+                'icon' => null
+            ];
+        } else {
+            $displayCourses[$i] = $fallbacks[$i];
+        }
+    }
+@endphp
+
+<div id="promo-bar" class="promo-bar">
+    <div class="promo-slides">
+
+        {{-- Slide 1 --}}
+        <div class="promo-slide active">
+            <div class="promo-slide-bg" style="background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);"></div>
+            <div class="promo-slide-content">
+                <div class="promo-slide-left">
+                    <span class="promo-eyebrow">Penawaran Terbatas</span>
+                    <h2 class="promo-slide-title">Hemat <em>30%</em> untuk semua kursus premium</h2>
+                    <p class="promo-slide-desc">Gunakan kode <span class="promo-code">BELAJAR30</span> saat checkout. Berlaku hingga 31 Mei.</p>
+                    <div class="promo-slide-actions">
+                        <a href="#pricing" class="promo-btn-primary">Lihat Paket →</a>
+                        <a href="{{ route('courses.index') }}" class="promo-btn-outline">Jelajahi Kursus</a>
+                    </div>
+                </div>
+                <div class="promo-slide-right">
+                    @php
+                        $c1 = $displayCourses[0];
+                        $c2 = $displayCourses[1];
+                    @endphp
+                    <a href="{{ $c1['slug'] }}" class="promo-course-card">
+                        <div class="promo-card-badge badge-{{ $c1['badge_type'] }}">{{ $c1['badge'] }}</div>
+                        <div class="promo-card-thumb" style="@if(!$c1['thumbnail_url']) background: linear-gradient(135deg, #667eea, #764ba2); font-size: 32px; @endif">
+                            @if(!empty($c1['thumbnail_url']))
+                                <img src="{{ $c1['thumbnail_url'] }}" alt="{{ $c1['title'] }}">
+                            @else
+                                <span>{{ $c1['icon'] ?? '🎓' }}</span>
+                            @endif
+                        </div>
+                        <div class="promo-card-body">
+                            <div class="promo-card-category">{{ $c1['category'] }}</div>
+                            <div class="promo-card-title" title="{{ $c1['title'] }}">{{ $c1['title'] }}</div>
+                            <div class="promo-card-instructor">{{ $c1['instructor'] }}</div>
+                            <div class="promo-card-meta">
+                                <span>⭐ {{ $c1['rating'] }}</span>
+                                <span>⏱ {{ $c1['duration'] }}</span>
+                            </div>
+                            <div class="promo-card-footer">
+                                <div class="promo-card-price {{ $c1['is_free'] ? 'promo-price-free' : '' }}">
+                                    {{ $c1['price'] }}
+                                </div>
+                                <div class="promo-card-arrow">→</div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="{{ $c2['slug'] }}" class="promo-course-card promo-card-offset">
+                        <div class="promo-card-badge badge-{{ $c2['badge_type'] }}">{{ $c2['badge'] }}</div>
+                        <div class="promo-card-thumb" style="@if(!$c2['thumbnail_url']) background: linear-gradient(135deg, #4facfe, #00f2fe); font-size: 32px; @endif">
+                            @if(!empty($c2['thumbnail_url']))
+                                <img src="{{ $c2['thumbnail_url'] }}" alt="{{ $c2['title'] }}">
+                            @else
+                                <span>{{ $c2['icon'] ?? '🎓' }}</span>
+                            @endif
+                        </div>
+                        <div class="promo-card-body">
+                            <div class="promo-card-category">{{ $c2['category'] }}</div>
+                            <div class="promo-card-title" title="{{ $c2['title'] }}">{{ $c2['title'] }}</div>
+                            <div class="promo-card-instructor">{{ $c2['instructor'] }}</div>
+                            <div class="promo-card-meta">
+                                <span>⭐ {{ $c2['rating'] }}</span>
+                                <span>⏱ {{ $c2['duration'] }}</span>
+                            </div>
+                            <div class="promo-card-footer">
+                                <div class="promo-card-price {{ $c2['is_free'] ? 'promo-price-free' : '' }}">
+                                    {{ $c2['price'] }}
+                                </div>
+                                <div class="promo-card-arrow">→</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {{-- Slide 2 --}}
+        <div class="promo-slide">
+            <div class="promo-slide-bg" style="background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);"></div>
+            <div class="promo-slide-content">
+                <div class="promo-slide-left">
+                    <span class="promo-eyebrow">Instruktur Baru</span>
+                    <h2 class="promo-slide-title">Belajar langsung dari <em>para ahli industri</em></h2>
+                    <p class="promo-slide-desc">Bergabung dengan 50.000+ pelajar yang sudah mengubah karir bersama Coursify.</p>
+                    <div class="promo-slide-actions">
+                        <a href="{{ route('register') }}" class="promo-btn-primary">Mulai Gratis →</a>
+                        <a href="#instructors" class="promo-btn-outline">Lihat Instruktur</a>
+                    </div>
+                </div>
+                <div class="promo-slide-right">
+                    @php
+                        $c3 = $displayCourses[2];
+                        $c4 = $displayCourses[3];
+                    @endphp
+                    <a href="{{ $c3['slug'] }}" class="promo-course-card">
+                        <div class="promo-card-badge badge-{{ $c3['badge_type'] }}">{{ $c3['badge'] }}</div>
+                        <div class="promo-card-thumb" style="@if(!$c3['thumbnail_url']) background: linear-gradient(135deg, #FA709A, #FEE140); font-size: 32px; @endif">
+                            @if(!empty($c3['thumbnail_url']))
+                                <img src="{{ $c3['thumbnail_url'] }}" alt="{{ $c3['title'] }}">
+                            @else
+                                <span>{{ $c3['icon'] ?? '🎓' }}</span>
+                            @endif
+                        </div>
+                        <div class="promo-card-body">
+                            <div class="promo-card-category">{{ $c3['category'] }}</div>
+                            <div class="promo-card-title" title="{{ $c3['title'] }}">{{ $c3['title'] }}</div>
+                            <div class="promo-card-instructor">{{ $c3['instructor'] }}</div>
+                            <div class="promo-card-meta">
+                                <span>⭐ {{ $c3['rating'] }}</span>
+                                <span>⏱ {{ $c3['duration'] }}</span>
+                            </div>
+                            <div class="promo-card-footer">
+                                <div class="promo-card-price {{ $c3['is_free'] ? 'promo-price-free' : '' }}">
+                                    {{ $c3['price'] }}
+                                </div>
+                                <div class="promo-card-arrow">→</div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="{{ $c4['slug'] }}" class="promo-course-card promo-card-offset">
+                        <div class="promo-card-badge badge-{{ $c4['badge_type'] }}">{{ $c4['badge'] }}</div>
+                        <div class="promo-card-thumb" style="@if(!$c4['thumbnail_url']) background: linear-gradient(135deg, #30CFD0, #330867); font-size: 32px; @endif">
+                            @if(!empty($c4['thumbnail_url']))
+                                <img src="{{ $c4['thumbnail_url'] }}" alt="{{ $c4['title'] }}">
+                            @else
+                                <span>{{ $c4['icon'] ?? '🎓' }}</span>
+                            @endif
+                        </div>
+                        <div class="promo-card-body">
+                            <div class="promo-card-category">{{ $c4['category'] }}</div>
+                            <div class="promo-card-title" title="{{ $c4['title'] }}">{{ $c4['title'] }}</div>
+                            <div class="promo-card-instructor">{{ $c4['instructor'] }}</div>
+                            <div class="promo-card-meta">
+                                <span>⭐ {{ $c4['rating'] }}</span>
+                                <span>⏱ {{ $c4['duration'] }}</span>
+                            </div>
+                            <div class="promo-card-footer">
+                                <div class="promo-card-price {{ $c4['is_free'] ? 'promo-price-free' : '' }}">
+                                    {{ $c4['price'] }}
+                                </div>
+                                <div class="promo-card-arrow">→</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {{-- Slide 3 --}}
+        <div class="promo-slide">
+            <div class="promo-slide-bg" style="background:linear-gradient(135deg,#141e30,#243b55);"></div>
+            <div class="promo-slide-content">
+                <div class="promo-slide-left">
+                    <span class="promo-eyebrow">Sertifikasi Resmi</span>
+                    <h2 class="promo-slide-title">Raih sertifikat <em>diakui industri</em></h2>
+                    <p class="promo-slide-desc">Sertifikat Coursify bisa langsung dibagikan ke LinkedIn dan diverifikasi perusahaan manapun.</p>
+                    <div class="promo-slide-actions">
+                        <a href="{{ route('courses.index') }}" class="promo-btn-primary">Mulai Belajar →</a>
+                        <a href="#pricing" class="promo-btn-outline">Lihat Harga</a>
+                    </div>
+                </div>
+                <div class="promo-slide-right">
+                    @php
+                        $c5 = $displayCourses[4];
+                        $c6 = $displayCourses[5];
+                    @endphp
+                    <a href="{{ $c5['slug'] }}" class="promo-course-card">
+                        <div class="promo-card-badge badge-{{ $c5['badge_type'] }}">{{ $c5['badge'] }}</div>
+                        <div class="promo-card-thumb" style="@if(!$c5['thumbnail_url']) background: linear-gradient(135deg, #f7971e, #ffd200); font-size: 32px; @endif">
+                            @if(!empty($c5['thumbnail_url']))
+                                <img src="{{ $c5['thumbnail_url'] }}" alt="{{ $c5['title'] }}">
+                            @else
+                                <span>{{ $c5['icon'] ?? '🎓' }}</span>
+                            @endif
+                        </div>
+                        <div class="promo-card-body">
+                            <div class="promo-card-category">{{ $c5['category'] }}</div>
+                            <div class="promo-card-title" title="{{ $c5['title'] }}">{{ $c5['title'] }}</div>
+                            <div class="promo-card-instructor">{{ $c5['instructor'] }}</div>
+                            <div class="promo-card-meta">
+                                <span>⭐ {{ $c5['rating'] }}</span>
+                                <span>⏱ {{ $c5['duration'] }}</span>
+                            </div>
+                            <div class="promo-card-footer">
+                                <div class="promo-card-price {{ $c5['is_free'] ? 'promo-price-free' : '' }}">
+                                    {{ $c5['price'] }}
+                                </div>
+                                <div class="promo-card-arrow">→</div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="{{ $c6['slug'] }}" class="promo-course-card promo-card-offset">
+                        <div class="promo-card-badge badge-{{ $c6['badge_type'] }}">{{ $c6['badge'] }}</div>
+                        <div class="promo-card-thumb" style="@if(!$c6['thumbnail_url']) background: linear-gradient(135deg, #a8edea, #fed6e3); font-size: 32px; @endif">
+                            @if(!empty($c6['thumbnail_url']))
+                                <img src="{{ $c6['thumbnail_url'] }}" alt="{{ $c6['title'] }}">
+                            @else
+                                <span>{{ $c6['icon'] ?? '🎓' }}</span>
+                            @endif
+                        </div>
+                        <div class="promo-card-body">
+                            <div class="promo-card-category">{{ $c6['category'] }}</div>
+                            <div class="promo-card-title" title="{{ $c6['title'] }}">{{ $c6['title'] }}</div>
+                            <div class="promo-card-instructor">{{ $c6['instructor'] }}</div>
+                            <div class="promo-card-meta">
+                                <span>⭐ {{ $c6['rating'] }}</span>
+                                <span>⏱ {{ $c6['duration'] }}</span>
+                            </div>
+                            <div class="promo-card-footer">
+                                <div class="promo-card-price {{ $c6['is_free'] ? 'promo-price-free' : '' }}">
+                                    {{ $c6['price'] }}
+                                </div>
+                                <div class="promo-card-arrow">→</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    {{-- Dots --}}
+    <div class="promo-dots">
+        <button class="promo-dot-btn active" onclick="goToSlide(0)" aria-label="Slide 1"></button>
+        <button class="promo-dot-btn" onclick="goToSlide(1)" aria-label="Slide 2"></button>
+        <button class="promo-dot-btn" onclick="goToSlide(2)" aria-label="Slide 3"></button>
+    </div>
+
+    {{-- Arrows --}}
+    <button class="promo-arrow promo-arrow-left" onclick="prevSlide()" aria-label="Sebelumnya">&#8592;</button>
+    <button class="promo-arrow promo-arrow-right" onclick="nextSlide()" aria-label="Berikutnya">&#8594;</button>
+
+    {{-- Close --}}
+    <button class="promo-close" onclick="closePromoBanner()" aria-label="Tutup">×</button>
+</div>
+
 {{-- ═══════════════════════════════════════════════════ --}}
 {{-- HERO                                                 --}}
 {{-- ═══════════════════════════════════════════════════ --}}
 <section class="hero">
-    <div class="container">
-        <div class="hero-badge">
-            <span class="hero-badge-dot"></span>
-            <span>{{ $studentCount ?? '50,000+' }} learners worldwide</span>
-        </div>
 
         <h1 class="hero-title">
             Learn Anything,
             <em>Anytime</em>
         </h1>
         <p class="hero-subtitle">
-            Master new skills with world-class instructors. Your personal learning journey starts here — free to begin, limitless to grow.
+            Master new skills with world-class instructors. Your personal learning journey starts here. free to begin, limitless to grow.
         </p>
         <div class="hero-cta">
             @guest
@@ -481,16 +1324,7 @@
             @endguest
         </div>
 
-        <div class="trust-indicators">
-            <span class="trust-label">Our alumni work at</span>
-            <div class="trust-logos">
-                <span class="trust-logo">Gojek</span>
-                <span class="trust-logo">Tokopedia</span>
-                <span class="trust-logo">Shopee</span>
-                <span class="trust-logo">Traveloka</span>
-                <span class="trust-logo">BCA</span>
-            </div>
-        </div>
+       
 
         {{-- Phone Mockups --}}
         <div class="mockup-stage">
@@ -524,25 +1358,28 @@
             </div>
 
             {{-- Phone Main: Instructor --}}
-            <div class="phone phone-main">
-                <div class="phone-screen">
-                    <div class="phone-status">9:41</div>
-                    <div class="phone-label">Featured Instructor</div>
-                    <div class="phone-card">
-                        <div class="phone-avatar">👨‍💻</div>
-                        <div class="phone-name">Meet Andi</div>
-                        <div style="font-size:10px;color:var(--muted);text-align:center;margin-top:2px;">Senior Developer · 12k students</div>
-                        <div class="phone-skill-tags">
-                            <span class="phone-skill-tag">Laravel</span>
-                            <span class="phone-skill-tag">React</span>
-                            <span class="phone-skill-tag">Node.js</span>
-                        </div>
-                    </div>
-                    <div style="background:var(--purple);color:white;padding:8px 12px;border-radius:100px;font-size:11px;text-align:center;font-weight:600;">
-                        Start Learning →
-                    </div>
-                </div>
+<div class="phone phone-main">
+    <div class="phone-screen">
+        <div class="phone-status">9:41</div>
+        <div class="phone-label">Featured Instructor</div>
+        <div class="phone-card">
+            <div class="phone-avatar" style="border-radius:12px; overflow:hidden;">
+                <img src="{{ asset('images/landing.png') }}" alt="Andi" 
+                     style="width:100%;height:100%;object-fit:cover;object-position:top;border-radius:0;">
             </div>
+            <div class="phone-name">Meet Andi</div>
+            <div style="font-size:10px;color:var(--muted);text-align:center;margin-top:2px;">Senior Developer · 12k students</div>
+            <div class="phone-skill-tags">
+                <span class="phone-skill-tag">Laravel</span>
+                <span class="phone-skill-tag">React</span>
+                <span class="phone-skill-tag">Node.js</span>
+            </div>
+        </div>
+        <div style="background:var(--purple);color:white;padding:8px 12px;border-radius:100px;font-size:11px;text-align:center;font-weight:600;">
+            Start Learning 
+        </div>
+    </div>
+</div>
 
             {{-- Phone Right: Video Lesson --}}
             <div class="phone phone-side phone-side-right">
@@ -595,38 +1432,34 @@
 </section>
 
 {{-- ═══════════════════════════════════════════════════ --}}
-{{-- CATEGORIES                                           --}}
+{{-- TRUSTED PARTNERS                                     --}}
 {{-- ═══════════════════════════════════════════════════ --}}
-<section class="section" id="categories">
+<section class="section" id="partners">
     <div class="container">
         <div class="section-header">
-            <span class="section-eyebrow">Explore</span>
-            <h2 class="section-title">Browse by <em>Category</em></h2>
-            <p class="section-subtitle">Find your path among 500+ courses across every field you can imagine.</p>
+            <span class="section-eyebrow">Trusted By</span>
+            <h2 class="section-title">Top <em>Universities</em> &amp; Institutions</h2>
+            <p class="section-subtitle">Trusted by learners from top universities &amp; institutions around the world.</p>
         </div>
 
-        <div class="cat-grid">
-            @php
-                $defaultCategories = [
-    ['icon' => '<i class="fa-solid fa-code"></i>', 'name' => 'Programming', 'count' => 124, 'slug' => 'programming'],
-    ['icon' => '<i class="fa-solid fa-pen-nib"></i>', 'name' => 'Design', 'count' => 87, 'slug' => 'design'],
-    ['icon' => '<i class="fa-solid fa-briefcase"></i>', 'name' => 'Business', 'count' => 96, 'slug' => 'business'],
-    ['icon' => '<i class="fa-solid fa-bullhorn"></i>', 'name' => 'Marketing', 'count' => 54, 'slug' => 'marketing'],
-    ['icon' => '<i class="fa-solid fa-film"></i>', 'name' => 'Video & Film', 'count' => 38, 'slug' => 'video'],
-    ['icon' => '<i class="fa-solid fa-language"></i>', 'name' => 'Languages', 'count' => 42, 'slug' => 'languages'],
-    ['icon' => '<i class="fa-solid fa-music"></i>', 'name' => 'Music', 'count' => 29, 'slug' => 'music'],
-    ['icon' => '<i class="fa-solid fa-chart-bar"></i>', 'name' => 'Data Science', 'count' => 67, 'slug' => 'data-science'],
-];
-                $categoriesData = $categories ?? $defaultCategories;
-            @endphp
-
-            @foreach($categoriesData as $cat)
-                <a href="{{ route('courses.index') }}?category={{ $cat['slug'] ?? Str::slug($cat['name']) }}" class="cat-card">
-                    <div class="cat-icon">{!! $cat['icon'] ?? '<i class="fa-solid fa-book-open"></i>' !!}</div>
-                    <div class="cat-name">{{ $cat['name'] }}</div>
-                    <div class="cat-count">{{ $cat['count'] }} courses</div>
-                </a>
-            @endforeach
+        <div class="trust-marquee-wrapper">
+            <div class="trust-marquee">
+                @php $doubled = array_merge($partnerInstitutions, $partnerInstitutions); @endphp
+                @foreach($doubled as $partner)
+                    <a href="{{ route('universities.show', $partner['slug']) }}"
+                       class="trust-partner-card"
+                       title="{{ $partner['name'] }}">
+                        <img src="{{ $partner['logo_url'] }}"
+                             alt="{{ $partner['name'] }}"
+                             class="trust-partner-logo"
+                             loading="lazy"
+                             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                        <span class="trust-partner-fallback" style="display:none;">
+                            {{ \Illuminate\Support\Str::limit($partner['name'], 20) }}
+                        </span>
+                    </a>
+                @endforeach
+            </div>
         </div>
     </div>
 </section>
@@ -675,9 +1508,9 @@
                         <div class="course-title">{{ $course['title'] }}</div>
                         <div class="course-instructor">{{ $course['instructor'] }}</div>
                         <div class="course-meta">
-                            <span>⭐ {{ $course['rating'] }}</span>
-                            <span>👥 {{ $course['students'] }}</span>
-                            <span>🕐 {{ $course['duration'] }}</span>
+                            <span><i class="fa-solid fa-star"></i> {{ $course['rating'] }}</span>
+<span><i class="fa-solid fa-users"></i> {{ $course['students'] }}</span>
+<span><i class="fa-solid fa-clock"></i> {{ $course['duration'] }}</span>
                         </div>
                         <div class="course-footer">
                             <div class="course-price {{ $course['price'] === 'Free' ? 'course-price-free' : '' }}">
@@ -691,7 +1524,7 @@
         </div>
 
         <div style="text-align:center;margin-top:32px;">
-            <a href="{{ route('courses.index') }}" class="btn btn-light">View All 500+ Courses →</a>
+            <a href="{{ route('courses.index') }}" class="btn btn-light">View All Courses </a>
         </div>
     </div>
 </section>
@@ -927,6 +1760,77 @@
         letter-spacing: -0.01em;
     }
     .why-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+    /* ═══ TRUST / PARTNER MARQUEE ═══ */
+.trust-section {
+    margin-bottom: 40px;
+}
+.trust-label {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 16px;
+    display: block;
+}
+.trust-marquee-wrapper {
+    overflow: hidden;
+    position: relative;
+    /* fade kiri-kanan */
+    mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+}
+.trust-marquee {
+    display: flex;
+    gap: 12px;
+    width: max-content;
+    animation: marqueeScroll 28s linear infinite;
+}
+.trust-marquee:hover {
+    animation-play-state: paused;
+}
+@keyframes marqueeScroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+}
+.trust-partner-card {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.9);
+    border-radius: 14px;
+    padding: 10px 18px;
+    white-space: nowrap;
+    box-shadow: 0 4px 14px rgba(30,58,95,0.06);
+    transition: all 0.3s;
+    cursor: default;
+}
+.trust-partner-card:hover {
+    background: rgba(255,255,255,0.95);
+    border-color: rgba(123,111,232,0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(30,58,95,0.1);
+}
+.trust-partner-icon {
+    font-size: 22px;
+    line-height: 1;
+}
+.trust-partner-name {
+    font-family: var(--font-serif);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    letter-spacing: -0.01em;
+}
+.trust-partner-full {
+    font-size: 10px;
+    color: var(--muted);
+    font-weight: 500;
+}
 
     /* ═══ INSTRUCTORS ═══ */
     .instructor-grid {
@@ -1352,6 +2256,85 @@
         .pricing-featured { transform: none; }
         .how-wrapper, .sdg-wrapper { padding: 40px 24px; }
     }
+
+    /* ═══ TRUST / PARTNER MARQUEE ═══ */
+    .trust-section {
+        margin-bottom: 40px;
+    }
+    .trust-label {
+        font-size: 11px;
+        color: var(--muted);
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        text-align: center;
+        margin-bottom: 16px;
+        display: block;
+    }
+    .trust-marquee-wrapper {
+        overflow: hidden;
+        position: relative;
+        /* Fade kiri–kanan */
+        mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+        -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+    }
+    .trust-marquee {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        width: max-content;
+        animation: marqueeScroll 32s linear infinite;
+    }
+    .trust-marquee:hover {
+        animation-play-state: paused;
+    }
+    @keyframes marqueeScroll {
+        from { transform: translateX(0); }
+        to   { transform: translateX(-50%); }
+    }
+    .trust-partner-card {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255,255,255,0.80);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,0.9);
+        border-radius: 14px;
+        padding: 10px 20px;
+        min-width: 140px;
+        height: 64px;
+        white-space: nowrap;
+        box-shadow: 0 4px 14px rgba(30,58,95,0.06);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        flex-shrink: 0;
+    }
+    .trust-partner-card:hover {
+        background: rgba(255,255,255,0.97);
+        border-color: rgba(123,111,232,0.35);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 24px rgba(30,58,95,0.12);
+    }
+    .trust-partner-logo {
+        max-height: 38px;
+        max-width: 120px;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        filter: grayscale(30%);
+        transition: filter 0.3s;
+    }
+    .trust-partner-card:hover .trust-partner-logo {
+        filter: grayscale(0%);
+    }
+    .trust-partner-fallback {
+        font-family: var(--font-serif);
+        font-style: italic;
+        font-size: 14px;
+        color: var(--text-soft);
+        font-weight: 500;
+    }
 </style>
 @endpush
 
@@ -1442,54 +2425,39 @@
                 <p class="why-desc">Learn from industry professionals with real-world experience. All instructors are verified and rated by students.</p>
             </div>
 
-            {{-- Card 2: Learn Anytime - gambar + badge overlay --}}
-            <div class="why-card">
-                <div class="why-visual" style="padding:0;overflow:hidden;position:relative;">
-                    <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&q=80"
-                         alt="Learn Anytime"
-                         style="width:100%;height:100%;object-fit:cover;border-radius:16px;">
-                    <div style="position:absolute;top:16px;left:16px;display:flex;align-items:center;gap:8px;background:rgba(30,58,95,0.85);backdrop-filter:blur(10px);color:white;padding:8px 14px;border-radius:100px;font-size:11px;font-weight:600;">
-                        <span style="width:6px;height:6px;background:#00C896;border-radius:50%;animation:pulse 2s infinite;"></span>
-                        24/7 Available
-                    </div>
-                </div>
-                <div class="why-title">Learn Anytime</div>
-                <p class="why-desc">No deadlines, no pressure. Watch lessons, pause, rewind — study whenever it fits your schedule.</p>
-            </div>
+            {{-- Card 2: Learn Anytime --}}
+<div class="why-card">
+    <div class="why-visual" style="padding:0;overflow:hidden;position:relative;">
+        <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&q=80"
+             alt="Learn Anytime"
+             style="width:100%;height:100%;object-fit:cover;border-radius:16px;">
+    </div>
+    <div class="why-title">Learn Anytime</div>
+    <p class="why-desc">No deadlines, no pressure. Watch lessons, pause, rewind — study whenever it fits your schedule.</p>
+</div>
 
-            {{-- Card 3: Verified Certificates - gambar + cert overlay --}}
-            <div class="why-card">
-                <div class="why-visual" style="padding:0;overflow:hidden;position:relative;">
-                    <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=800&q=80"
-                         alt="Verified Certificates"
-                         style="width:100%;height:100%;object-fit:cover;border-radius:16px;">
-                    <div style="position:absolute;bottom:16px;right:16px;background:white;border:2px solid var(--purple);border-radius:10px;padding:10px 14px;text-align:center;box-shadow:0 8px 20px rgba(30,58,95,0.15);transform:rotate(-2deg);">
-                        <div style="font-size:18px;margin-bottom:2px;">🏆</div>
-                        <div style="font-size:9px;color:var(--muted);font-weight:600;">CERTIFICATE</div>
-                        <div style="font-family:var(--font-serif);font-size:10px;">of Completion</div>
-                    </div>
-                </div>
-                <div class="why-title">Verified Certificates</div>
-                <p class="why-desc">Earn official digital certificates upon completion. Shareable on LinkedIn and verifiable by employers worldwide.</p>
-            </div>
+            {{-- Card 3: Verified Certificates --}}
+<div class="why-card">
+    <div class="why-visual" style="padding:0;overflow:hidden;position:relative;">
+        <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=800&q=80"
+             alt="Verified Certificates"
+             style="width:100%;height:100%;object-fit:cover;border-radius:16px;">
+    </div>
+    <div class="why-title">Verified Certificates</div>
+    <p class="why-desc">Earn official digital certificates upon completion. Shareable on LinkedIn and verifiable by employers worldwide.</p>
+</div>
 
-            {{-- Card 4: Vibrant Community - gambar + tags overlay --}}
-            <div class="why-card">
-                <div class="why-visual" style="padding:0;overflow:hidden;position:relative;">
-                    <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80"
-                         alt="Vibrant Community"
-                         style="width:100%;height:100%;object-fit:cover;border-radius:16px;">
-                    <div style="position:absolute;inset:0;background:rgba(30,58,95,0.5);border-radius:16px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center;padding:16px;">
-                        <span style="background:rgba(255,255,255,0.2);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.3);color:white;padding:5px 12px;border-radius:100px;font-size:10px;font-weight:600;">💻 Code Review</span>
-                        <span style="background:rgba(255,255,255,0.2);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.3);color:white;padding:5px 12px;border-radius:100px;font-size:10px;font-weight:600;">💬 Q&A Forum</span>
-                        <span style="background:rgba(255,255,255,0.2);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.3);color:white;padding:5px 12px;border-radius:100px;font-size:10px;font-weight:600;">🎯 Projects</span>
-                        <span style="background:rgba(255,255,255,0.2);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.3);color:white;padding:5px 12px;border-radius:100px;font-size:10px;font-weight:600;">📚 Study Groups</span>
-                        <span style="background:rgba(255,255,255,0.2);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.3);color:white;padding:5px 12px;border-radius:100px;font-size:10px;font-weight:600;">🏆 Leaderboard</span>
-                    </div>
-                </div>
-                <div class="why-title">Vibrant Community</div>
-                <p class="why-desc">Join 50,000+ learners. Ask questions, share projects, and grow together with peers worldwide.</p>
-            </div>
+           {{-- Card 4: Vibrant Community --}}
+<div class="why-card">
+    <div class="why-visual" style="padding:0;overflow:hidden;position:relative;">
+        <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80"
+             alt="Vibrant Community"
+             style="width:100%;height:100%;object-fit:cover;border-radius:16px;">
+    </div>
+    <div class="why-title">Vibrant Community</div>
+    <p class="why-desc">Join 50,000+ learners. Ask questions, share projects, and grow together with peers worldwide.</p>
+</div>
+    
         </div>
     </div>
 </section>
@@ -1529,9 +2497,9 @@
                         @endforeach
                     </div>
                     <div class="instructor-stats">
-                        <span>📚 {{ $inst['courses'] }} courses</span>
-                        <span>👥 {{ $inst['students'] }} students</span>
-                    </div>
+    <span><i class="fa-solid fa-book"></i> {{ $inst['courses'] }} courses</span>
+    <span><i class="fa-solid fa-users"></i> {{ $inst['students'] }} students</span>
+</div>
                 </div>
             @endforeach
         </div>
@@ -1732,7 +2700,7 @@
 {{-- ═══════════════════════════════════════════════════ --}}
 <section class="cta">
     <div class="container">
-        <h2 class="cta-title">Everyone deserves to learn —<br><em>anytime, anywhere.</em></h2>
+        <h2 class="cta-title">Everyone deserves to learn <br><em>anytime, anywhere.</em></h2>
         <div class="hero-cta">
             @guest
                 <a href="{{ route('register') }}" class="btn btn-dark">Start Learning Free</a>
@@ -1811,5 +2779,29 @@
     }, { threshold: 0.5 });
 
     document.querySelectorAll('.stats-bar').forEach(el => statsObserver.observe(el));
+
+    // ── Promo Slider ──
+let currentSlide = 0;
+const slides = document.querySelectorAll('.promo-slide');
+const dots = document.querySelectorAll('.promo-dot-btn');
+let autoplayTimer;
+
+function goToSlide(n) {
+    slides[currentSlide].classList.remove('active');
+    dots[currentSlide].classList.remove('active');
+    currentSlide = (n + slides.length) % slides.length;
+    slides[currentSlide].classList.add('active');
+    dots[currentSlide].classList.add('active');
+}
+function nextSlide() { goToSlide(currentSlide + 1); resetAutoplay(); }
+function prevSlide() { goToSlide(currentSlide - 1); resetAutoplay(); }
+function resetAutoplay() {
+    clearInterval(autoplayTimer);
+    autoplayTimer = setInterval(() => goToSlide(currentSlide + 1), 5000);
+}
+function closePromoBanner() {
+    document.getElementById('promo-bar').style.display = 'none';
+}
+resetAutoplay();
 </script>
 @endpush

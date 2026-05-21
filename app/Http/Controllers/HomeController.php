@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Course;
+use App\Models\Institution;
+use App\Models\Program;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 class HomeController extends Controller
 {
@@ -96,6 +99,33 @@ class HomeController extends Controller
                 ->toArray();
         });
 
+        // Promo banner courses (6 latest published courses)
+        $promoCourses = Cache::remember('home_promo_courses', 3600, function () {
+            return Course::where('is_published', true)
+                ->with(['instructors', 'category'])
+                ->withCount('enrollments')
+                ->withAvg('reviews', 'rating')
+                ->latest()
+                ->take(6)
+                ->get()
+                ->map(function($course) {
+                    $instructor = $course->instructors->first();
+                    return [
+                        'slug'          => $course->slug,
+                        'title'         => $course->title,
+                        'thumbnail_url' => $course->thumbnail_url,
+                        'category'      => $course->category->name ?? 'General',
+                        'instructor'    => $instructor ? $instructor->name . ' · ' . ($instructor->headline ?? 'Instructor') : 'Coursify Team',
+                        'rating'        => number_format($course->reviews_avg_rating ?: 4.8, 1),
+                        'students'      => $this->formatNumber($course->enrollments_count),
+                        'duration'      => $course->duration_weeks . 'w',
+                        'price'         => $course->price == 0 ? 'Free' : 'Rp ' . number_format($course->price, 0, ',', '.'),
+                        'is_free'       => $course->price == 0,
+                    ];
+                })
+                ->toArray();
+        });
+
         // Featured instructors
         $instructors = Cache::remember('home_instructors', 3600, function () {
             return User::where('role', 'instructor')
@@ -115,12 +145,49 @@ class HomeController extends Controller
                 ->toArray();
         });
 
+        // Partner institutions untuk marquee di hero
+        $partnerInstitutions = Cache::remember('home_partner_institutions', 3600, function () {
+            return Institution::whereNotNull('logo_url')
+                ->where('logo_url', '!=', '')
+                ->withCount(['courses' => function ($q) {
+                    $q->where('is_published', true);
+                }])
+                ->orderByDesc('courses_count')
+                ->take(12)
+                ->get()
+                ->map(function (Institution $inst) {
+                    return [
+                        'name'     => $inst->name,
+                        'slug'     => $inst->slug,
+                        'logo_url' => $inst->logo_url,
+                    ];
+                })
+                ->toArray();
+        });
+
+        // Fallback jika DB kosong — pakai logo lokal yang sudah ada
+        if (empty($partnerInstitutions)) {
+            $partnerInstitutions = [
+                ['name' => 'Universitas Indonesia',         'slug' => 'universitas-indonesia',          'logo_url' => asset('images/universities/ui-logo.png')],
+                ['name' => 'Institut Teknologi Bandung',    'slug' => 'institut-teknologi-bandung',     'logo_url' => asset('images/universities/itb-logo.png')],
+                ['name' => 'Universitas Gadjah Mada',       'slug' => 'universitas-gadjah-mada',        'logo_url' => asset('images/universities/ugm-logo.png')],
+                ['name' => 'Institut Teknologi Sepuluh Nopember', 'slug' => 'its',                      'logo_url' => asset('images/universities/its-logo.png')],
+                ['name' => 'Universitas Brawijaya',         'slug' => 'universitas-brawijaya',          'logo_url' => asset('images/universities/ub-logo.png')],
+                ['name' => 'Universitas Diponegoro',        'slug' => 'universitas-diponegoro',         'logo_url' => asset('images/universities/undip-logo.png')],
+                ['name' => 'Universitas Airlangga',         'slug' => 'universitas-airlangga',          'logo_url' => asset('images/universities/unair-logo.png')],
+                ['name' => 'BINUS University',              'slug' => 'binus-university',               'logo_url' => asset('images/universities/binus-logo.png')],
+                ['name' => 'Institut Pertanian Bogor',      'slug' => 'institut-pertanian-bogor',       'logo_url' => asset('images/universities/ipb-logo.png')],
+            ];
+        }
+
         return view('home.index', compact(
             'stats',
             'studentCount',
             'categories',
             'featuredCourses',
-            'instructors'
+            'promoCourses',
+            'instructors',
+            'partnerInstitutions'
         ));
     }
 
