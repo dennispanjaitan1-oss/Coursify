@@ -162,11 +162,29 @@ Route::middleware(['auth', 'role:admin'])
         Route::put('/users/{id}', [App\Http\Controllers\Admin\UserController::class, 'update'])->name('users.update');
         Route::delete('/users/{id}', [App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('users.destroy');
 
-        Route::get('/courses', [App\Http\Controllers\Admin\CourseController::class, 'index'])->name('courses.index');
-Route::post('/courses', [App\Http\Controllers\Admin\CourseController::class, 'store'])->name('courses.store');
-Route::put('/courses/{course}', [App\Http\Controllers\Admin\CourseController::class, 'update'])->name('courses.update');
-Route::delete('/courses/{course}', [App\Http\Controllers\Admin\CourseController::class, 'destroy'])->name('courses.destroy');
-Route::patch('/courses/{course}/toggle-publish', [App\Http\Controllers\Admin\CourseController::class, 'togglePublish'])->name('courses.toggle-publish');
+       Route::get('/courses', [App\Http\Controllers\Admin\CourseController::class, 'index'])
+    ->name('courses.index');
+
+Route::get('/courses/create', [App\Http\Controllers\Admin\CourseController::class, 'create'])
+    ->name('courses.create');
+
+Route::post('/courses', [App\Http\Controllers\Admin\CourseController::class, 'store'])
+    ->name('courses.store');
+
+Route::get('/courses/{course}/edit', [App\Http\Controllers\Admin\CourseController::class, 'edit'])
+    ->name('courses.edit');
+
+Route::put('/courses/{course}', [App\Http\Controllers\Admin\CourseController::class, 'update'])
+    ->name('courses.update');
+
+Route::get('/courses/{course}', [App\Http\Controllers\Admin\CourseController::class, 'show'])
+    ->name('courses.show');
+
+Route::delete('/courses/{course}', [App\Http\Controllers\Admin\CourseController::class, 'destroy'])
+    ->name('courses.destroy');
+
+Route::patch('/courses/{course}/toggle-publish', [App\Http\Controllers\Admin\CourseController::class, 'togglePublish'])
+    ->name('courses.toggle-publish');
 
 
     
@@ -249,3 +267,4 @@ Route::patch('/admin/reviews/{review}/toggle', [App\Http\Controllers\Admin\Revie
 Route::get('/admin/analytics', [App\Http\Controllers\Admin\AnalyticsController::class, 'index'])->name('admin.analytics');
 
 Route::get('/admin/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');
+
