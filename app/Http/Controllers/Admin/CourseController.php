@@ -55,20 +55,20 @@ class CourseController extends Controller
             'institution_id'    => 'required|exists:institutions,id',
             'program_id'        => 'nullable|exists:programs,id',
             'short_description' => 'nullable|string|max:500',
-            'description'       => 'nullable|string',
+          
             'price'             => 'required|numeric|min:0',
-            'duration_weeks'    => 'required|integer|min:1',
+            
             'difficulty'        => 'required|in:beginner,intermediate,advanced',
-            'language'          => 'required|string|max:10',
+           
             'thumbnail_url'     => 'nullable|url|max:500',
             'preview_video_url' => 'nullable|url|max:500',
             'is_published'      => 'boolean',
-            'order_index'       => 'integer|min:0',
+            'order_index' => 'nullable|integer|min:0',
         ]);
 
         $validated['slug']         = Str::slug($validated['title']) . '-' . Str::random(5);
         $validated['is_published'] = $request->boolean('is_published');
-        $validated['order_index']  = $request->input('order_index', 0);
+       $validated['order_index'] = $request->input('order_index', 0);
 
         Course::create($validated);
 
@@ -87,15 +87,14 @@ class CourseController extends Controller
             'institution_id'    => 'required|exists:institutions,id',
             'program_id'        => 'nullable|exists:programs,id',
             'short_description' => 'nullable|string|max:500',
-            'description'       => 'nullable|string',
+          
             'price'             => 'required|numeric|min:0',
-            'duration_weeks'    => 'required|integer|min:1',
+           
             'difficulty'        => 'required|in:beginner,intermediate,advanced',
-            'language'          => 'required|string|max:10',
-            'thumbnail_url'     => 'nullable|url|max:500',
-            'preview_video_url' => 'nullable|url|max:500',
+          'thumbnail_url' => 'nullable|string|max:500',
+          'preview_video_url' => 'nullable|string|max:500',
             'is_published'      => 'boolean',
-            'order_index'       => 'integer|min:0',
+            'order_index' => 'nullable|integer|min:0',
         ]);
 
         if ($validated['title'] !== $course->title) {
@@ -103,7 +102,7 @@ class CourseController extends Controller
         }
 
         $validated['is_published'] = $request->boolean('is_published');
-        $validated['order_index']  = $request->input('order_index', $course->order_index);
+        $validated['order_index'] = $request->input('order_index', 0);
 
         $course->update($validated);
 
@@ -128,9 +127,28 @@ class CourseController extends Controller
      */
     public function destroy(Course $course)
     {
-        $course->delete();
+        $course->forceDelete();
 
         return redirect()->route('admin.courses.index')
                          ->with('success', 'Course berhasil dihapus!');
     }
+
+    public function edit(Course $course)
+{
+    $categories = Category::all();
+    $institutions = Institution::all();
+    $programs = Program::all();
+
+    return view('admin.courses.edit', compact(
+        'course',
+        'categories',
+        'institutions',
+        'programs'
+    ));
+}
+
+public function show(Course $course)
+{
+    return redirect()->route('admin.courses.index');
+}
 }

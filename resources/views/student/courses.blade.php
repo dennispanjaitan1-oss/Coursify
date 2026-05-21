@@ -1174,7 +1174,7 @@ if ($progress >= 100 || $status === 'completed') {
                         @if($progress >= 100 || $status === 'completed')
                             @php
                                 $existingReview = auth()->user()->reviews()
-                                    ->where('course_id', $course->id)
+                                    ->where('course_id', $course)
                                     ->first();
                             @endphp
 
