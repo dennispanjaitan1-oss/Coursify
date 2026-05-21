@@ -63,12 +63,12 @@ class CourseController extends Controller
             'thumbnail_url'     => 'nullable|url|max:500',
             'preview_video_url' => 'nullable|url|max:500',
             'is_published'      => 'boolean',
-            'order_index'       => 'integer|min:0',
+            'order_index' => 'nullable|integer|min:0',
         ]);
 
         $validated['slug']         = Str::slug($validated['title']) . '-' . Str::random(5);
         $validated['is_published'] = $request->boolean('is_published');
-        $validated['order_index']  = $request->input('order_index', 0);
+       $validated['order_index'] = $request->input('order_index', 0);
 
         Course::create($validated);
 
@@ -91,11 +91,10 @@ class CourseController extends Controller
             'price'             => 'required|numeric|min:0',
            
             'difficulty'        => 'required|in:beginner,intermediate,advanced',
-          
-            'thumbnail_url'     => 'nullable|url|max:500',
-            'preview_video_url' => 'nullable|url|max:500',
+          'thumbnail_url' => 'nullable|string|max:500',
+          'preview_video_url' => 'nullable|string|max:500',
             'is_published'      => 'boolean',
-            'order_index'       => 'integer|min:0',
+            'order_index' => 'nullable|integer|min:0',
         ]);
 
         if ($validated['title'] !== $course->title) {
@@ -103,7 +102,7 @@ class CourseController extends Controller
         }
 
         $validated['is_published'] = $request->boolean('is_published');
-        $validated['order_index']  = $request->input('order_index', $course->order_index);
+        $validated['order_index'] = $request->input('order_index', 0);
 
         $course->update($validated);
 
@@ -128,7 +127,7 @@ class CourseController extends Controller
      */
     public function destroy(Course $course)
     {
-        $course->delete();
+        $course->forceDelete();
 
         return redirect()->route('admin.courses.index')
                          ->with('success', 'Course berhasil dihapus!');
