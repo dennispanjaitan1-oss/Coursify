@@ -14,9 +14,11 @@ class DatabaseSeeder extends Seeder
             ProgramSeeder::class,       // 3. Program
             UserSeeder::class,          // 4. User (admin + instructor CSV + demo users + 200 students)
             CourseSeeder::class,        // 5. Kursus + Pivot course_instructors (dari CSV)
+            CourseSyllabusSeeder::class,// 6. Silabus
             CourseContentSeeder::class, // 6. Section & Lesson dummy
             EnrollmentSeeder::class,    // 7. Enrollments, Payments, Progress dummy
             ReviewSeeder::class,        // 8. Reviews dummy
+            
         ]);
  
         $this->command->info('✅ Seeding selesai!');
@@ -32,6 +34,7 @@ class DatabaseSeeder extends Seeder
         $this->command->info('   Programs    → ' . \DB::table('programs')->count() . ' records');
         $this->command->info('   Users       → ' . \DB::table('users')->count() . ' records');
         $this->command->info('   Courses     → ' . \DB::table('courses')->count() . ' records');
+        $this->command->info('   Syllabus    → ' . \DB::table('course_syllabus')->count() . ' records');
         $this->command->info('   Enrollments → ' . \DB::table('enrollments')->count() . ' records');
         $this->command->info('   Payments    → ' . \DB::table('payments')->count() . ' records');
         $this->command->info('   Reviews     → ' . \DB::table('reviews')->count() . ' records');

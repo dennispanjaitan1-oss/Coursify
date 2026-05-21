@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use App\Models\CourseSyllabus;
 
 class Course extends Model
 {
@@ -110,6 +111,12 @@ class Course extends Model
     public function paymentItems(): HasMany
     {
         return $this->hasMany(PaymentItem::class);
+    }
+
+    /** Silabus / subjek yang dipelajari */
+    public function syllabus(): HasMany
+    {
+        return $this->hasMany(CourseSyllabus::class)->orderBy('order_index');
     }
 
     // ── Scopes ──────────────────────────────────────────────────────

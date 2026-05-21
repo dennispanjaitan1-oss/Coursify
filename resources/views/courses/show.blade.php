@@ -623,26 +623,21 @@ section { position: relative; z-index: 1; }
     <section class="content-section">
         <h2 class="section-title">What you'll <em>learn</em></h2>
         <p class="section-desc">Master these skills and apply them to real-world projects.</p>
-        <div class="learn-grid">
-            @php
-                $learnItems = [
-                    'Build production-ready web applications',
-                    'Master MVC architecture and RESTful API design',
-                    'Implement authentication, authorization, and user roles',
-                    'Design databases with migrations and Eloquent ORM',
-                    'Create responsive UIs with Blade templates',
-                    'Deploy applications to production servers',
-                    'Write clean, testable code with modern PHP features',
-                    'Integrate payment gateways and third-party services',
-                ];
-            @endphp
-            @foreach($learnItems as $item)
-                <div class="learn-item">
-                    <div class="learn-check">✓</div>
-                    <div class="learn-text">{{ $item }}</div>
-                </div>
-            @endforeach
-        </div>
+
+        @if($course->syllabus->isNotEmpty())
+            <div class="learn-grid">
+                @foreach($course->syllabus as $item)
+                    <div class="learn-item">
+                        <div class="learn-check">✓</div>
+                        <div class="learn-text">{{ $item->item }}</div>
+                    </div>
+                @endforeach
+            </div>
+        @else
+            <p style="color: var(--muted); font-size: 14px; padding: 16px 0;">
+                Silabus untuk kursus ini belum dibuat.
+            </p>
+        @endif
     </section>
 
     {{-- CURRICULUM --}}
