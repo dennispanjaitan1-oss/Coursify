@@ -815,13 +815,13 @@ body::before {
 {{-- Flash Messages --}}
 @if(session('success'))
     <div class="flash-wrap" x-data x-init="setTimeout(() => $el.remove(), 4000)">
-        <div class="flash flash-success">✓ {{ session('success') }}</div>
+        <div class="flash flash-success"><i class="fa-solid fa-check"></i> {{ session('success') }}</div>
     </div>
 @endif
 
 @if(session('error'))
     <div class="flash-wrap" x-data x-init="setTimeout(() => $el.remove(), 4000)">
-        <div class="flash flash-error">✕ {{ session('error') }}</div>
+        <div class="flash flash-error"><i class="fa-solid fa-xmark"></i> {{ session('error') }}</div>
     </div>
 @endif
 
@@ -856,35 +856,35 @@ body::before {
                 <button @click="activeTab = 'profile'"
                         :class="{ 'active': activeTab === 'profile' }"
                         class="tab-link">
-                    <span class="tab-icon">👤</span>
+                    <span class="tab-icon"><i class="fa-regular fa-user"></i></span>
                     <span>Profile</span>
                 </button>
 
                 <button @click="activeTab = 'security'"
                         :class="{ 'active': activeTab === 'security' }"
                         class="tab-link">
-                    <span class="tab-icon">🔒</span>
+                    <span class="tab-icon"><i class="fa-solid fa-lock"></i></span>
                     <span>Security</span>
                 </button>
 
                 <button @click="activeTab = 'notifications'"
                         :class="{ 'active': activeTab === 'notifications' }"
                         class="tab-link">
-                    <span class="tab-icon">🔔</span>
+                    <span class="tab-icon"><i class="fa-regular fa-bell"></i></span>
                     <span>Notifications</span>
                 </button>
 
                 <button @click="activeTab = 'preferences'"
                         :class="{ 'active': activeTab === 'preferences' }"
                         class="tab-link">
-                    <span class="tab-icon">🎨</span>
+                    <span class="tab-icon"><i class="fa-solid fa-palette"></i></span>
                     <span>Preferences</span>
                 </button>
 
                 <button @click="activeTab = 'billing'"
                         :class="{ 'active': activeTab === 'billing' }"
                         class="tab-link">
-                    <span class="tab-icon">💳</span>
+                    <span class="tab-icon"><i class="fa-regular fa-credit-card"></i></span>
                     <span>Billing</span>
                 </button>
             </aside>
@@ -904,14 +904,14 @@ body::before {
 
                     {{-- Avatar Section --}}
                     <div class="avatar-section">
-                        <div class="avatar-large" id="avatar-large-container" style="overflow:hidden;">
+                        <div class="avatar-large" id="avatar-large-container">
                             @if(auth()->user()->avatar_url)
                                 <img src="{{ asset(auth()->user()->avatar_url) }}" alt="Avatar" id="avatar-large-img" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
                             @else
                                 <span id="avatar-large-initial">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
                             @endif
-                            <button class="avatar-upload-btn" onclick="triggerAvatarUpload()" title="Change photo">
-                                📷
+                            <button type="button" class="avatar-upload-btn" onclick="triggerAvatarUpload()" title="Change photo">
+                                <i class="fa-solid fa-camera"></i>
                             </button>
                         </div>
                         <input type="file" id="avatar-file-input" style="display:none;" accept="image/*" onchange="uploadAvatar(this)">
@@ -921,12 +921,12 @@ body::before {
                             @php
                                 $role = auth()->user()->role ?? 'student';
                                 $roleLabel = match($role) {
-                                    'admin' => '⚙️ Administrator',
-                                    'instructor' => '👨‍🏫 Instructor',
-                                    default => '🎓 Student',
+                                    'admin' => '<i class="fa-solid fa-gear"></i> Administrator',
+                                    'instructor' => '<i class="fa-solid fa-chalkboard-user"></i> Instructor',
+                                    default => '<i class="fa-solid fa-graduation-cap"></i> Student',
                                 };
                             @endphp
-                            <span class="avatar-role">{{ $roleLabel }}</span>
+                            <span class="avatar-role">{!! $roleLabel !!}</span>
                         </div>
                     </div>
 
@@ -949,7 +949,7 @@ body::before {
                                     required
                                 >
                                 @error('name')
-                                    <div class="form-error">⚠ {{ $message }}</div>
+                                    <div class="form-error"><i class="fa-solid fa-triangle-exclamation"></i> {{ $message }}</div>
                                 @enderror
                             </div>
 
@@ -967,7 +967,7 @@ body::before {
                                     required
                                 >
                                 @error('email')
-                                    <div class="form-error">⚠ {{ $message }}</div>
+                                    <div class="form-error"><i class="fa-solid fa-triangle-exclamation"></i> {{ $message }}</div>
                                 @enderror
                             </div>
 
@@ -1001,7 +1001,7 @@ body::before {
                             <div class="form-group">
                                 <label class="form-label" for="website_url">Website</label>
                                 <div class="form-input-icon">
-                                    <span class="icon">🌐</span>
+                                    <span class="icon"><i class="fa-solid fa-globe"></i></span>
                                     <input
                                         type="url"
                                         id="website_url"
@@ -1035,7 +1035,7 @@ body::before {
                             </div>
                             <a href="{{ route('student.index') }}" class="btn-cancel">Cancel</a>
                             <button type="submit" class="btn-save">
-                                💾 Save Changes
+                                <i class="fa-solid fa-floppy-disk"></i> Save Changes
                             </button>
                         </div>
                     </form>
@@ -1059,7 +1059,7 @@ body::before {
                                     Current Password <span class="required">*</span>
                                 </label>
                                 <div class="form-input-icon" style="position:relative;">
-                                    <span class="icon">🔒</span>
+                                    <span class="icon"><i class="fa-solid fa-lock"></i></span>
                                     <input
                                         :type="showCurrent ? 'text' : 'password'"
                                         id="current_password"
@@ -1071,12 +1071,12 @@ body::before {
                                     >
                                     <button type="button" @click="showCurrent = !showCurrent"
                                             style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:15px;color:var(--muted);">
-                                        <span x-show="!showCurrent">👁</span>
-                                        <span x-show="showCurrent">🔐</span>
+                                        <span x-show="!showCurrent"><i class="fa-regular fa-eye"></i></span>
+                                        <span x-show="showCurrent"><i class="fa-regular fa-eye-slash"></i></span>
                                     </button>
                                 </div>
                                 @error('current_password')
-                                    <div class="form-error">⚠ {{ $message }}</div>
+                                    <div class="form-error"><i class="fa-solid fa-triangle-exclamation"></i> {{ $message }}</div>
                                 @enderror
                             </div>
 
@@ -1085,7 +1085,7 @@ body::before {
                                     New Password <span class="required">*</span>
                                 </label>
                                 <div class="form-input-icon" style="position:relative;">
-                                    <span class="icon">🔑</span>
+                                    <span class="icon"><i class="fa-solid fa-key"></i></span>
                                     <input
                                         :type="showNew ? 'text' : 'password'"
                                         id="password"
@@ -1098,12 +1098,12 @@ body::before {
                                     >
                                     <button type="button" @click="showNew = !showNew"
                                             style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:15px;color:var(--muted);">
-                                        <span x-show="!showNew">👁</span>
-                                        <span x-show="showNew">🔐</span>
+                                        <span x-show="!showNew"><i class="fa-regular fa-eye"></i></span>
+                                        <span x-show="showNew"><i class="fa-regular fa-eye-slash"></i></span>
                                     </button>
                                 </div>
                                 @error('password')
-                                    <div class="form-error">⚠ {{ $message }}</div>
+                                    <div class="form-error"><i class="fa-solid fa-triangle-exclamation"></i> {{ $message }}</div>
                                 @enderror
                                 <div class="form-help">Minimum 8 characters. Use a mix of letters, numbers, and symbols for better security.</div>
                             </div>
@@ -1113,7 +1113,7 @@ body::before {
                                     Confirm New Password <span class="required">*</span>
                                 </label>
                                 <div class="form-input-icon" style="position:relative;">
-                                    <span class="icon">🔑</span>
+                                    <span class="icon"><i class="fa-solid fa-key"></i></span>
                                     <input
                                         :type="showConfirm ? 'text' : 'password'"
                                         id="password_confirmation"
@@ -1125,8 +1125,8 @@ body::before {
                                     >
                                     <button type="button" @click="showConfirm = !showConfirm"
                                             style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:15px;color:var(--muted);">
-                                        <span x-show="!showConfirm">👁</span>
-                                        <span x-show="showConfirm">🔐</span>
+                                        <span x-show="!showConfirm"><i class="fa-regular fa-eye"></i></span>
+                                        <span x-show="showConfirm"><i class="fa-regular fa-eye-slash"></i></span>
                                     </button>
                                 </div>
                             </div>
@@ -1134,10 +1134,10 @@ body::before {
 
                         <div class="form-actions">
                             <div class="form-actions-info">
-                                🛡️ Your password is encrypted and secure
+                                <i class="fa-solid fa-shield-halved"></i> Your password is encrypted and secure
                             </div>
                             <button type="submit" class="btn-save">
-                                🔒 Update Password
+                                <i class="fa-solid fa-lock"></i> Update Password
                             </button>
                         </div>
                     </form>
@@ -1145,7 +1145,7 @@ body::before {
                     {{-- Two-Factor Auth Info --}}
                     <div style="margin-top: 28px; padding: 20px; background: linear-gradient(135deg, var(--teal-light), rgba(255,255,255,0.5)); border: 1px solid rgba(0,200,150,0.2); border-radius: 14px;">
                         <div style="display: flex; align-items: flex-start; gap: 14px;">
-                            <div style="font-size: 28px;">🛡️</div>
+                            <div style="font-size: 28px;"><i class="fa-solid fa-shield-halved"></i></div>
                             <div style="flex: 1;">
                                 <div style="font-family: var(--font-serif); font-size: 18px; margin-bottom: 4px;">
                                     Two-Factor <em style="color: var(--teal);">Authentication</em>
@@ -1167,7 +1167,7 @@ body::before {
                             Permanently delete your account and all associated data. This action cannot be undone — all your course progress, certificates, and saved items will be lost forever.
                         </p>
                         <button type="button" class="btn-danger" onclick="openDeleteModal()">
-                            🗑️ Delete My Account
+                            <i class="fa-solid fa-trash-can"></i> Delete My Account
                         </button>
                     </div>
                 </div>
@@ -1192,7 +1192,7 @@ body::before {
                     {{-- Email Notifications --}}
                     <div style="margin-bottom: 28px;">
                         <div style="font-family: var(--font-serif); font-size: 20px; margin-bottom: 14px;">
-                            📧 Email Notifications
+                            <i class="fa-regular fa-envelope"></i> Email Notifications
                         </div>
 
                         <div class="toggle-row">
@@ -1232,7 +1232,7 @@ body::before {
                     {{-- Push Notifications --}}
                     <div style="margin-bottom: 28px;">
                         <div style="font-family: var(--font-serif); font-size: 20px; margin-bottom: 14px;">
-                            🔔 Push Notifications
+                            <i class="fa-regular fa-bell"></i> Push Notifications
                         </div>
 
                         <div class="toggle-row">
@@ -1405,11 +1405,11 @@ body::before {
                     {{-- Payment Methods --}}
                     <div style="margin-bottom: 20px;">
                         <div style="font-family: var(--font-serif); font-size: 20px; margin-bottom: 14px;">
-                            💳 Payment Methods
+                            <i class="fa-regular fa-credit-card"></i> Payment Methods
                         </div>
 
                         <div class="payment-method-card" style="padding: 20px; background: rgba(255,255,255,0.5); border: 1px solid var(--border); border-radius: 12px; text-align: center;">
-                            <div style="font-size: 36px; margin-bottom: 8px;">💳</div>
+                            <div style="font-size: 36px; margin-bottom: 8px;"><i class="fa-regular fa-credit-card"></i></div>
                             <div style="font-size: 14px; color: var(--text-soft); margin-bottom: 12px;">
                                 No payment methods added yet
                             </div>
@@ -1773,7 +1773,7 @@ html[data-theme="dark"] .theme-option {
                 // Update avatar di profile settings secara instan
                 container.innerHTML = `
                     <img src="${data.avatar_url}" alt="Avatar" id="avatar-large-img" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
-                    <button class="avatar-upload-btn" onclick="triggerAvatarUpload()" title="Change photo">📷</button>
+                    <button class="avatar-upload-btn" onclick="triggerAvatarUpload()" title="Change photo"><i class="fa-solid fa-camera"></i></button>
                 `;
                 
                 // Update avatar di navbar atas
@@ -1838,7 +1838,7 @@ html[data-theme="dark"] .theme-option {
                             input.classList.add('error');
                             const errDiv = document.createElement('div');
                             errDiv.className = 'form-error';
-                            errDiv.innerHTML = `⚠ ${messages[0]}`;
+                            errDiv.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ${messages[0]}`;
                             input.parentNode.appendChild(errDiv);
                         }
                     }
@@ -1916,7 +1916,7 @@ html[data-theme="dark"] .theme-option {
                             input.classList.add('error');
                             const errDiv = document.createElement('div');
                             errDiv.className = 'form-error';
-                            errDiv.innerHTML = `⚠ ${messages[0]}`;
+                            errDiv.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ${messages[0]}`;
                             // Masukkan ke parent node, tapi perhatikan jika ada input-icon wrapper
                             const targetParent = input.parentNode.classList.contains('form-input-icon') ? input.parentNode.parentNode : input.parentNode;
                             targetParent.appendChild(errDiv);
@@ -1976,7 +1976,7 @@ html[data-theme="dark"] .theme-option {
                             input.classList.add('error');
                             const errDiv = document.createElement('div');
                             errDiv.className = 'form-error';
-                            errDiv.innerHTML = `⚠ ${messages[0]}`;
+                            errDiv.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ${messages[0]}`;
                             input.parentNode.appendChild(errDiv);
                         }
                     }
@@ -2045,11 +2045,11 @@ html[data-theme="dark"] .theme-option {
 
             // Progressive statuses with custom timing
             const steps = [
-                { percent: 15, msg: '🔒 Mengamankan sesi pengguna...' },
+                { percent: 15, msg: '<i class="fa-solid fa-lock"></i> Mengamankan sesi pengguna...' },
                 { percent: 35, msg: '📚 Menghapus data pendaftaran & kemajuan kursus...' },
-                { percent: 60, msg: '🎓 Menarik kembali sertifikat terbit...' },
+                { percent: 60, msg: '<i class="fa-solid fa-graduation-cap"></i> Menarik kembali sertifikat terbit...' },
                 { percent: 80, msg: '💖 Membersihkan daftar keinginan & favorit...' },
-                { percent: 95, msg: '🗑️ Menghapus identitas akun secara permanen...' }
+                { percent: 95, msg: '<i class="fa-solid fa-trash-can"></i> Menghapus identitas akun secara permanen...' }
             ];
 
             let stepIdx = 0;
@@ -2140,7 +2140,7 @@ html[data-theme="dark"] .theme-option {
     <div class="modal-content">
         <!-- Default Modal Header -->
         <div class="modal-header">
-            <span class="modal-icon">⚠️</span>
+            <span class="modal-icon"><i class="fa-solid fa-triangle-exclamation"></i>️</span>
             <h3 class="modal-title">Hapus Akun?</h3>
         </div>
         
@@ -2161,7 +2161,7 @@ html[data-theme="dark"] .theme-option {
             <p class="modal-instruction">Untuk melanjutkan, ketik frasa konfirmasi <span class="confirm-phrase">DELETE MY ACCOUNT</span> di bawah:</p>
             
             <input type="text" id="delete-confirm-input" class="modal-input" placeholder="Ketik DELETE MY ACCOUNT untuk mengonfirmasi">
-            <div id="delete-error-message" class="modal-error" style="display: none;">⚠ Frasa konfirmasi tidak cocok.</div>
+            <div id="delete-error-message" class="modal-error" style="display: none;"><i class="fa-solid fa-triangle-exclamation"></i> Frasa konfirmasi tidak cocok.</div>
         </div>
         
         <!-- Default Modal Footer -->
@@ -2174,7 +2174,7 @@ html[data-theme="dark"] .theme-option {
         <div id="delete-processing-view" style="display: none; text-align: center; padding: 20px 0; transition: opacity 0.3s ease;">
             <div class="processing-spinner-container">
                 <div class="processing-glow-ring"></div>
-                <div class="processing-icon">🗑️</div>
+                <div class="processing-icon"><i class="fa-solid fa-trash-can"></i></div>
             </div>
             <h3 style="font-family: var(--font-serif); font-size: 22px; margin-top: 24px; margin-bottom: 8px;">Menghapus Akun...</h3>
             <p id="processing-status" style="font-size: 13px; color: var(--text-soft); min-height: 20px; transition: opacity 0.3s ease;">

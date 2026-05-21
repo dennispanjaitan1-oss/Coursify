@@ -29,6 +29,9 @@ class Course extends Model
         'thumbnail_url',
         'preview_video_url',
         'language',
+        'translations',
+        'transcripts',
+        'prerequisites',
         'is_published',
         'order_index',
     ];

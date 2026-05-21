@@ -346,36 +346,7 @@
             transform: translateY(-1px);
         }
 
-        /* Demo Credentials */
-        .demo-hint{
-            margin-top: 24px;
-            padding: 14px 16px;
-            background: linear-gradient(135deg, rgba(123,111,232,0.08), rgba(184,175,235,0.05));
-            border: 1px solid rgba(123,111,232,0.15);
-            border-radius: 12px;
-            font-size: 11px;
-            color: var(--text-soft);
-        }
-        .demo-hint-title{
-            font-weight: 600;
-            color: var(--purple-dark);
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 12px;
-        }
-        .demo-hint-grid{
-            font-family: 'JetBrains Mono', monospace;
-            line-height: 1.7;
-            display: grid;
-            gap: 3px;
-        }
-        .demo-hint-grid span{
-            color: var(--purple);
-            font-weight: 600;
-        }
-
+        
         /* Footer Note */
         .footer-note{
             margin-top: auto;
@@ -634,6 +605,16 @@
             .form-wrap{ max-width: 100%; }
             h1{ font-size: 36px; }
         }
+
+        /* Sembunyikan toggle password bawaan browser */
+input[type=password]::-ms-reveal,
+input[type=password]::-ms-clear {
+    display: none;
+}
+input[type="password"]::-webkit-contacts-auto-fill-button,
+input[type="password"]::-webkit-credentials-auto-fill-button {
+    visibility: hidden;
+}
     </style>
 </head>
 <body>
@@ -701,11 +682,9 @@
             class="{{ $errors->has('password') ? 'error' : '' }}"
         >
 
-        {{-- Tombol Mata di Kanan --}}
         <button type="button" class="input-toggle" @click="showPassword = !showPassword" tabindex="-1">
-            <i class="fa-solid fa-eye" x-show="!showPassword"></i>
-            <i class="fa-solid fa-eye-slash" x-show="showPassword" x-cloak></i>
-        </button>
+    <i :class="showPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"></i>
+</button>
     </div>
     
     @error('password')
@@ -746,20 +725,15 @@
 
         {{-- Demo Credentials --}}
         <div class="demo-hint">
-            <div class="demo-hint-title">
-                💡 Demo Accounts (untuk testing)
-            </div>
+            
             <div class="demo-hint-grid">
-                <div>Admin: <span>admin@coursify.com</span></div>
-                <div>Instructor: <span>instructor@coursify.com</span></div>
-                <div>Student: <span>student@coursify.com</span></div>
-                <div>Password: <span>password</span></div>
+                
             </div>
         </div>
     </div>
 
     <div class="footer-note">
-        © {{ date('Y') }} Coursify · Mendukung <strong>SDG 4, 8, 10</strong>
+        © {{ date('Y') }} Coursify All rights reserved. 
     </div>
 </div>
 
@@ -767,11 +741,7 @@
 <div class="right">
     <div class="right-content">
 
-        {{-- Badge --}}
-        <div class="right-badge">
-            <span class="right-badge-dot"></span>
-            <span>50,000+ learners worldwide</span>
-        </div>
+        
 
         {{-- Heading --}}
         <h2>Learn Anything,<br><em>Anytime</em></h2>
@@ -807,12 +777,12 @@
                     <div class="phone-status">9:41</div>
                     <div class="phone-label">Featured Instructor</div>
                     <div class="phone-card">
-                        <div class="phone-avatar">👨‍💻</div>
+                        <div class="phone-avatar">A</div>
                         <div class="phone-name">Meet Andi</div>
                         <div style="font-size:9px;color:var(--muted);text-align:center;margin-top:2px;">Senior Dev</div>
                     </div>
                     <div style="background:var(--purple);color:white;padding:6px 10px;border-radius:100px;font-size:9px;text-align:center;font-weight:600;">
-                        Start Learning →
+                        Start Learning 
                     </div>
                 </div>
             </div>
@@ -835,15 +805,15 @@
         {{-- Stats Bar --}}
         <div class="stats-bar">
             <div class="stat">
-                <div class="stat-n"><em>50+</em></div>
+                <div class="stat-n"><em>Ratusan</em></div>
                 <div class="stat-l">Courses</div>
             </div>
             <div class="stat">
-                <div class="stat-n"><em>1.2K+</em></div>
+                <div class="stat-n"><em>Ribuan</em></div>
                 <div class="stat-l">Learners</div>
             </div>
             <div class="stat">
-                <div class="stat-n"><em>25+</em></div>
+                <div class="stat-n"><em>Menghasilkan</em></div>
                 <div class="stat-l">Experts</div>
             </div>
         </div>

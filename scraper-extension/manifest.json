@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "Coursify Auto Scraper",
+  "version": "1.0",
+  "description": "Automatically searches and scrapes edX syllabus for Coursify",
+  "permissions": [
+    "tabs",
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "http://localhost/*",
+    "http://127.0.0.1/*",
+    "https://*.duckduckgo.com/*",
+    "https://*.google.com/*",
+    "https://*.edx.org/*"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://html.duckduckgo.com/*", "https://*.google.com/search*"],
+      "js": ["content.js"]
+    },
+    {
+      "matches": ["https://*.edx.org/*"],
+      "js": ["content.js"]
+    }
+  ]
+}

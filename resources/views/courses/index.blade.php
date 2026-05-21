@@ -180,6 +180,7 @@
     transform: translate(-50%, -50%); color: white; font-size: 10px; font-weight: 700;
 }
 .filter-option-label { font-size: 13px; color: var(--text-soft); font-weight: 500; display: flex; align-items: center; gap: 6px; }
+.filter-option-label i { width: 14px; text-align: center; font-size: 12px; }
 .filter-option-count { font-size: 11px; color: var(--muted); font-weight: 500; }
 .price-range { padding: 8px 0; }
 .price-slider {
@@ -248,7 +249,8 @@
     box-shadow: 0 4px 16px rgba(30,58,95,0.04); min-width: 0;
 }
 .course-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(30,58,95,0.12); border-color: var(--purple); }
-.course-thumb { aspect-ratio: 16/10; position: relative; display: flex; align-items: center; justify-content: center; font-size: 54px; overflow: hidden; }
+.course-thumb { aspect-ratio: 16/10; position: relative; display: flex; align-items: center; justify-content: center; font-size: 54px; overflow: hidden; color: rgba(255,255,255,0.6); }
+.course-thumb i { font-size: 54px; color: rgba(255,255,255,0.6); text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
 .course-thumb-1 { background: linear-gradient(135deg, #667EEA, #764BA2); }
 .course-thumb-2 { background: linear-gradient(135deg, #F093FB, #F5576C); }
 .course-thumb-3 { background: linear-gradient(135deg, #4FACFE, #00F2FE); }
@@ -302,6 +304,7 @@
     margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--border);
 }
 .course-meta span { display: inline-flex; align-items: center; gap: 3px; }
+.course-meta i { color: var(--purple); font-size: 10px; }
 .course-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
 .course-price { font-family: var(--font-serif); font-size: 22px; font-weight: 400; letter-spacing: -0.01em; line-height: 1; }
 .course-price-free { color: var(--teal); }
@@ -330,7 +333,7 @@
     background: rgba(255,255,255,0.5); backdrop-filter: blur(20px);
     border-radius: 20px; border: 1px solid rgba(255,255,255,0.8);
 }
-.empty-icon { font-size: 56px; margin-bottom: 16px; }
+.empty-icon { font-size: 56px; margin-bottom: 16px; color: var(--purple); opacity: 0.6; }
 .empty-title { font-family: var(--font-serif); font-size: 24px; font-weight: 400; margin-bottom: 8px; letter-spacing: -0.01em; }
 .empty-desc { font-size: 13px; color: var(--muted); max-width: 380px; margin: 0 auto 20px; line-height: 1.6; }
 
@@ -486,34 +489,42 @@
                     {{-- Categories Accordion (parent → sub) --}}
                     @php
                         $iconMap = [
-                            'Technology' => '💻', 'Programming' => '💻', 'Design' => '🎨',
-                            'Business' => '📊', 'Marketing' => '📈', 'Data Science' => '🔬',
-                            'Video' => '🎬', 'Languages' => '🌍', 'Language' => '🌍',
-                            'Music' => '🎵', 'Finance' => '💰', 'Health' => '🏃',
-                            'Photography' => '📷', 'DevOps' => '🐳', 'Architecture' => '🏛️',
-                            'Art' => '🎨', 'Science' => '🔬', 'Engineering' => '⚙️',
-                            'Mathematics' => '📐', 'Social Science' => '👥', 'Economics' => '📊',
-                            'Psychology' => '🧠', 'Education' => '🎓', 'Law' => '⚖️',
-                            'Medicine' => '🏥', 'Environmental' => '🌿', 'History' => '📜',
-                            'Philosophy' => '💭', 'Literature' => '📖', 'Cybersecurity' => '🔒',
+                            'Technology' => 'fa-laptop', 'Programming' => 'fa-code', 'Design' => 'fa-pen-nib',
+                            'Business' => 'fa-briefcase', 'Marketing' => 'fa-bullhorn', 'Data Science' => 'fa-chart-line',
+                            'Video' => 'fa-film', 'Languages' => 'fa-language', 'Language' => 'fa-language',
+                            'Music' => 'fa-music', 'Finance' => 'fa-coins', 'Health' => 'fa-heart-pulse',
+                            'Photography' => 'fa-camera', 'DevOps' => 'fa-server', 'Architecture' => 'fa-building-columns',
+                            'Art' => 'fa-palette', 'Science' => 'fa-flask', 'Engineering' => 'fa-gears',
+                            'Mathematics' => 'fa-square-root-variable', 'Social Science' => 'fa-people-group', 'Economics' => 'fa-chart-bar',
+                            'Psychology' => 'fa-brain', 'Education' => 'fa-graduation-cap', 'Law' => 'fa-scale-balanced',
+                            'Medicine' => 'fa-stethoscope', 'Environmental' => 'fa-leaf', 'History' => 'fa-landmark',
+                            'Philosophy' => 'fa-book-open', 'Literature' => 'fa-book', 'Cybersecurity' => 'fa-shield',
                         ];
                         $activeCats = (array) request('category', []);
+                        
+                        // Filter kategori yang punya courses (parent atau children)
+                        $filteredParents = $parentCategories->filter(function($parent) {
+                            $totalCount = $parent->courses_count + $parent->children->sum('courses_count');
+                            return $totalCount > 0;
+                        });
                     @endphp
 
                     <div class="filter-group" style="padding-bottom:0;border-bottom:none;">
                         <div class="filter-group-title" style="margin-bottom:10px;">
                             <span>Category</span>
-                            <span class="filter-group-count">{{ $parentCategories->count() }}</span>
+                            <span class="filter-group-count">{{ $filteredParents->count() }}</span>
                         </div>
 
-                        @forelse($parentCategories as $parent)
+                        @forelse($filteredParents as $parent)
                             @php
-                                $parentIcon = $iconMap[$parent->name] ?? '📚';
-                                $hasChildren = $parent->children->count() > 0;
+                                $parentIcon = $iconMap[$parent->name] ?? 'fa-book-open';
+                                // Filter children yang punya courses
+                                $childrenWithCourses = $parent->children->filter(fn($c) => $c->courses_count > 0);
+                                $hasChildren = $childrenWithCourses->count() > 0;
                                 $isParentChecked = in_array($parent->slug, $activeCats);
-                                $anyChildActive = $parent->children->contains(fn($c) => in_array($c->slug, $activeCats));
+                                $anyChildActive = $childrenWithCourses->contains(fn($c) => in_array($c->slug, $activeCats));
                                 $isOpen = $isParentChecked || $anyChildActive;
-                                $totalCount = $parent->courses_count + $parent->children->sum('courses_count');
+                                $totalCount = $parent->courses_count + $childrenWithCourses->sum('courses_count');
                             @endphp
 
                             <div class="cat-accordion {{ $isOpen ? 'open' : '' }}" data-id="cat-{{ $parent->id }}">
@@ -530,7 +541,7 @@
                                                     @checked($isParentChecked)
                                                     onchange="document.getElementById('filterForm').submit()">
                                                 <span class="filter-option-label">
-                                                    <span>{{ $parentIcon }}</span>
+                                                    <i class="fa-solid {{ $parentIcon }}" style="width:16px;text-align:center;color:{{ $isParentChecked || $anyChildActive ? 'var(--purple)' : 'var(--muted)' }};"></i>
                                                     <span style="font-weight:{{ $isParentChecked || $anyChildActive ? '700' : '500' }};color:{{ $isParentChecked || $anyChildActive ? 'var(--purple)' : 'var(--text-soft)' }}">{{ $parent->name }}</span>
                                                 </span>
                                             </div>
@@ -546,10 +557,10 @@
                                     </div>
                                 </div>
 
-                                {{-- Children --}}
+                                {{-- Children (only show those with courses) --}}
                                 @if($hasChildren)
                                     <div class="cat-children" style="{{ $isOpen ? '' : 'display:none;' }}">
-                                        @foreach($parent->children as $child)
+                                        @foreach($childrenWithCourses as $child)
                                             @php
                                                 $isChildChecked = in_array($child->slug, $activeCats);
                                             @endphp
@@ -609,7 +620,7 @@
                                 <input type="checkbox" class="filter-checkbox" name="price[]" value="free"
                                     @checked(in_array('free', (array) request('price', [])))
                                     onchange="document.getElementById('filterForm').submit()">
-                                <span class="filter-option-label">🆓 Free courses</span>
+                                <span class="filter-option-label"><i class="fa-solid fa-gift" style="color:var(--teal);"></i> Free courses</span>
                             </div>
                         </label>
                         <label class="filter-option">
@@ -617,7 +628,7 @@
                                 <input type="checkbox" class="filter-checkbox" name="price[]" value="paid"
                                     @checked(in_array('paid', (array) request('price', [])))
                                     onchange="document.getElementById('filterForm').submit()">
-                                <span class="filter-option-label">💎 Premium</span>
+                                <span class="filter-option-label"><i class="fa-solid fa-crown" style="color:var(--orange);"></i> Premium</span>
                             </div>
                         </label>
                         <div class="price-range" style="margin-top:10px;">
@@ -659,8 +670,8 @@
                     <div class="filter-group">
                         <div class="filter-group-title"><span>Language</span></div>
                         @foreach([
-                            ['value' => 'id', 'label' => '🇮🇩 Indonesia'],
-                            ['value' => 'en', 'label' => '🇬🇧 English'],
+                            ['value' => 'id', 'label' => 'Indonesia', 'icon' => 'fa-earth-asia'],
+                            ['value' => 'en', 'label' => 'English', 'icon' => 'fa-earth-americas'],
                         ] as $lang)
                             <label class="filter-option">
                                 <div class="filter-option-left">
@@ -668,7 +679,7 @@
                                         name="language[]" value="{{ $lang['value'] }}"
                                         @checked(in_array($lang['value'], (array) request('language', [])))
                                         onchange="document.getElementById('filterForm').submit()">
-                                    <span class="filter-option-label">{{ $lang['label'] }}</span>
+                                    <span class="filter-option-label"><i class="fa-solid {{ $lang['icon'] }}"></i> {{ $lang['label'] }}</span>
                                 </div>
                             </label>
                         @endforeach
@@ -724,16 +735,18 @@
                         $activeFilters[] = ['label' => ucfirst($diff), 'param' => 'difficulty', 'value' => $diff];
                     }
                     foreach ((array) request('price', []) as $p) {
-                        $activeFilters[] = ['label' => $p === 'free' ? '🆓 Free' : '💎 Premium', 'param' => 'price', 'value' => $p];
+                        $label = $p === 'free' ? 'Free' : 'Premium';
+                        $activeFilters[] = ['label' => $label, 'param' => 'price', 'value' => $p];
                     }
                     if (request()->filled('rating')) {
-                        $activeFilters[] = ['label' => '⭐ '.request('rating').'+ stars', 'param' => 'rating', 'value' => request('rating')];
+                        $activeFilters[] = ['label' => request('rating').'+ stars', 'param' => 'rating', 'value' => request('rating')];
                     }
                     foreach ((array) request('language', []) as $lang) {
-                        $activeFilters[] = ['label' => $lang === 'id' ? '🇮🇩 Indonesia' : '🇬🇧 English', 'param' => 'language', 'value' => $lang];
+                        $label = $lang === 'id' ? 'Indonesia' : 'English';
+                        $activeFilters[] = ['label' => $label, 'param' => 'language', 'value' => $lang];
                     }
                     if (request()->filled('search')) {
-                        $activeFilters[] = ['label' => '🔍 "'.request('search').'"', 'param' => 'search', 'value' => request('search')];
+                        $activeFilters[] = ['label' => '"'.request('search').'"', 'param' => 'search', 'value' => request('search')];
                     }
                 @endphp
 
@@ -770,20 +783,24 @@
                             elseif ($course->created_at?->gt(now()->subDays(30))) { $badge = 'new'; }
 
                             $catIconMap = [
-                                'Programming' => '💻', 'Design' => '🎨', 'Business' => '📊',
-                                'Marketing' => '📈', 'Data Science' => '🔬', 'Video' => '🎬',
-                                'Languages' => '🌍', 'Music' => '🎵', 'DevOps' => '🐳',
+                                'Programming' => 'fa-code', 'Design' => 'fa-pen-nib', 'Business' => 'fa-briefcase',
+                                'Marketing' => 'fa-bullhorn', 'Data Science' => 'fa-chart-line', 'Video' => 'fa-film',
+                                'Languages' => 'fa-language', 'Music' => 'fa-music', 'DevOps' => 'fa-server',
+                                'Technology' => 'fa-laptop', 'Finance' => 'fa-coins', 'Health' => 'fa-heart-pulse',
                             ];
-                            $courseIcon = $catIconMap[$course->category?->name] ?? '📚';
+                            $courseIcon = $catIconMap[$course->category?->name] ?? 'fa-book-open';
                         @endphp
 
                         <a href="{{ route('courses.show', $course->slug) }}" class="course-card">
                             <div class="course-thumb course-thumb-{{ $thumbIndex }}">
                                 @if($badge)
                                     <span class="course-badge badge-{{ $badge }}">
-                                        @if($badge === 'bestseller') ⭐ Bestseller
-                                        @elseif($badge === 'new') 🆕 New
-                                        @elseif($badge === 'free') Free
+                                        @if($badge === 'bestseller')
+                                            <i class="fa-solid fa-fire"></i> Bestseller
+                                        @elseif($badge === 'new')
+                                            <i class="fa-solid fa-sparkles"></i> New
+                                        @elseif($badge === 'free')
+                                            <i class="fa-solid fa-gift"></i> Free
                                         @endif
                                     </span>
                                 @endif
@@ -822,10 +839,10 @@
                                     <span>{{ $instructorName }}</span>
                                 </div>
                                 <div class="course-meta">
-                                    <span>⭐ {{ $ratingVal }}</span>
-                                    <span>👥 {{ $studentsFormatted }}</span>
+                                    <span><i class="fa-solid fa-star"></i> {{ $ratingVal }}</span>
+                                    <span><i class="fa-solid fa-users"></i> {{ $studentsFormatted }}</span>
                                     @if($course->duration_weeks)
-                                        <span>🕐 {{ $course->duration_weeks }}w</span>
+                                        <span><i class="fa-solid fa-clock"></i> {{ $course->duration_weeks }}w</span>
                                     @endif
                                 </div>
                                 <div class="course-footer">
@@ -840,7 +857,7 @@
                         </a>
                     @empty
                         <div class="empty-state" style="grid-column: 1 / -1;">
-                            <div class="empty-icon">🔍</div>
+                            <div class="empty-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
                             <div class="empty-title">No courses found</div>
                             <p class="empty-desc">
                                 @if(request()->hasAny(['search', 'category', 'difficulty', 'price', 'rating', 'language']))

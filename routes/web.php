@@ -190,6 +190,9 @@ Route::patch('/courses/{course}/toggle-publish', [App\Http\Controllers\Admin\Cou
 
         Route::view('/settings', 'admin.settings')->name('settings');
 
+        Route::get('/quick-curriculum', [App\Http\Controllers\Admin\QuickCurriculumController::class, 'index'])->name('quick-curriculum.index');
+        Route::post('/quick-curriculum', [App\Http\Controllers\Admin\QuickCurriculumController::class, 'store'])->name('quick-curriculum.store');
+
         Route::view('/logs', 'admin.logs')->name('logs');
     });
 

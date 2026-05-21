@@ -37,8 +37,8 @@ class CourseController extends Controller
         $validated = $request->validate([
             'title'             => 'required|string|max:255',
             'category_id'       => 'required|exists:categories,id',
-            'short_description' => 'required|string|max:500',
-            'description'       => 'required|string',
+            'short_description' => 'nullable|string|max:2000',
+'description'       => 'nullable|string',
             'price'             => 'required|numeric|min:0',
             'difficulty'        => 'required|in:beginner,intermediate,advanced',
             'duration_weeks'    => 'required|integer|min:1',
@@ -90,8 +90,8 @@ class CourseController extends Controller
         $validated = $request->validate([
             'title'             => 'required|string|max:255',
             'category_id'       => 'required|exists:categories,id',
-            'short_description' => 'required|string|max:500',
-            'description'       => 'required|string',
+            'short_description' => 'nullable|string|max:2000',
+            'description'       => 'nullable|string',
             'price'             => 'required|numeric|min:0',
             'difficulty'        => 'required|in:beginner,intermediate,advanced',
             'duration_weeks'    => 'required|integer|min:1',

@@ -12,6 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -117,10 +118,28 @@ section { position: relative; z-index: 1; }
 
 /* INSTRUCTOR CHIP */
 .instructor-chip { display: inline-flex; align-items: center; gap: 12px; padding: 10px 18px 10px 10px; background: rgba(255,255,255,0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.9); border-radius: 100px; }
+/* COURSE META GRID */
+.course-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-top: 20px; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: rgba(255,255,255,0.5); }
+.course-meta-item { display: flex; align-items: flex-start; gap: 12px; padding: 14px 18px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.course-meta-item:nth-child(2) { border-right: none; }
+.course-meta-item:nth-child(3) { border-bottom: none; }
+.course-meta-item:nth-child(4) { border-right: none; border-bottom: none; }
+.course-meta-icon { font-size: 20px; color: var(--navy); margin-top: 2px; flex-shrink: 0; }
+.course-meta-val { font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.3; }
+.course-meta-sub { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
 .instructor-avatar-lg { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg,var(--navy),#2D4D7A); color: white; font-weight: 700; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .instructor-info-sm { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
 .instructor-label { font-size: 10px; color: var(--muted); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
 .instructor-name-sm { font-size: 13.5px; font-weight: 600; color: var(--text); }
+
+/* COURSE DETAILS GRID (Language, Translations, etc.) */
+.course-details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-top: 24px; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: rgba(255,255,255,0.5); }
+.course-detail-item { padding: 16px 20px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.course-detail-item:nth-child(even) { border-right: none; }
+.course-detail-item:nth-last-child(-n+2) { border-bottom: none; }
+.course-detail-label { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+.course-detail-label i { font-size: 16px; width: 20px; text-align: center; color: var(--navy); }
+.course-detail-value { font-size: 13.5px; color: var(--muted); line-height: 1.5; padding-left: 28px; }
 
 /* ENROLL CARD */
 .enroll-sidebar { position: sticky; top: 110px; min-width: 0; }
@@ -255,12 +274,23 @@ section { position: relative; z-index: 1; }
 
 /* INSTRUCTOR PROFILE */
 .instructor-profile { background: rgba(255,255,255,0.5); border: 1px solid var(--border); border-radius: 18px; padding: 28px; }
-.instructor-header { display: flex; gap: 24px; margin-bottom: 28px; flex-wrap: wrap; align-items: flex-start; }
+.instructor-header { display: flex; gap: 24px; margin-bottom: 28px; flex-wrap: wrap; align-items: center; }
 .instructor-avatar-xl { width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg,var(--navy),#2D4D7A); color: white; font-size: 40px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 10px 30px rgba(30,58,95,0.25); }
-.instructor-main-info { flex: 1; min-width: 0; }
+.instructor-main-info { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; }
 .instructor-full-name { font-family: var(--font-serif); font-size: 32px; font-weight: 400; letter-spacing: -0.02em; margin-bottom: 4px; line-height: 1.1; }
+.instructor-profession { font-size: 13px; font-weight: 700; color: var(--purple); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+.instructor-profession::before { display: none; }
 .instructor-headline { font-size: 14px; color: var(--text-soft); font-weight: 500; margin-bottom: 14px; }
 .instructor-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+.instructor-university-card { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 0; background: transparent; border: none; border-radius: 0; text-align: center; flex-shrink: 0; }
+.instructor-university-icon { background: transparent; border-radius: 16px; display: inline-flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 8px 24px rgba(0,0,0,0.18), 0 2px 6px rgba(0,0,0,0.10); overflow: hidden; flex-shrink: 0; max-width: 140px; max-height: 100px; transform: perspective(300px) rotateY(-8deg) rotateX(4deg); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.instructor-university-icon:hover { transform: perspective(300px) rotateY(0deg) rotateX(0deg); box-shadow: 0 14px 32px rgba(0,0,0,0.22), 0 2px 8px rgba(0,0,0,0.10); }
+.instructor-university-icon img { display: block; width: auto; height: auto; max-width: 140px; max-height: 100px; object-fit: contain; border-radius: 0; }
+.instructor-university-icon .fa-graduation-cap { color: var(--navy); font-size: 28px; }
+.instructor-profile + .instructor-profile { margin-top: 16px; }
+.instructor-university-label { font-size: 9.5px; font-weight: 700; color: var(--muted); letter-spacing: 0.07em; text-transform: uppercase; }
+.instructor-university-name { font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.35; }
+@media (max-width: 600px) { .instructor-university-card { min-width: unset; width: 100%; flex-direction: row; text-align: left; } }
 .inst-badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 11px; border-radius: 100px; font-size: 11px; font-weight: 700; letter-spacing: 0.02em; white-space: nowrap; }
 .inst-badge-verified { background: var(--teal-light); color: #00805F; }
 .inst-badge-top { background: var(--gold-light); color: #8B6914; }
@@ -393,6 +423,18 @@ section { position: relative; z-index: 1; }
 .cta-trust-icon { font-size: 16px; }
 
 /* FOOTER */
+/* BENEFITS */
+.benefits-section { padding: 60px 0 40px; border-top: 1px solid var(--border); margin-top: 20px; }
+.benefits-title { font-family: var(--font-serif); font-size: 36px; font-weight: 400; text-align: center; margin-bottom: 40px; color: var(--text); letter-spacing: 0.04em; line-height: 1.2; }
+.benefits-title em { color: var(--purple); font-style: italic; letter-spacing: 0.04em; }
+.benefits-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+.benefit-item { padding: 28px 36px; border-right: 1px solid var(--border); }
+.benefit-item:last-child { border-right: none; }
+.benefit-icon { font-size: 32px; color: var(--navy); margin-bottom: 16px; }
+.benefit-heading { font-family: var(--font-serif); font-size: 28px; font-weight: 400; font-style: italic; color: var(--navy); line-height: 1.2; margin-bottom: 12px; letter-spacing: 0.02em; }
+.benefit-desc { font-size: 14px; color: var(--text-soft); line-height: 1.7; }
+@media (max-width: 700px) { .benefits-grid { grid-template-columns: 1fr; } .benefit-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.15); } .benefit-item:last-child { border-bottom: none; } }
+
 .course-footer { padding: 30px 0 20px; border-top: 1px solid var(--border); }
 .footer-content { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
 .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
@@ -465,7 +507,8 @@ section { position: relative; z-index: 1; }
 
         {{-- LEFT: Course Info --}}
         @php
-            $instructor = $course->instructors->first();
+            $instructors = $course->instructors;
+            $instructor  = $instructors->first(); // untuk hero chip
             $totalLessons = $course->sections->flatMap->lessons->count();
             $avgRating = $course->reviews_avg_rating;
             $reviewCount = $course->reviews->count();
@@ -492,21 +535,21 @@ section { position: relative; z-index: 1; }
             <div class="course-stats">
                 <div class="stat-item-sm">
                     <div class="stat-item-sm-val">
-                        <em>⭐</em> {{ $avgRating ? number_format($avgRating, 1) : '—' }}
+                        <i class="fa-solid fa-star" style="color:#f59e0b;font-size:11px;"></i> {{ $avgRating ? number_format($avgRating, 1) : '—' }}
                     </div>
                     <div class="stat-item-sm-label">({{ $reviewCount }} reviews)</div>
                 </div>
                 <div class="stat-item-sm">
-                    <div class="stat-item-sm-val">👥 {{ $course->enrollments_count ?? 0 }}</div>
+                    <div class="stat-item-sm-val"><i class="fa-solid fa-users"></i> {{ $course->enrollments_count ?? 0 }}</div>
                     <div class="stat-item-sm-label">Students</div>
                 </div>
                 <div class="stat-item-sm">
-                    <div class="stat-item-sm-val">📚 {{ $totalLessons }}</div>
+                    <div class="stat-item-sm-val"><i class="fa-solid fa-book-open"></i> {{ $totalLessons }}</div>
                     <div class="stat-item-sm-label">Lessons</div>
                 </div>
                 @if($course->language)
                     <div class="stat-item-sm">
-                        <div class="stat-item-sm-val">🌍 {{ strtoupper($course->language) }}</div>
+                        <div class="stat-item-sm-val"><i class="fa-solid fa-globe"></i> {{ strtoupper($course->language) }}</div>
                         <div class="stat-item-sm-label">Language</div>
                     </div>
                 @endif
@@ -523,6 +566,88 @@ section { position: relative; z-index: 1; }
                     </div>
                 </div>
             @endif
+
+            {{-- COURSE META GRID --}}
+            <div class="course-meta-grid">
+                <div class="course-meta-item">
+                    <i class="fa-regular fa-clock course-meta-icon"></i>
+                    <div>
+                        <div class="course-meta-val">{{ $course->duration_weeks }} {{ $course->duration_weeks > 1 ? 'weeks' : 'week' }}</div>
+                        @if($course->hours_per_week)
+                            <div class="course-meta-sub">{{ $course->hours_per_week }} hours per week</div>
+                        @endif
+                    </div>
+                </div>
+                <div class="course-meta-item">
+                    @if($course->start_date)
+                        <i class="fa-regular fa-calendar course-meta-icon"></i>
+                        <div>
+                            <div class="course-meta-val">Starts {{ \Carbon\Carbon::parse($course->start_date)->format('M j, Y') }}</div>
+                            @if($course->enroll_deadline)
+                                <div class="course-meta-sub">Enroll by {{ \Carbon\Carbon::parse($course->enroll_deadline)->format('M j, Y') }}</div>
+                            @endif
+                        </div>
+                    @else
+                        <i class="fa-regular fa-calendar course-meta-icon"></i>
+                        <div>
+                            <div class="course-meta-val">Self-paced</div>
+                            <div class="course-meta-sub">Start anytime</div>
+                        </div>
+                    @endif
+                </div>
+                <div class="course-meta-item">
+                    <i class="fa-solid fa-users course-meta-icon"></i>
+                    <div>
+                        @if($course->is_self_paced)
+                            <div class="course-meta-val">Self-paced</div>
+                            <div class="course-meta-sub">Progress at your own speed</div>
+                        @else
+                            <div class="course-meta-val">Instructor-paced</div>
+                            <div class="course-meta-sub">Scheduled classes</div>
+                        @endif
+                    </div>
+                </div>
+                <div class="course-meta-item">
+                    <i class="fa-solid fa-award course-meta-icon"></i>
+                    <div>
+                        @if($course->has_certificate)
+                            <div class="course-meta-val">Earn your credentials</div>
+                            <div class="course-meta-sub">Receive a certificate or badge</div>
+                        @else
+                            <div class="course-meta-val">Audit only</div>
+                            <div class="course-meta-sub">No certificate</div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
+            {{-- LANGUAGE / TRANSLATIONS / TRANSCRIPTS / PREREQUISITES --}}
+            <div class="course-details-grid">
+                <div class="course-detail-item">
+                    <div class="course-detail-label">
+                        <i class="fa-solid fa-language"></i> Language
+                    </div>
+                    <div class="course-detail-value">{{ $course->language ?? 'English' }}</div>
+                </div>
+                <div class="course-detail-item">
+                    <div class="course-detail-label">
+                        <i class="fa-solid fa-globe"></i> Translations
+                    </div>
+                    <div class="course-detail-value">{{ $course->translations ?? 'None' }}</div>
+                </div>
+                <div class="course-detail-item">
+                    <div class="course-detail-label">
+                        <i class="fa-regular fa-closed-captioning"></i> Transcripts
+                    </div>
+                    <div class="course-detail-value">{{ $course->transcripts ?? 'English' }}</div>
+                </div>
+                <div class="course-detail-item">
+                    <div class="course-detail-label">
+                        <i class="fa-solid fa-clipboard-check"></i> Prerequisites
+                    </div>
+                    <div class="course-detail-value">{{ $course->prerequisites ?? 'None' }}</div>
+                </div>
+            </div>
         </div>
 
         {{-- RIGHT: Enroll Card --}}
@@ -530,7 +655,7 @@ section { position: relative; z-index: 1; }
             <div class="enroll-card">
                 <div class="enroll-video">
                     <span class="preview-label">Preview</span>
-                    <div class="video-play-btn">▶</div>
+                    <div class="video-play-btn"><i class="fa-solid fa-play"></i></div>
                     <span class="video-duration">Preview</span>
                 </div>
 
@@ -549,13 +674,13 @@ section { position: relative; z-index: 1; }
                         <a href="{{ route('student.learn', $course->slug) }}"
                            class="btn-enroll"
                            style="text-decoration:none;">
-                            ▶ Continue Learning
+                            <i class="fa-solid fa-play"></i> Continue Learning
                         </a>
                     @elseif(auth()->check())
                         <form action="{{ route('enroll', $course) }}" method="POST">
                             @csrf
                             <button type="submit" class="btn-enroll">
-                                {{ $course->isFree() ? '🎓 Enroll for Free' : 'Enroll Now' }}
+                                <i class="fa-solid fa-graduation-cap"></i> {{ $course->isFree() ? 'Enroll for Free' : 'Enroll Now' }}
                             </button>
                         </form>
                     @else
@@ -579,7 +704,7 @@ section { position: relative; z-index: 1; }
 </button>
 
                     <div class="guarantee-box">
-                        <div class="guarantee-icon">✓</div>
+                        <div class="guarantee-icon"><i class="fa-solid fa-check"></i></div>
                         <div class="guarantee-text">
                             <strong>30-day money-back guarantee.</strong> Full refund, no questions asked.
                         </div>
@@ -588,19 +713,19 @@ section { position: relative; z-index: 1; }
                     <div class="includes-title">This course includes</div>
                     <ul class="includes-list">
                         <li class="includes-item">
-                            <div class="includes-icon">📚</div>
+                            <div class="includes-icon"><i class="fa-solid fa-book-open"></i></div>
                             <span><strong>{{ $totalLessons }}</strong> lessons</span>
                         </li>
                         <li class="includes-item">
-                            <div class="includes-icon">📱</div>
+                            <div class="includes-icon"><i class="fa-solid fa-mobile-screen"></i></div>
                             <span>Access on <strong>mobile & desktop</strong></span>
                         </li>
                         <li class="includes-item">
-                            <div class="includes-icon">♾️</div>
+                            <div class="includes-icon"><i class="fa-solid fa-infinity"></i></div>
                             <span><strong>Lifetime</strong> access</span>
                         </li>
                         <li class="includes-item">
-                            <div class="includes-icon">🏆</div>
+                            <div class="includes-icon"><i class="fa-solid fa-trophy"></i></div>
                             <span><strong>Certificate</strong> of completion</span>
                         </li>
                     </ul>
@@ -608,10 +733,10 @@ section { position: relative; z-index: 1; }
                     <div class="share-row">
                         <span class="share-label">Share this course</span>
                         <div class="share-icons">
-                            <button class="share-btn" title="Twitter">𝕏</button>
+                            <button class="share-btn" title="Twitter"><i class="fa-brands fa-x-twitter"></i></button>
                             <button class="share-btn" title="Facebook">f</button>
                             <button class="share-btn" title="LinkedIn">in</button>
-                            <button class="share-btn" title="Copy link">🔗</button>
+                            <button class="share-btn" title="Copy link"><i class="fa-solid fa-link"></i></button>
                         </div>
                     </div>
                 </div>
@@ -628,7 +753,7 @@ section { position: relative; z-index: 1; }
             <div class="learn-grid">
                 @foreach($course->syllabus as $item)
                     <div class="learn-item">
-                        <div class="learn-check">✓</div>
+                        <div class="learn-check"><i class="fa-solid fa-check"></i></div>
                         <div class="learn-text">{{ $item->item }}</div>
                     </div>
                 @endforeach
@@ -690,7 +815,7 @@ section { position: relative; z-index: 1; }
                             </div>
                         </div>
                         <div class="section-header-right">
-                            <span class="section-meta-item">📚 {{ $section->lessons->count() }} lessons</span>
+                            <span class="section-meta-item"><i class="fa-solid fa-book-open"></i> {{ $section->lessons->count() }} lessons</span>
                         </div>
                     </button>
 
@@ -698,7 +823,7 @@ section { position: relative; z-index: 1; }
                         @foreach($section->lessons as $lesson)
                             <div class="lesson-item">
                                 <div class="lesson-left">
-                                    <div class="lesson-icon lesson-icon-video">▶</div>
+                                    <div class="lesson-icon lesson-icon-video"><i class="fa-solid fa-play"></i></div>
                                     <span class="lesson-title">{{ $lesson->title }}</span>
                                     @if($lesson->is_free ?? false)
                                         <span class="lesson-preview-badge">Preview</span>
@@ -706,9 +831,9 @@ section { position: relative; z-index: 1; }
                                 </div>
                                 <div class="lesson-right">
                                     @if($lesson->is_free ?? false)
-                                        <button class="lesson-play-btn" type="button">▶</button>
+                                        <button class="lesson-play-btn" type="button"><i class="fa-solid fa-play"></i></button>
                                     @else
-                                        <span class="lesson-locked">🔒</span>
+                                        <span class="lesson-locked"><i class="fa-solid fa-lock"></i></span>
                                     @endif
                                 </div>
                             </div>
@@ -729,33 +854,51 @@ section { position: relative; z-index: 1; }
     </section>
 
     {{-- INSTRUCTOR --}}
-    @if($instructor)
+    @if($instructors->isNotEmpty())
     <section class="content-section">
-        <h2 class="section-title">Meet your <em>instructor</em></h2>
-        <p class="section-desc">Learn from an industry expert</p>
+        <h2 class="section-title">Meet your <em>{{ $instructors->count() > 1 ? 'instructors' : 'instructor' }}</em></h2>
+        <p class="section-desc">{{ $instructors->count() > 1 ? 'Learn from industry experts' : 'Learn from an industry expert' }}</p>
 
+        @foreach($instructors as $inst)
         <div class="instructor-profile">
             <div class="instructor-header">
-                <div class="instructor-avatar-xl">
-                    {{ strtoupper(substr($instructor->name, 0, 1)) }}
-                </div>
+                <div class="instructor-avatar-xl" style="{{ $inst->avatar_url ? 'padding:0;overflow:hidden;' : '' }}">
+    @if($inst->avatar_url)
+        <img src="{{ asset($inst->avatar_url) }}" alt="{{ $inst->name }}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+    @else
+        {{ strtoupper(substr($inst->name, 0, 1)) }}
+    @endif
+</div>
                 <div class="instructor-main-info">
-                    <h3 class="instructor-full-name">{{ $instructor->name }}</h3>
-                    @if($instructor->headline ?? false)
-                        <div class="instructor-headline">{{ $instructor->headline }}</div>
+                    <h3 class="instructor-full-name">{{ $inst->name }}</h3>
+                    @if($inst->headline ?? false)
+                        <div class="instructor-profession">{{ $inst->headline }}</div>
                     @endif
-                    <div class="instructor-badges">
-                        <span class="inst-badge inst-badge-verified">✓ Verified Instructor</span>
+                </div>
+
+                @if($inst->university ?? false)
+                <div class="instructor-university-card">
+                    <div class="instructor-university-icon">
+                        @if($inst->university_logo_url ?? false)
+                            <img src="{{ asset($inst->university_logo_url) }}" alt="{{ $inst->university }} logo">
+                        @else
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        @endif
+                    </div>
+                    <div>
+                        <div class="instructor-university-name">{{ $inst->university }}</div>
                     </div>
                 </div>
+                @endif
             </div>
 
-            @if($instructor->bio ?? false)
+            @if($inst->bio ?? false)
                 <div class="instructor-bio">
-                    <p>{{ $instructor->bio }}</p>
+                    <p>{{ $inst->bio }}</p>
                 </div>
             @endif
         </div>
+        @endforeach
     </section>
     @endif
 
@@ -770,7 +913,7 @@ section { position: relative; z-index: 1; }
                     <span class="rating-value">
                         <em>{{ $avgRating ? number_format($avgRating, 1) : '—' }}</em>
                     </span>
-                    <div class="rating-stars-big">★★★★★</div>
+                    <div class="rating-stars-big"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
                     <div class="rating-total">Based on {{ $reviewCount }} reviews</div>
                 </div>
             </div>
@@ -787,7 +930,7 @@ section { position: relative; z-index: 1; }
                 @foreach($distribution as $row)
                     @php $pct = $reviewCount > 0 ? round($row['count'] / $reviewCount * 100) : 0; @endphp
                     <div class="dist-row">
-                        <span class="dist-label">{{ $row['stars'] }}★</span>
+                        <span class="dist-label">{{ $row['stars'] }} <i class="fa-solid fa-star"></i></span>
                         <div class="dist-bar">
                             <div class="dist-fill" style="width: {{ $pct }}%;"></div>
                         </div>
@@ -809,14 +952,14 @@ section { position: relative; z-index: 1; }
                             <div class="review-author-info">
                                 <div class="review-author-name">
                                     {{ $review->user->name ?? 'Anonymous' }}
-                                    <span class="verified-badge" title="Verified">✓</span>
+                                    <span class="verified-badge" title="Verified"><i class="fa-solid fa-check"></i></span>
                                 </div>
                             </div>
                         </div>
                         <div class="review-meta">
                             <div class="review-stars">
                                 @for($i = 1; $i <= 5; $i++)
-                                    <span class="star {{ $i <= $review->rating ? 'filled' : '' }}">★</span>
+                                    <span class="star {{ $i <= $review->rating ? 'filled' : '' }}"><i class="fa-solid fa-star"></i></span>
                                 @endfor
                             </div>
                             <div class="review-date">{{ $review->created_at->diffForHumans() }}</div>
@@ -860,26 +1003,48 @@ section { position: relative; z-index: 1; }
                 @if($isEnrolled)
                     <a href="{{ route('student.learn', $course->slug) }}"
                        class="btn-cta-primary" style="text-decoration:none;">
-                        ▶ Continue Learning
+                        <i class="fa-solid fa-play"></i> Continue Learning
                     </a>
                 @elseif(auth()->check())
                     <form action="{{ route('enroll', $course) }}" method="POST" style="display:inline;">
                         @csrf
                         <button type="submit" class="btn-cta-primary">
-                            {{ $course->isFree() ? '🎓 Enroll for Free' : 'Enroll Now →' }}
+                            <i class="fa-solid fa-graduation-cap"></i> {{ $course->isFree() ? 'Enroll for Free' : 'Enroll Now' }} <i class="fa-solid fa-arrow-right"></i>
                         </button>
                     </form>
                 @else
                     <a href="{{ route('login') }}" class="btn-cta-primary" style="text-decoration:none;">
-                        Login to Enroll →
+                        Login to Enroll <i class="fa-solid fa-arrow-right"></i>
                     </a>
                 @endif
             </div>
 
             <div class="cta-trust">
-                <div class="cta-trust-item"><span class="cta-trust-icon">🛡️</span><span>30-day guarantee</span></div>
-                <div class="cta-trust-item"><span class="cta-trust-icon">♾️</span><span>Lifetime access</span></div>
-                <div class="cta-trust-item"><span class="cta-trust-icon">🏆</span><span>Certificate included</span></div>
+                <div class="cta-trust-item"><span class="cta-trust-icon"><i class="fa-solid fa-shield-halved"></i></span><span>30-day guarantee</span></div>
+                <div class="cta-trust-item"><span class="cta-trust-icon"><i class="fa-solid fa-infinity"></i></span><span>Lifetime access</span></div>
+                <div class="cta-trust-item"><span class="cta-trust-icon"><i class="fa-solid fa-trophy"></i></span><span>Certificate included</span></div>
+            </div>
+        </div>
+    </section>
+
+    {{-- BENEFITS --}}
+    <section class="benefits-section">
+        <h2 class="benefits-title">The benefits of <em>Coursify</em> courses</h2>
+        <div class="benefits-grid">
+            <div class="benefit-item">
+                <div class="benefit-icon"><i class="fa-solid fa-circle-dollar-to-slot"></i></div>
+                <h3 class="benefit-heading">Pay less, earn more</h3>
+                <p class="benefit-desc">Programs dig deeper into your chosen subject and are offered at a special price.</p>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon"><i class="fa-solid fa-certificate"></i></div>
+                <h3 class="benefit-heading">Earn certificates</h3>
+                <p class="benefit-desc">When you're done, you'll have multiple certificates to add to your resume.</p>
+            </div>
+            <div class="benefit-item">
+                <div class="benefit-icon"><i class="fa-solid fa-laptop"></i></div>
+                <h3 class="benefit-heading">Learn 100% online</h3>
+                <p class="benefit-desc">Learn on your own schedule from anywhere in the world.</p>
             </div>
         </div>
     </section>
@@ -897,7 +1062,7 @@ section { position: relative; z-index: 1; }
                 <a href="{{ route('privacy') }}">Privacy</a>
                 <a href="{{ route('contact') }}">Contact</a>
             </div>
-            <div class="footer-copy">© {{ date('Y') }} Coursify · Supporting SDG 4 🌍</div>
+            <div class="footer-copy">© {{ date('Y') }} Coursify · Supporting SDG 4 <i class="fa-solid fa-globe"></i></div>
         </div>
     </footer>
 
@@ -977,7 +1142,7 @@ document.querySelectorAll('.share-btn').forEach(btn => {
         if (this.title === 'Copy link') {
             navigator.clipboard.writeText(window.location.href).then(() => {
                 const orig = this.textContent;
-                this.textContent = '✓';
+                this.innerHTML = '<i class="fa-solid fa-check"></i>';
                 this.style.background = 'var(--teal)';
                 this.style.color = 'white';
                 setTimeout(() => { this.textContent = orig; this.style.background = ''; this.style.color = ''; }, 1500);

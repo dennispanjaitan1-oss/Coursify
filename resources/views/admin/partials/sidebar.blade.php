@@ -82,6 +82,18 @@
 
             </a>
 
+            {{-- QUICK CURRICULUM --}}
+            <a href="{{ route('admin.quick-curriculum.index') }}"
+               class="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-100 hover:text-orange-600 text-gray-700 transition">
+
+                <i class="fa-solid fa-wand-magic-sparkles w-5 text-center"></i>
+
+                <span class="font-medium">
+                    Quick Curriculum
+                </span>
+
+            </a>
+
             {{-- INSTITUTIONS --}}
             <a href="{{ route('admin.institutions') }}"
                class="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-100 hover:text-orange-600 text-gray-700 transition">

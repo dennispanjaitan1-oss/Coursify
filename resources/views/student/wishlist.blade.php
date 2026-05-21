@@ -1401,15 +1401,15 @@ body::before {
                         <a href="{{ route('courses.show', $courseSlug) }}"
                            class="course-thumb course-thumb-{{ $thumb }}"
                            aria-label="Lihat kursus {{ $courseTitle }}">
-
-                            {{-- Badge Saved --}}
+                            @if($course->thumbnail_url)
+                                <img src="{{ $course->thumbnail_url }}" alt="{{ $courseTitle }} thumbnail" class="course-thumb-img" />
+                            @else
+                                <span class="course-thumb-icon" aria-hidden="true">{{ $courseIcon }}</span>
+                            @endif
                             <span class="badge-saved">
                                 <i class="fa-solid fa-heart" aria-hidden="true"></i>
                                 Saved
                             </span>
-
-                            {{-- Course Thumbnail Icon --}}
-                            <span class="course-thumb-icon" aria-hidden="true">{{ $courseIcon }}</span>
                         </a>
 
                         {{-- Tombol Remove — di luar <a>, masih dalam wrapper --}}

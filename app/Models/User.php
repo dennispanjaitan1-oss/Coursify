@@ -20,6 +20,8 @@ class User extends Authenticatable
         'headline',
         'website_url',
         'linkedin_url',
+        'university',
+        'university_logo_url',
         'language',
         'timezone',
         'theme',
