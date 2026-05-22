@@ -22,3 +22,8 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+venv/
+__pycache__/
+*.pyc
+edx_courses.csv
+edx_courses.json
