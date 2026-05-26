@@ -175,15 +175,18 @@ class CourseController extends Controller
                 ->paginate(12);
         }
 
+        // ── JSON for autocomplete (AJAX / XMLHttpRequest) ──────────────
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json($courses->map(fn($c) => [
+                'id'        => $c->id,
+                'title'     => $c->title,
+                'slug'      => $c->slug,
+                'category'  => $c->category?->name,
+                'thumbnail' => $c->thumbnail ? asset('storage/' . $c->thumbnail) : null,
+            ]));
+        }
+
         return view('courses.index', compact('courses', 'categories', 'parentCategories', 'totalCourses'));
-        return view(
-            'courses.index',
-            compact(
-                'courses',
-                'categories',
-                'totalCourses'
-            )
-        );
     }
 
     public function show($slug)
@@ -214,5 +217,23 @@ class CourseController extends Controller
 
             abort(404);
         }
+    }
+
+    public function choosePath(Course $course)
+    {
+        $course->load(['institution'])->loadCount('enrollments');
+
+        $alreadyEnrolled = auth()->user()
+            ->enrollments()
+            ->where('course_id', $course->id)
+            ->first();
+
+        // Sudah enrolled sebagai verified/honor → langsung ke course
+        if ($alreadyEnrolled && in_array($alreadyEnrolled->type, ['verified', 'honor'])) {
+            return redirect()->route('student.learn', $course->slug)
+                ->with('info', 'Kamu sudah berada di jalur Verified.');
+        }
+
+        return view('courses.choose-path', compact('course', 'alreadyEnrolled'));
     }
 }

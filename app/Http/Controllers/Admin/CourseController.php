@@ -45,6 +45,18 @@ class CourseController extends Controller
     }
 
     /**
+     * Tampilkan form create course.
+     */
+    public function create()
+    {
+        $categories   = Category::orderBy('name')->get();
+        $institutions = Institution::orderBy('name')->get();
+        $programs     = Program::orderBy('title')->get();
+
+        return view('admin.create-course', compact('categories', 'institutions', 'programs'));
+    }
+
+    /**
      * Simpan course baru.
      */
     public function store(Request $request)
@@ -149,6 +161,6 @@ class CourseController extends Controller
 
 public function show(Course $course)
 {
-    return redirect()->route('admin.courses.index');
+    return view('admin.courses.show', compact('course'));
 }
 }

@@ -759,7 +759,7 @@ body {
 .course-card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: 12px;
   overflow: hidden;
   text-decoration: none;
   color: var(--text-1);
@@ -769,25 +769,27 @@ body {
 }
 
 .course-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.12);
   border-color: var(--border-2);
 }
 
-.course-thumb {
-  aspect-ratio: 16/9;
+.course-card__thumb {
   position: relative;
+  aspect-ratio: 16/9;
   overflow: hidden;
   background: var(--surface-2);
+  border-radius: 12px 12px 0 0;
 }
 
-.course-thumb img {
+.course-card__thumb img {
   width: 100%; height: 100%;
   object-fit: cover;
   transition: transform 0.4s ease;
+  display: block;
 }
 
-.course-card:hover .course-thumb img { transform: scale(1.04); }
+.course-card:hover .course-card__thumb img { transform: scale(1.04); }
 
 .course-thumb-fallback {
   width: 100%; height: 100%;
@@ -858,7 +860,7 @@ body {
 /* ── Two-col: Activity + Upcoming ── */
 .two-col {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
   gap: 14px;
   align-items: start;
 }
@@ -868,6 +870,7 @@ body {
   border: 1px solid var(--border);
   border-radius: var(--radius-xl);
   padding: 22px 24px;
+  min-width: 0;
 }
 
 .panel-head {
@@ -1114,7 +1117,13 @@ body {
   text-overflow: ellipsis;
 }
 
-.up-meta { font-size: 11px; color: var(--text-4); }
+.up-meta {
+  font-size: 11px;
+  color: var(--text-4);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 .up-empty {
   text-align: center;
@@ -1652,12 +1661,17 @@ body {
             <div class="progress-label">{{ $prog }}% complete</div>
           </div>
 
-          <a href="{{ $isDone
+          @php
+             $canViewCert = $isDone && in_array($lastEnrollment->type, ['verified', 'honor']);
+          @endphp
+          <a href="{{ $canViewCert
               ? route('student.certificates')
               : route('student.learn', $lastEnrollment->course->slug) }}"
              class="btn btn-accent">
-            @if($isDone)
+            @if($canViewCert)
               <i class="fa-solid fa-certificate" style="font-size:11px;"></i> View Certificate
+            @elseif($isDone)
+              <i class="fa-solid fa-rotate-right" style="font-size:11px;"></i> Review Course
             @else
               <i class="fa-solid fa-play" style="font-size:10px;"></i> Resume
             @endif
@@ -1686,39 +1700,41 @@ body {
       <div class="courses-grid">
         @foreach($myCourses as $item)
           <a href="{{ route('student.learn', $item->slug) }}" class="course-card">
-            <div class="course-thumb">
+            <div class="course-card__thumb">
               @php
                 $thumbSrc = $item->course->thumbnail_url
                     ?? ($item->course->thumbnail ? asset('storage/' . $item->course->thumbnail) : null);
               @endphp
               @if($thumbSrc)
-                <img src="{{ $thumbSrc }}"
-                     alt="{{ $item->course->title }}"
-                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                <div class="course-thumb-fallback"
-                     style="display:none;background: linear-gradient(135deg, hsl({{ (ord($item->course->title[0]) * 7) % 360 }},70%,60%) 0%, hsl({{ (ord($item->course->title[0]) * 7 + 60) % 360 }},70%,50%) 100%);">
-                  📚
-                </div>
+                <img src="{{ $thumbSrc }}" alt="{{ $item->course->title }}">
               @else
-                <div class="course-thumb-fallback"
-                     style="background: linear-gradient(135deg, hsl({{ (ord($item->course->title[0]) * 7) % 360 }},70%,60%) 0%, hsl({{ (ord($item->course->title[0]) * 7 + 60) % 360 }},70%,50%) 100%);">
-                  📚
+                <div style="width:100%;height:100%;background:linear-gradient(135deg,#1e3a5f,#2d4d7a);display:flex;align-items:center;justify-content:center;">
+                  <i class="fa-solid fa-graduation-cap" style="font-size:40px;color:rgba(255,255,255,0.3);"></i>
                 </div>
               @endif
+
+              @if($item->type === 'audit')
+                <div class="course-badge" style="background:rgba(255, 255, 255, 0.2); backdrop-filter:blur(10px); border:1px solid rgba(255, 255, 255, 0.5); color:white; top:10px; right:auto; left:10px; z-index:10;">Audit</div>
+              @elseif($item->type === 'verified')
+                <div class="course-badge" style="background:rgba(255, 255, 255, 0.2); backdrop-filter:blur(10px); border:1px solid rgba(255, 255, 255, 0.5); color:white; top:10px; right:auto; left:10px; z-index:10;">Verified</div>
+              @elseif($item->type === 'honor')
+                <div class="course-badge" style="background:rgba(255, 255, 255, 0.2); backdrop-filter:blur(10px); border:1px solid rgba(255, 255, 255, 0.5); color:white; top:10px; right:auto; left:10px; z-index:10;">Honor</div>
+              @endif
               @if($item->status === 'completed')
-                <div class="course-badge badge-done">
+                <div class="course-badge badge-done" style="top:10px; right:10px;">
                   <i class="fa-solid fa-check"></i> Done
                 </div>
               @else
-                <div class="course-badge badge-wip">In Progress</div>
+                <div class="course-badge badge-wip" style="top:10px; right:10px;">In Progress</div>
               @endif
             </div>
-            <div class="course-body">
-              <div class="course-cat">{{ optional($item->course->category)->name ?? 'Course' }}</div>
-              <div class="course-title">{{ $item->course->title }}</div>
-              <div class="course-instructor">
-    {{ optional($item->course->instructors->first())->name ?? 'Instructor' }}
-</div>
+            
+            <div class="course-body" style="padding:14px 16px 16px;">
+              <div class="course-cat" style="font-size:10px;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;color:var(--accent);margin:0 0 6px;">{{ optional($item->course->category)->name ?? 'Course' }}</div>
+              <div class="course-title" style="font-size:15px;font-weight:700;line-height:1.4;margin:0 0 6px;color:var(--text-1);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">{{ $item->course->title }}</div>
+              <div class="course-instructor" style="font-size:12px;color:var(--text-3);margin:0 0 10px;padding-bottom:10px;border-bottom:1px solid var(--border);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                {{ optional($item->course->instructors->first())->name ?? 'Instructor' }}
+              </div>
               <div class="course-progress">
                 <div class="course-prog-header">
                   <span>{{ $item->progress }}%</span>
@@ -1819,13 +1835,7 @@ body {
                  class="upcoming-item">
                 <div class="upcoming-time-block">
                   <div class="up-day">Next</div>
-                  <div class="up-clock">
-                    @if($item['lesson_type'] === 'video') 🎬
-                    @elseif($item['lesson_type'] === 'quiz') 📝
-                    @elseif($item['lesson_type'] === 'project') 🛠
-                    @else 📖
-                    @endif
-                  </div>
+                  <div class="up-clock">{{ $item['duration'] }}</div>
                 </div>
                 <div class="up-icon icon-{{ $item['lesson_type'] ?? 'video' }}">
                   @if($item['lesson_type'] === 'quiz')
@@ -1840,7 +1850,7 @@ body {
                 </div>
                 <div class="up-info">
                   <div class="up-title">{{ $item['lesson_title'] }}</div>
-                  <div class="up-meta">{{ $item['course_title'] }} · {{ $item['duration'] }}</div>
+                  <div class="up-meta">{{ $item['course_title'] }}</div>
                 </div>
               </a>
             @endforeach

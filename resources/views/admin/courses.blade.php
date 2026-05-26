@@ -111,7 +111,7 @@
 
                             {{-- PRICE --}}
                             <td class="px-6 py-4 font-semibold text-orange-600">
-                                Rp {{ number_format($course->price, 0, ',', '.') }}
+                                {{ $course->formatted_price }}
                             </td>
 
                             {{-- LEVEL --}}

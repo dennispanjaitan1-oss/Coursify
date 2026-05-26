@@ -72,6 +72,7 @@
                             <th class="px-6 py-4 font-semibold">ID Transaksi</th>
                             <th class="px-6 py-4 font-semibold">Pengguna</th>
                             <th class="px-6 py-4 font-semibold">Course</th>
+                            <th class="px-6 py-4 font-semibold">Billing</th>
                             <th class="px-6 py-4 font-semibold">Metode</th>
                             <th class="px-6 py-4 font-semibold">Jumlah</th>
                             <th class="px-6 py-4 font-semibold">Status</th>
@@ -92,11 +93,28 @@
                                 <td class="px-6 py-5 text-sm text-gray-600">
                                     {{ $trx->items->pluck('course.title')->filter()->join(', ') ?: '-' }}
                                 </td>
+                                <td class="px-6 py-5 text-sm text-gray-600">
+                                    @if($trx->first_name || $trx->last_name)
+                                        <strong>{{ trim(($trx->first_name ?? '') . ' ' . ($trx->last_name ?? '')) }}</strong>
+                                        <p class="text-xs text-gray-400">{{ $trx->country ?? '-' }}</p>
+                                        @if($trx->coupon_code)
+                                            <p class="text-xs text-green-600">Coupon: {{ $trx->coupon_code }}</p>
+                                        @endif
+                                    @else
+                                        -
+                                    @endif
+                                </td>
                                 <td class="px-6 py-5 text-sm text-gray-500">
-                                    {{ $trx->method ?? '-' }}
+                                    <span class="font-medium">{{ str_replace('_', ' ', $trx->method ?? '-') }}</span>
+                                    @if($trx->card_last4)
+                                        <p class="text-xs text-gray-400">{{ strtoupper($trx->card_brand ?? 'CARD') }} **** {{ $trx->card_last4 }}</p>
+                                    @endif
                                 </td>
                                 <td class="px-6 py-5 font-semibold text-gray-800">
                                     Rp {{ number_format($trx->amount, 0, ',', '.') }}
+                                    @if($trx->discount_amount > 0)
+                                        <p class="text-xs text-green-600">Diskon Rp {{ number_format($trx->discount_amount, 0, ',', '.') }}</p>
+                                    @endif
                                 </td>
                                 <td class="px-6 py-5">
                                     @if($trx->status === 'paid')

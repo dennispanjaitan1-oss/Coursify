@@ -76,11 +76,107 @@
 
     .hero-cta {
         display: flex;
+        flex-direction: column;
+        align-items: center;
         gap: 14px;
-        justify-content: center;
-        flex-wrap: wrap;
         margin-bottom: 36px;
+        width: 100%;
+        max-width: 620px;
+        margin-left: auto;
+        margin-right: auto;
     }
+
+    /* Hero Search */
+    .hero-search-form { width: 100%; }
+    .hero-search-wrap {
+        display: flex;
+        align-items: center;
+        background: rgba(255,255,255,0.9);
+        backdrop-filter: blur(20px);
+        border: 1.5px solid rgba(123,111,232,0.2);
+        border-radius: 16px;
+        padding: 6px 6px 6px 18px;
+        box-shadow: 0 8px 32px rgba(30,58,95,0.12);
+        transition: all 0.3s;
+    }
+    .hero-search-wrap:focus-within {
+        border-color: rgba(123,111,232,0.5);
+        box-shadow: 0 12px 40px rgba(30,58,95,0.18), 0 0 0 4px rgba(123,111,232,0.08);
+    }
+    .hero-search-icon {
+        color: var(--muted);
+        font-size: 15px;
+        margin-right: 10px;
+        flex-shrink: 0;
+    }
+    .hero-search-input {
+        flex: 1;
+        border: none;
+        background: transparent;
+        font-size: 14.5px;
+        color: var(--text);
+        font-family: var(--font-sans);
+        outline: none;
+        padding: 8px 0;
+        min-width: 0;
+    }
+    .hero-search-input::placeholder { color: var(--muted); }
+    .hero-search-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--navy);
+        color: white;
+        border: none;
+        padding: 12px 22px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: var(--font-sans);
+        transition: all 0.25s;
+        flex-shrink: 0;
+        white-space: nowrap;
+    }
+    .hero-search-btn:hover {
+        background: #2D4D7A;
+        transform: translateY(-1px);
+    }
+    .hero-search-tags {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 10px;
+        padding: 0 4px;
+    }
+    .hero-tag {
+        font-size: 12px;
+        color: var(--text-soft);
+        background: rgba(255,255,255,0.7);
+        border: 1px solid rgba(123,111,232,0.15);
+        padding: 3px 10px;
+        border-radius: 100px;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+    .hero-tag:hover {
+        background: rgba(123,111,232,0.1);
+        border-color: rgba(123,111,232,0.3);
+        color: var(--purple-dark);
+    }
+    .hero-proof {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .hero-proof-avatars {
+        display: flex;
+        align-items: center;
+    }
+    .hero-proof-avatars div:first-child { margin-left: 0 !important; }
 
     .trust-indicators {
         display: flex;
@@ -528,6 +624,54 @@
         .explore-meta-row { gap: 12px; }
     }
 
+    /* ═══ LATEST SECTION ═══ */
+    .latest-section { background: transparent; padding: 80px 0; border-top: none; }
+    .latest-header { text-align: center; margin-bottom: 50px; }
+    .latest-badge { 
+        background: rgba(255,255,255,0.4); backdrop-filter: blur(12px) saturate(180%); 
+        border: 1px solid rgba(255,255,255,0.6); box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        color: var(--navy); padding: 4px 10px; border-radius: 6px; font-weight: 800; font-size: 13px; 
+        vertical-align: middle; margin-right: 12px; display: inline-block; letter-spacing: 0.05em; 
+    }
+    .latest-title { font-family: var(--font-serif, serif); font-size: 46px; color: var(--navy, #153759); font-weight: 800; display: inline-block; vertical-align: middle; margin: 0; line-height: 1.1; }
+    .latest-subtitle { margin-top: 14px; font-size: 18px; color: rgba(21, 55, 89, 0.8); }
+    
+    .latest-slider-wrapper { position: relative; display: flex; align-items: stretch; max-width: 1240px; margin: 0 auto; gap: 10px; }
+    .latest-nav { background: rgba(255,255,255,0.6); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.8); box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-radius: 50%; font-size: 18px; cursor: pointer; color: var(--navy); width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; transition: 0.3s; align-self: center; flex-shrink: 0; z-index: 2; }
+    .latest-nav:hover { background: #fff; color: var(--purple); transform: scale(1.1); border-color: #fff; }
+    
+    .latest-slider { display: flex; gap: 24px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; flex: 1; padding: 20px 5px; scroll-behavior: smooth; }
+    .latest-slider::-webkit-scrollbar { display: none; }
+    
+    .latest-card { flex: 0 0 calc(33.333% - 16px); min-width: 280px; background: #fff; border-radius: 16px; border: 1px solid rgba(255,255,255,0.4); overflow: hidden; scroll-snap-align: center; display: flex; flex-direction: column; transition: transform 0.35s, box-shadow 0.35s; box-shadow: 0 8px 24px rgba(30,58,95,0.08); text-decoration: none; }
+    .latest-card:hover { transform: translateY(-8px); box-shadow: 0 16px 32px rgba(30,58,95,0.15); border-color: #fff; }
+    .latest-card-header { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; background: rgba(123,111,232,0.03); font-weight: 700; color: var(--navy); font-size: 13px; border-bottom: 1px solid rgba(123,111,232,0.08); }
+    .latest-card-badge { 
+        background: rgba(255,255,255,0.6); backdrop-filter: blur(8px); border: 1px solid rgba(123,111,232,0.2); 
+        color: var(--purple); padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 800; letter-spacing: 0.05em; 
+    }
+    .latest-card-thumb { position: relative; height: 150px; background: #ddd; }
+    .latest-card-thumb > img { width: 100%; height: 100%; object-fit: cover; }
+    .latest-card-logo { position: absolute; bottom: -20px; left: 18px; width: 70px; height: 40px; background: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.08); overflow: hidden; padding: 6px; border: 1px solid rgba(0,0,0,0.04); }
+    .latest-card-logo img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    
+    .latest-card-body { padding: 36px 18px 20px; flex: 1; display: flex; flex-direction: column; }
+    .latest-card-title { font-size: 18px; font-family: var(--font-serif, serif); font-weight: 700; color: var(--navy); line-height: 1.3; margin-bottom: 8px; }
+    .latest-card-inst { font-size: 14px; color: var(--text-soft); margin-bottom: 24px; flex: 1; }
+    .latest-card-meta { display: flex; flex-direction: column; gap: 10px; font-size: 13px; color: var(--text-soft); font-weight: 500; }
+    .latest-card-meta i { width: 18px; text-align: center; margin-right: 6px; color: var(--purple, #7B6FE8); }
+    
+    .latest-dots { display: flex; justify-content: center; gap: 8px; margin-top: 10px; }
+    .latest-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--purple); opacity: 0.2; cursor: pointer; transition: 0.3s; border: none; padding: 0; }
+    .latest-dot.active { opacity: 1; width: 24px; border-radius: 100px; }
+    
+    .latest-btn-browse { background: var(--purple, #7B6FE8); color: #fff; font-weight: 600; font-size: 15px; padding: 14px 32px; border-radius: 999px; text-decoration: none; display: inline-block; transition: all 0.3s; box-shadow: 0 8px 20px rgba(123,111,232,0.25); }
+    .latest-btn-browse:hover { background: var(--navy, #153759); box-shadow: 0 10px 24px rgba(21,55,89,0.3); transform: translateY(-2px); }
+
+    @media(max-width: 1024px) { .latest-card { flex: 0 0 calc(33.333% - 16px); } }
+    @media(max-width: 768px) { .latest-card { flex: 0 0 calc(50% - 12px); } .latest-title { font-size: 32px; } }
+    @media(max-width: 480px) { .latest-card { flex: 0 0 100%; scroll-snap-align: center; } }
+
     /* ═══ COURSES ═══ */
     .courses-grid {
         display: grid;
@@ -537,94 +681,23 @@
         margin: 0 auto;
     }
     .course-card {
-        background: rgba(255,255,255,0.85);
-        backdrop-filter: blur(30px);
-        border: 1px solid rgba(123,111,232,0.08);
-        border-radius: 20px;
+        background: var(--color-card, #fff);
+        border-radius: 12px;
+        border: 1px solid var(--border, rgba(0,0,0,0.08));
         overflow: hidden;
-        text-decoration: none;
-        color: var(--text);
-        transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
         cursor: pointer;
     }
     .course-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 12px 32px rgba(30,58,95,0.14), 0 8px 20px rgba(123,111,232,0.08);
-        border-color: rgba(123,111,232,0.2);
+        transform: translateY(-4px);
+        box-shadow: 0 12px 32px rgba(0,0,0,0.12);
     }
-    .course-thumb {
-        aspect-ratio: 16/10;
-        position: relative;
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 60px;
+    .course-card__thumb img {
+        transition: transform 0.3s ease;
     }
-    .course-thumb-1 { background: linear-gradient(135deg, #667EEA, #764BA2); }
-    .course-thumb-2 { background: linear-gradient(135deg, #F093FB, #F5576C); }
-    .course-thumb-3 { background: linear-gradient(135deg, #4FACFE, #00F2FE); }
-    .course-thumb-4 { background: linear-gradient(135deg, #FA709A, #FEE140); }
-    .course-thumb-5 { background: linear-gradient(135deg, #30CFD0, #330867); }
-    .course-thumb-6 { background: linear-gradient(135deg, #A8EDEA, #FED6E3); }
-
-    .course-badge {
-        position: absolute;
-        top: 12px;
-        left: 12px;
-        padding: 4px 10px;
-        border-radius: 100px;
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-        backdrop-filter: blur(10px);
+    .course-card:hover .course-card__thumb img {
+        transform: scale(1.04);
     }
-    .badge-new { background: rgba(255,138,91,0.9); color: white; }
-    .badge-bestseller { background: rgba(255,200,50,0.95); color: #5A3A00; }
-    .badge-free { background: rgba(0,200,150,0.9); color: white; }
-
-    .course-body { padding: 18px; }
-    .course-category {
-        font-size: 10px;
-        color: var(--muted);
-        font-weight: 600;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        margin-bottom: 8px;
-    }
-    .course-title {
-        font-family: var(--font-serif);
-        font-size: 18px;
-        line-height: 1.2;
-        margin-bottom: 8px;
-        letter-spacing: -0.01em;
-    }
-    .course-instructor {
-        font-size: 12px;
-        color: var(--text-soft);
-        margin-bottom: 12px;
-    }
-    .course-meta {
-        display: flex;
-        gap: 12px;
-        font-size: 12px;
-        color: var(--muted);
-        margin-bottom: 14px;
-        padding-bottom: 14px;
-        border-bottom: 1px solid rgba(0,0,0,0.06);
-    }
-    .course-footer { display: flex; justify-content: space-between; align-items: center; }
-    .course-price {
-        font-family: var(--font-serif);
-        font-size: 18px;
-        font-weight: 400;
-        letter-spacing: -0.01em;
-        color: var(--text);
-    }
-    .course-price-free { color: var(--teal); font-weight: 600; }
-    .course-arrow { font-size: 18px; color: var(--purple); transition: transform 0.3s; }
-    .course-card:hover .course-arrow { transform: translateX(6px); color: var(--purple-dark); }
 
     @media (max-width: 768px) {
         .stats-bar { grid-template-columns: repeat(2, 1fr); padding: 20px; gap: 16px; }
@@ -641,7 +714,10 @@
     width: 100%;
     overflow: hidden;
     height: 460px;
-    background: #0f0c29;
+    background: linear-gradient(135deg, #0f0c29, #1a1630);
+    perspective: 1000px;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.1), 0 10px 30px rgba(0,0,0,0.2);
+    border-radius: 32px;
 }
 .promo-slides { position: relative; width: 100%; height: 100%; }
 .promo-slide {
@@ -650,65 +726,89 @@
     opacity: 0;
     transition: opacity 0.7s ease;
     pointer-events: none;
+    transform-style: preserve-3d;
 }
-.promo-slide.active { opacity: 1; pointer-events: all; }
-.promo-slide-bg { position: absolute; inset: 0; z-index: 0; }
+.promo-slide.active { 
+    opacity: 1; 
+    pointer-events: all;
+}
+.promo-slide-bg { 
+    position: absolute; 
+    inset: 0; 
+    z-index: 0;
+    transform: translateZ(0);
+    box-shadow: inset 0 4px 15px rgba(0,0,0,0.08);
+}
 .promo-slide-content {
     position: relative;
     z-index: 1;
-    max-width: 1100px;
-    margin: 0 auto;
+    max-width: none;
+    width: 100%;
+    margin: 0;
     padding: 50px 40px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 40px;
     align-items: center;
     height: 100%;
+    transform: translateZ(20px);
 }
-.promo-slide-left { color: white; }
+.promo-slide-left { 
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
 .promo-eyebrow {
     display: inline-block;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.55);
-    margin-bottom: 12px;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 10px;
 }
 .promo-slide-title {
     font-family: var(--font-serif);
-    font-size: clamp(26px, 3vw, 40px);
-    font-weight: 400;
-    line-height: 1.15;
+    font-size: clamp(28px, 3.5vw, 48px);
+    font-weight: 800;
+    line-height: 1.2;
     letter-spacing: -0.02em;
-    margin-bottom: 12px;
+    margin-bottom: 0;
+    margin-top: 8px;
     color: white;
 }
 .promo-slide-title em { font-style: italic; color: #b8aef7; }
 .promo-slide-desc {
     font-size: 14px;
-    color: rgba(255,255,255,0.72);
+    color: rgba(255,255,255,0.75);
     line-height: 1.6;
-    margin-bottom: 24px;
+    margin-bottom: 0;
+    margin-top: 12px;
     max-width: 400px;
 }
 .promo-code {
     background: rgba(255,255,255,0.12);
     border: 1px solid rgba(255,255,255,0.28);
     padding: 2px 9px;
-    border-radius: 6px;
+    border-radius: 5px;
     font-family: monospace;
     font-size: 13px;
     font-weight: 700;
     color: #ffd700;
     letter-spacing: 0.05em;
 }
-.promo-slide-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.promo-slide-actions { 
+    display: flex; 
+    gap: 10px; 
+    flex-wrap: wrap;
+    margin-top: 24px;
+}
 .promo-btn-primary {
     background: white;
     color: #1a1a2e;
     padding: 10px 22px;
-    border-radius: 100px;
+    border-radius: 50px;
     font-size: 13px;
     font-weight: 700;
     text-decoration: none;
@@ -720,7 +820,7 @@
     border: 1.5px solid rgba(255,255,255,0.35);
     color: white;
     padding: 10px 22px;
-    border-radius: 100px;
+    border-radius: 50px;
     font-size: 13px;
     font-weight: 600;
     text-decoration: none;
@@ -736,22 +836,72 @@
     align-items: flex-start;
     justify-content: flex-end;
 }
-.promo-course-card {
-    background: rgba(255,255,255,0.97);
-    border-radius: 18px;
+.hero-course-card {
+    background: #fff;
+    border-radius: 14px;
+    border: 1px solid rgba(0,0,0,0.07);
     overflow: hidden;
-    width: 220px;
+    width: 200px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
     flex-shrink: 0;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.25), 0 0 0 1px rgba(123,111,232,0.06);
-    position: relative;
     transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    text-decoration: none;
-    color: var(--text);
+    position: relative;
     display: block;
+    color: var(--text);
 }
-.promo-course-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 28px 60px rgba(0,0,0,0.35), 0 0 0 1px rgba(123,111,232,0.15);
+.hero-course-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+}
+.hero-card__thumb {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    background: #e5e7eb;
+}
+.hero-card__thumb img {
+    transition: transform 0.3s ease;
+}
+.hero-course-card:hover .hero-card__thumb img {
+    transform: scale(1.04);
+}
+.hero-card__body {
+    padding: 10px 12px 12px;
+}
+.hero-card__category {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #6366f1;
+    margin: 0 0 4px;
+    text-transform: uppercase;
+}
+.hero-card__title {
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.35;
+    color: #111;
+    margin: 0 0 4px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.hero-card__instructor {
+    font-size: 10px;
+    color: #6b7280;
+    margin: 0 0 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.hero-card__meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 10px;
+    color: #6b7280;
 }
 .promo-card-offset { margin-top: 36px; }
 
@@ -789,10 +939,11 @@
     letter-spacing: 0.06em;
     text-transform: uppercase;
     backdrop-filter: blur(10px);
+    display: none;
 }
 .promo-card-badge.badge-free { background: rgba(0,200,150,0.9); color: white; }
-.promo-card-badge.badge-new { background: rgba(123,111,232,0.92); color: white; }
-.promo-card-badge.badge-bestseller { background: rgba(255,200,50,0.95); color: #5A3A00; }
+/* .promo-card-badge.badge-new { background: rgba(123,111,232,0.92); color: white; } */
+/* .promo-card-badge.badge-bestseller { background: rgba(255,200,50,0.95); color: #5A3A00; } */
 .promo-card-badge.badge-cert { background: rgba(247, 151, 30, 0.95); color: white; }
 
 .promo-card-body { padding: 14px 14px 16px; }
@@ -897,10 +1048,37 @@
     transition: all 0.2s;
     backdrop-filter: blur(10px);
     display: flex; align-items: center; justify-content: center;
+    padding: 0;
+    font-weight: bold;
 }
 .promo-arrow:hover { background: rgba(255,255,255,0.22); transform: translateY(-50%) scale(1.05); }
 .promo-arrow-left { left: 20px; }
-.promo-arrow-right { right: 56px; }
+.promo-arrow-right { right: 20px; }
+
+/* Promo banner status indicator */
+.promo-status-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--purple);
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    z-index: 999;
+    transition: all 0.2s;
+    display: none;
+}
+.promo-status-toggle:hover {
+    background: var(--purple-dark);
+    transform: translateY(-2px);
+}
+.promo-status-toggle.show {
+    display: inline-block;
+}
 
 /* Close */
 .promo-close {
@@ -1084,54 +1262,60 @@
                         $c1 = $displayCourses[0];
                         $c2 = $displayCourses[1];
                     @endphp
-                    <a href="{{ $c1['slug'] }}" class="promo-course-card">
-                        <div class="promo-card-badge badge-{{ $c1['badge_type'] }}">{{ $c1['badge'] }}</div>
-                        <div class="promo-card-thumb" style="@if(!$c1['thumbnail_url']) background: linear-gradient(135deg, #667eea, #764ba2); font-size: 32px; @endif">
+                    <a href="{{ $c1['slug'] }}" class="hero-course-card" style="text-decoration:none;">
+                        <div class="hero-card__thumb">
                             @if(!empty($c1['thumbnail_url']))
-                                <img src="{{ $c1['thumbnail_url'] }}" alt="{{ $c1['title'] }}">
+                                <img src="{{ $c1['thumbnail_url'] }}" alt="{{ $c1['title'] }}" style="width:100%;height:100%;object-fit:cover;display:block;">
                             @else
-                                <span>{{ $c1['icon'] ?? '🎓' }}</span>
+                                <div style="width:100%;height:100%;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;">
+                                    <span style="font-size:28px;color:rgba(255,255,255,0.5);">{{ $c1['icon'] ?? '🎓' }}</span>
+                                </div>
                             @endif
                         </div>
-                        <div class="promo-card-body">
-                            <div class="promo-card-category">{{ $c1['category'] }}</div>
-                            <div class="promo-card-title" title="{{ $c1['title'] }}">{{ $c1['title'] }}</div>
-                            <div class="promo-card-instructor">{{ $c1['instructor'] }}</div>
-                            <div class="promo-card-meta">
-                                <span>⭐ {{ $c1['rating'] }}</span>
-                                <span>⏱ {{ $c1['duration'] }}</span>
-                            </div>
-                            <div class="promo-card-footer">
-                                <div class="promo-card-price {{ $c1['is_free'] ? 'promo-price-free' : '' }}">
-                                    {{ $c1['price'] }}
-                                </div>
-                                <div class="promo-card-arrow">→</div>
+                        <div class="hero-card__body">
+                            @if(!empty($c1['category']))
+                                <p class="hero-card__category">{{ strtoupper($c1['category']) }}</p>
+                            @endif
+                            <h4 class="hero-card__title">{{ $c1['title'] }}</h4>
+                            @if(!empty($c1['instructor']))
+                                <p class="hero-card__instructor">{{ $c1['instructor'] }}</p>
+                            @endif
+                            <div class="hero-card__meta">
+                                @if(!empty($c1['rating']))
+                                    <span><i class="fa-solid fa-star" style="color:#f59e0b;"></i> {{ $c1['rating'] }}</span>
+                                @endif
+                                @if(!empty($c1['duration']))
+                                    <span><i class="fa-regular fa-clock"></i> {{ $c1['duration'] }}</span>
+                                @endif
                             </div>
                         </div>
                     </a>
 
-                    <a href="{{ $c2['slug'] }}" class="promo-course-card promo-card-offset">
-                        <div class="promo-card-badge badge-{{ $c2['badge_type'] }}">{{ $c2['badge'] }}</div>
-                        <div class="promo-card-thumb" style="@if(!$c2['thumbnail_url']) background: linear-gradient(135deg, #4facfe, #00f2fe); font-size: 32px; @endif">
+                    <a href="{{ $c2['slug'] }}" class="hero-course-card promo-card-offset" style="text-decoration:none;">
+                        <div class="hero-card__thumb">
                             @if(!empty($c2['thumbnail_url']))
-                                <img src="{{ $c2['thumbnail_url'] }}" alt="{{ $c2['title'] }}">
+                                <img src="{{ $c2['thumbnail_url'] }}" alt="{{ $c2['title'] }}" style="width:100%;height:100%;object-fit:cover;display:block;">
                             @else
-                                <span>{{ $c2['icon'] ?? '🎓' }}</span>
+                                <div style="width:100%;height:100%;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;">
+                                    <span style="font-size:28px;color:rgba(255,255,255,0.5);">{{ $c2['icon'] ?? '🎓' }}</span>
+                                </div>
                             @endif
                         </div>
-                        <div class="promo-card-body">
-                            <div class="promo-card-category">{{ $c2['category'] }}</div>
-                            <div class="promo-card-title" title="{{ $c2['title'] }}">{{ $c2['title'] }}</div>
-                            <div class="promo-card-instructor">{{ $c2['instructor'] }}</div>
-                            <div class="promo-card-meta">
-                                <span>⭐ {{ $c2['rating'] }}</span>
-                                <span>⏱ {{ $c2['duration'] }}</span>
-                            </div>
-                            <div class="promo-card-footer">
-                                <div class="promo-card-price {{ $c2['is_free'] ? 'promo-price-free' : '' }}">
-                                    {{ $c2['price'] }}
-                                </div>
-                                <div class="promo-card-arrow">→</div>
+                        <div class="hero-card__body">
+                            @if(!empty($c2['category']))
+                                <p class="hero-card__category">{{ strtoupper($c2['category']) }}</p>
+                            @endif
+                            <h4 class="hero-card__title">{{ $c2['title'] }}</h4>
+                            @if(!empty($c2['instructor']))
+                                <p class="hero-card__instructor">{{ $c2['instructor'] }}</p>
+                            @endif
+                            <div class="hero-card__meta">
+                                @if(!empty($c2['rating']))
+                                    <span><i class="fa-solid fa-star" style="color:#f59e0b;"></i> {{ $c2['rating'] }}</span>
+                                @endif
+                                @if(!empty($c2['duration']))
+                                    <span><i class="fa-regular fa-clock"></i> {{ $c2['duration'] }}</span>
+                                @endif
                             </div>
                         </div>
                     </a>
@@ -1157,54 +1341,60 @@
                         $c3 = $displayCourses[2];
                         $c4 = $displayCourses[3];
                     @endphp
-                    <a href="{{ $c3['slug'] }}" class="promo-course-card">
-                        <div class="promo-card-badge badge-{{ $c3['badge_type'] }}">{{ $c3['badge'] }}</div>
-                        <div class="promo-card-thumb" style="@if(!$c3['thumbnail_url']) background: linear-gradient(135deg, #FA709A, #FEE140); font-size: 32px; @endif">
+                    <a href="{{ $c3['slug'] }}" class="hero-course-card" style="text-decoration:none;">
+                        <div class="hero-card__thumb">
                             @if(!empty($c3['thumbnail_url']))
-                                <img src="{{ $c3['thumbnail_url'] }}" alt="{{ $c3['title'] }}">
+                                <img src="{{ $c3['thumbnail_url'] }}" alt="{{ $c3['title'] }}" style="width:100%;height:100%;object-fit:cover;display:block;">
                             @else
-                                <span>{{ $c3['icon'] ?? '🎓' }}</span>
+                                <div style="width:100%;height:100%;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;">
+                                    <span style="font-size:28px;color:rgba(255,255,255,0.5);">{{ $c3['icon'] ?? '🎓' }}</span>
+                                </div>
                             @endif
                         </div>
-                        <div class="promo-card-body">
-                            <div class="promo-card-category">{{ $c3['category'] }}</div>
-                            <div class="promo-card-title" title="{{ $c3['title'] }}">{{ $c3['title'] }}</div>
-                            <div class="promo-card-instructor">{{ $c3['instructor'] }}</div>
-                            <div class="promo-card-meta">
-                                <span>⭐ {{ $c3['rating'] }}</span>
-                                <span>⏱ {{ $c3['duration'] }}</span>
-                            </div>
-                            <div class="promo-card-footer">
-                                <div class="promo-card-price {{ $c3['is_free'] ? 'promo-price-free' : '' }}">
-                                    {{ $c3['price'] }}
-                                </div>
-                                <div class="promo-card-arrow">→</div>
+                        <div class="hero-card__body">
+                            @if(!empty($c3['category']))
+                                <p class="hero-card__category">{{ strtoupper($c3['category']) }}</p>
+                            @endif
+                            <h4 class="hero-card__title">{{ $c3['title'] }}</h4>
+                            @if(!empty($c3['instructor']))
+                                <p class="hero-card__instructor">{{ $c3['instructor'] }}</p>
+                            @endif
+                            <div class="hero-card__meta">
+                                @if(!empty($c3['rating']))
+                                    <span><i class="fa-solid fa-star" style="color:#f59e0b;"></i> {{ $c3['rating'] }}</span>
+                                @endif
+                                @if(!empty($c3['duration']))
+                                    <span><i class="fa-regular fa-clock"></i> {{ $c3['duration'] }}</span>
+                                @endif
                             </div>
                         </div>
                     </a>
 
-                    <a href="{{ $c4['slug'] }}" class="promo-course-card promo-card-offset">
-                        <div class="promo-card-badge badge-{{ $c4['badge_type'] }}">{{ $c4['badge'] }}</div>
-                        <div class="promo-card-thumb" style="@if(!$c4['thumbnail_url']) background: linear-gradient(135deg, #30CFD0, #330867); font-size: 32px; @endif">
+                    <a href="{{ $c4['slug'] }}" class="hero-course-card promo-card-offset" style="text-decoration:none;">
+                        <div class="hero-card__thumb">
                             @if(!empty($c4['thumbnail_url']))
-                                <img src="{{ $c4['thumbnail_url'] }}" alt="{{ $c4['title'] }}">
+                                <img src="{{ $c4['thumbnail_url'] }}" alt="{{ $c4['title'] }}" style="width:100%;height:100%;object-fit:cover;display:block;">
                             @else
-                                <span>{{ $c4['icon'] ?? '🎓' }}</span>
+                                <div style="width:100%;height:100%;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;">
+                                    <span style="font-size:28px;color:rgba(255,255,255,0.5);">{{ $c4['icon'] ?? '🎓' }}</span>
+                                </div>
                             @endif
                         </div>
-                        <div class="promo-card-body">
-                            <div class="promo-card-category">{{ $c4['category'] }}</div>
-                            <div class="promo-card-title" title="{{ $c4['title'] }}">{{ $c4['title'] }}</div>
-                            <div class="promo-card-instructor">{{ $c4['instructor'] }}</div>
-                            <div class="promo-card-meta">
-                                <span>⭐ {{ $c4['rating'] }}</span>
-                                <span>⏱ {{ $c4['duration'] }}</span>
-                            </div>
-                            <div class="promo-card-footer">
-                                <div class="promo-card-price {{ $c4['is_free'] ? 'promo-price-free' : '' }}">
-                                    {{ $c4['price'] }}
-                                </div>
-                                <div class="promo-card-arrow">→</div>
+                        <div class="hero-card__body">
+                            @if(!empty($c4['category']))
+                                <p class="hero-card__category">{{ strtoupper($c4['category']) }}</p>
+                            @endif
+                            <h4 class="hero-card__title">{{ $c4['title'] }}</h4>
+                            @if(!empty($c4['instructor']))
+                                <p class="hero-card__instructor">{{ $c4['instructor'] }}</p>
+                            @endif
+                            <div class="hero-card__meta">
+                                @if(!empty($c4['rating']))
+                                    <span><i class="fa-solid fa-star" style="color:#f59e0b;"></i> {{ $c4['rating'] }}</span>
+                                @endif
+                                @if(!empty($c4['duration']))
+                                    <span><i class="fa-regular fa-clock"></i> {{ $c4['duration'] }}</span>
+                                @endif
                             </div>
                         </div>
                     </a>
@@ -1230,54 +1420,60 @@
                         $c5 = $displayCourses[4];
                         $c6 = $displayCourses[5];
                     @endphp
-                    <a href="{{ $c5['slug'] }}" class="promo-course-card">
-                        <div class="promo-card-badge badge-{{ $c5['badge_type'] }}">{{ $c5['badge'] }}</div>
-                        <div class="promo-card-thumb" style="@if(!$c5['thumbnail_url']) background: linear-gradient(135deg, #f7971e, #ffd200); font-size: 32px; @endif">
+                    <a href="{{ $c5['slug'] }}" class="hero-course-card" style="text-decoration:none;">
+                        <div class="hero-card__thumb">
                             @if(!empty($c5['thumbnail_url']))
-                                <img src="{{ $c5['thumbnail_url'] }}" alt="{{ $c5['title'] }}">
+                                <img src="{{ $c5['thumbnail_url'] }}" alt="{{ $c5['title'] }}" style="width:100%;height:100%;object-fit:cover;display:block;">
                             @else
-                                <span>{{ $c5['icon'] ?? '🎓' }}</span>
+                                <div style="width:100%;height:100%;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;">
+                                    <span style="font-size:28px;color:rgba(255,255,255,0.5);">{{ $c5['icon'] ?? '🎓' }}</span>
+                                </div>
                             @endif
                         </div>
-                        <div class="promo-card-body">
-                            <div class="promo-card-category">{{ $c5['category'] }}</div>
-                            <div class="promo-card-title" title="{{ $c5['title'] }}">{{ $c5['title'] }}</div>
-                            <div class="promo-card-instructor">{{ $c5['instructor'] }}</div>
-                            <div class="promo-card-meta">
-                                <span>⭐ {{ $c5['rating'] }}</span>
-                                <span>⏱ {{ $c5['duration'] }}</span>
-                            </div>
-                            <div class="promo-card-footer">
-                                <div class="promo-card-price {{ $c5['is_free'] ? 'promo-price-free' : '' }}">
-                                    {{ $c5['price'] }}
-                                </div>
-                                <div class="promo-card-arrow">→</div>
+                        <div class="hero-card__body">
+                            @if(!empty($c5['category']))
+                                <p class="hero-card__category">{{ strtoupper($c5['category']) }}</p>
+                            @endif
+                            <h4 class="hero-card__title">{{ $c5['title'] }}</h4>
+                            @if(!empty($c5['instructor']))
+                                <p class="hero-card__instructor">{{ $c5['instructor'] }}</p>
+                            @endif
+                            <div class="hero-card__meta">
+                                @if(!empty($c5['rating']))
+                                    <span><i class="fa-solid fa-star" style="color:#f59e0b;"></i> {{ $c5['rating'] }}</span>
+                                @endif
+                                @if(!empty($c5['duration']))
+                                    <span><i class="fa-regular fa-clock"></i> {{ $c5['duration'] }}</span>
+                                @endif
                             </div>
                         </div>
                     </a>
 
-                    <a href="{{ $c6['slug'] }}" class="promo-course-card promo-card-offset">
-                        <div class="promo-card-badge badge-{{ $c6['badge_type'] }}">{{ $c6['badge'] }}</div>
-                        <div class="promo-card-thumb" style="@if(!$c6['thumbnail_url']) background: linear-gradient(135deg, #a8edea, #fed6e3); font-size: 32px; @endif">
+                    <a href="{{ $c6['slug'] }}" class="hero-course-card promo-card-offset" style="text-decoration:none;">
+                        <div class="hero-card__thumb">
                             @if(!empty($c6['thumbnail_url']))
-                                <img src="{{ $c6['thumbnail_url'] }}" alt="{{ $c6['title'] }}">
+                                <img src="{{ $c6['thumbnail_url'] }}" alt="{{ $c6['title'] }}" style="width:100%;height:100%;object-fit:cover;display:block;">
                             @else
-                                <span>{{ $c6['icon'] ?? '🎓' }}</span>
+                                <div style="width:100%;height:100%;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;">
+                                    <span style="font-size:28px;color:rgba(255,255,255,0.5);">{{ $c6['icon'] ?? '🎓' }}</span>
+                                </div>
                             @endif
                         </div>
-                        <div class="promo-card-body">
-                            <div class="promo-card-category">{{ $c6['category'] }}</div>
-                            <div class="promo-card-title" title="{{ $c6['title'] }}">{{ $c6['title'] }}</div>
-                            <div class="promo-card-instructor">{{ $c6['instructor'] }}</div>
-                            <div class="promo-card-meta">
-                                <span>⭐ {{ $c6['rating'] }}</span>
-                                <span>⏱ {{ $c6['duration'] }}</span>
-                            </div>
-                            <div class="promo-card-footer">
-                                <div class="promo-card-price {{ $c6['is_free'] ? 'promo-price-free' : '' }}">
-                                    {{ $c6['price'] }}
-                                </div>
-                                <div class="promo-card-arrow">→</div>
+                        <div class="hero-card__body">
+                            @if(!empty($c6['category']))
+                                <p class="hero-card__category">{{ strtoupper($c6['category']) }}</p>
+                            @endif
+                            <h4 class="hero-card__title">{{ $c6['title'] }}</h4>
+                            @if(!empty($c6['instructor']))
+                                <p class="hero-card__instructor">{{ $c6['instructor'] }}</p>
+                            @endif
+                            <div class="hero-card__meta">
+                                @if(!empty($c6['rating']))
+                                    <span><i class="fa-solid fa-star" style="color:#f59e0b;"></i> {{ $c6['rating'] }}</span>
+                                @endif
+                                @if(!empty($c6['duration']))
+                                    <span><i class="fa-regular fa-clock"></i> {{ $c6['duration'] }}</span>
+                                @endif
                             </div>
                         </div>
                     </a>
@@ -1302,6 +1498,11 @@
     <button class="promo-close" onclick="closePromoBanner()" aria-label="Tutup">×</button>
 </div>
 
+{{-- Tombol untuk membuka banner kembali --}}
+<button id="promo-status-toggle" class="promo-status-toggle" onclick="togglePromoBanner('show')">
+    ✓ Tampilkan Promo
+</button>
+
 {{-- ═══════════════════════════════════════════════════ --}}
 {{-- HERO                                                 --}}
 {{-- ═══════════════════════════════════════════════════ --}}
@@ -1315,13 +1516,44 @@
             Master new skills with world-class instructors. Your personal learning journey starts here. free to begin, limitless to grow.
         </p>
         <div class="hero-cta">
-            @guest
-                <a href="{{ route('register') }}" class="btn btn-dark">Start Learning Free</a>
-                <a href="{{ route('courses.index') }}" class="btn btn-light">▶ Browse Courses</a>
-            @else
-                <a href="{{ route('student.index') }}" class="btn btn-dark">Continue Learning </a>
-                <a href="{{ route('courses.index') }}" class="btn btn-light">▶ Browse Courses</a>
-            @endguest
+            {{-- Hero Search Bar --}}
+            <form action="{{ route('courses.index') }}" method="GET" class="hero-search-form">
+                <div class="hero-search-wrap">
+                    <i class="fa-solid fa-magnifying-glass hero-search-icon"></i>
+                    <input
+                        type="text"
+                        name="q"
+                        class="hero-search-input"
+                        placeholder="Apa yang ingin kamu pelajari? Web dev, AI, Data Science…"
+                        autocomplete="off"
+                    >
+                    <button type="submit" class="hero-search-btn">
+                        <span>Cari Kursus</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+                {{-- Popular searches --}}
+                <div class="hero-search-tags">
+                    <span style="font-size:12px;color:var(--muted);margin-right:6px;">Populer:</span>
+                    @foreach(['Python','Machine Learning','Web Development','UI/UX Design','Data Science'] as $tag)
+                        <a href="{{ route('courses.index') }}?q={{ urlencode($tag) }}" class="hero-tag">{{ $tag }}</a>
+                    @endforeach
+                </div>
+            </form>
+
+            {{-- Social proof --}}
+            <div class="hero-proof">
+                <div class="hero-proof-avatars">
+                    @foreach(['#7B6FE8','#00C896','#FF8A5B','#1E3A5F'] as $c)
+                        <div style="width:28px;height:28px;border-radius:50%;background:{{ $c }};border:2px solid white;margin-left:-8px;first:margin-left:0;"></div>
+                    @endforeach
+                </div>
+                <span style="font-size:13px;color:var(--text-soft);">
+                    Bergabung dengan <strong style="color:var(--text);">50.000+</strong> pelajar aktif
+                </span>
+                <span style="color:var(--muted);font-size:13px;">·</span>
+                <span style="font-size:13px;color:var(--text-soft);">⭐ <strong style="color:var(--text);">4.8</strong>/5 rata-rata rating</span>
+            </div>
         </div>
 
        
@@ -1465,6 +1697,66 @@
 </section>
 
 {{-- ═══════════════════════════════════════════════════ --}}
+{{-- THE LATEST ON COURSIFY                               --}}
+{{-- ═══════════════════════════════════════════════════ --}}
+<section class="section latest-section">
+    <div class="container">
+        <div class="latest-header">
+            <div>
+                <span class="latest-badge">NEW</span>
+                <h2 class="latest-title">The latest on Coursify</h2>
+            </div>
+            <p class="latest-subtitle">Explore our newest offerings.</p>
+        </div>
+
+        <div class="latest-slider-wrapper">
+            <button class="latest-nav prev" onclick="scrollLatest(-1)" aria-label="Previous">&#10094;</button>
+            <div class="latest-slider" id="latestSlider">
+                @foreach($latestCourses as $course)
+                <a href="{{ route('courses.show', $course['slug']) }}" class="latest-card">
+                    <div class="latest-card-header">
+                        <span>Course</span>
+                        {{-- <span class="latest-card-badge">NEW</span> --}}
+                    </div>
+                    <div class="latest-card-thumb">
+                        <img src="{{ $course['thumbnail_url'] ?: 'https://placehold.co/600x400/153759/FFFFFF?text=Course' }}" alt="{{ $course['title'] }}">
+                        <div class="latest-card-logo">
+                            @if($course['institution_logo'])
+                                <img src="{{ $course['institution_logo'] }}" alt="Logo">
+                            @else
+                                <span style="font-weight:bold;font-size:11px;color:#333;">{{ \Illuminate\Support\Str::limit($course['institution'], 10) }}</span>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="latest-card-body">
+                        <h3 class="latest-card-title">{{ $course['title'] }}</h3>
+                        <p class="latest-card-inst">{{ $course['institution'] }}</p>
+                        
+                        <div class="latest-card-meta">
+                            <div><i class="fa-regular fa-clock"></i> {{ $course['duration'] }}</div>
+                            <div><i class="fa-solid fa-signal"></i> {{ $course['level'] }}</div>
+                        </div>
+                    </div>
+                </a>
+                @endforeach
+            </div>
+            <button class="latest-nav next" onclick="scrollLatest(1)" aria-label="Next">&#10095;</button>
+        </div>
+        
+        <div class="latest-dots" id="latestDots">
+            @php $pages = ceil(count($latestCourses) / 3); @endphp
+            @for($i = 0; $i < $pages; $i++)
+                <button class="latest-dot {{ $i === 0 ? 'active' : '' }}" onclick="scrollToLatestPage({{ $i }})" aria-label="Go to page {{ $i+1 }}"></button>
+            @endfor
+        </div>
+
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="{{ route('courses.index', ['sort' => 'newest']) }}" class="latest-btn-browse">Browse additional courses</a>
+        </div>
+    </div>
+</section>
+
+{{-- ═══════════════════════════════════════════════════ --}}
 {{-- FEATURED COURSES                                     --}}
 {{-- ═══════════════════════════════════════════════════ --}}
 <section class="section" id="courses">
@@ -1489,34 +1781,76 @@
             @endphp
 
             @foreach($coursesData as $course)
-                <a href="{{ isset($course['slug']) ? route('courses.show', $course['slug']) : route('courses.index') }}" class="course-card">
-                    <div class="course-thumb course-thumb-{{ $course['thumb'] ?? 1 }}">
+                <a href="{{ isset($course['slug']) ? route('courses.show', $course['slug']) : route('courses.index') }}" 
+                   class="course-card" 
+                   style="display:block; text-decoration:none;">
+                    
+                    {{-- THUMBNAIL --}}
+                    <div class="course-card__thumb" style="position:relative; aspect-ratio:16/9; overflow:hidden; border-radius:12px 12px 0 0; background:#1a1a2e;">
+                        @if(!empty($course['thumbnail_url']))
+                            <img src="{{ $course['thumbnail_url'] }}" 
+                                 alt="{{ $course['title'] }}"
+                                 style="width:100%;height:100%;object-fit:cover;display:block;">
+                        @else
+                            <div style="width:100%;height:100%;background:linear-gradient(135deg,#1e3a5f,#2d4d7a);display:flex;align-items:center;justify-content:center;">
+                                {!! $course['icon'] ?? '<i class="fa-solid fa-graduation-cap" style="font-size:40px;color:rgba(255,255,255,0.3);"></i>' !!}
+                            </div>
+                        @endif
+
+                        {{-- Badge dihilangkan sesuai permintaan --}}
+                        {{-- 
                         @if(!empty($course['badge']))
-                            <span class="course-badge badge-{{ $course['badge'] }}">
+                            <span style="position:absolute;top:10px;left:10px;background:#f59e0b;color:#fff;font-size:10px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;padding:3px 8px;border-radius:4px;">
                                 {{ $course['badge'] === 'bestseller' ? 'Bestseller' : ucfirst($course['badge']) }}
                             </span>
                         @endif
-                        @if(!empty($course['thumbnail_url']))
-    <img src="{{ $course['thumbnail_url'] }}" alt="{{ $course['title'] }}"
-        style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85;">
-@else
-    {!! $course['icon'] ?? '<i class="fa-solid fa-book-open"></i>' !!}
-@endif
+                        --}}
                     </div>
-                    <div class="course-body">
-                        <div class="course-category">{{ $course['category'] }}</div>
-                        <div class="course-title">{{ $course['title'] }}</div>
-                        <div class="course-instructor">{{ $course['instructor'] }}</div>
-                        <div class="course-meta">
-                            <span><i class="fa-solid fa-star"></i> {{ $course['rating'] }}</span>
-<span><i class="fa-solid fa-users"></i> {{ $course['students'] }}</span>
-<span><i class="fa-solid fa-clock"></i> {{ $course['duration'] }}</span>
-                        </div>
-                        <div class="course-footer">
-                            <div class="course-price {{ $course['price'] === 'Free' ? 'course-price-free' : '' }}">
-                                {{ $course['price'] }}
-                            </div>
-                            <div class="course-arrow">→</div>
+
+                    {{-- BODY --}}
+                    <div class="course-card__body" style="padding:14px 16px 16px;">
+                        
+                        {{-- Category --}}
+                        @if(!empty($course['category']))
+                            <p style="font-size:10px;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;color:var(--purple, #6366f1);margin:0 0 6px;">
+                                {{ $course['category'] }}
+                            </p>
+                        @endif
+
+                        {{-- Judul --}}
+                        <h3 style="font-size:15px;font-weight:700;line-height:1.4;margin:0 0 6px;color:var(--text);
+                                   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+                            {{ $course['title'] }}
+                        </h3>
+
+                        {{-- Instructor --}}
+                        @if(!empty($course['instructor']))
+                            <p style="font-size:12px;color:var(--muted);margin:0 0 10px;
+                                      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                                {{ $course['instructor'] }}
+                            </p>
+                        @endif
+
+                        {{-- Meta row --}}
+                        <div style="display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted);flex-wrap:wrap;">
+                            @if(!empty($course['rating']))
+                                <span>
+                                    <i class="fa-solid fa-star" style="color:#f59e0b;font-size:11px;"></i>
+                                    {{ $course['rating'] }}
+                                </span>
+                            @endif
+                            @if(!empty($course['students']))
+                                <span>
+                                    <i class="fa-solid fa-users" style="font-size:11px;"></i>
+                                    {{ $course['students'] }}
+                                </span>
+                            @endif
+                            @if(!empty($course['duration']))
+                                <span>
+                                    <i class="fa-regular fa-clock" style="font-size:11px;"></i>
+                                    {{ $course['duration'] }}
+                                </span>
+                            @endif
                         </div>
                     </div>
                 </a>
@@ -2075,101 +2409,60 @@
         background: rgba(255,255,255,0.9);
     }
 
-    /* ═══ SDG ═══ */
-    .sdg-wrapper {
-        background: linear-gradient(135deg, var(--navy), #2D4D7A);
-        border-radius: 32px;
-        padding: 60px 40px;
-        color: white;
-        position: relative;
-        overflow: hidden;
-        max-width: 1100px;
+    /* ═══ CATEGORY SECTION ═══ */
+    .category-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        max-width: 860px;
         margin: 0 auto;
     }
-    .sdg-wrapper::before {
-        content: '';
-        position: absolute;
-        top: -100px;
-        right: -100px;
-        width: 400px;
-        height: 400px;
-        background: radial-gradient(circle, rgba(184,175,235,0.3), transparent 70%);
-    }
-    .sdg-content { position: relative; z-index: 1; }
-    .sdg-eyebrow {
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
-        color: var(--lav-4);
-        margin-bottom: 12px;
+    .category-card {
+        background: rgba(255,255,255,0.94);
+        border: 1px solid rgba(30,58,95,0.08);
+        border-radius: 16px;
+        padding: 26px 18px;
         text-align: center;
+        color: var(--text);
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        min-height: 192px;
     }
-    .sdg-title {
-        font-family: var(--font-serif);
-        font-size: clamp(32px, 4vw, 42px);
-        font-weight: 400;
-        text-align: center;
-        line-height: 1.2;
-        letter-spacing: -0.02em;
-        margin-bottom: 14px;
+    .category-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 22px 50px rgba(30,58,95,0.09);
+        border-color: rgba(123,111,232,0.18);
     }
-    .sdg-subtitle {
-        text-align: center;
-        color: rgba(255,255,255,0.8);
-        font-size: 14px;
-        max-width: 540px;
-        margin: 0 auto 40px;
-        line-height: 1.6;
-    }
-    .sdg-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 16px;
-    }
-    .sdg-card {
-        background: rgba(255,255,255,0.08);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255,255,255,0.15);
-        border-radius: 20px;
-        padding: 28px 24px;
-        transition: all 0.3s;
-    }
-    .sdg-card:hover {
-        background: rgba(255,255,255,0.15);
-        transform: translateY(-4px);
-    }
-    .sdg-number {
-        display: inline-flex;
+    .category-icon {
+        width: 72px;
+        height: 72px;
+        border-radius: 24px;
+        background: rgba(123,111,232,0.12);
+        display: flex;
         align-items: center;
         justify-content: center;
-        width: 60px;
-        height: 60px;
-        background: rgba(255,255,255,0.95);
-        color: var(--navy);
-        font-family: var(--font-serif);
+        color: var(--purple);
         font-size: 28px;
-        border-radius: 14px;
-        margin-bottom: 16px;
+        flex-shrink: 0;
     }
-    .sdg-name {
+    .category-name {
         font-family: var(--font-serif);
-        font-size: 20px;
-        margin-bottom: 6px;
-        letter-spacing: -0.01em;
-    }
-    .sdg-code {
-        display: inline-block;
-        font-size: 10px;
-        color: var(--lav-4);
+        font-size: 18px;
         font-weight: 700;
-        letter-spacing: 0.1em;
-        margin-bottom: 12px;
+        letter-spacing: -0.02em;
+        line-height: 1.25;
+        color: var(--text);
     }
-    .sdg-desc {
-        font-size: 13px;
-        color: rgba(255,255,255,0.8);
-        line-height: 1.6;
+    .category-count {
+        font-size: 12px;
+        color: var(--muted);
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
     }
 
     /* ═══ FAQ ═══ */
@@ -2252,9 +2545,9 @@
 
     @media (max-width: 768px) {
         .how-grid, .why-grid, .instructor-grid,
-        .testimonial-grid, .pricing-grid, .sdg-grid { grid-template-columns: 1fr; }
+        .testimonial-grid, .pricing-grid, .category-grid { grid-template-columns: 1fr; }
         .pricing-featured { transform: none; }
-        .how-wrapper, .sdg-wrapper { padding: 40px 24px; }
+        .how-wrapper { padding: 40px 24px; }
     }
 
     /* ═══ TRUST / PARTNER MARQUEE ═══ */
@@ -2600,7 +2893,7 @@
                     <li>Priority support 24/7</li>
                     <li>1-on-1 mentoring sessions</li>
                 </ul>
-                <a href="{{ route('payment.index') }}?plan=pro" class="pricing-btn">Start Free Trial</a>
+                <a href="{{ route('courses.index') }}" class="pricing-btn">Explore Courses</a>
             </div>
 
             <div class="pricing-card">
@@ -2614,46 +2907,35 @@
                     <li>Analytics & reporting</li>
                     <li>Custom learning paths</li>
                 </ul>
-                <a href="{{ route('payment.index') }}?plan=business" class="pricing-btn">Contact Sales</a>
+                <a href="{{ route('courses.index') }}" class="pricing-btn">Browse Programs</a>
             </div>
         </div>
     </div>
 </section>
 
 {{-- ═══════════════════════════════════════════════════ --}}
-{{-- SDG COMMITMENT                                       --}}
+{{-- EXPLORE BY CATEGORY                                  --}}
 {{-- ═══════════════════════════════════════════════════ --}}
 <section class="section">
     <div class="container">
-        <div class="sdg-wrapper">
-            <div class="sdg-content">
-                <div class="sdg-eyebrow">Sustainable Development Goals</div>
-                <h2 class="sdg-title">Education for <em style="font-style:italic;">everyone</em>.<br>Growth for the <em style="font-style:italic;">future</em>.</h2>
-                <p class="sdg-subtitle">Coursify is committed to supporting the United Nations Sustainable Development Goals through accessible, quality education.</p>
+        <div class="section-header">
+            <span class="section-eyebrow">Top Categories</span>
+            <h2 class="section-title">Explore by <em>Category</em></h2>
+            <p class="section-subtitle">Jump directly into the category that fits your interests and browse matching courses.</p>
+        </div>
 
-                <div class="sdg-grid">
-                    <div class="sdg-card">
-                        <div class="sdg-number">4</div>
-                        <div class="sdg-code">SDG 4</div>
-                        <div class="sdg-name">Quality Education</div>
-                        <p class="sdg-desc">Providing free courses and scholarships for underserved communities. Lifelong learning for all.</p>
-                    </div>
+        <div class="category-grid">
+            @foreach($categories as $category)
+                <a href="{{ route('courses.index', ['category' => $category['slug']]) }}" class="category-card">
+                    <div class="category-icon">{!! $category['icon'] !!}</div>
+                    <div class="category-name">{{ $category['name'] }}</div>
+                    <div class="category-count">{{ $category['count'] }} course{{ $category['count'] !== 1 ? 's' : '' }}</div>
+                </a>
+            @endforeach
+        </div>
 
-                    <div class="sdg-card">
-                        <div class="sdg-number">8</div>
-                        <div class="sdg-code">SDG 8</div>
-                        <div class="sdg-name">Decent Work</div>
-                        <p class="sdg-desc">Equipping 50K+ learners with industry-ready skills for better career opportunities.</p>
-                    </div>
-
-                    <div class="sdg-card">
-                        <div class="sdg-number">10</div>
-                        <div class="sdg-code">SDG 10</div>
-                        <div class="sdg-name">Reduced Inequalities</div>
-                        <p class="sdg-desc">Breaking educational barriers through accessible technology for everyone, everywhere.</p>
-                    </div>
-                </div>
-            </div>
+        <div style="text-align: center; margin-top: 32px;">
+            <a href="{{ route('courses.index') }}" class="btn btn-light">Browse all topics</a>
         </div>
     </div>
 </section>
@@ -2787,21 +3069,125 @@ const dots = document.querySelectorAll('.promo-dot-btn');
 let autoplayTimer;
 
 function goToSlide(n) {
+    if (slides.length === 0) return; // Safety check
     slides[currentSlide].classList.remove('active');
     dots[currentSlide].classList.remove('active');
     currentSlide = (n + slides.length) % slides.length;
     slides[currentSlide].classList.add('active');
     dots[currentSlide].classList.add('active');
+    console.log('Slide berubah ke:', currentSlide + 1);
 }
-function nextSlide() { goToSlide(currentSlide + 1); resetAutoplay(); }
-function prevSlide() { goToSlide(currentSlide - 1); resetAutoplay(); }
+function nextSlide() { 
+    goToSlide(currentSlide + 1); 
+    resetAutoplay(); 
+}
+function prevSlide() { 
+    goToSlide(currentSlide - 1); 
+    resetAutoplay(); 
+}
 function resetAutoplay() {
     clearInterval(autoplayTimer);
     autoplayTimer = setInterval(() => goToSlide(currentSlide + 1), 5000);
 }
 function closePromoBanner() {
-    document.getElementById('promo-bar').style.display = 'none';
+    togglePromoBanner('hide');
 }
-resetAutoplay();
+
+// Check if banner should be hidden
+window.addEventListener('load', function() {
+    const promoBanner = document.getElementById('promo-bar');
+    const statusToggle = document.getElementById('promo-status-toggle');
+    
+    if (promoBanner && localStorage.getItem('coursify_promo_closed') === '1') {
+        promoBanner.style.display = 'none';
+        if (statusToggle) statusToggle.classList.add('show');
+    } else if (promoBanner) {
+        promoBanner.style.display = 'block';
+        if (statusToggle) statusToggle.classList.remove('show');
+        resetAutoplay();
+    }
+});
+
+// Toggle banner visibility
+function togglePromoBanner(action) {
+    const promoBanner = document.getElementById('promo-bar');
+    const statusToggle = document.getElementById('promo-status-toggle');
+    
+    if (!promoBanner) return;
+    
+    if (action === 'show') {
+        promoBanner.style.display = 'block';
+        localStorage.removeItem('coursify_promo_closed');
+        if (statusToggle) statusToggle.classList.remove('show');
+        resetAutoplay();
+    } else if (action === 'hide') {
+        promoBanner.style.display = 'none';
+        localStorage.setItem('coursify_promo_closed', '1');
+        if (statusToggle) statusToggle.classList.add('show');
+    }
+}
+// Latest Slider Auto-scroll logic
+const latestSlider = document.getElementById('latestSlider');
+const latestDots = document.getElementById('latestDots') ? document.getElementById('latestDots').children : [];
+let latestAutoScroll;
+
+function updateLatestDots() {
+    if(!latestSlider) return;
+    const scrollLeft = latestSlider.scrollLeft;
+    const pageWidth = latestSlider.clientWidth; 
+    const index = Math.round(scrollLeft / pageWidth);
+    
+    Array.from(latestDots).forEach((dot, i) => {
+        dot.classList.toggle('active', i === index);
+    });
+}
+
+function scrollToLatestPage(index) {
+    if(!latestSlider) return;
+    const pageWidth = latestSlider.clientWidth;
+    latestSlider.scrollTo({ left: pageWidth * index, behavior: 'smooth' });
+    resetLatestAutoScroll();
+}
+
+function scrollLatest(direction) {
+    if(!latestSlider) return;
+    const pageWidth = latestSlider.clientWidth;
+    
+    let newScrollLeft = latestSlider.scrollLeft + (direction * pageWidth);
+    
+    // Loop back to start if at end
+    if (newScrollLeft > latestSlider.scrollWidth - latestSlider.clientWidth + 10 && direction > 0) {
+        newScrollLeft = 0;
+    } else if (newScrollLeft < -10 && direction < 0) {
+        newScrollLeft = latestSlider.scrollWidth - latestSlider.clientWidth;
+    }
+    
+    latestSlider.scrollTo({ left: newScrollLeft, behavior: 'smooth' });
+    resetLatestAutoScroll();
+}
+
+function startLatestAutoScroll() {
+    latestAutoScroll = setInterval(() => {
+        scrollLatest(1);
+    }, 4000); // changes slide every 4 seconds
+}
+
+function resetLatestAutoScroll() {
+    clearInterval(latestAutoScroll);
+    startLatestAutoScroll();
+}
+
+if (latestSlider) {
+    latestSlider.addEventListener('scroll', () => {
+        requestAnimationFrame(updateLatestDots);
+    });
+    
+    // Pause auto-scroll on hover
+    latestSlider.addEventListener('mouseenter', () => clearInterval(latestAutoScroll));
+    latestSlider.addEventListener('mouseleave', startLatestAutoScroll);
+    
+    // Start auto-scroll
+    startLatestAutoScroll();
+}
 </script>
 @endpush

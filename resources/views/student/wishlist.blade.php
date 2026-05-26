@@ -647,82 +647,63 @@ body::before {
 }
 
 .course-card {
-    background: rgba(255,255,255,0.75);
-    backdrop-filter: blur(20px);
-    border: 1.5px solid rgba(255,255,255,0.9);
-    border-radius: 20px;
+    background: var(--color-card, #fff);
+    border-radius: 12px;
+    border: 1px solid var(--border, rgba(0,0,0,0.08));
     overflow: hidden;
-    color: var(--text);
-    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 4px 16px rgba(30,58,95,0.04);
-    min-width: 0;
     position: relative;
 }
 .course-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 20px 40px rgba(30,58,95,0.12);
-    border-color: rgba(255,107,138,0.4);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.12);
 }
 
 /* Thumbnail gradients */
-.course-thumb {
-    aspect-ratio: 16/10;
+.course-card__thumb {
+    aspect-ratio: 16/9;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 54px;
     overflow: hidden;
     text-decoration: none;
     color: white;
+    background: #1a1a2e;
+    border-radius: 12px 12px 0 0;
 }
-.course-thumb-1 { background: linear-gradient(135deg, #667EEA, #764BA2); }
-.course-thumb-2 { background: linear-gradient(135deg, #F093FB, #F5576C); }
-.course-thumb-3 { background: linear-gradient(135deg, #4FACFE, #00F2FE); }
-.course-thumb-4 { background: linear-gradient(135deg, #FA709A, #FEE140); }
-.course-thumb-5 { background: linear-gradient(135deg, #30CFD0, #330867); }
-.course-thumb-6 { background: linear-gradient(135deg, #A8EDEA, #FED6E3); }
 
-/* Thumbnail overlay saat hover */
-.course-thumb::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0);
-    transition: background 0.3s;
+.course-card__thumb img {
+    transition: transform 0.3s ease;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
-.course-card:hover .course-thumb::after { background: rgba(0,0,0,0.08); }
 
-/* Course icon (emoji replacement) */
-.course-thumb-icon {
-    font-size: 52px;
-    position: relative;
-    z-index: 1;
-    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.2));
-    transition: transform 0.3s;
+.course-card:hover .course-card__thumb img {
+    transform: scale(1.04);
 }
-.course-card:hover .course-thumb-icon { transform: scale(1.1); }
 
 /* Badge "Saved" */
 .badge-saved {
     position: absolute;
-    top: 12px;
-    left: 12px;
-    padding: 5px 12px;
-    border-radius: 100px;
+    top: 10px;
+    left: 10px;
+    padding: 3px 8px;
+    border-radius: 4px;
     font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
+    font-weight: 800;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    background: rgba(255,255,255,0.95);
-    color: var(--pink);
+    background: #f59e0b;
+    color: #fff;
     display: inline-flex;
     align-items: center;
     gap: 5px;
     z-index: 2;
-    backdrop-filter: blur(10px);
 }
 
 /* Tombol Remove — icon-only, aksesibel */
@@ -730,7 +711,7 @@ body::before {
 .course-thumb-wrap {
     position: relative;
     overflow: hidden;
-    border-radius: 20px 20px 0 0;
+    border-radius: 12px 12px 0 0;
 }
 
 .btn-remove {
@@ -1398,14 +1379,15 @@ body::before {
 
                     {{-- Thumbnail --}}
                     <div class="course-thumb-wrap" style="position:relative;">
-                        <a href="{{ route('courses.show', $courseSlug) }}"
-                           class="course-thumb course-thumb-{{ $thumb }}"
-                           aria-label="Lihat kursus {{ $courseTitle }}">
+                        <a href="{{ route('courses.show', $courseSlug) }}" class="course-card__thumb" aria-label="Lihat kursus {{ $courseTitle }}">
                             @if($course->thumbnail_url)
-                                <img src="{{ $course->thumbnail_url }}" alt="{{ $courseTitle }} thumbnail" class="course-thumb-img" />
+                                <img src="{{ $course->thumbnail_url }}" alt="{{ $courseTitle }} thumbnail" />
                             @else
-                                <span class="course-thumb-icon" aria-hidden="true">{{ $courseIcon }}</span>
+                                <div style="width:100%;height:100%;background:linear-gradient(135deg,#1e3a5f,#2d4d7a);display:flex;align-items:center;justify-content:center;">
+                                    <i class="fa-solid fa-graduation-cap" style="font-size:40px;color:rgba(255,255,255,0.3);"></i>
+                                </div>
                             @endif
+                            
                             <span class="badge-saved">
                                 <i class="fa-solid fa-heart" aria-hidden="true"></i>
                                 Saved
@@ -1419,75 +1401,46 @@ body::before {
                             data-delete-url="{{ route('student.wishlist.destroy', $wishlistId) }}"
                             onclick="openRemoveModal({{ $wishlistId }}, '{{ addslashes($courseTitle) }}')"
                             aria-label="Hapus {{ $courseTitle }} dari wishlist"
-                            title="Hapus dari wishlist">
+                            title="Hapus dari wishlist"
+                            style="position:absolute; top:10px; right:10px; width:34px; height:34px; border-radius:50%; background:rgba(255,255,255,0.9); border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:15px; z-index:2; transition:all 0.2s; color:var(--pink);">
                             <i class="fa-solid fa-xmark" aria-hidden="true"></i>
                         </button>
                     </div>
 
                     {{-- Card Body --}}
-                    <div class="course-body">
-                        <div class="course-category">
-                            <i class="fa-solid fa-tag icon-sm" aria-hidden="true"></i>
+                    <div class="course-body" style="padding:14px 16px 16px; flex:1; display:flex; flex-direction:column;">
+                        <p style="font-size:10px;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;color:var(--purple, #6366f1);margin:0 0 6px;">
                             {{ $categoryName }}
-                        </div>
-
-                        <a href="{{ route('courses.show', $courseSlug) }}" class="course-title">
-                            {{ $courseTitle }}
+                        </p>
+                        
+                        <a href="{{ route('courses.show', $courseSlug) }}" style="text-decoration:none;">
+                            <h3 style="font-size:15px;font-weight:700;line-height:1.4;margin:0 0 6px;color:var(--text);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+                                {{ $courseTitle }}
+                            </h3>
                         </a>
 
-                        <div class="course-instructor">
-                            <div class="course-instructor-avatar" aria-hidden="true">{{ $initial }}</div>
-                            <span>{{ $instructorName }}</span>
-                        </div>
+                        <p style="font-size:12px;color:var(--muted);margin:0 0 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                            {{ $instructorName }}
+                        </p>
 
-                        {{-- Meta: Rating, Students, Duration — FA icons --}}
-                        <div class="course-meta" aria-label="Course details">
-                            <span class="course-meta-item" title="Rating">
-                                <i class="fa-solid fa-star" style="color: var(--gold);" aria-hidden="true"></i>
-                                <span>{{ number_format($rating, 1) }}</span>
+                        {{-- Meta row --}}
+                        <div style="display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted);flex-wrap:wrap;">
+                            <span>
+                                <i class="fa-solid fa-star" style="color:#f59e0b;font-size:11px;" aria-hidden="true"></i>
+                                {{ number_format($rating, 1) }}
                             </span>
-                            <span class="course-meta-item" title="Total students">
-                                <i class="fa-solid fa-users" aria-hidden="true"></i>
-                                <span>
-                                    @if($totalStudents >= 1000)
-                                        {{ number_format($totalStudents / 1000, 1) }}k
-                                    @else
-                                        {{ $totalStudents }}
-                                    @endif
-                                </span>
-                            </span>
-                            <span class="course-meta-item" title="Duration">
-                                <i class="fa-regular fa-clock" aria-hidden="true"></i>
-                                <span>{{ $duration }}</span>
-                            </span>
-                        </div>
-
-                        {{-- Footer: Price + CTA --}}
-                        <div class="course-footer">
-                            <div>
-                                <div class="course-price {{ $isFree ? 'free' : '' }}" aria-label="Price">
-                                    @if($isFree)
-                                        Gratis
-                                    @else
-                                        Rp {{ number_format($price, 0, ',', '.') }}
-                                    @endif
-                                </div>
-                                <div class="course-price-label">
-                                    {{ $isFree ? 'Mulai Sekarang' : 'Sekali Bayar' }}
-                                </div>
-                            </div>
-
-                            <a href="{{ route('courses.show', $courseSlug) }}"
-                               class="btn-primary"
-                               aria-label="{{ $isFree ? 'Start' : 'Enroll' }} {{ $courseTitle }}">
-                                @if($isFree)
-                                    <i class="fa-solid fa-play" aria-hidden="true"></i>
-                                    Mulai
+                            <span>
+                                <i class="fa-solid fa-users" style="font-size:11px;" aria-hidden="true"></i>
+                                @if($totalStudents >= 1000)
+                                    {{ number_format($totalStudents / 1000, 1) }}k
                                 @else
-                                    <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
-                                    Enroll
+                                    {{ $totalStudents }}
                                 @endif
-                            </a>
+                            </span>
+                            <span>
+                                <i class="fa-regular fa-clock" style="font-size:11px;" aria-hidden="true"></i>
+                                {{ $duration }}
+                            </span>
                         </div>
                     </div>
                 </article>

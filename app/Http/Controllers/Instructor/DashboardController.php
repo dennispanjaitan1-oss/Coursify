@@ -53,7 +53,7 @@ class DashboardController extends Controller
                     'title' => $course->title,
                     'students' => $course->enrollments_count,
                     'revenue' => 0,
-                    'category' => $course->category->name ?? 'Uncategorized',
+                    'category' => $course->category->name ?? 'General',
                     'icon' => 'fa-book',
                     'gradient' => 'purple',
                 ];

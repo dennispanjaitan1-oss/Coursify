@@ -13,40 +13,94 @@ use Illuminate\Http\Request;
 class EnrollmentController extends Controller
 {
     public function enroll(Request $request, Course $course)
-{
-    $user = auth()->user();
+    {
+        $user = auth()->user();
 
-    if ($user->enrollments()->where('course_id', $course->id)->exists()) {
-        return redirect()->route('student.learn', $course->slug)
-            ->with('info', 'Kamu sudah terdaftar di kursus ini.');
-    }
-
-    if ($course->price == 0) {
-        Payment::create([
-            'user_id' => $user->id,
-            'amount'  => 0,
-            'method'  => 'free',
-            'status'  => 'paid',
-            'paid_at' => now(),
+        $request->validate([
+            'track' => 'nullable|in:audit,verified,honor'
         ]);
+        
+        $track = $request->input('track', 'audit');
 
-        $enrollment = Enrollment::create([
-            'user_id'   => $user->id,
-            'course_id' => $course->id,
-            'type'      => 'audit',
-            'status'    => 'active',
-        ]);
+        // Jika course TIDAK punya jalur audit, paksa jadi verified
+        if ($track === 'audit' && !$course->hasAuditTrack()) {
+            $track = 'verified'; 
+        }
 
-        broadcast(new NewEnrollment($enrollment));
 
-        return redirect()->route('student.learn', $course->slug)
-            ->with('success', 'Berhasil enroll! Selamat belajar.');
+
+        $enrollment = Enrollment::where('user_id', $user->id)
+            ->where('course_id', $course->id)
+            ->first();
+
+        // Mode Upgrade jika sudah enroll sebagai audit
+        if ($enrollment) {
+            if ($enrollment->type === 'audit' && in_array($track, ['verified', 'honor'])) {
+                if (!$course->isUpgradeAvailable()) {
+                    return back()->with('error', 'Batas waktu upgrade ke Verified sudah berakhir.');
+                }
+                
+                // Jika sertifikat disertakan gratis
+                if (!$course->hasCertificatePrice() && $course->isFree()) {
+                    $enrollment->update([
+                        'type' => $track,
+                        'upgraded_at' => now(),
+                    ]);
+                    return redirect()->route('student.learn', $course->slug)
+                        ->with('success', 'Berhasil upgrade ke jalur Verified!');
+                }
+                
+                return redirect()->route('payment.index', [
+                    'course'  => $course->id, 
+                    'upgrade' => 1,
+                    'track'   => $track
+                ])->with('info', 'Silakan selesaikan pembayaran untuk upgrade ke Verified.');
+            }
+            
+            return redirect()->route('student.learn', $course->slug)
+                ->with('info', 'Kamu sudah terdaftar di kursus ini.');
+        }
+
+        // Pendaftaran baru
+        $isFreeEnrollment = ($track === 'audit');
+
+        if ($isFreeEnrollment) {
+            $payment = Payment::create([
+                'user_id' => $user->id,
+                'amount'  => 0,
+                'method'  => 'free',
+                'status'  => 'paid',
+                'paid_at' => now(),
+                'currency' => $course->currency ?: 'IDR',
+                'transaction_id' => 'AUDIT-' . now()->format('Ymd') . '-' . strtoupper(\Illuminate\Support\Str::random(8)),
+            ]);
+
+            $payment->items()->create([
+                'course_id' => $course->id,
+                'item_type' => 'course',
+                'price' => 0,
+            ]);
+
+            $newEnrollment = Enrollment::create([
+                'user_id'   => $user->id,
+                'course_id' => $course->id,
+                'payment_id' => $payment->id,
+                'type'      => $track,
+                'status'    => 'active',
+            ]);
+
+            broadcast(new NewEnrollment($newEnrollment));
+
+            return redirect()->route('student.learn', $course->slug)
+                ->with('success', 'Berhasil enroll! Selamat belajar.');
+        }
+
+        // Pendaftaran berbayar (verified)
+        return redirect()->route('payment.index', [
+            'course' => $course->id,
+            'track'  => $track
+        ])->with('info', 'Silakan selesaikan pembayaran.');
     }
-
-    // Berbayar
-    return redirect()->route('payment.index', ['course' => $course->id])
-        ->with('info', 'Silakan selesaikan pembayaran.');
-}
 
     public function toggleWishlist(Course $course)
     {

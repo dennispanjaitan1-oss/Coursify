@@ -21,11 +21,19 @@ class Program extends Model
         'price',
         'thumbnail_url',
         'is_published',
+        'duration_months',
+        'effort_per_week',
+        'what_you_learn',
+        'career_outcomes',
+        'prerequisites',
+        'faq',
     ];
 
     protected $casts = [
         'price'        => 'decimal:2',
         'is_published' => 'boolean',
+        'what_you_learn' => 'array',
+        'faq'          => 'array',
     ];
 
     // ── Relationships ───────────────────────────────────────────────

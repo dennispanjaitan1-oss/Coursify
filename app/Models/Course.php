@@ -24,6 +24,8 @@ class Course extends Model
         'short_description',
         'description',
         'price',
+        'certificate_price',
+        'currency',
         'duration_weeks',
         'difficulty',
         'thumbnail_url',
@@ -34,11 +36,17 @@ class Course extends Model
         'prerequisites',
         'is_published',
         'order_index',
+        'has_audit_track',
+        'audit_access_weeks',
+        'upgrade_deadline',
     ];
 
     protected $casts = [
-        'price'        => 'decimal:2',
-        'is_published' => 'boolean',
+        'price'             => 'decimal:2',
+        'certificate_price' => 'decimal:2',
+        'is_published'      => 'boolean',
+        'has_audit_track'   => 'boolean',
+        'upgrade_deadline'  => 'date',
     ];
 
     // ── Relationships ───────────────────────────────────────────────
@@ -142,6 +150,12 @@ class Course extends Model
         return $query->where('price', '>', 0);
     }
 
+    /** Instruktur hasil scraping dari edX */
+public function scrapedInstructors(): HasMany
+{
+    return $this->hasMany(Instructor::class);
+}
+
     // ── Helpers ─────────────────────────────────────────────────────
 
     public function isFree(): bool
@@ -149,12 +163,60 @@ class Course extends Model
         return $this->price == 0;
     }
 
-    public function getFormattedPriceAttribute(): string
+    /** Apakah kursus punya jalur audit (gratis, tanpa sertifikat) */
+    public function hasAuditTrack(): bool
     {
-        return $this->isFree()
-            ? 'GRATIS'
-            : 'Rp ' . number_format($this->price, 0, ',', '.');
+        return (bool) $this->has_audit_track;
     }
+
+    /** Apakah kursus punya biaya upgrade ke verified/sertifikat */
+    public function hasCertificatePrice(): bool
+    {
+        return ! is_null($this->certificate_price) && $this->certificate_price > 0;
+    }
+
+    /** Apakah user masih bisa upgrade dari audit ke verified */
+    public function isUpgradeAvailable(): bool
+    {
+        if (is_null($this->upgrade_deadline)) {
+            return true; // tidak ada deadline = selalu bisa upgrade
+        }
+        return now()->lessThanOrEqualTo($this->upgrade_deadline);
+    }
+
+    /** Apakah akses audit user masih valid (belum expired) */
+    public function isAuditAccessExpired(?\DateTime $enrolledAt = null): bool
+    {
+        if (is_null($this->audit_access_weeks) || is_null($enrolledAt)) {
+            return false; // tanpa batas waktu
+        }
+        $expiry = \Carbon\Carbon::instance($enrolledAt)->addWeeks($this->audit_access_weeks);
+        return now()->greaterThan($expiry);
+    }
+
+    public function getFormattedPriceAttribute(): string
+{
+    if ($this->isFree()) return 'GRATIS';
+    
+    if ($this->currency === 'USD') {
+        return '$' . number_format($this->price, 2);
+    }
+    
+    return 'Rp ' . number_format($this->price, 0, ',', '.');
+}
+
+public function getFormattedCertificatePriceAttribute(): string
+{
+    if (! $this->hasCertificatePrice()) {
+        return $this->isFree() ? 'Gratis' : 'Included';
+    }
+    
+    if ($this->currency === 'USD') {
+        return '$' . number_format($this->certificate_price, 2);
+    }
+    
+    return 'Rp ' . number_format($this->certificate_price, 0, ',', '.');
+}
 
     public function getTotalLessonsAttribute(): int
     {
@@ -162,8 +224,8 @@ class Course extends Model
     }
 
     public function getRouteKeyName()
-{
-    return 'slug';
-}
+    {
+        return 'slug';
+    }
 
 }

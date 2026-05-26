@@ -29,14 +29,20 @@ class HomeController extends Controller
             : '50,000+';
 
         // Categories dengan course count
+        Cache::forget('home_categories');
         $categories = Cache::remember('home_categories', 3600, function () {
-            return Category::withCount(['courses' => function($q) {
-                $q->where('is_published', true);
-            }])
-            ->whereNull('parent_id')
-            ->take(8)
-            ->get()
-            ->map(function($cat) {
+            return Category::whereNull('parent_id')
+                ->whereNotIn('slug', ['art', 'business-administration', 'uncategorized'])
+                ->whereHas('courses', function ($q) {
+                    $q->where('is_published', true);
+                })
+                ->withCount(['courses' => function($q) {
+                    $q->where('is_published', true);
+                }])
+                ->orderByDesc('courses_count')
+                ->take(6)
+                ->get()
+                ->map(function($cat) {
                 $iconMap = [
                     'Architecture'            => 'fa-solid fa-building-columns',
                     'Art'                     => 'fa-solid fa-palette',
@@ -71,7 +77,15 @@ class HomeController extends Controller
             ->toArray();
         });
 
-        // Featured courses (6 kursus terpopuler)
+        // Featured courses (6 kursus terpopuler)SELECT courses.*,
+        //        COUNT(DISTINCT enrollments.id) AS enrollments_count
+        // FROM courses
+        // LEFT JOIN enrollments ON enrollments.course_id = courses.id
+        // WHERE courses.is_published = 1
+        // GROUP BY courses.id
+        // ORDER BY enrollments_count DESC
+        // LIMIT 6;
+
         $featuredCourses = Cache::remember('home_featured_courses', 3600, function () {
             return Course::where('is_published', true)
                 ->with(['instructors', 'category'])
@@ -180,6 +194,56 @@ class HomeController extends Controller
             ];
         }
 
+        // Featured programs (3 latest published programs)
+        $featuredPrograms = Cache::remember('home_featured_programs', 3600, function () {
+            return Program::where('is_published', true)
+                ->with(['institution', 'courses'])
+                ->latest()
+                ->take(3)
+                ->get()
+                ->map(function($prog) {
+                    $types = [
+                        'professional_certificate' => 'Professional Certificate',
+                        'micromasters' => 'MicroMasters',
+                        'microbachelors' => 'MicroBachelors',
+                        'degree' => 'Degree',
+                        'executive_education' => 'Executive Education',
+                    ];
+                    return [
+                        'title' => $prog->title,
+                        'slug' => $prog->slug,
+                        'type' => $types[$prog->type] ?? ucwords(str_replace('_', ' ', $prog->type)),
+                        'description' => $prog->description,
+                        'thumbnail_url' => $prog->thumbnail_url ?: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&auto=format&fit=crop&q=60',
+                        'institution_name' => $prog->institution->name ?? 'Partner Institution',
+                        'institution_logo' => $prog->institution->logo_url,
+                        'courses_count' => $prog->courses->count(),
+                    ];
+                })
+                ->toArray();
+        });
+
+        // Latest courses for "The latest on Coursify" slider
+        $latestCourses = Cache::remember('home_latest_courses', 3600, function () {
+            return Course::where('is_published', true)
+                ->with(['institution'])
+                ->latest('created_at')
+                ->take(8)
+                ->get()
+                ->map(function($course) {
+                    return [
+                        'slug'          => $course->slug,
+                        'title'         => $course->title,
+                        'thumbnail_url' => $course->thumbnail_url,
+                        'institution'   => $course->institution->name ?? 'Coursify Partner',
+                        'institution_logo' => $course->institution->logo_url ?? null,
+                        'duration'      => $course->duration_weeks ? $course->duration_weeks . ' weeks to complete' : 'Self-paced',
+                        'level'         => ucfirst($course->difficulty ?? 'beginner') . ' level',
+                    ];
+                })
+                ->toArray();
+        });
+
         return view('home.index', compact(
             'stats',
             'studentCount',
@@ -187,7 +251,9 @@ class HomeController extends Controller
             'featuredCourses',
             'promoCourses',
             'instructors',
-            'partnerInstitutions'
+            'partnerInstitutions',
+            'featuredPrograms',
+            'latestCourses'
         ));
     }
 

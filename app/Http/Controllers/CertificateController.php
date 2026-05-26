@@ -35,6 +35,10 @@ class CertificateController extends Controller
             return back()->with('error', 'Selesaikan semua materi terlebih dahulu. Progress kamu: ' . $enrollment->progress_percent . '%');
         }
 
+        if (!in_array($enrollment->type, ['verified', 'honor'])) {
+            return back()->with('error', 'Sertifikat hanya tersedia untuk jalur Verified. Silakan upgrade ke Verified terlebih dahulu.');
+        }
+
         // Cegah duplikat
         $existing = Certificate::where('user_id', $user->id)
             ->where('course_id', $course->id)
@@ -48,6 +52,8 @@ class CertificateController extends Controller
         Certificate::create([
             'user_id'            => $user->id,
             'course_id'          => $course->id,
+            'enrollment_id'      => $enrollment->id,
+            'certificate_type'   => $enrollment->type,
             'certificate_number' => $this->generateUniqueNumber(),
             'issued_at'          => now(),
         ]);

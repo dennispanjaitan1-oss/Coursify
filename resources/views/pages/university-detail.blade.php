@@ -398,7 +398,7 @@
                 @if($course->price == 0)
                     <span class="course-row-badge">Gratis</span>
                 @else
-                    <span class="course-row-badge">Rp {{ number_format($course->price, 0, ',', '.') }}</span>
+                    <span class="course-row-badge"><span class="course-row-badge">{{ $course->formatted_price }}</span>
                 @endif
             </a>
             @empty

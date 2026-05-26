@@ -11,7 +11,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;700&family=Noto+Sans+Arabic:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&family=Noto+Sans+Telugu:wght@400;700&family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -38,7 +38,7 @@
     --muted: #8B87A8;
     --border: rgba(30,58,95,0.08);
     --font-serif: 'Instrument Serif', serif;
-    --font-sans: 'Inter', sans-serif;
+    --font-sans: 'Inter', 'Noto Sans', 'Noto Sans Arabic', 'Noto Sans Devanagari', 'Noto Sans Telugu', 'Noto Sans SC', sans-serif;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -71,20 +71,342 @@ body::before {
 .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
 section { position: relative; z-index: 1; }
 
-/* NAVBAR */
-.navbar-wrap { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 20px 20px 0; transition: transform 0.35s cubic-bezier(0.4,0,0.2,1); }
-.navbar-wrap.navbar-hidden { transform: translateY(-120%); }
-.navbar-wrap.navbar-scrolled .navbar { background: rgba(255,255,255,0.9); box-shadow: 0 10px 40px rgba(30,58,95,0.1); }
-.navbar { max-width: 900px; margin: 0 auto; background: rgba(255,255,255,0.65); backdrop-filter: blur(30px) saturate(180%); border: 1px solid rgba(255,255,255,0.9); border-radius: 100px; padding: 8px 8px 8px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 10px 40px rgba(30,58,95,0.08); gap: 16px; }
-.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); flex-shrink: 0; }
-.logo-img { width: 34px; height: 34px; border-radius: 8px; object-fit: cover; }
-.logo-text { font-size: 17px; font-weight: 700; letter-spacing: -0.02em; }
-.nav-links { display: flex; gap: 2px; }
-.nav-link { font-size: 14px; font-weight: 500; color: var(--text-soft); text-decoration: none; padding: 8px 14px; border-radius: 100px; transition: all 0.2s; }
-.nav-link:hover { background: rgba(255,255,255,0.7); color: var(--text); }
-.nav-link.active { background: rgba(123,111,232,0.15); color: var(--purple-dark); }
-.btn-nav { padding: 9px 18px; background: #1A1825; color: white; border-radius: 100px; text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.2s; flex-shrink: 0; }
-.btn-nav:hover { background: #2A2840; transform: translateY(-1px); }
+/* ══════════════════════════════════════════════
+   NAVBAR — show.blade
+   Hierarki: [Logo + Jelajahi] | [Search Dominan] | [Links + Auth]
+   Referensi: Coursera, Udemy, Nielsen Norman Group
+══════════════════════════════════════════════ */
+
+/* ── Wrap: full-width sticky, bukan floating pill ── */
+.navbar-wrap {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 500;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(60px) saturate(200%);
+    -webkit-backdrop-filter: blur(60px) saturate(200%);
+    border-bottom: 1px solid rgba(30,58,95,0.08);
+    box-shadow: 0 1px 0 rgba(30,58,95,0.06);
+    transition: box-shadow 0.3s ease, background 0.3s ease, transform 0.35s cubic-bezier(0.4,0,0.2,1);
+    will-change: transform;
+    animation: slideDown 0.5s ease-out;
+}
+.navbar-wrap.navbar-hidden  { transform: translateY(-110%); }
+.navbar-wrap.navbar-scrolled {
+    background: rgba(255,255,255,0.98);
+    box-shadow: 0 2px 20px rgba(30,58,95,0.10);
+}
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Inner: tiga kolom — kiri | tengah (flex-grow) | kanan ── */
+.navbar {
+    display: flex;
+    align-items: center;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 64px;
+    gap: 0;
+}
+
+/* ── KIRI: logo + Jelajahi ── */
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+    margin-right: 20px;
+}
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    text-decoration: none;
+    color: var(--text);
+    flex-shrink: 0;
+    padding: 6px 8px 6px 0;
+}
+.logo-img {
+    width: 32px; height: 32px;
+    border-radius: 8px; object-fit: cover;
+    box-shadow: 0 2px 8px rgba(30,58,95,0.18);
+    transition: transform 0.3s;
+}
+.logo:hover .logo-img { transform: scale(1.06) rotate(-3deg); }
+.logo-text { font-size: 16px; font-weight: 700; letter-spacing: -0.02em; white-space: nowrap; }
+
+/* Jelajahi — slim ghost button di kiri, bukan navy pill */
+.mega-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    color: var(--text-soft);
+    border: 1.5px solid rgba(30,58,95,0.12);
+    padding: 7px 14px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    transition: all 0.22s cubic-bezier(0.4,0,0.2,1);
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-left: 8px;
+}
+.mega-trigger:hover {
+    background: rgba(30,58,95,0.05);
+    border-color: rgba(30,58,95,0.22);
+    color: var(--navy);
+}
+.mega-trigger.active {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: white;
+}
+.mega-chevron {
+    width: 13px; height: 13px;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+    opacity: 0.6;
+}
+.mega-trigger.active .mega-chevron { transform: rotate(180deg); opacity: 1; }
+.mega-trigger.active .mega-chevron path { stroke: white; }
+
+/* ── TENGAH: Search — dominant, flex-grow ── */
+.nav-search-wrap {
+    flex: 1;
+    max-width: 580px;   /* lebih lebar dari sebelumnya */
+    min-width: 0;
+    margin: 0 20px;
+    position: relative;
+}
+.nav-search-form {
+    display: flex;
+    align-items: center;
+    background: rgba(245,241,252,0.7);
+    border: 1.5px solid rgba(123,111,232,0.18);
+    border-radius: 100px;
+    padding: 0 6px 0 16px;
+    gap: 8px;
+    transition: all 0.22s cubic-bezier(0.4,0,0.2,1);
+    height: 42px;
+}
+.nav-search-form:focus-within {
+    border-color: var(--purple);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(123,111,232,0.10);
+}
+.nav-search-icon { color: var(--muted); font-size: 13px; flex-shrink: 0; }
+.nav-search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    min-width: 0;
+    padding: 0;
+}
+.nav-search-input::placeholder { color: var(--muted); }
+.nav-search-btn {
+    flex-shrink: 0;
+    background: var(--navy);
+    color: white;
+    border: none;
+    border-radius: 100px;
+    padding: 8px 18px;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    white-space: nowrap;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.nav-search-btn:hover { background: #2D4D7A; }
+.nav-search-btn:active { transform: scale(0.97); }
+
+/* ── Autocomplete dropdown ── */
+.nav-search-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0; right: 0;
+    background: white;
+    border: 1px solid rgba(30,58,95,0.10);
+    border-radius: 16px;
+    box-shadow: 0 8px 40px rgba(30,58,95,0.16), 0 2px 8px rgba(30,58,95,0.06);
+    overflow: hidden;
+    z-index: 600;
+    display: none;
+    animation: dropFade 0.16s ease;
+}
+.nav-search-dropdown.open { display: block; }
+@keyframes dropFade {
+    from { opacity: 0; transform: translateY(-6px) scale(0.99); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.search-drop-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 16px; text-decoration: none; color: var(--text);
+    font-size: 13px; transition: background 0.12s;
+    cursor: pointer; border: none; background: none;
+    width: 100%; text-align: left; font-family: var(--font-sans);
+}
+.search-drop-item:hover, .search-drop-item.hovered { background: rgba(123,111,232,0.06); }
+.search-drop-item-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: var(--lav-1);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; font-size: 14px; color: var(--purple-dark);
+}
+.search-drop-item-img { width: 36px; height: 36px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
+.search-drop-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.search-drop-title { font-weight: 600; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.search-drop-sub { font-size: 11px; color: var(--muted); }
+.search-drop-section {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.09em;
+    text-transform: uppercase; color: var(--muted);
+    padding: 12px 16px 4px;
+}
+.search-drop-footer {
+    border-top: 1px solid rgba(30,58,95,0.06);
+    padding: 10px 16px;
+    font-size: 12.5px; color: var(--purple); font-weight: 600;
+    display: flex; align-items: center; gap: 6px;
+    transition: background 0.12s; text-decoration: none;
+}
+.search-drop-footer:hover { background: rgba(123,111,232,0.05); }
+.search-drop-empty { padding: 20px 16px; font-size: 13px; color: var(--muted); text-align: center; }
+
+/* ── KANAN: secondary nav + auth ── */
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex-shrink: 0;
+    margin-left: 20px;
+}
+.nav-link-sm {
+    font-size: 13px; font-weight: 500; color: var(--text-soft);
+    padding: 8px 12px; border-radius: 8px;
+    transition: all 0.18s; text-decoration: none;
+    display: flex; align-items: center; gap: 5px;
+    white-space: nowrap;
+}
+.nav-link-sm:hover { background: rgba(30,58,95,0.05); color: var(--navy); }
+.nav-link-sm.active { color: var(--purple-dark); font-weight: 600; }
+.nav-divider {
+    width: 1px; height: 20px;
+    background: rgba(30,58,95,0.1);
+    margin: 0 8px;
+    flex-shrink: 0;
+}
+
+/* CTA: Get Started — lebih menonjol */
+.btn-cta-nav {
+    background: var(--navy); color: white;
+    border-radius: 100px; padding: 9px 20px;
+    font-family: var(--font-sans); font-size: 13px; font-weight: 600;
+    text-decoration: none; border: none; cursor: pointer;
+    transition: all 0.22s cubic-bezier(0.4,0,0.2,1);
+    white-space: nowrap; flex-shrink: 0;
+    display: inline-flex; align-items: center; gap: 6px;
+    box-shadow: 0 2px 8px rgba(21,55,89,0.2);
+    margin-left: 6px;
+}
+.btn-cta-nav:hover { background: #2D4D7A; box-shadow: 0 4px 16px rgba(21,55,89,0.3); transform: translateY(-1px); }
+
+/* ── User button & dropdown ── */
+.user-btn {
+    display: flex; align-items: center; gap: 8px;
+    background: transparent;
+    border: 1.5px solid rgba(30,58,95,0.12);
+    border-radius: 100px; padding: 5px 12px 5px 5px;
+    cursor: pointer; font-family: var(--font-sans);
+    font-size: 13px; font-weight: 500; color: var(--text);
+    transition: all 0.2s; flex-shrink: 0;
+    margin-left: 6px;
+}
+.user-btn:hover { background: rgba(30,58,95,0.04); border-color: rgba(30,58,95,0.22); }
+.user-avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--navy), #2D4D7A);
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 700; font-size: 11px;
+}
+.user-dropdown {
+    position: absolute; right: 0; top: calc(100% + 10px);
+    background: white;
+    border: 1px solid rgba(30,58,95,0.10);
+    border-radius: 16px; padding: 6px; min-width: 224px;
+    box-shadow: 0 8px 40px rgba(30,58,95,0.14), 0 2px 8px rgba(30,58,95,0.06);
+    z-index: 600;
+}
+.dropdown-header { padding: 10px 12px 12px; border-bottom: 1px solid rgba(0,0,0,0.06); margin-bottom: 4px; }
+.dropdown-name  { font-size: 13px; font-weight: 600; }
+.dropdown-email { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.dropdown-item {
+    display: flex; align-items: center; gap: 9px;
+    padding: 8px 12px; border-radius: 8px;
+    color: var(--text-soft); font-size: 13px;
+    text-decoration: none; transition: background 0.13s;
+    background: transparent; border: none; width: 100%;
+    cursor: pointer; text-align: left;
+    font-family: var(--font-sans); font-weight: 500;
+}
+.dropdown-item i { width: 16px; text-align: center; opacity: 0.7; font-size: 12px; }
+.dropdown-item:hover { background: rgba(123,111,232,0.07); color: var(--text); }
+.dropdown-item-danger { color: #C0392B; }
+.dropdown-item-danger:hover { background: rgba(192,57,43,0.07); }
+
+/* ── Mega menu ── */
+.mega-menu-wrap {
+    border-top: 1px solid rgba(30,58,95,0.07);
+    background: white;
+    pointer-events: none;
+}
+.mega-menu {
+    display: none; max-width: 1280px;
+    margin: 0 auto; padding: 32px 40px;
+    pointer-events: auto;
+    animation: megaFadeIn 0.18s ease;
+}
+.mega-menu.open { display: block; }
+@keyframes megaFadeIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.mega-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; column-gap: 32px; }
+.mega-col { display: flex; flex-direction: column; }
+.mega-col-title { font-weight: 700; font-size: 13px; color: var(--text); margin-bottom: 14px; letter-spacing: -0.01em; }
+.mega-link { display: block; font-size: 13px; color: var(--text-soft); text-decoration: none; padding: 6px 0; line-height: 1.5; transition: color 0.15s, padding-left 0.15s; }
+.mega-link:hover { color: var(--purple); padding-left: 4px; }
+.mega-link-cta { color: var(--purple) !important; font-weight: 600; margin-top: 6px; font-size: 12px; }
+.mega-group-label { font-size: 10px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); margin-top: 14px; margin-bottom: 6px; }
+.mega-empty { font-size: 13px; color: var(--muted); }
+.mega-overlay { display: none; position: fixed; inset: 0; z-index: 499; background: rgba(26,24,37,0.12); }
+.mega-overlay.open { display: block; }
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+    .nav-search-wrap { max-width: 360px; }
+    .mega-grid { grid-template-columns: repeat(2,1fr); }
+}
+@media (max-width: 768px) {
+    .navbar { height: 56px; padding: 0 16px; }
+    .nav-search-wrap { max-width: none; flex: 1; margin: 0 12px; }
+    .nav-link-sm, .nav-divider, .mega-trigger { display: none; }
+    .logo-text { display: none; }
+    .nav-right { margin-left: 0; }
+}
 
 /* BREADCRUMB */
 .breadcrumb { display: flex; align-items: center; gap: 8px; padding: 20px 0; flex-wrap: wrap; }
@@ -100,7 +422,7 @@ section { position: relative; z-index: 1; }
 /* BADGES */
 .course-badges { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
 .hero-badge { display: inline-flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: 100px; font-size: 11px; font-weight: 700; letter-spacing: 0.03em; white-space: nowrap; }
-.badge-bestseller { background: rgba(255,196,82,0.95); color: #5A3A00; }
+/* .badge-bestseller { background: rgba(255,196,82,0.95); color: #5A3A00; } */
 .badge-category { background: rgba(123,111,232,0.1); color: var(--purple-dark); border: 1px solid rgba(123,111,232,0.2); }
 .badge-level { background: rgba(255,255,255,0.7); color: var(--text-soft); border: 1px solid var(--border); }
 
@@ -385,7 +707,7 @@ section { position: relative; z-index: 1; }
 .course-thumb-5 { background: linear-gradient(135deg,#30CFD0,#330867); }
 .course-thumb-6 { background: linear-gradient(135deg,#A8EDEA,#FED6E3); }
 .related-badge { position: absolute; top: 10px; left: 10px; padding: 3px 10px; border-radius: 100px; font-size: 10px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; }
-.related-badge.badge-bestseller { background: rgba(255,196,82,0.95); color: #5A3A00; }
+/* .related-badge.badge-bestseller { background: rgba(255,196,82,0.95); color: #5A3A00; } */
 .related-badge.badge-free { background: rgba(0,200,150,0.95); color: white; }
 .related-body { padding: 16px; flex: 1; display: flex; flex-direction: column; min-width: 0; }
 .related-category { font-size: 10px; color: var(--muted); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
@@ -472,24 +794,281 @@ section { position: relative; z-index: 1; }
 </head>
 <body>
 
-{{-- NAVBAR --}}
-<nav class="navbar-wrap" id="mainNavbar">
+{{-- ══════════════════════════════════════════════════════════
+     NAVBAR — show.blade
+     Hierarki: [Logo + Jelajahi] | [Search Dominan] | [Courses + Auth]
+     Pola: Coursera / Udemy — full-width sticky, search di tengah
+══════════════════════════════════════════════════════════ --}}
+<div class="navbar-wrap" id="mainNavbar">
+
     <div class="navbar">
-        <a href="{{ route('home') }}" class="logo">
-            <img src="{{ asset('images/logo.png') }}" alt="Coursify" class="logo-img">
-            <span class="logo-text">Coursify</span>
-        </a>
-        <div class="nav-links">
-            <a href="{{ route('courses.index') }}" class="nav-link active">Courses</a>
-            <a href="{{ route('home') }}#how" class="nav-link">How It Works</a>
+
+        {{-- ═══ KIRI: Logo + Jelajahi ═══ --}}
+        <div class="nav-left">
+            <a href="{{ route('home') }}" class="logo">
+                <img src="{{ asset('images/logo.png') }}" alt="Coursify" class="logo-img">
+                <span class="logo-text">Coursify</span>
+            </a>
+
+            {{-- Jelajahi: ghost pill, bukan navy solid --}}
+            <button class="mega-trigger" id="mega-btn"
+                    onclick="toggleMega()"
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    aria-controls="mega-menu">
+                <i class="fa-solid fa-grid-2" style="font-size:11px;opacity:0.75;"></i>
+                Jelajahi
+                <svg class="mega-chevron" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                    <path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
         </div>
-        @guest
-            <a href="{{ route('login') }}" class="btn-nav">Get Started</a>
-        @else
-            <a href="{{ route('student.index') }}" class="btn-nav">Dashboard</a>
-        @endguest
+
+        {{-- ═══ TENGAH: Search bar — dominant ═══ --}}
+        <div class="nav-search-wrap" x-data="navSearch()">
+            <form class="nav-search-form"
+                  action="{{ route('courses.index') }}" method="GET"
+                  @submit="open = false"
+                  autocomplete="off"
+                  role="search"
+                  aria-label="Cari kursus">
+                <i class="fa-solid fa-magnifying-glass nav-search-icon" aria-hidden="true"></i>
+                <input
+                    type="search"
+                    name="search"
+                    class="nav-search-input"
+                    placeholder="Cari kursus, topik, instruktur…"
+                    value="{{ request('search') }}"
+                    @input="onInput($event.target.value)"
+                    @focus="if(query.length > 1) open = true"
+                    @keydown.escape="open = false"
+                    @keydown.arrow-down.prevent="moveFocus(1)"
+                    @keydown.arrow-up.prevent="moveFocus(-1)"
+                    @keydown.enter.prevent="submitOrGo"
+                    x-model="query"
+                    aria-label="Cari kursus"
+                    aria-autocomplete="list"
+                    aria-controls="search-listbox"
+                >
+                <button type="submit" class="nav-search-btn" aria-label="Cari">
+                    Cari
+                </button>
+            </form>
+
+            {{-- Autocomplete Dropdown --}}
+            <div class="nav-search-dropdown"
+                 id="search-listbox"
+                 role="listbox"
+                 :class="{ open: open && (results.length > 0 || loading || query.length > 1) }"
+                 @click.outside="open = false">
+
+                {{-- Loading --}}
+                <template x-if="loading">
+                    <div class="search-drop-empty">
+                        <i class="fa-solid fa-circle-notch fa-spin" style="color:var(--purple);margin-right:6px;"></i>
+                        Mencari…
+                    </div>
+                </template>
+
+                {{-- Results --}}
+                <template x-if="!loading && results.length > 0">
+                    <div>
+                        <div class="search-drop-section">Kursus</div>
+                        <template x-for="(item, idx) in results" :key="item.id">
+                            <a :href="item.url"
+                               class="search-drop-item"
+                               :class="{ hovered: focusIdx === idx }"
+                               role="option"
+                               @mouseenter="focusIdx = idx"
+                               @mouseleave="focusIdx = -1">
+                                <template x-if="item.thumbnail">
+                                    <img :src="item.thumbnail" :alt="item.title" class="search-drop-item-img">
+                                </template>
+                                <template x-if="!item.thumbnail">
+                                    <div class="search-drop-item-icon">
+                                        <i class="fa-solid fa-graduation-cap"></i>
+                                    </div>
+                                </template>
+                                <div class="search-drop-meta">
+                                    <span class="search-drop-title" x-text="item.title"></span>
+                                    <span class="search-drop-sub" x-text="item.category ?? item.instructor ?? ''"></span>
+                                </div>
+                            </a>
+                        </template>
+                        <a :href="`{{ route('courses.index') }}?search=${encodeURIComponent(query)}`"
+                           class="search-drop-footer">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <span>Lihat semua hasil untuk "<span x-text="query"></span>"</span>
+                        </a>
+                    </div>
+                </template>
+
+                {{-- No results --}}
+                <template x-if="!loading && results.length === 0 && query.length > 1">
+                    <div>
+                        <div class="search-drop-empty">
+                            Tidak ada hasil untuk "<span x-text="query"></span>"
+                        </div>
+                        <a :href="`{{ route('courses.index') }}?search=${encodeURIComponent(query)}`"
+                           class="search-drop-footer">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <span>Cari di semua kursus</span>
+                        </a>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        {{-- ═══ KANAN: Secondary nav + Auth ═══ --}}
+        <div class="nav-right">
+
+            {{-- Secondary links — hanya yang relevan di halaman show --}}
+            <a href="{{ route('courses.index') }}" class="nav-link-sm active">
+                Kursus
+            </a>
+
+            <div class="nav-divider" aria-hidden="true"></div>
+
+            @guest
+                <a href="{{ route('login') }}" class="nav-link-sm">Masuk</a>
+                <a href="{{ route('login') }}" class="btn-cta-nav">
+                    Mulai Gratis
+                </a>
+            @else
+                <div style="position:relative;flex-shrink:0;" x-data="{ userOpen: false }">
+                    <button @click="userOpen = !userOpen" class="user-btn" aria-expanded="false" aria-haspopup="true">
+                        <div class="user-avatar" aria-hidden="true">
+                            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                        </div>
+                        <span>{{ Str::limit(auth()->user()->name, 12) }}</span>
+                        <i class="fa-solid fa-chevron-down" style="font-size:10px;opacity:0.45;" aria-hidden="true"></i>
+                    </button>
+
+                    <div x-show="userOpen"
+                         @click.away="userOpen = false"
+                         x-transition:enter="transition ease-out duration-150"
+                         x-transition:enter-start="opacity-0 transform -translate-y-2"
+                         x-transition:enter-end="opacity-100 transform translate-y-0"
+                         x-transition:leave="transition ease-in duration-100"
+                         x-transition:leave-start="opacity-100"
+                         x-transition:leave-end="opacity-0"
+                         class="user-dropdown"
+                         role="menu">
+
+                        <div class="dropdown-header">
+                            <div class="dropdown-name">{{ auth()->user()->name }}</div>
+                            <div class="dropdown-email">{{ auth()->user()->email }}</div>
+                            <div style="margin-top:8px;">
+                                @php
+                                    $roleMap = [
+                                        'admin'      => ['bg' => 'linear-gradient(135deg,#1E3A5F,#2D4D7A)', 'color' => 'white',   'icon' => 'fa-user-shield',     'label' => 'Administrator'],
+                                        'instructor' => ['bg' => 'rgba(0,200,150,0.12)',                   'color' => '#00705A',  'icon' => 'fa-chalkboard-user', 'label' => 'Instructor'],
+                                        'student'    => ['bg' => 'rgba(123,111,232,0.12)',                 'color' => '#5B4FD4',  'icon' => 'fa-graduation-cap',  'label' => 'Student'],
+                                    ];
+                                    $r = $roleMap[auth()->user()->role] ?? $roleMap['student'];
+                                @endphp
+                                <span style="display:inline-block;padding:3px 10px;background:{{ $r['bg'] }};color:{{ $r['color'] }};border-radius:100px;font-size:10px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;">
+                                    <i class="fa-solid {{ $r['icon'] }}"></i> {{ $r['label'] }}
+                                </span>
+                            </div>
+                        </div>
+
+                        @if(auth()->user()->role === 'admin')
+                            <a href="{{ route('admin.dashboard') }}" class="dropdown-item" role="menuitem"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+                            <a href="{{ route('admin.courses.index') }}" class="dropdown-item" role="menuitem"><i class="fa-solid fa-book-open"></i> Manage Courses</a>
+                            <a href="#" class="dropdown-item" role="menuitem"><i class="fa-solid fa-users-gear"></i> Manage Users</a>
+                        @endif
+                        @if(auth()->user()->role === 'instructor')
+                            <a href="{{ route('instructor.dashboard') }}" class="dropdown-item" role="menuitem"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+                            <a href="#" class="dropdown-item" role="menuitem"><i class="fa-solid fa-chalkboard-user"></i> My Courses</a>
+                            <a href="#" class="dropdown-item" role="menuitem"><i class="fa-solid fa-square-plus"></i> Create Course</a>
+                        @endif
+                        @if(auth()->user()->role === 'student')
+                            <a href="{{ route('student.index') }}" class="dropdown-item" role="menuitem"><i class="fa-solid fa-gauge-high"></i> My Dashboard</a>
+                            <a href="{{ route('student.courses') }}" class="dropdown-item" role="menuitem"><i class="fa-solid fa-book-open"></i> My Courses</a>
+                            <a href="{{ route('student.wishlist') }}" class="dropdown-item" role="menuitem"><i class="fa-solid fa-heart"></i> Wishlist</a>
+                            <a href="{{ route('student.certificates') }}" class="dropdown-item" role="menuitem"><i class="fa-solid fa-award"></i> Certificates</a>
+                            <a href="{{ route('student.profile') }}" class="dropdown-item" role="menuitem"><i class="fa-solid fa-user-pen"></i> Profile Settings</a>
+                        @endif
+
+                        <div style="border-top:1px solid rgba(0,0,0,0.06);margin-top:4px;padding-top:4px;">
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="dropdown-item dropdown-item-danger" role="menuitem">
+                                    <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            @endguest
+
+        </div>
+
+    </div>{{-- /.navbar --}}
+
+    {{-- ═══ MEGA MENU — drops directly below full-width bar ═══ --}}
+    <div class="mega-menu-wrap">
+        <div class="mega-menu" id="mega-menu" role="dialog" aria-label="Menu navigasi utama">
+            <div class="mega-grid">
+
+                <div class="mega-col">
+                    <div class="mega-col-title">Jelajahi Topik</div>
+                    @forelse($navBrowseTopics ?? [] as $topic)
+                        <a href="{{ route('courses.index') }}?category={{ $topic['slug'] }}" class="mega-link">{{ $topic['name'] }}</a>
+                    @empty
+                        @foreach([['ai','Kecerdasan Buatan'],['web','Web Development'],['data','Data Science'],['cyber','Cybersecurity'],['design','Desain UI/UX'],['mobile','Mobile Dev'],['business','Bisnis & Manajemen']] as [$slug,$name])
+                            <a href="{{ route('courses.index') }}?category={{ $slug }}" class="mega-link">{{ $name }}</a>
+                        @endforeach
+                    @endforelse
+                    <a href="{{ route('courses.index') }}" class="mega-link mega-link-cta">Lihat semua topik →</a>
+                </div>
+
+                <div class="mega-col">
+                    <div class="mega-col-title">Raih Sertifikat</div>
+                    @forelse($navCertificatePrograms ?? [] as $cert)
+                        <a href="{{ route('courses.index') }}?q={{ urlencode($cert['name']) }}" class="mega-link">{{ $cert['name'] }}</a>
+                    @empty
+                        @foreach(['Sertifikat Profesional','MicroMasters','Program Diploma','Executive Education'] as $c)
+                            <a href="{{ route('courses.index') }}?type=certificate" class="mega-link">{{ $c }}</a>
+                        @endforeach
+                    @endforelse
+                    <a href="{{ route('courses.index') }}?type=certificate" class="mega-link mega-link-cta">Lihat semua →</a>
+                </div>
+
+                <div class="mega-col">
+                    <div class="mega-col-title">Program Gelar</div>
+                    @forelse($navDegreePrograms ?? [] as $degree)
+                        <a href="{{ route('courses.index') }}?q={{ urlencode($degree['name']) }}" class="mega-link">{{ $degree['name'] }}</a>
+                    @empty
+                        @foreach(['S1 Online','S2 Online','MBA Online','Program Diploma'] as $d)
+                            <a href="{{ route('courses.index') }}?type=program" class="mega-link">{{ $d }}</a>
+                        @endforeach
+                    @endforelse
+                    <a href="{{ route('courses.index') }}?type=program" class="mega-link mega-link-cta">Lihat semua →</a>
+                </div>
+
+                <div class="mega-col">
+                    <div class="mega-col-title">Universitas Partner</div>
+                    @forelse($navPartnerInstitutions ?? [] as $inst)
+                        <a href="{{ route('universities.show', $inst['slug']) }}" class="mega-link">{{ $inst['name'] }}</a>
+                    @empty
+                        @foreach(['Harvard University','Stanford University','MIT','Oxford University','Tsinghua University'] as $u)
+                            <a href="{{ route('universities') }}" class="mega-link">{{ $u }}</a>
+                        @endforeach
+                    @endforelse
+                    <a href="{{ route('universities') }}" class="mega-link mega-link-cta">Lihat semua universitas →</a>
+                </div>
+
+            </div>
+        </div>
     </div>
-</nav>
+
+</div>{{-- /.navbar-wrap --}}
+
+<div class="mega-overlay" id="mega-overlay" onclick="closeMega()"></div>
+
+
 
 <div class="container">
 
@@ -507,14 +1086,17 @@ section { position: relative; z-index: 1; }
 
         {{-- LEFT: Course Info --}}
         @php
-            $instructors = $course->instructors;
-            $instructor  = $instructors->first(); // untuk hero chip
-            $totalLessons = $course->sections->flatMap->lessons->count();
-            $avgRating = $course->reviews_avg_rating;
-            $reviewCount = $course->reviews->count();
-            $isEnrolled = auth()->check() && auth()->user()
-                ->enrollments()->where('course_id', $course->id)->exists();
-        @endphp
+    $scrapedInstructors = $course->scrapedInstructors;
+    $instructors = $scrapedInstructors->isNotEmpty()
+        ? $scrapedInstructors
+        : $course->instructors;
+    $instructor = $instructors->first();
+    $totalLessons = $course->sections->flatMap->lessons->count();
+    $avgRating = $course->reviews_avg_rating;
+    $reviewCount = $course->reviews->count();
+    $isEnrolled = auth()->check() && auth()->user()
+        ->enrollments()->where('course_id', $course->id)->exists();
+@endphp
 
         <div class="hero-left">
             <div class="course-badges">
@@ -557,8 +1139,15 @@ section { position: relative; z-index: 1; }
 
             @if($instructor)
                 <div class="instructor-chip">
-                    <div class="instructor-avatar-lg">
-                        {{ strtoupper(substr($instructor->name, 0, 1)) }}
+                    <div class="instructor-avatar-lg" style="{{ $instructor->photo_url ?? false ? 'padding:0;overflow:hidden;' : '' }}">
+                        @if($instructor->photo_url ?? false)
+                            <img src="{{ $instructor->photo_url }}"
+                                 alt="{{ $instructor->name }}"
+                                 style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"
+                                 onerror="this.style.display='none';this.parentElement.innerHTML='{{ strtoupper(substr($instructor->name, 0, 1)) }}';">
+                        @else
+                            {{ strtoupper(substr($instructor->name, 0, 1)) }}
+                        @endif
                     </div>
                     <div class="instructor-info-sm">
                         <span class="instructor-label">Created by</span>
@@ -660,35 +1249,40 @@ section { position: relative; z-index: 1; }
                 </div>
 
                 <div class="enroll-body">
-                    <div class="price-block">
-                        <div class="price-main">
-                            @if($course->isFree())
-                                <span class="price-now free">Free</span>
-                            @else
-                                <span class="price-now">Rp {{ number_format($course->price, 0, ',', '.') }}</span>
-                            @endif
-                        </div>
-                    </div>
-
                     @if($isEnrolled)
-                        <a href="{{ route('student.learn', $course->slug) }}"
-                           class="btn-enroll"
-                           style="text-decoration:none;">
-                            <i class="fa-solid fa-play"></i> Continue Learning
-                        </a>
-                    @elseif(auth()->check())
-                        <form action="{{ route('enroll', $course) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn-enroll">
-                                <i class="fa-solid fa-graduation-cap"></i> {{ $course->isFree() ? 'Enroll for Free' : 'Enroll Now' }}
-                            </button>
-                        </form>
+                        <div style="text-align:center; margin-bottom: 20px;">
+                            <div style="font-size: 13px; color: var(--teal); font-weight: 600; margin-bottom: 8px;">
+                                <i class="fa-solid fa-circle-check"></i> Kamu sudah terdaftar
+                            </div>
+                            <a href="{{ route('student.learn', $course->slug) }}" class="btn-enroll" style="text-decoration:none;">
+                                <i class="fa-solid fa-play"></i> Continue Learning
+                            </a>
+                        </div>
                     @else
-                        <a href="{{ route('login') }}"
-                           class="btn-enroll"
-                           style="text-decoration:none;">
-                            Login to Enroll
-                        </a>
+                        <div class="price-block">
+                            <div class="price-main">
+                                @if($course->isFree() && !$course->hasCertificatePrice())
+                                    <span class="price-now">GRATIS</span>
+                                @elseif($course->hasCertificatePrice())
+                                    <span class="price-now">Audit gratis</span>
+                                @else
+                                    <span class="price-now">{{ $course->formatted_price }}</span>
+                                @endif
+                            </div>
+                            <div style="font-size:12px;color:var(--text-soft);line-height:1.6;margin:8px 0 18px;">
+                                Pilih jalur belajar: Audit (gratis) atau Verified (sertifikat resmi).
+                            </div>
+                        </div>
+
+                        @auth
+                            <a href="{{ route('courses.choose-path', $course) }}" class="btn-enroll" style="text-decoration:none;">
+                                <i class="fa-solid fa-route"></i> Enroll Now
+                            </a>
+                        @else
+                            <a href="{{ route('login') }}" class="btn-enroll" style="text-decoration:none;">
+                                Login to Enroll
+                            </a>
+                        @endauth
                     @endif
 
                     @php
@@ -855,52 +1449,48 @@ section { position: relative; z-index: 1; }
 
     {{-- INSTRUCTOR --}}
     @if($instructors->isNotEmpty())
-    <section class="content-section">
-        <h2 class="section-title">Meet your <em>{{ $instructors->count() > 1 ? 'instructors' : 'instructor' }}</em></h2>
-        <p class="section-desc">{{ $instructors->count() > 1 ? 'Learn from industry experts' : 'Learn from an industry expert' }}</p>
+<section class="content-section">
+    <h2 class="section-title">Meet your <em>{{ $instructors->count() > 1 ? 'instructors' : 'instructor' }}</em></h2>
+    <p class="section-desc">{{ $instructors->count() > 1 ? 'Learn from industry experts' : 'Learn from an industry expert' }}</p>
 
-        @foreach($instructors as $inst)
-        <div class="instructor-profile">
-            <div class="instructor-header">
-                <div class="instructor-avatar-xl" style="{{ $inst->avatar_url ? 'padding:0;overflow:hidden;' : '' }}">
-    @if($inst->avatar_url)
-        <img src="{{ asset($inst->avatar_url) }}" alt="{{ $inst->name }}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
-    @else
-        {{ strtoupper(substr($inst->name, 0, 1)) }}
-    @endif
-</div>
-                <div class="instructor-main-info">
-                    <h3 class="instructor-full-name">{{ $inst->name }}</h3>
-                    @if($inst->headline ?? false)
-                        <div class="instructor-profession">{{ $inst->headline }}</div>
-                    @endif
-                </div>
-
-                @if($inst->university ?? false)
-                <div class="instructor-university-card">
-                    <div class="instructor-university-icon">
-                        @if($inst->university_logo_url ?? false)
-                            <img src="{{ asset($inst->university_logo_url) }}" alt="{{ $inst->university }} logo">
-                        @else
-                            <i class="fa-solid fa-graduation-cap"></i>
-                        @endif
-                    </div>
-                    <div>
-                        <div class="instructor-university-name">{{ $inst->university }}</div>
-                    </div>
-                </div>
+    @foreach($instructors as $inst)
+    <div class="instructor-profile">
+        <div class="instructor-header">
+            <div class="instructor-avatar-xl" style="{{ $inst->photo_url ? 'padding:0;overflow:hidden;' : '' }}">
+                @if($inst->photo_url)
+                    <img src="{{ $inst->photo_url }}"
+                         alt="Photo of {{ $inst->name }}"
+                         style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"
+                         onerror="this.style.display='none';this.parentElement.innerHTML='{{ strtoupper(substr($inst->name, 0, 1)) }}';">
+                @else
+                    {{ strtoupper(substr($inst->name, 0, 1)) }}
                 @endif
             </div>
-
-            @if($inst->bio ?? false)
-                <div class="instructor-bio">
-                    <p>{{ $inst->bio }}</p>
+            <div class="instructor-main-info">
+                <h3 class="instructor-full-name">{{ $inst->name }}</h3>
+                @php $instTitle = $inst->title ?? ($inst->headline ?? null); @endphp
+                @if($instTitle)
+                    <div class="instructor-profession">{{ $instTitle }}</div>
+                @endif
+            </div>
+            @if($inst->institution_logo_url ?? false)
+                <div class="instructor-university-card">
+                    <div class="instructor-university-icon">
+                        <img src="{{ $inst->institution_logo_url }}"
+                             alt="Institution logo"
+                             onerror="this.closest('.instructor-university-card').style.display='none';">
+                    </div>
+                    <span class="instructor-university-label">Institution</span>
                 </div>
             @endif
         </div>
-        @endforeach
-    </section>
-    @endif
+        @if($inst->bio ?? false)
+            <div class="instructor-bio"><p>{{ $inst->bio }}</p></div>
+        @endif
+    </div>
+    @endforeach
+</section>
+@endif
 
     {{-- REVIEWS --}}
     <section class="content-section">
@@ -995,7 +1585,7 @@ section { position: relative; z-index: 1; }
                 @if($course->isFree())
                     <span class="cta-price-now">Free</span>
                 @else
-                    <span class="cta-price-now">Rp {{ number_format($course->price, 0, ',', '.') }}</span>
+                    <span class="cta-price-now">{{ $course->formatted_price }}</span>
                 @endif
             </div>
 
@@ -1006,12 +1596,10 @@ section { position: relative; z-index: 1; }
                         <i class="fa-solid fa-play"></i> Continue Learning
                     </a>
                 @elseif(auth()->check())
-                    <form action="{{ route('enroll', $course) }}" method="POST" style="display:inline;">
-                        @csrf
-                        <button type="submit" class="btn-cta-primary">
-                            <i class="fa-solid fa-graduation-cap"></i> {{ $course->isFree() ? 'Enroll for Free' : 'Enroll Now' }} <i class="fa-solid fa-arrow-right"></i>
-                        </button>
-                    </form>
+                    <a href="{{ route('courses.choose-path', $course) }}"
+                       class="btn-cta-primary" style="text-decoration:none;">
+                        <i class="fa-solid fa-route"></i> Enroll Now <i class="fa-solid fa-arrow-right"></i>
+                    </a>
                 @else
                     <a href="{{ route('login') }}" class="btn-cta-primary" style="text-decoration:none;">
                         Login to Enroll <i class="fa-solid fa-arrow-right"></i>
@@ -1022,7 +1610,7 @@ section { position: relative; z-index: 1; }
             <div class="cta-trust">
                 <div class="cta-trust-item"><span class="cta-trust-icon"><i class="fa-solid fa-shield-halved"></i></span><span>30-day guarantee</span></div>
                 <div class="cta-trust-item"><span class="cta-trust-icon"><i class="fa-solid fa-infinity"></i></span><span>Lifetime access</span></div>
-                <div class="cta-trust-item"><span class="cta-trust-icon"><i class="fa-solid fa-trophy"></i></span><span>Certificate included</span></div>
+                <div class="cta-trust-item"><span class="cta-trust-icon"><i class="fa-solid fa-trophy"></i></span><span>{{ $course->hasCertificatePrice() ? 'Verified certificate available' : 'Free course access' }}</span></div>
             </div>
         </div>
     </section>
@@ -1069,6 +1657,95 @@ section { position: relative; z-index: 1; }
 </div>
 
 <script>
+/* ── Adjust body padding ── */
+function adjustBodyPadding() {
+    var nb = document.getElementById('mainNavbar');
+    if (nb) document.body.style.paddingTop = (nb.getBoundingClientRect().height + 4) + 'px';
+}
+adjustBodyPadding();
+window.addEventListener('resize', adjustBodyPadding, { passive: true });
+
+/* ── Mega Nav ── */
+function toggleMega() {
+    var menu = document.getElementById('mega-menu');
+    menu.classList.contains('open') ? closeMega() : openMega();
+}
+function openMega() {
+    document.getElementById('mega-menu').classList.add('open');
+    document.getElementById('mega-btn').classList.add('active');
+    document.getElementById('mega-overlay').classList.add('open');
+    document.getElementById('mega-btn').setAttribute('aria-expanded','true');
+}
+function closeMega() {
+    document.getElementById('mega-menu').classList.remove('open');
+    document.getElementById('mega-btn').classList.remove('active');
+    document.getElementById('mega-overlay').classList.remove('open');
+    document.getElementById('mega-btn').setAttribute('aria-expanded','false');
+}
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeMega(); });
+
+/* ── Alpine: navSearch component ── */
+document.addEventListener('alpine:init', function() {
+    Alpine.data('navSearch', function() {
+        return {
+            query: '',
+            results: [],
+            loading: false,
+            open: false,
+            focusIdx: -1,
+            _timer: null,
+            onInput(val) {
+                this.query = val;
+                this.focusIdx = -1;
+                clearTimeout(this._timer);
+                if (val.length < 2) { this.results = []; this.open = false; return; }
+                this.loading = true;
+                this.open = true;
+                this._timer = setTimeout(() => this.fetchResults(val), 280);
+            },
+            async fetchResults(q) {
+                try {
+                    const res = await fetch(`/courses?search=${encodeURIComponent(q)}&format=json&per_page=6`, {
+                        headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
+                    });
+                    if (res.ok) {
+                        const data = await res.json();
+                        // Support both {data:[...]} and plain array
+                        const items = Array.isArray(data) ? data : (data.data ?? []);
+                        this.results = items.slice(0, 6).map(c => ({
+                            id: c.id,
+                            title: c.title,
+                            category: c.category?.name ?? '',
+                            instructor: c.instructors?.[0]?.name ?? '',
+                            thumbnail: c.thumbnail ?? null,
+                            url: `/courses/${c.slug}`
+                        }));
+                    } else {
+                        this.results = [];
+                    }
+                } catch(e) {
+                    this.results = [];
+                } finally {
+                    this.loading = false;
+                }
+            },
+            moveFocus(dir) {
+                const max = this.results.length;
+                if (max === 0) return;
+                this.focusIdx = ((this.focusIdx + dir) + max) % max;
+            },
+            submitOrGo() {
+                if (this.focusIdx >= 0 && this.results[this.focusIdx]) {
+                    window.location.href = this.results[this.focusIdx].url;
+                } else {
+                    window.location.href = `/courses?search=${encodeURIComponent(this.query)}`;
+                }
+                this.open = false;
+            }
+        };
+    });
+});
+
 window.addEventListener('pageshow', function(e) { if (e.persisted) window.location.reload(); });
 
 (function() {

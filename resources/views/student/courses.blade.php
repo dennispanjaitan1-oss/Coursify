@@ -381,69 +381,45 @@ body::before {
 /* ═══ COURSES GRID ═══ */
 .courses-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+    align-items: start;
 }
 
 .course-card {
-    background: rgba(255,255,255,0.75);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255,255,255,0.9);
-    border-radius: 20px;
+    background: var(--color-card, #fff);
+    border-radius: 12px;
+    border: 1px solid var(--border, rgba(0,0,0,0.08));
     overflow: hidden;
-    text-decoration: none;
-    color: var(--text);
-    transition: all 0.3s;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 4px 16px rgba(30,58,95,0.04);
-    min-width: 0;
 }
 
 .course-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 20px 40px rgba(30,58,95,0.12);
-    border-color: var(--purple);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.12);
 }
 
-.course-thumb {
-    aspect-ratio: 16/10;
+.course-card__thumb {
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 54px;
+    aspect-ratio: 16/9;
     overflow: hidden;
+    border-radius: 12px 12px 0 0;
+    background: #1a1a2e;
 }
 
-.course-thumb img {
+.course-card__thumb img {
+    transition: transform 0.3s ease;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    position: absolute;
-    inset: 0;
-    transition: transform 0.4s ease;
+    display: block;
 }
 
-.course-card:hover .course-thumb img { transform: scale(1.04); }
-
-.course-thumb-fallback {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 54px;
-    position: absolute;
-    inset: 0;
+.course-card:hover .course-card__thumb img {
+    transform: scale(1.04);
 }
-
-.course-thumb-1 { background: linear-gradient(135deg, #667EEA, #764BA2); }
-.course-thumb-2 { background: linear-gradient(135deg, #F093FB, #F5576C); }
-.course-thumb-3 { background: linear-gradient(135deg, #4FACFE, #00F2FE); }
-.course-thumb-4 { background: linear-gradient(135deg, #FA709A, #FEE140); }
-.course-thumb-5 { background: linear-gradient(135deg, #30CFD0, #330867); }
-.course-thumb-6 { background: linear-gradient(135deg, #A8EDEA, #FED6E3); }
 
 .course-status {
     position: absolute;
@@ -1001,29 +977,25 @@ body::before {
     {{-- Filter All --}}
     <a href="{{ route('student.courses') }}"
        class="filter-tab {{ $currentFilter === 'all' ? 'active' : '' }}">
-        <i class="fa-solid fa-layer-group"></i> All
-        <span class="filter-tab-count">{{ $stats['total'] }}</span>
+        All
     </a>
 
     {{-- Filter In Progress --}}
     <a href="{{ route('student.courses', ['filter' => 'in_progress']) }}"
        class="filter-tab {{ $currentFilter === 'in_progress' ? 'active' : '' }}">
-        <i class="fa-solid fa-spinner fa-spin-pulse" style="--fa-animation-duration: 2s;"></i> In Progress
-        <span class="filter-tab-count">{{ $stats['in_progress'] }}</span>
+        In Progress
     </a>
 
     {{-- Filter Completed --}}
     <a href="{{ route('student.courses', ['filter' => 'completed']) }}"
        class="filter-tab {{ $currentFilter === 'completed' ? 'active' : '' }}">
-        <i class="fa-solid fa-circle-check"></i> Completed
-        <span class="filter-tab-count">{{ $stats['completed'] }}</span>
+        Completed
     </a>
 
     {{-- Filter Not Started --}}
     <a href="{{ route('student.courses', ['filter' => 'not_started']) }}"
        class="filter-tab {{ $currentFilter === 'not_started' ? 'active' : '' }}">
-        <i class="fa-solid fa-book-bookmark"></i> Not Started
-        <span class="filter-tab-count">{{ $stats['not_started'] }}</span>
+        Not Started
     </a>
 </div>
 
@@ -1071,8 +1043,13 @@ if ($progress >= 100 || $status === 'completed') {
     $statusClass = 'status-completed';
     $statusLabel = '<i class="fa-solid fa-circle-check"></i> Completed';
     $progressClass = 'completed';
-    $btnLabel = '<i class="fa-solid fa-award"></i> View Certificate';
-    $btnClass = 'completed';
+    if (in_array($enrollment->type, ['verified', 'honor'])) {
+        $btnLabel = '<i class="fa-solid fa-award"></i> View Certificate';
+        $btnClass = 'completed';
+    } else {
+        $btnLabel = '<i class="fa-solid fa-rotate-right"></i> Review Course';
+        $btnClass = 'completed';
+    }
 } elseif ($progress == 0) {
     $statusClass = 'status-not-started';
     $statusLabel = '<i class="fa-solid fa-book-bookmark"></i> Not Started';
@@ -1103,24 +1080,33 @@ if ($progress >= 100 || $status === 'completed') {
                 @endphp
 
                 <div class="course-card">
-                    <div class="course-thumb course-thumb-{{ $thumb }}">
+                    <div class="course-card__thumb">
+                        @if($enrollment->type === 'audit')
+                            <div class="course-badge" style="position:absolute; top:10px; left:10px; background:rgba(255, 255, 255, 0.2); backdrop-filter:blur(10px); border:1px solid rgba(255, 255, 255, 0.5); color:white; padding:4px 10px; border-radius:100px; font-size:10px; font-weight:700; z-index:5;">Audit</div>
+                        @elseif($enrollment->type === 'verified')
+                            <div class="course-badge" style="position:absolute; top:10px; left:10px; background:rgba(255, 255, 255, 0.2); backdrop-filter:blur(10px); border:1px solid rgba(255, 255, 255, 0.5); color:white; padding:4px 10px; border-radius:100px; font-size:10px; font-weight:700; z-index:5;">Verified</div>
+                        @elseif($enrollment->type === 'honor')
+                            <div class="course-badge" style="position:absolute; top:10px; left:10px; background:rgba(255, 255, 255, 0.2); backdrop-filter:blur(10px); border:1px solid rgba(255, 255, 255, 0.5); color:white; padding:4px 10px; border-radius:100px; font-size:10px; font-weight:700; z-index:5;">Honor</div>
+                        @endif
                         @if($thumbnailUrl)
-                            <img src="{{ $thumbnailUrl }}"
-                                 alt="{{ $courseTitle }}"
-                                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                            <div class="course-thumb-fallback" style="display:none;">{{ $icon }}</div>
+                            <img src="{{ $thumbnailUrl }}" alt="{{ $courseTitle }}">
                         @else
-                            <div class="course-thumb-fallback">{{ $icon }}</div>
+                            <div style="width:100%;height:100%;background:linear-gradient(135deg,#1e3a5f,#2d4d7a);display:flex;align-items:center;justify-content:center;">
+                                <i class="fa-solid fa-graduation-cap" style="font-size:40px;color:rgba(255,255,255,0.3);"></i>
+                            </div>
                         @endif
                     </div>
 
-                    <div class="course-body">
-                        <div class="course-category">{{ $categoryName }}</div>
-                        <div class="course-title">{{ $courseTitle }}</div>
-                        <div class="course-instructor">
-                            <div class="course-instructor-avatar">{{ $initial }}</div>
-                            <span>{{ $instructorName }}</span>
-                        </div>
+                    <div class="course-card__body" style="padding:14px 16px 16px; flex:1; display:flex; flex-direction:column;">
+                        <p style="font-size:10px;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;color:var(--purple, #6366f1);margin:0 0 6px;">
+                            {{ $categoryName }}
+                        </p>
+                        <h3 style="font-size:15px;font-weight:700;line-height:1.4;margin:0 0 6px;color:var(--text);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+                            {{ $courseTitle }}
+                        </h3>
+                        <p style="font-size:12px;color:var(--muted);margin:0 0 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                            {{ $instructorName }}
+                        </p>
 
                         {{-- Progress Section --}}
                         <div class="course-progress-section">
@@ -1141,7 +1127,7 @@ if ($progress >= 100 || $status === 'completed') {
 
 @if($hasLessons)
 
-<a href="{{ $progress >= 100 || $status === 'completed' 
+<a href="{{ ($progress >= 100 || $status === 'completed') && in_array($enrollment->type, ['verified', 'honor']) 
     ? route('student.certificates') 
     : route('student.learn', ['slug' => $courseSlug]) }}"
    class="btn-continue {{ $btnClass }}">
@@ -1157,6 +1143,12 @@ if ($progress >= 100 || $status === 'completed') {
     Course Not Ready
 </button>
 
+@endif
+
+@if($enrollment->type === 'audit' && $course->hasCertificatePrice() && $course->isUpgradeAvailable())
+<a href="{{ route('payment.index', ['course' => $course->id, 'track' => 'verified', 'upgrade' => 1]) }}" class="btn-continue" style="background:var(--lav-2); color:var(--purple-dark); padding: 8px 16px;">
+    Upgrade
+</a>
 @endif
 
 <button class="course-menu" title="More options"

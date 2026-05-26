@@ -5,6 +5,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\ProgramController;
 
 use App\Http\Controllers\Student\DashboardController as StudentDashboard;
 use App\Http\Controllers\Student\LearningController;
@@ -20,14 +21,23 @@ use App\Http\Controllers\PaymentController;
 // ═══════════════════════════════════════════════════════════
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+Route::get('/programs', [ProgramController::class, 'index'])->name('programs.index');
+Route::get('/programs/{slug}', [ProgramController::class, 'show'])->name('programs.show');
+
 Route::get('/courses', [CourseController::class, 'index'])
     ->name('courses.index');
+
+Route::middleware('auth')->get('/courses/{course:slug}/choose-path', [CourseController::class, 'choosePath'])
+    ->name('courses.choose-path');
 
 Route::get('/courses/{course:slug}', [CourseController::class, 'show'])
     ->name('courses.show');
 
-Route::get('/payment', [PaymentController::class, 'index'])
-    ->name('payment.index');
+Route::middleware('auth')->group(function () {
+    Route::get('/payment', [PaymentController::class, 'index'])->name('payment.index');
+    Route::post('/payment', [PaymentController::class, 'store'])->name('payment.store');
+    Route::get('/payment/confirmation/{payment}', [PaymentController::class, 'confirmation'])->name('payment.confirmation');
+});
 
 Route::get('/verify/{certificateNumber}', [CertificateController::class, 'verify'])
     ->name('certificates.verify');
@@ -151,9 +161,9 @@ Route::middleware(['auth', 'role:admin'])
     ->name('admin.')
     ->group(function () {
 
-        Route::view('/dashboard', 'admin.dashboard')->name('dashboard');
+        Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
 
-        Route::view('/analytics', 'admin.analytics')->name('analytics');
+        Route::get('/analytics', [App\Http\Controllers\Admin\AnalyticsController::class, 'index'])->name('analytics');
 
         Route::get('/users', [App\Http\Controllers\Admin\UserController::class, 'index'])->name('users');
         Route::post('/users', [App\Http\Controllers\Admin\UserController::class, 'store'])->name('users.store');
@@ -186,23 +196,28 @@ Route::delete('/courses/{course}', [App\Http\Controllers\Admin\CourseController:
 Route::patch('/courses/{course}/toggle-publish', [App\Http\Controllers\Admin\CourseController::class, 'togglePublish'])
     ->name('courses.toggle-publish');
 
-
-    
-
-        Route::view('/institutions', 'admin.institutions')->name('institutions');
+        Route::get('/institutions', [App\Http\Controllers\Admin\InstitutionController::class, 'index'])->name('institutions');
+        Route::post('/institutions', [App\Http\Controllers\Admin\InstitutionController::class, 'store'])->name('institutions.store');
+        Route::put('/institutions/{institution}', [App\Http\Controllers\Admin\InstitutionController::class, 'update'])->name('institutions.update');
+        Route::delete('/institutions/{institution}', [App\Http\Controllers\Admin\InstitutionController::class, 'destroy'])->name('institutions.destroy');
 
         Route::get('/categories', [App\Http\Controllers\Admin\CategoryController::class, 'index'])->name('categories');
         Route::post('/categories', [App\Http\Controllers\Admin\CategoryController::class, 'store'])->name('categories.store');
         Route::put('/categories/{id}', [App\Http\Controllers\Admin\CategoryController::class, 'update'])->name('categories.update');
         Route::delete('/categories/{id}', [App\Http\Controllers\Admin\CategoryController::class, 'destroy'])->name('categories.destroy');
 
-        Route::view('/approvals', 'admin.approvals')->name('approvals');
+        Route::get('/approvals', [App\Http\Controllers\Admin\ApprovalController::class, 'index'])->name('approvals');
+        Route::post('/approvals/{course}/approve', [App\Http\Controllers\Admin\ApprovalController::class, 'approve'])->name('approvals.approve');
+        Route::delete('/approvals/{course}/reject', [App\Http\Controllers\Admin\ApprovalController::class, 'reject'])->name('approvals.reject');
 
-        Route::view('/reviews', 'admin.reviews')->name('reviews');
+        Route::get('/reviews', [App\Http\Controllers\Admin\ReviewController::class, 'index'])->name('reviews');
+        Route::delete('/reviews/{review}', [App\Http\Controllers\Admin\ReviewController::class, 'destroy'])->name('reviews.destroy');
+        Route::patch('/reviews/{review}/toggle', [App\Http\Controllers\Admin\ReviewController::class, 'toggleVisibility'])->name('reviews.toggle');
 
         Route::view('/reports', 'admin.reports')->name('reports');
 
-        Route::view('/transactions', 'admin.transactions')->name('transactions');
+        Route::get('/transactions', [App\Http\Controllers\Admin\TransactionController::class, 'index'])->name('transactions');
+        Route::delete('/transactions/{payment}', [App\Http\Controllers\Admin\TransactionController::class, 'destroy'])->name('transactions.destroy');
 
         Route::view('/payouts', 'admin.payouts')->name('payouts');
 
@@ -250,24 +265,4 @@ Route::view('/pusat-bantuan', 'pusat-bantuan')->name('pusat-bantuan');
 Route::view('/sitemap', 'sitemap')->name('sitemap');
 
 
-Route::get('/admin/institutions', [App\Http\Controllers\Admin\InstitutionController::class, 'index'])->name('admin.institutions');
-Route::post('/admin/institutions', [App\Http\Controllers\Admin\InstitutionController::class, 'store'])->name('admin.institutions.store');
-Route::put('/admin/institutions/{institution}', [App\Http\Controllers\Admin\InstitutionController::class, 'update'])->name('admin.institutions.update');
-Route::delete('/admin/institutions/{institution}', [App\Http\Controllers\Admin\InstitutionController::class, 'destroy'])->name('admin.institutions.destroy');
-
-Route::get('/admin/approvals', [App\Http\Controllers\Admin\ApprovalController::class, 'index'])->name('admin.approvals');
-Route::post('/admin/approvals/{course}/approve', [App\Http\Controllers\Admin\ApprovalController::class, 'approve'])->name('admin.approvals.approve');
-Route::delete('/admin/approvals/{course}/reject', [App\Http\Controllers\Admin\ApprovalController::class, 'reject'])->name('admin.approvals.reject');
-
-Route::get('/admin/transactions', [App\Http\Controllers\Admin\TransactionController::class, 'index'])->name('admin.transactions');
-Route::delete('/admin/transactions/{payment}', [App\Http\Controllers\Admin\TransactionController::class, 'destroy'])->name('admin.transactions.destroy');
-
-Route::get('/admin/reviews', [App\Http\Controllers\Admin\ReviewController::class, 'index'])->name('admin.reviews');
-Route::delete('/admin/reviews/{review}', [App\Http\Controllers\Admin\ReviewController::class, 'destroy'])->name('admin.reviews.destroy');
-Route::patch('/admin/reviews/{review}/toggle', [App\Http\Controllers\Admin\ReviewController::class, 'toggleVisibility'])->name('admin.reviews.toggle');
-
-// Analytics
-Route::get('/admin/analytics', [App\Http\Controllers\Admin\AnalyticsController::class, 'index'])->name('admin.analytics');
-
-Route::get('/admin/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');
 

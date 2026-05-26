@@ -613,6 +613,33 @@ body::before {
                 <span class="learn-breadcrumb-current">{{ Str::limit($lesson->title, 50) }}</span>
             </div>
 
+            {{-- Upgrade Banner --}}
+            @if(isset($isAudit) && $isAudit && isset($isAuditExpired))
+                <div style="background: {{ $isAuditExpired ? 'var(--orange-light)' : 'var(--lav-1)' }}; border: 1px solid {{ $isAuditExpired ? 'var(--orange)' : 'var(--purple)' }}; border-radius: 12px; padding: 16px 20px; margin-bottom: 24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+                    <div>
+                        <div style="font-weight: 700; color: var(--text); margin-bottom: 4px; display:flex; align-items:center; gap:8px;">
+                            @if($isAuditExpired)
+                                Akses Audit Berakhir
+                            @else
+                                Anda dalam mode Audit
+                            @endif
+                        </div>
+                        <div style="font-size: 13px; color: var(--text-soft);">
+                            @if($isAuditExpired)
+                                Akses gratis Anda ke kursus ini telah berakhir. Upgrade ke Verified Track untuk mengembalikan akses selamanya dan mendapatkan sertifikat.
+                            @else
+                                Upgrade ke Verified Track untuk mendapatkan sertifikat kelulusan resmi, akses selamanya, dan tugas bernilai.
+                            @endif
+                        </div>
+                    </div>
+                    @if($course->hasCertificatePrice() && $course->isUpgradeAvailable())
+                        <a href="{{ route('payment.index', ['course' => $course->id, 'track' => 'verified', 'upgrade' => 1]) }}" class="btn-nav-dark" style="background:var(--purple); border:none; padding:10px 20px; color:white; text-decoration:none; border-radius:100px;">
+                            Upgrade ke Verified ({{ $course->formatted_certificate_price }})
+                        </a>
+                    @endif
+                </div>
+            @endif
+
             {{-- Lesson Header --}}
             <div class="lesson-header">
                 <div class="lesson-section-badge">
@@ -630,52 +657,60 @@ body::before {
                 </div>
             </div>
 
-            {{-- Video / YouTube Embed --}}
-            @php
-                $videoUrl   = $lesson->video_url ?? null;
-                $youtubeId  = null;
-                if ($videoUrl) {
-                    preg_match('/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $videoUrl, $m);
-                    $youtubeId = $m[1] ?? null;
-                }
-            @endphp
+            @if(isset($isAuditExpired) && $isAuditExpired)
+                <div class="no-content-box" style="background: #fff; border: 1px solid var(--border); padding: 40px 20px;">
+                    <div class="no-content-icon" style="color: var(--orange); background: var(--orange-light);"><i class="fa-solid fa-lock"></i></div>
+                    <div class="no-content-title">Konten Terkunci</div>
+                    <p class="no-content-desc">Waktu akses audit Anda untuk materi ini telah berakhir. Silakan upgrade ke Verified Track untuk membuka kembali materi ini.</p>
+                </div>
+            @else
+                {{-- Video / YouTube Embed --}}
+                @php
+                    $videoUrl   = $lesson->video_url ?? null;
+                    $youtubeId  = null;
+                    if ($videoUrl) {
+                        preg_match('/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $videoUrl, $m);
+                        $youtubeId = $m[1] ?? null;
+                    }
+                @endphp
 
-            @if($youtubeId)
-                <div class="video-wrap">
-                    <div class="video-frame">
-                        <iframe
-                            src="https://www.youtube.com/embed/{{ $youtubeId }}?rel=0&modestbranding=1"
-                            title="{{ $lesson->title }}"
-                            allowfullscreen
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
-                        </iframe>
+                @if($youtubeId)
+                    <div class="video-wrap">
+                        <div class="video-frame">
+                            <iframe
+                                src="https://www.youtube.com/embed/{{ $youtubeId }}?rel=0&modestbranding=1"
+                                title="{{ $lesson->title }}"
+                                allowfullscreen
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
+                            </iframe>
+                        </div>
+                        <div class="video-caption">
+                            🎬 <span>{{ $lesson->title }}</span>
+                        </div>
                     </div>
-                    <div class="video-caption">
-                        🎬 <span>{{ $lesson->title }}</span>
+                @elseif($videoUrl)
+                    <div class="video-wrap">
+                        <div class="video-frame">
+                            <video controls style="position:absolute;inset:0;width:100%;height:100%;background:#000;">
+                                <source src="{{ $videoUrl }}">
+                            </video>
+                        </div>
+                        <div class="video-caption">🎬 <span>{{ $lesson->title }}</span></div>
                     </div>
-                </div>
-            @elseif($videoUrl)
-                <div class="video-wrap">
-                    <div class="video-frame">
-                        <video controls style="position:absolute;inset:0;width:100%;height:100%;background:#000;">
-                            <source src="{{ $videoUrl }}">
-                        </video>
-                    </div>
-                    <div class="video-caption">🎬 <span>{{ $lesson->title }}</span></div>
-                </div>
-            @endif
+                @endif
 
-            {{-- Lesson Content --}}
-            @if($lesson->content ?? false)
-                <div class="lesson-body">
-                    {!! $lesson->content !!}
-                </div>
-            @elseif(!$youtubeId && !$videoUrl)
-                <div class="no-content-box">
-                    <div class="no-content-icon">📝</div>
-                    <div class="no-content-title">Materi akan segera tersedia</div>
-                    <p class="no-content-desc">Instruktur sedang menyiapkan konten untuk lesson ini. Silakan cek kembali nanti.</p>
-                </div>
+                {{-- Lesson Content --}}
+                @if($lesson->content ?? false)
+                    <div class="lesson-body">
+                        {!! $lesson->content !!}
+                    </div>
+                @elseif(!$youtubeId && !$videoUrl)
+                    <div class="no-content-box">
+                        <div class="no-content-icon">📝</div>
+                        <div class="no-content-title">Materi akan segera tersedia</div>
+                        <p class="no-content-desc">Instruktur sedang menyiapkan konten untuk lesson ini. Silakan cek kembali nanti.</p>
+                    </div>
+                @endif
             @endif
 
             {{-- Actions: Mark Complete + Navigation --}}
@@ -687,6 +722,7 @@ body::before {
                 $isCompleted = isset($progress[$lesson->id]) && $progress[$lesson->id]->is_completed;
             @endphp
 
+            @if(!isset($isAuditExpired) || !$isAuditExpired)
             <div class="lesson-actions">
                 <div class="complete-block">
                     <button class="btn-complete {{ $isCompleted ? 'done' : '' }}"
@@ -720,6 +756,7 @@ body::before {
                     @endif
                 </div>
             </div>
+            @endif
 
         </div>{{-- end .learn-content --}}
 

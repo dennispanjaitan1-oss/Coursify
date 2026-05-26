@@ -17,11 +17,26 @@ class Payment extends Model
         'transaction_id',
         'snap_token',
         'paid_at',
+        'first_name',
+        'last_name',
+        'country',
+        'billing_email',
+        'card_last4',
+        'card_brand',
+        'card_expiry',
+        'coupon_code',
+        'discount_amount',
+        'original_amount',
+        'final_amount',
+        'ip_address',
     ];
 
     protected $casts = [
-        'amount'  => 'decimal:2',
-        'paid_at' => 'datetime',
+        'amount'          => 'decimal:2',
+        'discount_amount' => 'decimal:2',
+        'original_amount' => 'decimal:2',
+        'final_amount'    => 'decimal:2',
+        'paid_at'         => 'datetime',
     ];
 
     // ── Relationships ───────────────────────────────────────────────

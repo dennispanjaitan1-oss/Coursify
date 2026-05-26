@@ -7,11 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Certificate extends Model
 {
     protected $fillable = [
-        'user_id', 'course_id', 'certificate_number', 'file_path', 'issued_at'
+        'user_id', 'course_id', 'enrollment_id', 'certificate_number', 'file_path', 
+        'certificate_type', 'status', 'grade', 'issued_at', 'revoked_at'
     ];
 
     protected $casts = [
-        'issued_at' => 'datetime',
+        'issued_at'  => 'datetime',
+        'revoked_at' => 'datetime',
+        'grade'      => 'decimal:2',
     ];
 
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -22,6 +25,11 @@ class Certificate extends Model
     public function course(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Course::class);
+    }
+
+    public function enrollment(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Enrollment::class);
     }
 
     // ── Scopes ───────────────────────────────────────────────────────

@@ -30,7 +30,7 @@
     <header style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px;">
         <div>
             <h1 class="page-title">{{ $course->title }}</h1>
-            <p class="page-subtitle">{{ $course->category->name ?? 'Uncategorized' }} · {{ ucfirst($course->difficulty) }}</p>
+            <p class="page-subtitle">{{ $course->category->name ?? 'General' }} · {{ ucfirst($course->difficulty) }}</p>
         </div>
         <div style="display: flex; gap: 8px;">
             <a href="{{ route('instructor.courses.edit', $course) }}" class="btn-secondary">

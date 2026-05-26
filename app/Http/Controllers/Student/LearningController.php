@@ -67,10 +67,13 @@ class LearningController extends Controller
         $prevLesson  = $currentIdx > 0 ? $allLessons->get($currentIdx - 1) : null;
         $nextLesson  = $allLessons->get($currentIdx + 1);
 
+        $isAudit = $enrollment->isAudit();
+        $isAuditExpired = $isAudit && $course->isAuditAccessExpired($enrollment->created_at);
+
         return view('student.learn', compact(
             'course', 'lesson', 'sections', 'progress',
             'enrollment', 'totalLessons', 'completedCount',
-            'prevLesson', 'nextLesson'
+            'prevLesson', 'nextLesson', 'isAudit', 'isAuditExpired'
         ));
     }
 
@@ -103,6 +106,13 @@ class LearningController extends Controller
         $enrollment = Enrollment::where('user_id', auth()->id())
             ->where('course_id', $course->id)->first();
 
+        if ($enrollment?->isAudit() && $course->isAuditAccessExpired($enrollment->created_at)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Akses audit kamu sudah berakhir. Upgrade ke Verified untuk melanjutkan.',
+            ], 403);
+        }
+
         $certificateEarned = false;
 
         if ($enrollment) {
@@ -112,8 +122,8 @@ class LearningController extends Controller
                 'completed_at'     => $percent >= 100 ? now() : null,
             ]);
 
-            // Buat sertifikat jika kursus selesai dan belum ada
-            if ($percent >= 100) {
+            // Buat sertifikat jika kursus selesai dan track adalah verified/honor
+            if ($percent >= 100 && in_array($enrollment->type, ['verified', 'honor'])) {
                 $alreadyHasCert = Certificate::where('user_id', auth()->id())
                     ->where('course_id', $course->id)
                     ->exists();
@@ -122,6 +132,8 @@ class LearningController extends Controller
                     Certificate::create([
                         'user_id'            => auth()->id(),
                         'course_id'          => $course->id,
+                        'enrollment_id'      => $enrollment->id,
+                        'certificate_type'   => $enrollment->type,
                         'certificate_number' => 'CERT-' . date('Y') . '-' . strtoupper(Str::random(8)),
                         'issued_at'          => now(),
                     ]);

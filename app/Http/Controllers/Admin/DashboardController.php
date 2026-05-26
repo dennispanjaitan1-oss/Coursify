@@ -29,6 +29,15 @@ class DashboardController extends Controller
             ->orderBy('enrollments_count', 'desc')
             ->take(5)
             ->get();
+// SELECT courses.*,
+// COUNT(DISTINCT enrollments.id) AS enrollments_count,
+// AVG(reviews.rating) AS reviews_avg
+// FROM courses
+// LEFT JOIN enrollments ON enrollments.course_id = courses.id
+// LEFT JOIN reviews ON reviews.course_id = courses.id
+// GROUP BY courses.id
+// ORDER BY enrollments_count DESC
+// LIMIT 5;
 
         return view('admin.dashboard', compact('stats', 'recentUsers', 'topCourses'));
     }

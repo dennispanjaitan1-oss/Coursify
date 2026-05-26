@@ -242,74 +242,26 @@
 /* ═══ COURSE GRID ═══ */
 .courses-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
 .course-card {
-    background: rgba(255,255,255,0.7); backdrop-filter: blur(20px);
-    border: 1px solid rgba(255,255,255,0.9); border-radius: 20px;
-    overflow: hidden; text-decoration: none; color: var(--text);
-    transition: all 0.3s; display: flex; flex-direction: column;
-    box-shadow: 0 4px 16px rgba(30,58,95,0.04); min-width: 0;
+    background: var(--color-card, #fff);
+    border-radius: 12px;
+    border: 1px solid var(--border, rgba(0,0,0,0.08));
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
 }
-.course-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(30,58,95,0.12); border-color: var(--purple); }
-.course-thumb { aspect-ratio: 16/10; position: relative; display: flex; align-items: center; justify-content: center; font-size: 54px; overflow: hidden; color: rgba(255,255,255,0.6); }
-.course-thumb i { font-size: 54px; color: rgba(255,255,255,0.6); text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-.course-thumb-1 { background: linear-gradient(135deg, #667EEA, #764BA2); }
-.course-thumb-2 { background: linear-gradient(135deg, #F093FB, #F5576C); }
-.course-thumb-3 { background: linear-gradient(135deg, #4FACFE, #00F2FE); }
-.course-thumb-4 { background: linear-gradient(135deg, #FA709A, #FEE140); }
-.course-thumb-5 { background: linear-gradient(135deg, #30CFD0, #330867); }
-.course-thumb-6 { background: linear-gradient(135deg, #A8EDEA, #FED6E3); }
-.course-badge {
-    position: absolute; top: 12px; left: 12px;
-    padding: 4px 10px; border-radius: 100px;
-    font-size: 10px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
-    backdrop-filter: blur(10px);
+
+.course-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.12);
 }
-.badge-new        { background: rgba(255,138,91,0.95); color: white; }
-.badge-bestseller { background: rgba(255,200,50,0.95); color: #5A3A00; }
-.badge-free       { background: rgba(0,200,150,0.95);  color: white; }
-.badge-premium    { background: rgba(123,111,232,0.95);color: white; }
-.course-wishlist {
-    position: absolute; top: 12px; right: 12px;
-    width: 34px; height: 34px; border-radius: 50%;
-    background: rgba(255,255,255,0.9); backdrop-filter: blur(10px);
-    border: none; display: flex; align-items: center; justify-content: center;
-    cursor: pointer; font-size: 15px; transition: all 0.2s;
+
+.course-card__thumb img {
+    transition: transform 0.3s ease;
 }
-.course-wishlist:hover { background: white; transform: scale(1.1); }
-.course-wishlist.active { background: #FF6B8A; color: white; }
-.course-body { padding: 18px; flex: 1; display: flex; flex-direction: column; }
-.course-category { font-size: 10px; color: var(--muted); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
-.course-institution {
-    display: inline-flex; align-items: center; gap: 5px;
-    font-size: 10px; color: var(--text-soft); font-weight: 600;
-    margin-bottom: 8px; padding: 3px 8px;
-    background: var(--lav-1); border-radius: 100px;
-    width: fit-content; letter-spacing: 0.02em;
+
+.course-card:hover .course-card__thumb img {
+    transform: scale(1.04);
 }
-.course-institution i { color: var(--purple); font-size: 9px; }
-.course-title {
-    font-family: var(--font-serif); font-size: 18px; font-weight: 400;
-    line-height: 1.25; letter-spacing: -0.01em; margin-bottom: 10px;
-    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-    overflow: hidden; min-height: 44px;
-}
-.course-instructor { font-size: 12px; color: var(--text-soft); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
-.course-instructor-avatar {
-    width: 20px; height: 20px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--navy), #2D4D7A);
-    color: white; font-size: 10px; font-weight: 700;
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-}
-.course-meta {
-    display: flex; gap: 12px; font-size: 11px; color: var(--muted);
-    margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--border);
-}
-.course-meta span { display: inline-flex; align-items: center; gap: 3px; }
-.course-meta i { color: var(--purple); font-size: 10px; }
-.course-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
-.course-price { font-family: var(--font-serif); font-size: 22px; font-weight: 400; letter-spacing: -0.01em; line-height: 1; }
-.course-price-free { color: var(--teal); }
-.course-arrow { font-size: 18px; color: var(--purple); transition: transform 0.3s; }
-.course-card:hover .course-arrow { transform: translateX(4px); }
 
 /* ═══ PAGINATION ═══ */
 .pagination { display: flex; justify-content: center; gap: 6px; margin-top: 40px; align-items: center; flex-wrap: wrap; }
@@ -767,94 +719,7 @@
                 {{-- Course Grid --}}
                 <div class="courses-grid" id="coursesGrid">
                     @forelse($courses as $course)
-                        @php
-                            $thumbIndex       = ($loop->index % 6) + 1;
-                            $instructorName   = $course->instructors->first()?->name ?? 'Coursify Team';
-                            $instructorInitial = strtoupper(substr($instructorName, 0, 1));
-                            $ratingVal        = $course->reviews_avg_rating
-                                ? number_format($course->reviews_avg_rating, 1) : '—';
-                            $studentsCount    = $course->enrollments_count ?? 0;
-                            $studentsFormatted = $studentsCount >= 1000
-                                ? number_format($studentsCount / 1000, 1).'k' : $studentsCount;
-
-                            $badge = null;
-                            if ($course->isFree()) { $badge = 'free'; }
-                            elseif ($studentsCount > 5000) { $badge = 'bestseller'; }
-                            elseif ($course->created_at?->gt(now()->subDays(30))) { $badge = 'new'; }
-
-                            $catIconMap = [
-                                'Programming' => 'fa-code', 'Design' => 'fa-pen-nib', 'Business' => 'fa-briefcase',
-                                'Marketing' => 'fa-bullhorn', 'Data Science' => 'fa-chart-line', 'Video' => 'fa-film',
-                                'Languages' => 'fa-language', 'Music' => 'fa-music', 'DevOps' => 'fa-server',
-                                'Technology' => 'fa-laptop', 'Finance' => 'fa-coins', 'Health' => 'fa-heart-pulse',
-                            ];
-                            $courseIcon = $catIconMap[$course->category?->name] ?? 'fa-book-open';
-                        @endphp
-
-                        <a href="{{ route('courses.show', $course->slug) }}" class="course-card">
-                            <div class="course-thumb course-thumb-{{ $thumbIndex }}">
-                                @if($badge)
-                                    <span class="course-badge badge-{{ $badge }}">
-                                        @if($badge === 'bestseller')
-                                            <i class="fa-solid fa-fire"></i> Bestseller
-                                        @elseif($badge === 'new')
-                                            <i class="fa-solid fa-sparkles"></i> New
-                                        @elseif($badge === 'free')
-                                            <i class="fa-solid fa-gift"></i> Free
-                                        @endif
-                                    </span>
-                                @endif
-                                @auth
-                                    @php
-    $isWishlisted = auth()->check() && auth()->user()
-        ->wishlists()->where('course_id', $course->id)->exists();
-@endphp
-
-<button class="course-wishlist {{ $isWishlisted ? 'active' : '' }}"
-    onclick="event.preventDefault(); event.stopPropagation(); toggleWishlist(this, {{ $course->id }});"
-    title="{{ $isWishlisted ? 'Hapus dari wishlist' : 'Simpan ke wishlist' }}"
-    aria-label="{{ $isWishlisted ? 'Hapus dari wishlist' : 'Simpan ke wishlist' }}">
-    <i class="{{ $isWishlisted ? 'fa-solid' : 'fa-regular' }} fa-heart"></i>
-</button>
-                                @endauth
-                                @if($course->thumbnail_url)
-                                    <img src="{{ $course->thumbnail_url }}" alt="{{ $course->title }}"
-                                        style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85;">
-                                @else
-                                    {{ $courseIcon }}
-                                @endif
-                            </div>
-
-                            <div class="course-body">
-                                <div class="course-category">{{ $course->category?->name ?? 'General' }}</div>
-                                @if($course->institution)
-                                    <div class="course-institution">
-                                        <i class="fa-solid fa-building-columns"></i>
-                                        {{ $course->institution->name }}
-                                    </div>
-                                @endif
-                                <div class="course-title">{{ $course->title }}</div>
-                                <div class="course-instructor">
-                                    <div class="course-instructor-avatar">{{ $instructorInitial }}</div>
-                                    <span>{{ $instructorName }}</span>
-                                </div>
-                                <div class="course-meta">
-                                    <span><i class="fa-solid fa-star"></i> {{ $ratingVal }}</span>
-                                    <span><i class="fa-solid fa-users"></i> {{ $studentsFormatted }}</span>
-                                    @if($course->duration_weeks)
-                                        <span><i class="fa-solid fa-clock"></i> {{ $course->duration_weeks }}w</span>
-                                    @endif
-                                </div>
-                                <div class="course-footer">
-                                    <div>
-                                        <span class="course-price {{ $course->isFree() ? 'course-price-free' : '' }}">
-                                            {{ $course->isFree() ? 'Free' : 'Rp '.number_format($course->price, 0, ',', '.') }}
-                                        </span>
-                                    </div>
-                                    <div class="course-arrow">→</div>
-                                </div>
-                            </div>
-                        </a>
+                        @include('components.course-card', ['course' => $course])
                     @empty
                         <div class="empty-state" style="grid-column: 1 / -1;">
                             <div class="empty-icon"><i class="fa-solid fa-magnifying-glass"></i></div>

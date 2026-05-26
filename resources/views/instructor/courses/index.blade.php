@@ -68,7 +68,7 @@
                                     <div class="course-cell">
                                         <div class="course-cell-info">
                                             <div class="course-cell-title">{{ $course->title }}</div>
-                                            <div class="course-cell-cat">{{ $course->category->name ?? 'Uncategorized' }}</div>
+                                            <div class="course-cell-cat">{{ $course->category->name ?? 'General' }}</div>
                                         </div>
                                     </div>
                                 </td>
