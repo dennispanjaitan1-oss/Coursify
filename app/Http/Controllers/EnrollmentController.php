@@ -8,7 +8,9 @@ use App\Models\Payment;
 use App\Models\Review;
 use App\Models\Wishlist;
 use App\Events\NewEnrollment;
+use App\Mail\EnrollmentMail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class EnrollmentController extends Controller
 {
@@ -90,6 +92,13 @@ class EnrollmentController extends Controller
             ]);
 
             broadcast(new NewEnrollment($newEnrollment));
+
+            // Kirim email notifikasi enrollment
+            try {
+                Mail::to($user->email)->send(new EnrollmentMail($user, $course));
+            } catch (\Exception $e) {
+                logger()->warning('Enrollment notification email failed to send: ' . $e->getMessage());
+            }
 
             return redirect()->route('student.learn', $course->slug)
                 ->with('success', 'Berhasil enroll! Selamat belajar.');

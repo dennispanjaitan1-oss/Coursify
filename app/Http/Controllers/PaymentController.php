@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\EnrollmentMail;
 use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\Payment;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class PaymentController extends Controller
@@ -129,8 +131,18 @@ class PaymentController extends Controller
 
             $enrollment->save();
 
-            return $payment;
+            return ['payment' => $payment, 'enrollment' => $enrollment];
         });
+
+        $payment = $result['payment'];
+        $enrollment = $result['enrollment'];
+
+        // Kirim email notifikasi enrollment setelah transaksi berhasil
+        try {
+            Mail::to($user->email)->send(new EnrollmentMail($user, $course));
+        } catch (\Exception $e) {
+            logger()->warning('Payment enrollment notification email failed to send: ' . $e->getMessage());
+        }
 
         return redirect()->route('payment.confirmation', $payment);
     }

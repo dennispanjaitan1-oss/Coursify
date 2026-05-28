@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Mail\WelcomeMail;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Mail;
 
 class RegisteredUserController extends Controller
 {
@@ -43,6 +45,12 @@ class RegisteredUserController extends Controller
         'password' => Hash::make($request->password),
         'role'     => $request->role,
     ]);
+
+    try {
+        mail::to($user->email)->send(new WelcomeMail($user));
+    } catch (\Exception $e) {
+        logger()->warning('Registration welcome email failed: ' . $e->getMessage());
+    }
  
     event(new Registered($user));
     Auth::login($user);

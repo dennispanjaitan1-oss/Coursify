@@ -60,7 +60,6 @@
             z-index: 2;
         }
 
-        /* Logo */
         .logo{
             display: flex;
             align-items: center;
@@ -86,7 +85,6 @@
             color: var(--text);
         }
 
-        /* Form Wrapper */
         .form-wrap{
             flex: 1;
             display: flex;
@@ -123,7 +121,6 @@
         }
         .subtitle a:hover { color: var(--purple-dark); }
 
-        /* FORM FIELDS */
         .field{ margin-bottom: 18px; }
 
         label{
@@ -134,88 +131,81 @@
             margin-bottom: 7px;
         }
 
-        /* ═══ INPUT WRAP ═══ */
-.input-wrap {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
+        .input-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
 
-/* Ikon kiri (gembok/email) */
-.input-wrap .input-icon {
-    position: absolute;
-    left: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--muted);
-    font-size: 14px;
-    pointer-events: none;
-    z-index: 10;
-}
+        .input-wrap .input-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+            font-size: 14px;
+            pointer-events: none;
+            z-index: 10;
+        }
 
-/* Tombol toggle mata (kanan) */
-.input-wrap .input-toggle {
-    position: absolute;
-    right: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: var(--muted);
-    cursor: pointer;
-    font-size: 14px;
-    z-index: 10;
-    padding: 6px;
-    transition: color 0.2s;
-}
-.input-wrap .input-toggle:hover {
-    color: var(--purple);
-}
+        .input-wrap .input-toggle {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--muted);
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 10;
+            padding: 6px;
+            transition: color 0.2s;
+        }
+        .input-wrap .input-toggle:hover {
+            color: var(--purple);
+        }
 
-/* Input field — SATU DEKLARASI SAJA */
-.input-wrap input[type=email],
-.input-wrap input[type=password],
-.input-wrap input[type=text] {
-    width: 100%;
-    padding: 12px 45px 12px 42px; /* kiri: ruang ikon gembok, kanan: ruang ikon mata */
-    border: 1.5px solid var(--border);
-    border-radius: 12px;
-    font-size: 14px;
-    font-family: var(--font-sans);
-    color: var(--text);
-    background: #FAFAFB;
-    outline: none;
-    transition: all 0.2s;
-}
+        .input-wrap input[type=email],
+        .input-wrap input[type=password],
+        .input-wrap input[type=text] {
+            width: 100%;
+            padding: 12px 45px 12px 42px;
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: var(--font-sans);
+            color: var(--text);
+            background: #FAFAFB;
+            outline: none;
+            transition: all 0.2s;
+        }
 
-.input-wrap input::placeholder {
-    color: var(--muted);
-}
+        .input-wrap input::placeholder {
+            color: var(--muted);
+        }
 
-.input-wrap input:focus {
-    border-color: var(--purple);
-    background: white;
-    box-shadow: 0 0 0 4px rgba(123, 111, 232, 0.1);
-}
+        .input-wrap input:focus {
+            border-color: var(--purple);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(123, 111, 232, 0.1);
+        }
 
-.input-wrap input.error {
-    border-color: var(--orange);
-    background: rgba(255, 138, 91, 0.03);
-}
+        .input-wrap input.error {
+            border-color: var(--orange);
+            background: rgba(255, 138, 91, 0.03);
+        }
 
-/* Error message */
-.error-msg {
-    font-size: 12px;
-    color: var(--orange);
-    margin-top: 6px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
+        .error-msg {
+            font-size: 12px;
+            color: var(--orange);
+            margin-top: 6px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
 
-
-        /* Remember + Forgot Row */
         .remember-row{
             display: flex;
             align-items: center;
@@ -266,7 +256,6 @@
         }
         .forgot:hover { color: var(--purple-dark); }
 
-        /* Submit Button */
         .btn-submit{
             width: 100%;
             padding: 14px;
@@ -300,7 +289,6 @@
         }
         .btn-submit:active::after { opacity: 1; }
 
-        /* Divider */
         .divider{
             display: flex;
             align-items: center;
@@ -322,7 +310,6 @@
             text-transform: uppercase;
         }
 
-        /* Google Button */
         .btn-google{
             width: 100%;
             padding: 12px;
@@ -346,8 +333,6 @@
             transform: translateY(-1px);
         }
 
-        
-        /* Footer Note */
         .footer-note{
             margin-top: auto;
             font-size: 11px;
@@ -356,12 +341,7 @@
             padding-top: 32px;
             letter-spacing: 0.02em;
         }
-        .footer-note strong{
-            color: var(--purple);
-            font-weight: 600;
-        }
 
-        /* Status Message */
         .status-msg{
             background: rgba(0,200,150,0.1);
             border: 1px solid rgba(0,200,150,0.25);
@@ -375,20 +355,19 @@
             gap: 8px;
         }
 
-        /* ═══ RIGHT PANEL (HERO) ═══ */
+        /* ═══ RIGHT PANEL ═══ */
         .right{
             flex: 1;
             background: linear-gradient(180deg, #EDE5F9 0%, #D8CEEE 50%, #C4B8E8 100%);
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            padding: 48px;
+            justify-content: space-between;
+            padding: 48px 48px 32px 48px;
             position: relative;
             overflow: hidden;
         }
 
-        /* Cloud overlays */
         .right::before{
             content: '';
             position: absolute;
@@ -400,202 +379,119 @@
             pointer-events: none;
         }
 
-        .right-content{
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            max-width: 520px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .right-badge{
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(255,255,255,0.7);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.9);
-            padding: 6px 14px;
-            border-radius: 100px;
-            font-size: 11px;
-            font-weight: 500;
-            color: var(--text-soft);
-            margin-bottom: 24px;
-        }
-        .right-badge-dot{
-            width: 6px;
-            height: 6px;
-            background: var(--teal);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.3); }
-        }
-
-        .right h2{
+        .right-heading{
             font-family: var(--font-serif);
-            font-size: 44px;
+            font-size: 64px;
             font-weight: 400;
-            letter-spacing: -0.02em;
+            letter-spacing: -0.03em;
+            line-height: 1.0;
             color: var(--text);
-            margin-bottom: 14px;
-            line-height: 1.05;
+            text-align: center;
+            white-space: nowrap;
+            margin-bottom: 20px;
+            z-index: 1;
         }
-        .right h2 em{
+        .right-heading em{
             font-style: italic;
             background: linear-gradient(135deg, var(--purple), var(--lav-4));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .right p{
-            font-size: 14px;
-            color: var(--text-soft);
-            line-height: 1.65;
-            margin-bottom: 36px;
-            max-width: 400px;
-        }
-
-        /* Phone Mockup */
-        .phone-stage{
+        /* Character Stage */
+        .character-stage {
             position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            gap: 10px;
-            margin-bottom: 36px;
+            width: 420px;
+            height: 290px;
+            margin: 0 auto 24px auto;
+            z-index: 1;
         }
-
-        .phone{
+        .character-body {
+            position: absolute;
+            bottom: 0;
+            border-radius: 10px 10px 0 0;
+            transition: transform 0.7s cubic-bezier(0.25, 0.8, 0.25, 1), height 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transform-origin: bottom center;
+            overflow: hidden;
+        }
+        .eyes-wrap {
+            position: absolute;
+            display: flex;
+            gap: 16px;
+            transition: left 0.7s cubic-bezier(0.25, 0.8, 0.25, 1), top 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .eyeball {
+            border-radius: 50%;
             background: white;
-            border-radius: 28px;
-            padding: 4px;
-            box-shadow: 0 15px 50px rgba(30,58,95,0.15);
-            animation: floatPhone 5s ease-in-out infinite;
-        }
-        .phone-main{
-            width: 180px;
-            height: 360px;
-            z-index: 2;
-        }
-        .phone-side{
-            width: 120px;
-            height: 280px;
-            opacity: 0.85;
-        }
-        .phone-side-left{
-            transform: rotate(-8deg) translate(16px, 16px);
-            animation-delay: 0.3s;
-        }
-        .phone-side-right{
-            transform: rotate(8deg) translate(-16px, 16px);
-            animation-delay: 0.6s;
-        }
-        @keyframes floatPhone {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-        .phone-side-left { animation: floatPhoneLeft 5s ease-in-out infinite 0.3s; }
-        .phone-side-right { animation: floatPhoneRight 5s ease-in-out infinite 0.6s; }
-        @keyframes floatPhoneLeft {
-            0%, 100% { transform: rotate(-8deg) translate(16px, 16px); }
-            50% { transform: rotate(-8deg) translate(16px, 8px); }
-        }
-        @keyframes floatPhoneRight {
-            0%, 100% { transform: rotate(8deg) translate(-16px, 16px); }
-            50% { transform: rotate(8deg) translate(-16px, 8px); }
-        }
-
-        .phone-screen{
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(180deg, #F5F1FC, #E8E1F3);
-            border-radius: 24px;
-            padding: 14px 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-        .phone-status{
-            font-size: 10px;
-            color: var(--text-soft);
-            text-align: center;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-        .phone-label{
-            font-size: 9px;
-            color: var(--muted);
-            text-align: center;
-            font-weight: 500;
-            margin-bottom: 3px;
-        }
-        .phone-card{
-            background: rgba(255,255,255,0.95);
-            border-radius: 10px;
-            padding: 8px;
-        }
-        .phone-avatar{
-            width: 100%;
-            aspect-ratio: 1;
-            border-radius: 8px;
-            background: linear-gradient(135deg, var(--navy), #2D4D7A);
-            margin-bottom: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 36px;
+            overflow: hidden;
+            transition: height 0.15s ease-in-out, width 0.15s ease-in-out;
         }
-        .phone-name{
-            font-family: var(--font-serif);
-            font-size: 14px;
-            text-align: center;
-            letter-spacing: -0.01em;
+        .pupil {
+            border-radius: 50%;
+            background: #2D2D2D;
+            transition: transform 0.1s ease-out;
+        }
+        .pupil-only {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #2D2D2D;
+            transition: transform 0.1s ease-out;
+        }
+        .yellow-body .eyes-wrap { gap: 12px; }
+        .black-body .eyes-wrap { gap: 10px; }
+        .mouth {
+            position: absolute;
+            width: 50px;
+            height: 3px;
+            background: #2D2D2D;
+            border-radius: 10px;
+            transition: left 0.7s cubic-bezier(0.25, 0.8, 0.25, 1), top 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        /* Stats Bar */
-        .stats-bar{
+        /* Tagline Cards */
+        .tagline-cards {
             display: flex;
-            gap: 0;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            max-width: 420px;
+            margin-bottom: 20px;
+            z-index: 1;
+        }
+        .tagline-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
             background: rgba(255,255,255,0.6);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255,255,255,0.9);
-            border-radius: 20px;
-            padding: 20px 28px;
-            margin-top: 8px;
+            border-radius: 16px;
+            padding: 14px 20px;
         }
-        .stat{
-            text-align: center;
-            padding: 0 20px;
-            border-right: 1px solid rgba(30,58,95,0.08);
+        .tagline-icon {
+            font-size: 22px;
+            flex-shrink: 0;
         }
-        .stat:last-child { border-right: none; }
-        .stat-n{
-            font-family: var(--font-serif);
-            font-size: 26px;
-            font-weight: 400;
-            letter-spacing: -0.02em;
+        .tagline-title {
+            font-size: 13px;
+            font-weight: 600;
             color: var(--text);
-            line-height: 1;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
-        .stat-n em{
-            font-style: italic;
-            color: var(--purple);
-        }
-        .stat-l{
-            font-size: 10px;
+        .tagline-sub {
+            font-size: 12px;
             color: var(--muted);
-            font-weight: 500;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
         }
 
-        /* Responsive */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.3); }
+        }
+
         @media(max-width: 900px){
             .right{ display: none; }
             .left{
@@ -606,18 +502,13 @@
             h1{ font-size: 36px; }
         }
 
-        /* Sembunyikan toggle password bawaan browser */
-input[type=password]::-ms-reveal,
-input[type=password]::-ms-clear {
-    display: none;
-}
-input[type="password"]::-webkit-contacts-auto-fill-button,
-input[type="password"]::-webkit-credentials-auto-fill-button {
-    visibility: hidden;
-}
+        input[type=password]::-ms-reveal,
+        input[type=password]::-ms-clear { display: none; }
+        input[type="password"]::-webkit-contacts-auto-fill-button,
+        input[type="password"]::-webkit-credentials-auto-fill-button { visibility: hidden; }
     </style>
 </head>
-<body>
+<body x-data="loginInteraction()" @mousemove="handleMouseMove($event)">
 
 {{-- LEFT: Form --}}
 <div class="left">
@@ -633,14 +524,19 @@ input[type="password"]::-webkit-credentials-auto-fill-button {
             <a href="{{ route('register') }}">Daftar gratis</a>
         </p>
 
-        {{-- Session Status --}}
         @if (session('status'))
             <div class="status-msg">
                 ✓ {{ session('status') }}
             </div>
         @endif
 
-        <form method="POST" action="{{ route('login') }}" x-data="{ showPassword: false }">
+        @error('google')
+            <div class="error-msg" style="margin-bottom: 20px; text-align: left; background: #FFF0F2; color: #D32F2F; padding: 12px 16px; border-radius: 8px; border: 1px solid #FFCDD2; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}
+            </div>
+        @enderror
+
+        <form method="POST" action="{{ route('login') }}">
             @csrf
 
             {{-- Email --}}
@@ -658,6 +554,8 @@ input[type="password"]::-webkit-credentials-auto-fill-button {
                         autofocus
                         autocomplete="username"
                         class="{{ $errors->has('email') ? 'error' : '' }}"
+                        @focus="isTyping = true; updatePositions()"
+                        @blur="isTyping = false; updatePositions()"
                     >
                 </div>
                 @error('email')
@@ -666,31 +564,31 @@ input[type="password"]::-webkit-credentials-auto-fill-button {
             </div>
 
             {{-- Password --}}
-<div class="field">
-    <label for="password">Password</label>
-    <div class="input-wrap">
-        {{-- Ikon Gembok di Kiri --}}
-        <i class="fa-solid fa-lock input-icon"></i>
-        
-        <input
-            :type="showPassword ? 'text' : 'password'"
-            id="password"
-            name="password"
-            placeholder="Masukkan password"
-            required
-            autocomplete="current-password"
-            class="{{ $errors->has('password') ? 'error' : '' }}"
-        >
-
-        <button type="button" class="input-toggle" @click="showPassword = !showPassword" tabindex="-1">
-    <i :class="showPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"></i>
-</button>
-    </div>
-    
-    @error('password')
-        <div class="error-msg">⚠ {{ $message }}</div>
-    @enderror
-</div>
+            <div class="field">
+                <label for="password">Password</label>
+                <div class="input-wrap">
+                    <i class="fa-solid fa-lock input-icon"></i>
+                    <input
+                        :type="showPassword ? 'text' : 'password'"
+                        id="password"
+                        name="password"
+                        placeholder="Masukkan password"
+                        required
+                        autocomplete="current-password"
+                        class="{{ $errors->has('password') ? 'error' : '' }}"
+                        x-model="password"
+                        @focus="isTyping = true; updatePositions()"
+                        @blur="isTyping = false; updatePositions()"
+                        @input="updatePositions()"
+                    >
+                    <button type="button" class="input-toggle" @click="showPassword = !showPassword; $nextTick(() => updatePositions())" tabindex="-1">
+                        <i :class="showPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"></i>
+                    </button>
+                </div>
+                @error('password')
+                    <div class="error-msg">⚠ {{ $message }}</div>
+                @enderror
+            </div>
 
             {{-- Remember + Forgot --}}
             <div class="remember-row">
@@ -709,116 +607,301 @@ input[type="password"]::-webkit-credentials-auto-fill-button {
             </button>
         </form>
 
-        {{-- Divider --}}
         <div class="divider"><span>Atau masuk dengan</span></div>
 
-        {{-- Google --}}
-        <button class="btn-google" type="button" onclick="alert('Google login segera hadir!')">
-            <svg width="18" height="18" viewBox="0 0 24 24">
-                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+        <a href="{{ route('auth.google') }}" class="btn-google" style="text-decoration:none;">
+            <svg width="18" height="18" viewBox="0 0 48 48">
+                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.36-8.16 2.36-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                <path fill="none" d="M0 0h48v48H0z"/>
             </svg>
             Lanjutkan dengan Google
-        </button>
+        </a>
 
-        {{-- Demo Credentials --}}
         <div class="demo-hint">
-            
-            <div class="demo-hint-grid">
-                
-            </div>
+            <div class="demo-hint-grid"></div>
         </div>
     </div>
 
     <div class="footer-note">
-        © {{ date('Y') }} Coursify All rights reserved. 
+        © {{ date('Y') }} Coursify All rights reserved.
     </div>
 </div>
 
 {{-- RIGHT: Branding --}}
 <div class="right">
-    <div class="right-content">
 
-        
+    {{-- Heading Besar --}}
+    <h2 class="right-heading">Learn Anything, <em>Anytime</em></h2>
 
-        {{-- Heading --}}
-        <h2>Learn Anything,<br><em>Anytime</em></h2>
-        <p>
-            Akses ribuan kursus dari instruktur terbaik. Mulai gratis, belajar fleksibel, raih sertifikat yang diakui industri.
-        </p>
-
-        {{-- Phone Mockup --}}
-        <div class="phone-stage">
-            {{-- Phone Left --}}
-            <div class="phone phone-side phone-side-left">
-                <div class="phone-screen">
-                    <div class="phone-status">9:41</div>
-                    <div class="phone-label">Progress</div>
-                    <div class="phone-card">
-                        <div style="font-size:10px;font-weight:600;margin-bottom:3px;">Laravel</div>
-                        <div style="height:3px;background:#E8E1F3;border-radius:2px;">
-                            <div style="height:100%;width:75%;background:var(--purple);border-radius:2px;"></div>
-                        </div>
-                    </div>
-                    <div class="phone-card">
-                        <div style="font-size:10px;font-weight:600;margin-bottom:3px;">UI/UX</div>
-                        <div style="height:3px;background:#E8E1F3;border-radius:2px;">
-                            <div style="height:100%;width:45%;background:var(--teal);border-radius:2px;"></div>
-                        </div>
-                    </div>
+    {{-- Cartoon Characters Stage --}}
+    <div class="character-stage">
+        <!-- Purple tall rectangle character -->
+        <div id="purple-char" class="character-body purple-body"
+             :style="{
+                 height: (isTyping || (password.length > 0 && !showPassword)) ? '375px' : '340px',
+                 transform: (password.length > 0 && showPassword) ? 'skewX(0deg)' : (isTyping || (password.length > 0 && !showPassword)) ? 'skewX(' + (purple.bodySkew - 12) + 'deg) translateX(34px)' : 'skewX(' + purple.bodySkew + 'deg)'
+             }"
+             style="background: var(--purple); width: 150px; left: 58px; z-index: 1;">
+            <div class="eyes-wrap"
+                 :style="{
+                     left: (password.length > 0 && showPassword) ? '18px' : isLookingAtEachOther ? '46px' : (38 + purple.faceX) + 'px',
+                     top: (password.length > 0 && showPassword) ? '30px' : isLookingAtEachOther ? '55px' : (34 + purple.faceY) + 'px'
+                 }">
+                <div id="purple-eye-l" class="eyeball" :style="{ height: isPurpleBlinking ? '2px' : '15px', width: '15px' }">
+                    <div class="pupil" x-show="!isPurpleBlinking" :style="{ transform: 'translate(' + pupils.purpleL.x + 'px, ' + pupils.purpleL.y + 'px)' }" style="width: 6px; height: 6px;"></div>
                 </div>
-            </div>
-
-            {{-- Phone Main --}}
-            <div class="phone phone-main">
-                <div class="phone-screen">
-                    <div class="phone-status">9:41</div>
-                    <div class="phone-label">Featured Instructor</div>
-                    <div class="phone-card">
-                        <div class="phone-avatar">A</div>
-                        <div class="phone-name">Meet Andi</div>
-                        <div style="font-size:9px;color:var(--muted);text-align:center;margin-top:2px;">Senior Dev</div>
-                    </div>
-                    <div style="background:var(--purple);color:white;padding:6px 10px;border-radius:100px;font-size:9px;text-align:center;font-weight:600;">
-                        Start Learning 
-                    </div>
-                </div>
-            </div>
-
-            {{-- Phone Right --}}
-            <div class="phone phone-side phone-side-right">
-                <div class="phone-screen">
-                    <div class="phone-status">9:41</div>
-                    <div class="phone-label">Lesson 12</div>
-                    <div class="phone-card">
-                        <div style="aspect-ratio:16/10;background:linear-gradient(135deg,var(--navy),#2D4D7A);border-radius:6px;display:flex;align-items:center;justify-content:center;margin-bottom:4px;">
-                            <div style="width:22px;height:22px;background:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--navy);">▶</div>
-                        </div>
-                        <div style="font-size:9px;font-weight:600;">Authentication</div>
-                    </div>
+                <div id="purple-eye-r" class="eyeball" :style="{ height: isPurpleBlinking ? '2px' : '15px', width: '15px' }">
+                    <div class="pupil" x-show="!isPurpleBlinking" :style="{ transform: 'translate(' + pupils.purpleR.x + 'px, ' + pupils.purpleR.y + 'px)' }" style="width: 6px; height: 6px;"></div>
                 </div>
             </div>
         </div>
 
-        {{-- Stats Bar --}}
-        <div class="stats-bar">
-            <div class="stat">
-                <div class="stat-n"><em>Ratusan</em></div>
-                <div class="stat-l">Courses</div>
+        <!-- Black/Navy tall rectangle character -->
+        <div id="black-char" class="character-body black-body"
+             :style="{
+                 transform: (password.length > 0 && showPassword) ? 'skewX(0deg)' : isLookingAtEachOther ? 'skewX(' + (black.bodySkew * 1.5 + 10) + 'deg) translateX(17px)' : (isTyping || (password.length > 0 && !showPassword)) ? 'skewX(' + (black.bodySkew * 1.5) + 'deg)' : 'skewX(' + black.bodySkew + 'deg)'
+             }"
+             style="background: var(--navy); width: 100px; height: 260px; left: 200px; z-index: 2;">
+            <div class="eyes-wrap"
+                 :style="{
+                     left: (password.length > 0 && showPassword) ? '8px' : isLookingAtEachOther ? '27px' : (22 + black.faceX) + 'px',
+                     top: (password.length > 0 && showPassword) ? '24px' : isLookingAtEachOther ? '10px' : (27 + black.faceY) + 'px'
+                 }">
+                <div id="black-eye-l" class="eyeball" :style="{ height: isBlackBlinking ? '2px' : '14px', width: '14px' }">
+                    <div class="pupil" x-show="!isBlackBlinking" :style="{ transform: 'translate(' + pupils.blackL.x + 'px, ' + pupils.blackL.y + 'px)' }" style="width: 5px; height: 5px;"></div>
+                </div>
+                <div id="black-eye-r" class="eyeball" :style="{ height: isBlackBlinking ? '2px' : '14px', width: '14px' }">
+                    <div class="pupil" x-show="!isBlackBlinking" :style="{ transform: 'translate(' + pupils.blackR.x + 'px, ' + pupils.blackR.y + 'px)' }" style="width: 5px; height: 5px;"></div>
+                </div>
             </div>
-            <div class="stat">
-                <div class="stat-n"><em>Ribuan</em></div>
-                <div class="stat-l">Learners</div>
-            </div>
-            <div class="stat">
-                <div class="stat-n"><em>Menghasilkan</em></div>
-                <div class="stat-l">Experts</div>
+        </div>
+
+        <!-- Orange semi-circle character -->
+        <div id="orange-char" class="character-body orange-body"
+             :style="{
+                 transform: (password.length > 0 && showPassword) ? 'skewX(0deg)' : 'skewX(' + orange.bodySkew + 'deg)'
+             }"
+             style="background: var(--orange); width: 200px; height: 170px; left: 0px; z-index: 3; border-radius: 100px 100px 0 0;">
+            <div class="eyes-wrap" style="gap: 18px;"
+                 :style="{
+                     left: (password.length > 0 && showPassword) ? '42px' : (70 + orange.faceX) + 'px',
+                     top: (password.length > 0 && showPassword) ? '72px' : (76 + orange.faceY) + 'px'
+                 }">
+                <div id="orange-eye-l" class="pupil-only" :style="{ transform: 'translate(' + pupils.orangeL.x + 'px, ' + pupils.orangeL.y + 'px)' }"></div>
+                <div id="orange-eye-r" class="pupil-only" :style="{ transform: 'translate(' + pupils.orangeR.x + 'px, ' + pupils.orangeR.y + 'px)' }"></div>
             </div>
         </div>
     </div>
+
+    {{-- Footer Links --}}
+    <div style="display: flex; gap: 24px; justify-content: center; z-index: 10;">
+        <a href="{{ route('privacy') }}" style="color: var(--text-soft); font-size: 13px; font-weight: 500; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--purple)'" onmouseout="this.style.color='var(--text-soft)'">Privacy Policy</a>
+        <a href="{{ route('about') }}" style="color: var(--text-soft); font-size: 13px; font-weight: 500; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--purple)'" onmouseout="this.style.color='var(--text-soft)'">About Us</a>
+        <a href="{{ route('contact') }}" style="color: var(--text-soft); font-size: 13px; font-weight: 500; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--purple)'" onmouseout="this.style.color='var(--text-soft)'">Contact</a>
+    </div>
 </div>
+
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('loginInteraction', () => ({
+            mouseX: 0,
+            mouseY: 0,
+            isPurpleBlinking: false,
+            isBlackBlinking: false,
+            isTyping: false,
+            isLookingAtEachOther: false,
+            isPurplePeeking: false,
+            password: '',
+            showPassword: false,
+
+            purple: { faceX: 0, faceY: 0, bodySkew: 0 },
+            black: { faceX: 0, faceY: 0, bodySkew: 0 },
+            orange: { faceX: 0, faceY: 0, bodySkew: 0 },
+            yellow: { faceX: 0, faceY: 0, bodySkew: 0 },
+
+            pupils: {
+                purpleL: { x: 0, y: 0 },
+                purpleR: { x: 0, y: 0 },
+                blackL: { x: 0, y: 0 },
+                blackR: { x: 0, y: 0 },
+                orangeL: { x: 0, y: 0 },
+                orangeR: { x: 0, y: 0 },
+                yellowL: { x: 0, y: 0 },
+                yellowR: { x: 0, y: 0 }
+            },
+
+            init() {
+                this.schedulePurpleBlink();
+                this.scheduleBlackBlink();
+                this.updatePositions();
+
+                this.$watch('password', (value) => {
+                    this.updatePeeking();
+                    this.updatePositions();
+                });
+                this.$watch('showPassword', (value) => {
+                    this.updatePeeking();
+                    this.updatePositions();
+                });
+                this.$watch('isTyping', (value) => {
+                    if (value) {
+                        this.isLookingAtEachOther = true;
+                        setTimeout(() => {
+                            this.isLookingAtEachOther = false;
+                            this.updatePositions();
+                        }, 800);
+                    } else {
+                        this.isLookingAtEachOther = false;
+                    }
+                    this.updatePositions();
+                });
+            },
+
+            updatePeeking() {
+                if (this.password.length > 0 && this.showPassword) {
+                    if (!this.peekInterval) {
+                        this.peekInterval = setInterval(() => {
+                            if (this.password.length > 0 && this.showPassword) {
+                                this.isPurplePeeking = true;
+                                this.updatePositions();
+                                setTimeout(() => {
+                                    this.isPurplePeeking = false;
+                                    this.updatePositions();
+                                }, 800);
+                            } else {
+                                clearInterval(this.peekInterval);
+                                this.peekInterval = null;
+                            }
+                        }, 3000);
+                    }
+                } else {
+                    if (this.peekInterval) {
+                        clearInterval(this.peekInterval);
+                        this.peekInterval = null;
+                    }
+                    this.isPurplePeeking = false;
+                }
+            },
+
+            schedulePurpleBlink() {
+                setTimeout(() => {
+                    this.isPurpleBlinking = true;
+                    setTimeout(() => {
+                        this.isPurpleBlinking = false;
+                        this.schedulePurpleBlink();
+                    }, 150);
+                }, Math.random() * 4000 + 3000);
+            },
+
+            scheduleBlackBlink() {
+                setTimeout(() => {
+                    this.isBlackBlinking = true;
+                    setTimeout(() => {
+                        this.isBlackBlinking = false;
+                        this.scheduleBlackBlink();
+                    }, 150);
+                }, Math.random() * 4000 + 3000);
+            },
+
+            handleMouseMove(e) {
+                this.mouseX = e.clientX;
+                this.mouseY = e.clientY;
+                this.updatePositions();
+            },
+
+            updatePositions() {
+                this.purple = this.calcPos('purple-char');
+                this.black = this.calcPos('black-char');
+                this.orange = this.calcPos('orange-char');
+                this.yellow = this.calcPos('yellow-char');
+
+                const hasPassword = this.password.length > 0;
+
+                let purpleForceX, purpleForceY;
+                if (hasPassword && this.showPassword) {
+                    purpleForceX = this.isPurplePeeking ? 4 : -4;
+                    purpleForceY = this.isPurplePeeking ? 5 : -4;
+                } else if (this.isLookingAtEachOther) {
+                    purpleForceX = 3;
+                    purpleForceY = 4;
+                }
+
+                let blackForceX, blackForceY;
+                if (hasPassword && this.showPassword) {
+                    blackForceX = -4;
+                    blackForceY = -4;
+                } else if (this.isLookingAtEachOther) {
+                    blackForceX = 0;
+                    blackForceY = -4;
+                }
+
+                let orangeForceX, orangeForceY;
+                if (hasPassword && this.showPassword) {
+                    orangeForceX = -5;
+                    orangeForceY = -4;
+                }
+
+                let yellowForceX, yellowForceY;
+                if (hasPassword && this.showPassword) {
+                    yellowForceX = -5;
+                    yellowForceY = -4;
+                }
+
+                this.pupils.purpleL = this.calcPupil('purple-eye-l', 5, purpleForceX, purpleForceY);
+                this.pupils.purpleR = this.calcPupil('purple-eye-r', 5, purpleForceX, purpleForceY);
+                this.pupils.blackL = this.calcPupil('black-eye-l', 4, blackForceX, blackForceY);
+                this.pupils.blackR = this.calcPupil('black-eye-r', 4, blackForceX, blackForceY);
+                this.pupils.orangeL = this.calcPupil('orange-eye-l', 5, orangeForceX, orangeForceY);
+                this.pupils.orangeR = this.calcPupil('orange-eye-r', 5, orangeForceX, orangeForceY);
+                this.pupils.yellowL = this.calcPupil('yellow-eye-l', 5, yellowForceX, yellowForceY);
+                this.pupils.yellowR = this.calcPupil('yellow-eye-r', 5, yellowForceX, yellowForceY);
+            },
+
+            calcPos(id) {
+                const el = document.getElementById(id);
+                if (!el) return { faceX: 0, faceY: 0, bodySkew: 0 };
+
+                const rect = el.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 3;
+
+                const deltaX = this.mouseX - centerX;
+                const deltaY = this.mouseY - centerY;
+
+                const faceX = Math.max(-15, Math.min(15, deltaX / 20));
+                const faceY = Math.max(-10, Math.min(10, deltaY / 30));
+                const bodySkew = Math.max(-6, Math.min(6, -deltaX / 120));
+
+                return { faceX, faceY, bodySkew };
+            },
+
+            calcPupil(id, maxDistance, forceX, forceY) {
+                if (forceX !== undefined && forceY !== undefined) {
+                    return { x: forceX, y: forceY };
+                }
+                const el = document.getElementById(id);
+                if (!el) return { x: 0, y: 0 };
+
+                const rect = el.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+
+                const deltaX = this.mouseX - centerX;
+                const deltaY = this.mouseY - centerY;
+                const distance = Math.min(Math.sqrt(deltaX ** 2 + deltaY ** 2), maxDistance);
+
+                const angle = Math.atan2(deltaY, deltaX);
+                return {
+                    x: Math.cos(angle) * distance,
+                    y: Math.sin(angle) * distance
+                };
+            }
+        }));
+    });
+</script>
 
 </body>
 </html>

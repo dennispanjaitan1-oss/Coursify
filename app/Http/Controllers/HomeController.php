@@ -7,6 +7,7 @@ use App\Models\Course;
 use App\Models\Institution;
 use App\Models\Program;
 use App\Models\User;
+use App\Models\CourseSyllabus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
@@ -244,6 +245,20 @@ class HomeController extends Controller
                 ->toArray();
         });
 
+        // Subject = semua kategori yang punya kursus
+        $subjects = Category::whereHas('courses', function($q) {
+            $q->where('is_published', true);
+        })->orderBy('name')->get(['id', 'name', 'slug']);
+
+        // Skills = distinct syllabus items dari DB
+        $skills = CourseSyllabus::whereHas('course', function($q) {
+            $q->where('is_published', true);
+        })
+        ->select('item')
+        ->distinct()
+        ->orderBy('item')
+        ->pluck('item');
+
         return view('home.index', compact(
             'stats',
             'studentCount',
@@ -253,7 +268,9 @@ class HomeController extends Controller
             'instructors',
             'partnerInstitutions',
             'featuredPrograms',
-            'latestCourses'
+            'latestCourses',
+            'subjects',
+            'skills'
         ));
     }
 

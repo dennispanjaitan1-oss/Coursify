@@ -693,10 +693,7 @@
                     How It Works
                 </a>
 
-                <a href="{{ route('home') }}#pricing" class="nav-link">
-                    <i class="fa-solid fa-tag"></i>
-                    Pricing
-                </a>
+
             </div>
 
             {{-- Right: Auth --}}

@@ -6,9 +6,33 @@
 <style>
     /* ═══ HERO ═══ */
     .hero {
-        padding: 70px 20px 40px;
-        text-align: center;
+        width: 100%;
+        padding: 90px 40px 70px;
+        text-align: left;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         animation: fadeInUp 0.8s ease-out 0.2s both;
+        border-radius: 0; /* Ensures full width no radius */
+        margin: 0;
+    }
+    .hero-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 1200px;
+        width: 100%;
+        gap: 60px;
+        margin: 0 auto;
+    }
+    .hero-content {
+        flex: 1;
+        max-width: 600px;
+    }
+    .hero-visual {
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
     }
     @keyframes fadeInUp {
         from { opacity: 0; transform: translateY(30px); }
@@ -53,17 +77,47 @@
         font-family: var(--font-serif);
         font-size: clamp(48px, 8vw, 88px);
         font-weight: 400;
-        line-height: 1.2;
+        line-height: 1.15;
         letter-spacing: -0.03em;
         margin-bottom: 18px;
         color: var(--text);
+        white-space: nowrap;
     }
-    .hero-title em {
+    .hero-title-static {
+        display: inline;
+    }
+    .hero-title-dynamic-container {
+        position: relative;
+        display: inline-block;
+        height: 1.25em;
+        width: 8.5ch;
+        overflow: hidden;
+        vertical-align: -0.35em;
+    }
+    .hero-title-dynamic-word {
+        position: absolute;
+        left: 0;
+        top: 0;
+        white-space: nowrap;
+        opacity: 0;
         font-style: italic;
+        padding-right: 0.5ch;
         background: linear-gradient(135deg, #9F94F2, #7B6FE8);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        display: block;
+        transform: translateY(130%);
+        transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        display: inline-block;
+    }
+    .hero-title-dynamic-word.active {
+        opacity: 1;
+        transform: translateY(0);
+        z-index: 2;
+    }
+    .hero-title-dynamic-word.exit {
+        opacity: 0;
+        transform: translateY(-130%);
+        z-index: 1;
     }
 
     .hero-subtitle {
@@ -86,97 +140,160 @@
         margin-right: auto;
     }
 
-    /* Hero Search */
-    .hero-search-form { width: 100%; }
-    .hero-search-wrap {
+    /* Subject & Skill Selector Glassmorphism - Refined & Compacted */
+    .hero-selector-form {
+        width: 100%;
+        max-width: 780px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 10;
+    }
+    .selector-container {
         display: flex;
         align-items: center;
-        background: rgba(255,255,255,0.9);
+        background: rgba(255, 255, 255, 0.45);
         backdrop-filter: blur(20px);
-        border: 1.5px solid rgba(123,111,232,0.2);
-        border-radius: 16px;
-        padding: 6px 6px 6px 18px;
-        box-shadow: 0 8px 32px rgba(30,58,95,0.12);
-        transition: all 0.3s;
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 20px; /* Lengkungan elegan, bukan pill bulat panjang */
+        padding: 5px 6px 5px 22px;
+        box-shadow: 0 10px 30px rgba(30, 58, 95, 0.04);
+        transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     }
-    .hero-search-wrap:focus-within {
-        border-color: rgba(123,111,232,0.5);
-        box-shadow: 0 12px 40px rgba(30,58,95,0.18), 0 0 0 4px rgba(123,111,232,0.08);
+    .selector-container:hover {
+        background: rgba(255, 255, 255, 0.52);
+        border-color: rgba(255, 255, 255, 0.65);
+        box-shadow: 0 12px 35px rgba(30, 58, 95, 0.06);
     }
-    .hero-search-icon {
-        color: var(--muted);
-        font-size: 15px;
-        margin-right: 10px;
-        flex-shrink: 0;
+    .selector-container:focus-within {
+        background: rgba(255, 255, 255, 0.65);
+        border-color: rgba(123, 111, 232, 0.4);
+        box-shadow: 0 15px 35px rgba(123, 111, 232, 0.08);
+        transform: translateY(-1px);
     }
-    .hero-search-input {
+    .selector-group {
         flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-width: 0;
+        text-align: left;
+        padding: 4px 10px;
+        border-radius: 12px;
+        transition: background-color 0.25s ease;
+    }
+    .selector-group:hover {
+        background-color: rgba(123, 111, 232, 0.05);
+    }
+    .selector-label {
+        font-family: var(--font-sans);
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--text-soft);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 1px;
+        transition: color 0.25s ease;
+    }
+    .selector-group:hover .selector-label {
+        color: var(--purple);
+    }
+    .selector-dropdown {
         border: none;
         background: transparent;
-        font-size: 14.5px;
-        color: var(--text);
         font-family: var(--font-sans);
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text);
         outline: none;
-        padding: 8px 0;
-        min-width: 0;
+        cursor: pointer;
+        padding: 2px 20px 2px 0;
+        width: 100%;
+        appearance: none;
+        -webkit-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237B6FE8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 4px center;
+        background-size: 12px;
+        transition: all 0.25s ease;
     }
-    .hero-search-input::placeholder { color: var(--muted); }
-    .hero-search-btn {
+    .selector-dropdown:focus {
+        color: var(--purple-dark);
+    }
+    .selector-divider {
+        width: 1px;
+        height: 28px;
+        background: rgba(123, 111, 232, 0.12);
+        margin: 0 16px;
+    }
+    .selector-btn {
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 8px;
-        background: var(--navy);
+        background: #100F17;
         color: white;
         border: none;
-        padding: 12px 22px;
-        border-radius: 12px;
-        font-size: 14px;
+        padding: 10px 22px;
+        border-radius: 14px; /* Senada dengan lengkungan luar */
+        font-family: var(--font-sans);
+        font-size: 13.5px;
         font-weight: 600;
         cursor: pointer;
-        font-family: var(--font-sans);
-        transition: all 0.25s;
+        transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         flex-shrink: 0;
         white-space: nowrap;
     }
-    .hero-search-btn:hover {
-        background: #2D4D7A;
-        transform: translateY(-1px);
+    .selector-btn:hover {
+        background: #252335;
+        transform: scale(1.02);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
     }
-    .hero-search-tags {
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 6px;
-        margin-top: 10px;
-        padding: 0 4px;
+    .selector-btn:active {
+        transform: scale(0.98);
     }
-    .hero-tag {
-        font-size: 12px;
-        color: var(--text-soft);
-        background: rgba(255,255,255,0.7);
-        border: 1px solid rgba(123,111,232,0.15);
-        padding: 3px 10px;
-        border-radius: 100px;
-        text-decoration: none;
-        transition: all 0.2s;
+    .selector-btn i {
+        transition: transform 0.25s ease;
     }
-    .hero-tag:hover {
-        background: rgba(123,111,232,0.1);
-        border-color: rgba(123,111,232,0.3);
-        color: var(--purple-dark);
+    .selector-btn:hover i {
+        transform: translateX(3px);
     }
-    .hero-proof {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        flex-wrap: wrap;
-        justify-content: center;
+
+    @media (max-width: 768px) {
+        .hero { padding: 60px 20px 40px; }
+        .hero-container { flex-direction: column; gap: 40px; }
+        .hero-visual { display: none; /* Hide the mockups on small screens to save space or adjust if needed */ }
+        .selector-container {
+            flex-direction: column;
+            border-radius: 18px;
+            padding: 16px;
+            gap: 12px;
+        }
+        .selector-group {
+            width: 100%;
+            padding: 8px 12px;
+        }
+        .selector-dropdown {
+            background-position: right 12px center;
+            padding: 8px 24px 8px 12px;
+            background-color: rgba(255, 255, 255, 0.45);
+            border-radius: 10px;
+            border: 1px solid rgba(123, 111, 232, 0.08);
+        }
+        .selector-label {
+            margin-left: 8px;
+            margin-bottom: 4px;
+        }
+        .selector-divider {
+            display: none;
+        }
+        .selector-btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+        }
     }
-    .hero-proof-avatars {
-        display: flex;
-        align-items: center;
-    }
-    .hero-proof-avatars div:first-child { margin-left: 0 !important; }
 
     .trust-indicators {
         display: flex;
@@ -1253,7 +1370,7 @@
                     <h2 class="promo-slide-title">Hemat <em>30%</em> untuk semua kursus premium</h2>
                     <p class="promo-slide-desc">Gunakan kode <span class="promo-code">BELAJAR30</span> saat checkout. Berlaku hingga 31 Mei.</p>
                     <div class="promo-slide-actions">
-                        <a href="#pricing" class="promo-btn-primary">Lihat Paket →</a>
+                        <a href="{{ route('courses.index') }}" class="promo-btn-primary">Lihat Kursus →</a>
                         <a href="{{ route('courses.index') }}" class="promo-btn-outline">Jelajahi Kursus</a>
                     </div>
                 </div>
@@ -1412,7 +1529,7 @@
                     <p class="promo-slide-desc">Sertifikat Coursify bisa langsung dibagikan ke LinkedIn dan diverifikasi perusahaan manapun.</p>
                     <div class="promo-slide-actions">
                         <a href="{{ route('courses.index') }}" class="promo-btn-primary">Mulai Belajar →</a>
-                        <a href="#pricing" class="promo-btn-outline">Lihat Harga</a>
+                        <a href="{{ route('courses.index') }}" class="promo-btn-outline">Jelajahi Kursus</a>
                     </div>
                 </div>
                 <div class="promo-slide-right">
@@ -1507,129 +1624,125 @@
 {{-- HERO                                                 --}}
 {{-- ═══════════════════════════════════════════════════ --}}
 <section class="hero">
-
-        <h1 class="hero-title">
-            Learn Anything,
-            <em>Anytime</em>
-        </h1>
-        <p class="hero-subtitle">
-            Master new skills with world-class instructors. Your personal learning journey starts here. free to begin, limitless to grow.
-        </p>
-        <div class="hero-cta">
-            {{-- Hero Search Bar --}}
-            <form action="{{ route('courses.index') }}" method="GET" class="hero-search-form">
-                <div class="hero-search-wrap">
-                    <i class="fa-solid fa-magnifying-glass hero-search-icon"></i>
-                    <input
-                        type="text"
-                        name="q"
-                        class="hero-search-input"
-                        placeholder="Apa yang ingin kamu pelajari? Web dev, AI, Data Science…"
-                        autocomplete="off"
-                    >
-                    <button type="submit" class="hero-search-btn">
-                        <span>Cari Kursus</span>
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-                </div>
-                {{-- Popular searches --}}
-                <div class="hero-search-tags">
-                    <span style="font-size:12px;color:var(--muted);margin-right:6px;">Populer:</span>
-                    @foreach(['Python','Machine Learning','Web Development','UI/UX Design','Data Science'] as $tag)
-                        <a href="{{ route('courses.index') }}?q={{ urlencode($tag) }}" class="hero-tag">{{ $tag }}</a>
-                    @endforeach
-                </div>
-            </form>
-
-            {{-- Social proof --}}
-            <div class="hero-proof">
-                <div class="hero-proof-avatars">
-                    @foreach(['#7B6FE8','#00C896','#FF8A5B','#1E3A5F'] as $c)
-                        <div style="width:28px;height:28px;border-radius:50%;background:{{ $c }};border:2px solid white;margin-left:-8px;first:margin-left:0;"></div>
-                    @endforeach
-                </div>
-                <span style="font-size:13px;color:var(--text-soft);">
-                    Bergabung dengan <strong style="color:var(--text);">50.000+</strong> pelajar aktif
+    <div class="hero-container">
+        <div class="hero-content">
+            <h1 class="hero-title select-none">
+                <span class="hero-title-static">Learn</span>
+                <span class="hero-title-dynamic-container">
+                    <span class="hero-title-dynamic-word active">Anything,</span>
+                    <span class="hero-title-dynamic-word">Anytime</span>
+                    <span class="hero-title-dynamic-word">Anywhere</span>
+                    <span class="hero-title-dynamic-word">Anyway</span>
                 </span>
-                <span style="color:var(--muted);font-size:13px;">·</span>
-                <span style="font-size:13px;color:var(--text-soft);">⭐ <strong style="color:var(--text);">4.8</strong>/5 rata-rata rating</span>
+            </h1>
+            <p class="hero-subtitle" style="margin-left: 0; margin-right: 0; max-width: 100%;">
+                Master new skills with world-class instructors. Your personal learning journey starts here. free to begin, limitless to grow.
+            </p>
+            <div class="hero-cta" style="margin-left: 0; margin-right: 0; max-width: 100%; align-items: flex-start;">
+                <form action="{{ route('courses.index') }}" method="GET" class="hero-selector-form" style="margin-left: 0;">
+                    <div class="selector-container" style="background: rgba(255, 255, 255, 0.7);">
+                        <div class="selector-group">
+                            <label for="subject-select" class="selector-label">Subject</label>
+                            <select name="category[]" id="subject-select" class="selector-dropdown">
+                                <option value="">Select Subject</option>
+                                @foreach($subjects as $subject)
+                                    <option value="{{ $subject->slug }}">{{ $subject->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="selector-divider"></div>
+                        <div class="selector-group">
+                            <label for="skill-select" class="selector-label">Skill</label>
+                            <select name="search" id="skill-select" class="selector-dropdown">
+                                <option value="">Select Skill</option>
+                                @foreach($skills as $skill)
+                                    <option value="{{ $skill }}">{{ $skill }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <button type="submit" class="selector-btn">
+                            <span>Explore Courses</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
 
-       
-
-        {{-- Phone Mockups --}}
-        <div class="mockup-stage">
-            {{-- Phone Left: Progress Tracker --}}
-            <div class="phone phone-side phone-side-left">
-                <div class="phone-screen">
-                    <div class="phone-status">9:41</div>
-                    <div class="phone-label">Your Progress</div>
-                    <div class="phone-card">
-                        <div style="font-size:11px;font-weight:600;margin-bottom:4px;">Laravel Basics</div>
-                        <div style="height:4px;background:#E8E1F3;border-radius:2px;margin-bottom:3px;">
-                            <div style="height:100%;width:75%;background:var(--purple);border-radius:2px;"></div>
+        <div class="hero-visual">
+            {{-- Phone Mockups --}}
+            <div class="mockup-stage" style="margin: 0; transform: scale(0.95); transform-origin: center right;">
+                {{-- Phone Left: Progress Tracker --}}
+                <div class="phone phone-side phone-side-left">
+                    <div class="phone-screen">
+                        <div class="phone-status">9:41</div>
+                        <div class="phone-label">Your Progress</div>
+                        <div class="phone-card">
+                            <div style="font-size:11px;font-weight:600;margin-bottom:4px;">Laravel Basics</div>
+                            <div style="height:4px;background:#E8E1F3;border-radius:2px;margin-bottom:3px;">
+                                <div style="height:100%;width:75%;background:var(--purple);border-radius:2px;"></div>
+                            </div>
+                            <div style="font-size:9px;color:var(--muted);">75% · 12/16 lessons</div>
                         </div>
-                        <div style="font-size:9px;color:var(--muted);">75% · 12/16 lessons</div>
-                    </div>
-                    <div class="phone-card">
-                        <div style="font-size:11px;font-weight:600;margin-bottom:4px;">UI/UX Basics</div>
-                        <div style="height:4px;background:#E8E1F3;border-radius:2px;margin-bottom:3px;">
-                            <div style="height:100%;width:45%;background:var(--teal);border-radius:2px;"></div>
+                        <div class="phone-card">
+                            <div style="font-size:11px;font-weight:600;margin-bottom:4px;">UI/UX Basics</div>
+                            <div style="height:4px;background:#E8E1F3;border-radius:2px;margin-bottom:3px;">
+                                <div style="height:100%;width:45%;background:var(--teal);border-radius:2px;"></div>
+                            </div>
+                            <div style="font-size:9px;color:var(--muted);">45% · 5/11 lessons</div>
                         </div>
-                        <div style="font-size:9px;color:var(--muted);">45% · 5/11 lessons</div>
-                    </div>
-                    <div class="phone-card">
-                        <div style="font-size:11px;font-weight:600;margin-bottom:4px;">Python for Data</div>
-                        <div style="height:4px;background:#E8E1F3;border-radius:2px;margin-bottom:3px;">
-                            <div style="height:100%;width:90%;background:var(--orange);border-radius:2px;"></div>
+                        <div class="phone-card">
+                            <div style="font-size:11px;font-weight:600;margin-bottom:4px;">Python for Data</div>
+                            <div style="height:4px;background:#E8E1F3;border-radius:2px;margin-bottom:3px;">
+                                <div style="height:100%;width:90%;background:var(--orange);border-radius:2px;"></div>
+                            </div>
+                            <div style="font-size:9px;color:var(--muted);">90% · 18/20 lessons</div>
                         </div>
-                        <div style="font-size:9px;color:var(--muted);">90% · 18/20 lessons</div>
                     </div>
                 </div>
-            </div>
 
-            {{-- Phone Main: Instructor --}}
-<div class="phone phone-main">
-    <div class="phone-screen">
-        <div class="phone-status">9:41</div>
-        <div class="phone-label">Featured Instructor</div>
-        <div class="phone-card">
-            <div class="phone-avatar" style="border-radius:12px; overflow:hidden;">
-                <img src="{{ asset('images/landing.png') }}" alt="Andi" 
-                     style="width:100%;height:100%;object-fit:cover;object-position:top;border-radius:0;">
-            </div>
-            <div class="phone-name">Meet Andi</div>
-            <div style="font-size:10px;color:var(--muted);text-align:center;margin-top:2px;">Senior Developer · 12k students</div>
-            <div class="phone-skill-tags">
-                <span class="phone-skill-tag">Laravel</span>
-                <span class="phone-skill-tag">React</span>
-                <span class="phone-skill-tag">Node.js</span>
-            </div>
-        </div>
-        <div style="background:var(--purple);color:white;padding:8px 12px;border-radius:100px;font-size:11px;text-align:center;font-weight:600;">
-            Start Learning 
-        </div>
-    </div>
-</div>
-
-            {{-- Phone Right: Video Lesson --}}
-            <div class="phone phone-side phone-side-right">
-                <div class="phone-screen">
-                    <div class="phone-status">9:41</div>
-                    <div class="phone-label">Lesson 12</div>
-                    <div class="phone-card">
-                        <div style="aspect-ratio:16/10;background:linear-gradient(135deg,var(--navy),#2D4D7A);border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:6px;position:relative;">
-                            <div style="width:30px;height:30px;background:white;border-radius:50%;display:flex;align-items:center;justify-content:center;">
-                                <span style="color:var(--navy);font-size:12px;">▶</span>
+                {{-- Phone Main: Instructor --}}
+                <div class="phone phone-main">
+                    <div class="phone-screen">
+                        <div class="phone-status">9:41</div>
+                        <div class="phone-label">Featured Instructor</div>
+                        <div class="phone-card">
+                            <div class="phone-avatar" style="border-radius:12px; overflow:hidden;">
+                                <img src="{{ asset('images/landing.png') }}" alt="Andi" 
+                                     style="width:100%;height:100%;object-fit:cover;object-position:top;border-radius:0;">
+                            </div>
+                            <div class="phone-name">Meet Andi</div>
+                            <div style="font-size:10px;color:var(--muted);text-align:center;margin-top:2px;">Senior Developer · 12k students</div>
+                            <div class="phone-skill-tags">
+                                <span class="phone-skill-tag">Laravel</span>
+                                <span class="phone-skill-tag">React</span>
+                                <span class="phone-skill-tag">Node.js</span>
                             </div>
                         </div>
-                        <div style="font-size:10px;font-weight:600;">Building Authentication</div>
-                        <div style="font-size:9px;color:var(--muted);margin-top:2px;">⏱ 12:45 · Laravel Bootcamp</div>
+                        <div style="background:var(--purple);color:white;padding:8px 12px;border-radius:100px;font-size:11px;text-align:center;font-weight:600;">
+                            Start Learning 
+                        </div>
                     </div>
-                    <div class="phone-card" style="padding:8px;">
-                        <div style="font-size:9px;color:var(--muted);margin-bottom:4px;">Up Next</div>
-                        <div style="font-size:10px;font-weight:600;">Lesson 13: Middleware</div>
+                </div>
+
+                {{-- Phone Right: Video Lesson --}}
+                <div class="phone phone-side phone-side-right">
+                    <div class="phone-screen">
+                        <div class="phone-status">9:41</div>
+                        <div class="phone-label">Lesson 12</div>
+                        <div class="phone-card">
+                            <div style="aspect-ratio:16/10;background:linear-gradient(135deg,var(--navy),#2D4D7A);border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:6px;position:relative;">
+                                <div style="width:30px;height:30px;background:white;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                                    <span style="color:var(--navy);font-size:12px;">▶</span>
+                                </div>
+                            </div>
+                            <div style="font-size:10px;font-weight:600;">Building Authentication</div>
+                            <div style="font-size:9px;color:var(--muted);margin-top:2px;">⏱ 12:45 · Laravel Bootcamp</div>
+                        </div>
+                        <div class="phone-card" style="padding:8px;">
+                            <div style="font-size:9px;color:var(--muted);margin-bottom:4px;">Up Next</div>
+                            <div style="font-size:10px;font-weight:600;">Lesson 13: Middleware</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2279,135 +2392,7 @@
     .testimonial-name { font-size: 13px; font-weight: 600; }
     .testimonial-role { font-size: 11px; color: var(--muted); }
 
-    /* ═══ PRICING ═══ */
-    .pricing-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 14px;
-        max-width: 900px;
-        margin: 0 auto;
-    }
-    .pricing-card {
-        background: rgba(255,255,255,0.75);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255,255,255,0.95);
-        border-radius: 24px;
-        padding: 28px 22px;
-        position: relative;
-        transition: all 0.3s;
-        box-shadow: 0 4px 16px rgba(30,58,95,0.04);
-    }
-    .pricing-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 16px 36px rgba(30,58,95,0.1);
-    }
-    .pricing-featured {
-        background: linear-gradient(180deg, #9A8EE8, #7B6FE8);
-        color: white;
-        border: 1px solid rgba(255,255,255,0.3);
-        box-shadow: 0 16px 40px rgba(123,111,232,0.35);
-        transform: scale(1.03);
-    }
-    .pricing-featured:hover {
-        transform: scale(1.03) translateY(-4px);
-    }
-    .pricing-badge {
-        position: absolute;
-        top: -10px;
-        right: 20px;
-        background: white;
-        color: var(--text);
-        padding: 5px 14px;
-        border-radius: 100px;
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: 0.05em;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-    .pricing-plan {
-        font-family: var(--font-serif);
-        font-size: 22px;
-        font-weight: 400;
-        margin-bottom: 4px;
-    }
-    .pricing-price {
-        font-family: var(--font-serif);
-        font-size: 44px;
-        font-weight: 400;
-        line-height: 1;
-        letter-spacing: -0.02em;
-        margin: 10px 0 4px;
-    }
-    .pricing-price-sub {
-        font-size: 12px;
-        color: var(--muted);
-        font-weight: 500;
-        margin-left: 2px;
-    }
-    .pricing-featured .pricing-price-sub { color: rgba(255,255,255,0.8); }
-    .pricing-desc {
-        font-size: 12px;
-        color: var(--muted);
-        margin-bottom: 20px;
-        padding-bottom: 20px;
-        border-bottom: 1px solid rgba(0,0,0,0.08);
-        line-height: 1.5;
-        min-height: 40px;
-    }
-    .pricing-featured .pricing-desc {
-        color: rgba(255,255,255,0.85);
-        border-bottom-color: rgba(255,255,255,0.2);
-    }
-    .pricing-features {
-        list-style: none;
-        margin-bottom: 20px;
-        min-height: 150px;
-    }
-    .pricing-features li {
-        font-size: 12px;
-        padding: 4px 0;
-        color: var(--text-soft);
-        display: flex;
-        align-items: flex-start;
-        gap: 8px;
-        line-height: 1.5;
-    }
-    .pricing-featured .pricing-features li { color: rgba(255,255,255,0.95); }
-    .pricing-features li::before {
-        content: '✓';
-        color: var(--purple);
-        font-weight: 700;
-        flex-shrink: 0;
-    }
-    .pricing-featured .pricing-features li::before { color: white; }
-    .pricing-btn {
-        width: 100%;
-        background: rgba(0,0,0,0.06);
-        color: var(--text);
-        border: none;
-        padding: 11px;
-        border-radius: 100px;
-        font-weight: 500;
-        font-size: 13px;
-        cursor: pointer;
-        font-family: var(--font-sans);
-        transition: all 0.2s;
-        text-decoration: none;
-        display: inline-block;
-        text-align: center;
-    }
-    .pricing-btn:hover {
-        background: rgba(0,0,0,0.1);
-        transform: translateY(-1px);
-    }
-    .pricing-featured .pricing-btn {
-        background: white;
-        color: var(--purple-dark);
-        font-weight: 600;
-    }
-    .pricing-featured .pricing-btn:hover {
-        background: rgba(255,255,255,0.9);
-    }
+
 
     /* ═══ CATEGORY SECTION ═══ */
     .category-grid {
@@ -2545,8 +2530,7 @@
 
     @media (max-width: 768px) {
         .how-grid, .why-grid, .instructor-grid,
-        .testimonial-grid, .pricing-grid, .category-grid { grid-template-columns: 1fr; }
-        .pricing-featured { transform: none; }
+        .testimonial-grid, .category-grid { grid-template-columns: 1fr; }
         .how-wrapper { padding: 40px 24px; }
     }
 
@@ -2856,62 +2840,7 @@
     </div>
 </section>
 
-{{-- ═══════════════════════════════════════════════════ --}}
-{{-- PRICING                                              --}}
-{{-- ═══════════════════════════════════════════════════ --}}
-<section class="section" id="pricing">
-    <div class="container">
-        <div class="section-header">
-            <span class="section-eyebrow">Pricing</span>
-            <h2 class="section-title">Start free.<br>Upgrade when <em>ready</em>.</h2>
-            <p class="section-subtitle">Flexible plans that grow with you. Cancel anytime, no questions asked.</p>
-        </div>
 
-        <div class="pricing-grid">
-            <div class="pricing-card">
-                <div class="pricing-plan">Starter</div>
-                <div class="pricing-price">Free</div>
-                <div class="pricing-desc">Perfect for exploring and trying out the platform.</div>
-                <ul class="pricing-features">
-                    <li>Access to 100+ free courses</li>
-                    <li>Basic progress tracking</li>
-                    <li>Community forum access</li>
-                    <li>Audit mode certificates</li>
-                </ul>
-                <a href="{{ route('register') }}" class="pricing-btn">Get Started</a>
-            </div>
-
-            <div class="pricing-card pricing-featured">
-                <div class="pricing-badge">Most Popular</div>
-                <div class="pricing-plan">Pro</div>
-                <div class="pricing-price">Rp 99k<span class="pricing-price-sub">/month</span></div>
-                <div class="pricing-desc">Full access to all premium courses and features.</div>
-                <ul class="pricing-features">
-                    <li>All 500+ premium courses</li>
-                    <li>Verified certificates</li>
-                    <li>Offline downloads</li>
-                    <li>Priority support 24/7</li>
-                    <li>1-on-1 mentoring sessions</li>
-                </ul>
-                <a href="{{ route('courses.index') }}" class="pricing-btn">Explore Courses</a>
-            </div>
-
-            <div class="pricing-card">
-                <div class="pricing-plan">Business</div>
-                <div class="pricing-price">Rp 499k<span class="pricing-price-sub">/month</span></div>
-                <div class="pricing-desc">For teams and companies investing in their people.</div>
-                <ul class="pricing-features">
-                    <li>Everything in Pro plan</li>
-                    <li>Up to 25 team members</li>
-                    <li>Admin dashboard</li>
-                    <li>Analytics & reporting</li>
-                    <li>Custom learning paths</li>
-                </ul>
-                <a href="{{ route('courses.index') }}" class="pricing-btn">Browse Programs</a>
-            </div>
-        </div>
-    </div>
-</section>
 
 {{-- ═══════════════════════════════════════════════════ --}}
 {{-- EXPLORE BY CATEGORY                                  --}}
@@ -3189,5 +3118,34 @@ if (latestSlider) {
     // Start auto-scroll
     startLatestAutoScroll();
 }
+
+// Dynamic Hero Title Word Cycler
+document.addEventListener("DOMContentLoaded", () => {
+    const words = document.querySelectorAll(".hero-title-dynamic-word");
+    if (words.length === 0) return;
+    
+    let currentIndex = 0;
+    
+    setInterval(() => {
+        const currentWord = words[currentIndex];
+        currentWord.classList.remove("active");
+        currentWord.classList.add("exit");
+        
+        currentIndex = (currentIndex + 1) % words.length;
+        
+        const nextWord = words[currentIndex];
+        nextWord.classList.remove("exit");
+        nextWord.classList.add("active");
+        
+        // Clean up exit class after animation completes
+        setTimeout(() => {
+            words.forEach((w, idx) => {
+                if (idx !== currentIndex) {
+                    w.classList.remove("exit");
+                }
+            });
+        }, 800);
+    }, 4000);
+});
 </script>
 @endpush

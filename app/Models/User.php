@@ -27,6 +27,8 @@ class User extends Authenticatable
         'theme',
         'playback_speed',
         'video_quality',
+        'google_id',
+        'avatar',
     ];
 
     protected $hidden = [
