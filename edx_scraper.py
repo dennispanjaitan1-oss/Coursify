@@ -30,8 +30,8 @@ from bs4 import BeautifulSoup
 
 # 1. Paste cookie dari browser kamu di sini:
 COOKIE_CONFIG = {
-    "sessionid":    "PASTE_SESSION_ID_KAMU_DI_SINI",
-    "csrftoken":    "PASTE_CSRF_TOKEN_KAMU_DI_SINI",
+    "sessionid":    "vecFyVGvaToWfxqEbDCWQ9gJTLNpdmYU",
+    "csrftoken":    "1|9cvla0avn4g887vjve0jr3mhhl6pbgge|xeOstvFKTXpo|ImVhM2YwNmRlOWRhOTkxYmQ5NmNmMTkwNTdlNzI1ZTJjZjlhOThlYzIzODY2NzM0ZmRhMTlkNjNlM2QzYzM5YjMi:1wQHyC:itROyvZek3JX0nDJKjGS0F8beN5sfX3lrjK7eG747zI",
     "edxloggedin":  "true",
     # Opsional tapi membantu:
     # "edx-user-info": '{"username":"namakamu",...}',
@@ -460,4 +460,3 @@ if __name__ == "__main__":
     save(hasil)
     if hasil:
         preview(hasil)
-
