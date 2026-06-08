@@ -63,7 +63,7 @@ class EnrollmentController extends Controller
                 ->with('info', 'Kamu sudah terdaftar di kursus ini.');
         }
 
-        // Pendaftaran baru
+        // Pendaftaran baruu
         $isFreeEnrollment = ($track === 'audit');
 
         if ($isFreeEnrollment) {

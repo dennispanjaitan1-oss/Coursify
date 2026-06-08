@@ -1,59 +1,240 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="public/images/logo.png" width="180" alt="Coursify Logo" onerror="this.style.display='none'"/>
 </p>
 
-## About Laravel
+<h1 align="center">Coursify</h1>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+<p align="center">
+  Platform E-Learning Indonesia berbasis Laravel 12
+</p>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+<p align="center">
+  <img src="https://img.shields.io/badge/Laravel-12.x-FF2D20?style=flat&logo=laravel&logoColor=white" alt="Laravel 12"/>
+  <img src="https://img.shields.io/badge/PHP-8.2+-777BB4?style=flat&logo=php&logoColor=white" alt="PHP 8.2+"/>
+  <img src="https://img.shields.io/badge/TailwindCSS-3.x-38BDF8?style=flat&logo=tailwindcss&logoColor=white" alt="TailwindCSS"/>
+  <img src="https://img.shields.io/badge/MySQL-8.x-4479A1?style=flat&logo=mysql&logoColor=white" alt="MySQL"/>
+  <img src="https://img.shields.io/badge/Alpine.js-3.x-8BC0D0?style=flat&logo=alpinedotjs&logoColor=white" alt="Alpine.js"/>
+</p>
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 📖 Tentang Coursify
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+**Coursify** adalah platform e-learning berbahasa Indonesia yang menyediakan akses ke ribuan kursus berkualitas dari berbagai institusi ternama dunia. Platform ini mendukung tiga peran pengguna: **Student**, **Instructor**, dan **Admin** — masing-masing dengan fitur dan dashboard tersendiri.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Coursify mendukung Tujuan Pembangunan Berkelanjutan (SDGs) PBB:
+- 🎓 **SDG 4** — Pendidikan Berkualitas: akses kursus gratis (audit track) untuk semua
+- 💼 **SDG 8** — Pekerjaan Layak: kursus skill profesional untuk meningkatkan employability
+- ⚖️ **SDG 10** — Berkurangnya Kesenjangan: konten dalam bahasa Indonesia, akses tanpa biaya
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## ✨ Fitur Utama
 
-### Premium Partners
+- 🏠 **Landing Page** — beranda, daftar kursus, program, dan institusi
+- 👨‍🎓 **Student Dashboard** — kursus saya, progress belajar, sertifikat, wishlist
+- 👨‍🏫 **Instructor Panel** — kelola kursus, materi, siswa, pendapatan, dan analitik
+- 🛡️ **Admin Panel** — manajemen penuh: user, kursus, kategori, institusi, transaksi, laporan
+- 📜 **Sertifikasi Digital** — generate & verifikasi sertifikat dengan nomor unik
+- 💳 **Payment Gateway** — integrasi Midtrans (kartu kredit, transfer bank, e-wallet)
+- 🔐 **Google OAuth** — login dengan akun Google via Laravel Socialite
+- 🔔 **Real-time Notifikasi** — powered by Pusher + Laravel Echo
+- 📊 **Audit Log** — activity logging via Spatie Activity Log
+- 🖼️ **Upload Gambar** — avatar & thumbnail via Intervention Image
+- 📄 **Export PDF** — sertifikat via DomPDF
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+---
 
-## Contributing
+## 🛠️ Requirement Sistem
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+| Komponen | Versi Minimum |
+|---|---|
+| **PHP** | 8.2 |
+| **Composer** | 2.x |
+| **MySQL** / MariaDB | 8.0 / 10.4 |
+| **Node.js** | 18.x |
+| **NPM** | 9.x |
+| **Laravel** | 12.x |
 
-## Code of Conduct
+> **Ekstensi PHP yang dibutuhkan:** `pdo_mysql`, `mbstring`, `openssl`, `tokenizer`, `xml`, `ctype`, `json`, `bcmath`, `fileinfo`, `gd` atau `imagick`
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## 🚀 Cara Menjalankan Projek
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 1. Clone Repository
 
-## License
+```bash
+git clone https://github.com/username/coursify.git
+cd coursify
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 2. Install Dependensi PHP
+
+```bash
+composer install
+```
+
+### 3. Install Dependensi Node.js
+
+```bash
+npm install
+```
+
+### 4. Konfigurasi Environment
+
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+Buka file `.env` dan sesuaikan konfigurasi berikut:
+
+```env
+APP_NAME=Coursify
+APP_URL=http://localhost:8000
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=coursify_db
+DB_USERNAME=root
+DB_PASSWORD=
+
+# (Opsional) Google OAuth
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GOOGLE_REDIRECT_URI=http://localhost:8000/auth/google/callback
+
+# (Opsional) Pusher untuk real-time
+PUSHER_APP_ID=your_pusher_app_id
+PUSHER_APP_KEY=your_pusher_app_key
+PUSHER_APP_SECRET=your_pusher_app_secret
+PUSHER_APP_CLUSTER=ap1
+
+# (Opsional) Midtrans Payment Gateway
+MIDTRANS_SERVER_KEY=your_server_key
+MIDTRANS_CLIENT_KEY=your_client_key
+MIDTRANS_IS_PRODUCTION=false
+```
+
+### 5. Buat Database
+
+Buat database baru di MySQL dengan nama `coursify_db`:
+
+```sql
+CREATE DATABASE coursify_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+### 6. Jalankan Migrasi & Seeder
+
+```bash
+php artisan migrate
+php artisan db:seed
+```
+
+Perintah ini akan membuat semua tabel dan mengisi data dummy secara otomatis, termasuk:
+- Kategori, institusi, dan program
+- ~989 kursus dari berbagai bidang
+- 200+ akun student dummy
+- Enrollment, review, dan progress dummy
+
+### 7. Build Asset Frontend
+
+```bash
+# Development (dengan hot reload)
+npm run dev
+
+# Atau build untuk production
+npm run build
+```
+
+### 8. Jalankan Server
+
+```bash
+php artisan serve
+```
+
+Buka browser dan akses: **http://localhost:8000**
+
+---
+
+## 👤 Akun Demo
+
+Setelah menjalankan seeder, akun berikut sudah tersedia:
+
+| Role | Email | Password |
+|---|---|---|
+| **Admin** | admin@coursify.com | password |
+| **Instructor** | instructor@coursify.com | password |
+| **Student** | student@coursify.com | password |
+
+---
+
+## 📁 Struktur Direktori
+
+```
+coursify/
+├── app/
+│   ├── Http/Controllers/     # 19+ controllers (Admin, Instructor, Student)
+│   ├── Models/               # 22 Eloquent models
+│   └── ...
+├── database/
+│   ├── migrations/           # 54 migration files
+│   ├── seeders/              # 10 seeders
+│   └── factories/            # 2 factories (User, Course)
+├── resources/
+│   └── views/                # 100+ Blade templates
+│       ├── admin/            # 18 admin views
+│       ├── instructor/       # 12+ instructor views
+│       ├── student/          # 6 student views
+│       └── ...
+├── routes/
+│   └── web.php               # Semua route aplikasi
+├── public/                   # Asset publik
+├── tailwind.config.js
+├── vite.config.js
+└── .env.example
+```
+
+---
+
+## 🗄️ Teknologi yang Digunakan
+
+### Backend
+| Package | Fungsi |
+|---|---|
+| `laravel/framework ^12.0` | Framework utama |
+| `laravel/breeze ^2.4` | Auth scaffolding |
+| `laravel/socialite` | Google OAuth |
+| `barryvdh/laravel-dompdf` | Generate sertifikat PDF |
+| `intervention/image ^3.0` | Pengolahan gambar |
+| `spatie/laravel-activitylog` | Audit log aktivitas |
+| `spatie/laravel-sluggable` | Auto-generate URL slug |
+| `pusher/pusher-php-server` | Real-time server |
+| Midtrans SDK | Payment gateway |
+
+### Frontend
+| Package | Fungsi |
+|---|---|
+| `tailwindcss ^3.1` | Utility-first CSS framework |
+| `alpinejs ^3.15` | Reaktivitas frontend ringan |
+| `laravel-echo ^2.3` | Real-time event client |
+| `pusher-js ^8.5` | WebSocket client |
+| `axios ^1.11` | HTTP client |
+| `vite ^7.0` | Build tool modern |
+| `sass ^1.99` | CSS preprocessor |
+
+---
+
+## 🧪 Menjalankan Test
+
+```bash
+php artisan test
+```
+
+---
+
+## 📄 Lisensi
+
+Projek ini dibuat untuk keperluan **Tugas Besar Praktikum Pemrograman Web Lanjutan Kom B 2025**.
