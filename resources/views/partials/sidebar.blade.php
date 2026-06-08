@@ -196,12 +196,6 @@
             Categories
         </a>
 
-        <a href="{{ route('admin.quick-curriculum.index') }}"
-           class="{{ sidebarActive('admin.quick-curriculum.index', $current) }}">
-            <i class="fa-solid fa-wand-magic-sparkles"></i>
-            Quick Curriculum
-        </a>
-
         {{-- Community --}}
         <div class="nav-group-label">Community</div>
 

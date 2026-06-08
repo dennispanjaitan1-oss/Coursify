@@ -8,7 +8,9 @@ use App\Models\Lesson;
 use App\Models\LessonProgress;
 use App\Models\Enrollment;
 use App\Models\Certificate;
+use App\Mail\CourseCompletionMail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class LearningController extends Controller
@@ -129,7 +131,7 @@ class LearningController extends Controller
                     ->exists();
 
                 if (!$alreadyHasCert) {
-                    Certificate::create([
+                    $cert = Certificate::create([
                         'user_id'            => auth()->id(),
                         'course_id'          => $course->id,
                         'enrollment_id'      => $enrollment->id,
@@ -138,6 +140,31 @@ class LearningController extends Controller
                         'issued_at'          => now(),
                     ]);
                     $certificateEarned = true;
+
+                    // Kirim email selamat penyelesaian kursus (dengan sertifikat)
+                    try {
+                        Mail::to(auth()->user()->email)->send(
+                            new CourseCompletionMail(auth()->user(), $course, $cert)
+                        );
+                    } catch (\Exception $e) {
+                        logger()->warning('Course completion email failed: ' . $e->getMessage());
+                    }
+                } else {
+                    // Sudah punya sertifikat, tidak perlu kirim ulang
+                }
+            } elseif ($percent >= 100) {
+                // Audit track — kirim email tanpa sertifikat
+                $alreadySentCompletion = $enrollment->completed_at !== null
+                    && $enrollment->getOriginal('status') === 'completed';
+
+                if (!$alreadySentCompletion) {
+                    try {
+                        Mail::to(auth()->user()->email)->send(
+                            new CourseCompletionMail(auth()->user(), $course)
+                        );
+                    } catch (\Exception $e) {
+                        logger()->warning('Course completion email (audit) failed: ' . $e->getMessage());
+                    }
                 }
             }
         }

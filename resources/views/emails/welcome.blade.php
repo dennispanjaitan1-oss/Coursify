@@ -1,31 +1,71 @@
 <!DOCTYPE html>
-<html>
-<body style="font-family:sans-serif;background:#f5f3ff;padding:40px 20px;">
-<div style="max-width:520px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selamat Datang di Coursify</title>
+</head>
+<body style="margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background-color:#fafafa;color:#1a1a1a;">
 
-    <div style="background:#6366f1;padding:32px 40px;">
-        <h1 style="color:#fff;margin:0;font-size:24px;">Coursify</h1>
-    </div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#fafafa;padding:60px 20px;">
+    <tr>
+        <td align="center">
+            <table role="presentation" width="540" cellpadding="0" cellspacing="0" style="max-width:540px;width:100%;background-color:#ffffff;border:1px solid #eaeaea;border-radius:12px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.02);">
+                
+                <!-- Logo Header -->
+                <tr>
+                    <td style="padding:48px 48px 24px;text-align:left;">
+                        <span style="font-size:20px;font-weight:700;letter-spacing:-0.5px;color:#111111;text-transform:uppercase;">Coursify</span>
+                    </td>
+                </tr>
 
-    <div style="padding:32px 40px;">
-        <h2 style="color:#111;margin:0 0 12px;">Halo, {{ $user->name }}! 👋</h2>
-        <p style="color:#6b7280;line-height:1.6;margin:0 0 24px;">
-            Akun Coursify kamu berhasil dibuat. Selamat datang di platform belajar terbaik!
-            Mulai eksplorasi ribuan kursus dari instruktur terbaik dunia.
-        </p>
-        <a href="{{ route('courses.index') }}"
-           style="display:inline-block;background:#6366f1;color:#fff;padding:14px 28px;
-                  border-radius:50px;text-decoration:none;font-weight:700;font-size:14px;">
-            Jelajahi Kursus →
-        </a>
-    </div>
+                <!-- Content -->
+                <tr>
+                    <td style="padding:0 48px 36px;">
+                        <h1 style="margin:0 0 16px;font-size:24px;font-weight:600;color:#111111;letter-spacing:-0.3px;line-height:1.3;">
+                            Mulai Perjalanan Baru Anda
+                        </h1>
+                        <p style="margin:0 0 24px;font-size:14px;color:#666666;line-height:1.6;">
+                            Halo {{ $user->name }},<br><br>
+                            Akun Anda telah berhasil dibuat. Platform ini didesain khusus untuk mendukung pengembangan kompetensi profesional Anda melalui akses ke berbagai program pembelajaran terstruktur dari institusi ternama.
+                        </p>
+                        
+                        <table role="presentation" cellpadding="0" cellspacing="0" style="margin-bottom:16px;">
+                            <tr>
+                                <td>
+                                    <a href="{{ route('courses.index') }}"
+                                       style="display:inline-block;background-color:#111111;color:#ffffff;padding:12px 28px;
+                                              border-radius:6px;text-decoration:none;font-weight:500;font-size:13px;letter-spacing:0.5px;">
+                                        Jelajahi Program
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
 
-    <div style="padding:20px 40px;border-top:1px solid #f3f4f6;">
-        <p style="color:#9ca3af;font-size:12px;margin:0;">
-            © {{ date('Y') }} Coursify. Semua hak dilindungi.
-        </p>
-    </div>
+                <!-- Footer Separator -->
+                <tr>
+                    <td style="padding:0 48px;">
+                        <div style="height:1px;background-color:#eaeaea;"></div>
+                    </td>
+                </tr>
 
-</div>
+                <!-- Footer -->
+                <tr>
+                    <td style="padding:24px 48px 48px;font-size:12px;color:#999999;line-height:1.5;">
+                        <p style="margin:0 0 4px;font-weight:600;color:#666666;">Coursify</p>
+                        <p style="margin:0;">
+                            Surel ini dikirim secara otomatis sebagai konfirmasi pendaftaran akun baru.<br>
+                            &copy; {{ date('Y') }} Coursify. Hak cipta dilindungi undang-undang.
+                        </p>
+                    </td>
+                </tr>
+
+            </table>
+        </td>
+    </tr>
+</table>
+
 </body>
 </html>

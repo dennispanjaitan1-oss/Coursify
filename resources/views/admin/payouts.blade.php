@@ -3,13 +3,16 @@
 
 @section('content')
 
-    <div class="min-h-screen bg-gray-100 flex">
+    <div class="min-h-screen bg-[var(--admin-bg)] flex">
 
         {{-- SIDEBAR --}}
         @include('admin.partials.sidebar')
 
         {{-- MAIN CONTENT --}}
         <main class="flex-1 p-8 overflow-y-auto">
+
+            @php($breadcrumb = 'Payouts')
+            @include('admin.partials.header')
 
             {{-- HEADER --}}
             <div class="flex items-center justify-between mb-8">
@@ -25,7 +28,7 @@
                 </div>
 
                 <button
-                    class="bg-violet-500 hover:bg-violet-600 text-white px-5 py-3 rounded-2xl shadow font-medium transition">
+                    class="ui-btn">
                     + Create Payout
                 </button>
 
@@ -34,82 +37,86 @@
             {{-- STATS --}}
             <div class="grid grid-cols-1 md:grid-cols-4 gap-5 mb-8">
 
-                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6">
+                <div class="glass rounded-3xl p-6 shadow-sm border border-[var(--glass-border)]">
                     <p class="text-sm text-gray-500">
                         Total Payouts
                     </p>
 
-                    <h2 class="text-3xl font-bold text-gray-800 mt-2">
-                        $24.8K
+                    <h2 class="text-3xl font-bold text-[var(--text-strong)] mt-2">
+                        Rp {{ number_format($stats['total_amount'], 0, ',', '.') }}
                     </h2>
                 </div>
 
-                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6">
+                <div class="glass rounded-3xl p-6 shadow-sm border border-[var(--glass-border)]">
                     <p class="text-sm text-gray-500">
                         Pending
                     </p>
 
                     <h2 class="text-3xl font-bold text-yellow-500 mt-2">
-                        18
+                        {{ number_format($stats['pending']) }}
                     </h2>
                 </div>
 
-                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6">
+                <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50">
                     <p class="text-sm text-gray-500">
                         Success
                     </p>
 
                     <h2 class="text-3xl font-bold text-green-600 mt-2">
-                        142
+                        {{ number_format($stats['paid']) }}
                     </h2>
                 </div>
 
-                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6">
+                <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50">
                     <p class="text-sm text-gray-500">
                         Failed
                     </p>
 
                     <h2 class="text-3xl font-bold text-red-500 mt-2">
-                        4
+                        {{ number_format($stats['rejected']) }}
                     </h2>
                 </div>
 
             </div>
 
             {{-- FILTER --}}
-            <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 mb-8">
+            <div class="glass rounded-3xl p-6 shadow-sm border border-[var(--glass-border)] mb-8">
 
-                <div class="flex flex-col md:flex-row gap-4">
+                <form method="GET" action="{{ route('admin.payouts') }}" class="flex flex-col md:flex-row gap-4">
 
                     <input
                         type="text"
+                        name="search"
+                        value="{{ request('search') }}"
                         placeholder="Cari instructor..."
-                        class="flex-1 border border-gray-200 rounded-2xl px-5 py-3 focus:outline-none focus:ring-2 focus:ring-violet-300">
+                        class="flex-1 bg-[var(--panel)] border border-[var(--glass-border)] rounded-2xl px-5 py-3 focus:outline-none focus:ring-2 focus:ring-violet-50">
 
                     <select
-                        class="border border-gray-200 rounded-2xl px-5 py-3 focus:outline-none">
+                        name="status"
+                        onchange="this.form.submit()"
+                        class="bg-[var(--panel)] border border-[var(--glass-border)] rounded-2xl px-5 py-3 focus:outline-none">
 
-                        <option>Semua Status</option>
-                        <option>Pending</option>
-                        <option>Success</option>
-                        <option>Failed</option>
+                        <option value="">Semua Status</option>
+                        <option value="pending" {{ request('status') === 'pending' ? 'selected' : '' }}>Pending</option>
+                        <option value="paid" {{ request('status') === 'paid' ? 'selected' : '' }}>Success</option>
+                        <option value="rejected" {{ request('status') === 'rejected' ? 'selected' : '' }}>Failed</option>
 
                     </select>
 
-                </div>
+                </form>
 
             </div>
 
             {{-- TABLE --}}
-            <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="glass rounded-3xl p-6 shadow-sm border border-[var(--glass-border)] overflow-hidden">
 
                 <div class="overflow-x-auto">
 
                     <table class="w-full">
 
-                        <thead class="bg-gray-50">
+                        <thead class="bg-transparent text-[var(--text-muted)] text-xs font-semibold uppercase tracking-wide">
 
-                            <tr class="text-left text-gray-500 text-sm">
+                            <tr class="bg-gray-50 text-gray-500 text-xs font-semibold uppercase tracking-wide">
 
                                 <th class="px-6 py-4 font-semibold">
                                     Instructor
@@ -139,41 +146,41 @@
 
                         </thead>
 
-                        <tbody class="divide-y divide-gray-100">
+                        <tbody class="divide-y divide-[rgba(15,23,42,0.04)]">
 
-                            {{-- ITEM --}}
-                            <tr class="hover:bg-gray-50 transition">
+                            @forelse($payouts as $payout)
+                                <tr class="hover:bg-[var(--panel)] transition">
 
                                 <td class="px-6 py-5">
 
                                     <div>
                                         <h3 class="font-semibold text-gray-800">
-                                            Budi Santoso
+                                            {{ $payout->instructor?->name ?? 'Unknown Instructor' }}
                                         </h3>
 
                                         <p class="text-sm text-gray-500">
-                                            budi@coursify.com
+                                            {{ $payout->instructor?->email ?? '-' }}
                                         </p>
                                     </div>
 
                                 </td>
 
                                 <td class="px-6 py-5 font-bold text-gray-800">
-                                    $1,250
+                                    Rp {{ number_format($payout->amount, 0, ',', '.') }}
                                 </td>
 
                                 <td class="px-6 py-5 text-gray-600">
-                                    Bank Transfer
+                                    {{ $payout->note ?: 'Manual' }}
                                 </td>
 
                                 <td class="px-6 py-5 text-gray-600">
-                                    13 May 2026
+                                    {{ optional($payout->paid_at ?? $payout->created_at)->format('d M Y') }}
                                 </td>
 
                                 <td class="px-6 py-5">
 
-                                    <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                        Pending
+                                    <span class="{{ $statusClassMap[$payout->status] ?? 'bg-gray-100 text-gray-700' }} px-3 py-1 rounded-full text-xs font-semibold">
+                                        {{ $statusLabelMap[$payout->status] ?? ucfirst($payout->status) }}
                                     </span>
 
                                 </td>
@@ -182,125 +189,43 @@
 
                                     <div class="flex items-center justify-center gap-2">
 
-                                        <button
-                                            class="bg-green-100 hover:bg-green-200 text-green-700 px-4 py-2 rounded-xl text-sm font-medium transition">
-                                            Approve
-                                        </button>
+                                        @if($payout->status === 'pending')
+                                            <form method="POST" action="{{ route('admin.payouts.update', $payout) }}">
+                                                @csrf
+                                                @method('PATCH')
+                                                <input type="hidden" name="status" value="paid">
+                                                <button class="ui-btn">
+                                                    Approve
+                                                </button>
+                                            </form>
 
-                                        <button
-                                            class="bg-red-100 hover:bg-red-200 text-red-600 px-4 py-2 rounded-xl text-sm font-medium transition">
-                                            Reject
-                                        </button>
-
-                                    </div>
-
-                                </td>
-
-                            </tr>
-
-                            {{-- ITEM --}}
-                            <tr class="hover:bg-gray-50 transition">
-
-                                <td class="px-6 py-5">
-
-                                    <div>
-                                        <h3 class="font-semibold text-gray-800">
-                                            Sari Dewi
-                                        </h3>
-
-                                        <p class="text-sm text-gray-500">
-                                            sari@coursify.com
-                                        </p>
-                                    </div>
-
-                                </td>
-
-                                <td class="px-6 py-5 font-bold text-gray-800">
-                                    $980
-                                </td>
-
-                                <td class="px-6 py-5 text-gray-600">
-                                    PayPal
-                                </td>
-
-                                <td class="px-6 py-5 text-gray-600">
-                                    12 May 2026
-                                </td>
-
-                                <td class="px-6 py-5">
-
-                                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                        Success
-                                    </span>
-
-                                </td>
-
-                                <td class="px-6 py-5">
-
-                                    <div class="flex items-center justify-center gap-2">
-
-                                        <button
-                                            class="bg-blue-100 hover:bg-blue-200 text-blue-700 px-4 py-2 rounded-xl text-sm font-medium transition">
-                                            Detail
-                                        </button>
+                                            <form method="POST" action="{{ route('admin.payouts.update', $payout) }}">
+                                                @csrf
+                                                @method('PATCH')
+                                                <input type="hidden" name="status" value="rejected">
+                                                <button class="border border-red-200 hover:bg-red-50 text-red-600 text-sm font-medium px-4 py-2 rounded-xl transition">
+                                                    Reject
+                                                </button>
+                                            </form>
+                                        @else
+                                            <button
+                                                class="border border-gray-200 hover:bg-gray-50 text-gray-600 text-sm font-medium px-4 py-2 rounded-xl transition">
+                                                Detail
+                                            </button>
+                                        @endif
 
                                     </div>
 
                                 </td>
 
                             </tr>
-
-                            {{-- ITEM --}}
-                            <tr class="hover:bg-gray-50 transition">
-
-                                <td class="px-6 py-5">
-
-                                    <div>
-                                        <h3 class="font-semibold text-gray-800">
-                                            Andi Pratama
-                                        </h3>
-
-                                        <p class="text-sm text-gray-500">
-                                            andi@coursify.com
-                                        </p>
-                                    </div>
-
+                            @empty
+                            <tr>
+                                <td colspan="6" class="px-6 py-10 text-center text-gray-500">
+                                    Belum ada data payout.
                                 </td>
-
-                                <td class="px-6 py-5 font-bold text-gray-800">
-                                    $1,540
-                                </td>
-
-                                <td class="px-6 py-5 text-gray-600">
-                                    Bank Transfer
-                                </td>
-
-                                <td class="px-6 py-5 text-gray-600">
-                                    11 May 2026
-                                </td>
-
-                                <td class="px-6 py-5">
-
-                                    <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                        Failed
-                                    </span>
-
-                                </td>
-
-                                <td class="px-6 py-5">
-
-                                    <div class="flex items-center justify-center gap-2">
-
-                                        <button
-                                            class="bg-yellow-100 hover:bg-yellow-200 text-yellow-700 px-4 py-2 rounded-xl text-sm font-medium transition">
-                                            Retry
-                                        </button>
-
-                                    </div>
-
-                                </td>
-
                             </tr>
+                            @endforelse
 
                         </tbody>
 
@@ -308,6 +233,10 @@
 
                 </div>
 
+            </div>
+
+            <div class="mt-6">
+                {{ $payouts->links() }}
             </div>
 
         </main>

@@ -10,12 +10,11 @@ class ApprovalController extends Controller
     public function index()
     {
         $pending = Course::with(['instructors', 'category', 'institution'])
-            ->where('is_published', false)
-            ->withTrashed(false)
+            ->pendingApproval()
             ->orderBy('created_at', 'desc')
             ->paginate(15);
 
-        $pendingCount = Course::where('is_published', false)->count();
+        $pendingCount = Course::pendingApproval()->count();
 
         return view('admin.approvals', compact('pending', 'pendingCount'));
     }

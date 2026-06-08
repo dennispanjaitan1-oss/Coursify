@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('content')
 <div class="p-8 max-w-5xl mx-auto">
@@ -13,7 +13,7 @@
         </div>
     </div>
 
-    <div class="bg-white rounded-3xl shadow-lg p-8 space-y-6">
+    <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50 space-y-6">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div>
                 <h2 class="text-xl font-semibold">General Information</h2>

@@ -3,13 +3,16 @@
 
 @section('content')
 
-    <div class="min-h-screen bg-gray-100 flex">
+    <div class="min-h-screen bg-[var(--admin-bg)] flex">
 
         {{-- SIDEBAR --}}
         @include('admin.partials.sidebar')
 
         {{-- MAIN CONTENT --}}
         <main class="flex-1 p-8 overflow-y-auto">
+
+            @php($breadcrumb = 'Logs')
+            @include('admin.partials.header')
 
             {{-- HEADER --}}
             <div class="mb-8">
@@ -25,82 +28,86 @@
             {{-- STATISTICS --}}
             <div class="grid grid-cols-1 md:grid-cols-4 gap-5 mb-8">
 
-                <div class="bg-white rounded-3xl shadow-sm p-6 border border-gray-100">
+                <div class="glass rounded-3xl p-6 shadow-sm border border-[var(--glass-border)]">
                     <p class="text-sm text-gray-500">
                         Total Logs
                     </p>
 
                     <h2 class="text-3xl font-bold text-gray-800 mt-2">
-                        12.4K
+                        {{ number_format($stats['total']) }}
                     </h2>
                 </div>
 
-                <div class="bg-white rounded-3xl shadow-sm p-6 border border-gray-100">
+                <div class="glass rounded-3xl p-6 shadow-sm border border-[var(--glass-border)]">
                     <p class="text-sm text-gray-500">
                         Info Logs
                     </p>
 
                     <h2 class="text-3xl font-bold text-blue-600 mt-2">
-                        10.8K
+                        {{ number_format($stats['info']) }}
                     </h2>
                 </div>
 
-                <div class="bg-white rounded-3xl shadow-sm p-6 border border-gray-100">
+                <div class="glass rounded-3xl p-6 shadow-sm border border-[var(--glass-border)]">
                     <p class="text-sm text-gray-500">
                         Warning
                     </p>
 
                     <h2 class="text-3xl font-bold text-yellow-500 mt-2">
-                        1.1K
+                        {{ number_format($stats['warning']) }}
                     </h2>
                 </div>
 
-                <div class="bg-white rounded-3xl shadow-sm p-6 border border-gray-100">
+                <div class="glass rounded-3xl p-6 shadow-sm border border-[var(--glass-border)]">
                     <p class="text-sm text-gray-500">
                         Errors
                     </p>
 
                     <h2 class="text-3xl font-bold text-red-500 mt-2">
-                        532
+                        {{ number_format($stats['error']) }}
                     </h2>
                 </div>
 
             </div>
 
             {{-- FILTER --}}
-            <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 mb-8">
+            <div class="glass rounded-3xl p-6 shadow-sm border border-[var(--glass-border)] mb-8">
 
-                <div class="flex flex-col md:flex-row gap-4">
+                <form method="GET" action="{{ route('admin.logs') }}" class="flex flex-col md:flex-row gap-4">
 
                     <input
                         type="text"
+                        name="search"
+                        value="{{ request('search') }}"
                         placeholder="Cari logs..."
                         class="flex-1 border border-gray-200 rounded-2xl px-5 py-3 focus:outline-none focus:ring-2 focus:ring-violet-300">
 
                     <select
+                        name="level"
+                        onchange="this.form.submit()"
                         class="border border-gray-200 rounded-2xl px-5 py-3 focus:outline-none">
 
-                        <option>Semua Level</option>
-                        <option>INFO</option>
-                        <option>WARNING</option>
-                        <option>ERROR</option>
+                        <option value="">Semua Level</option>
+                        <option value="info" {{ request('level') === 'info' ? 'selected' : '' }}>INFO</option>
+                        <option value="warning" {{ request('level') === 'warning' ? 'selected' : '' }}>WARNING</option>
+                        <option value="error" {{ request('level') === 'error' ? 'selected' : '' }}>ERROR</option>
 
                     </select>
 
-                </div>
+                </form>
 
             </div>
 
             {{-- LOGS TABLE --}}
-            <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="glass rounded-3xl p-6 shadow-sm border border-[var(--glass-border)] overflow-hidden">
 
                 <div class="overflow-x-auto">
 
                     <table class="w-full">
 
-                        <thead class="bg-gray-50">
+                        <thead class="bg-transparent text-[var(--text-muted)] text-xs font-semibold uppercase tracking-wide">
 
-                            <tr class="text-left text-gray-500 text-sm">
+                            <tr class="text-[var(--text-muted)] text-xs font-semibold uppercase tracking-wide">
 
                                 <th class="px-6 py-4 font-semibold">
                                     Time
@@ -128,150 +135,41 @@
 
                         <tbody class="divide-y divide-gray-100">
 
-                            {{-- LOG ITEM --}}
+                            @forelse($logs as $log)
                             <tr class="hover:bg-gray-50 transition">
 
                                 <td class="px-6 py-5 text-sm text-gray-600">
-                                    2026-05-13 10:21:33
+                                    {{ $log->created_at?->format('Y-m-d H:i:s') }}
                                 </td>
 
                                 <td class="px-6 py-5">
-                                    <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                        INFO
+                                    <span class="{{ $levelClassMap[strtolower($log->display_level)] ?? 'bg-gray-100 text-gray-700' }} px-3 py-1 rounded-full text-xs font-semibold">
+                                        {{ $log->display_level }}
                                     </span>
                                 </td>
 
                                 <td class="px-6 py-5 text-gray-700">
-                                    Admin berhasil login ke dashboard.
+                                    {{ $log->description }}
                                 </td>
 
                                 <td class="px-6 py-5 text-gray-600 text-sm">
-                                    192.168.1.12
+                                    {{ $log->display_ip }}
                                 </td>
 
                                 <td class="px-6 py-5">
-                                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                        Success
+                                    <span class="{{ $statusClassMap[strtolower($log->display_status)] ?? 'bg-gray-100 text-gray-700' }} px-3 py-1 rounded-full text-xs font-semibold">
+                                        {{ ucfirst(strtolower($log->display_status)) }}
                                     </span>
                                 </td>
 
                             </tr>
-
-                            {{-- LOG ITEM --}}
-                            <tr class="hover:bg-gray-50 transition">
-
-                                <td class="px-6 py-5 text-sm text-gray-600">
-                                    2026-05-13 09:50:11
+                            @empty
+                            <tr>
+                                <td colspan="5" class="px-6 py-10 text-center text-gray-500">
+                                    Belum ada log aktivitas.
                                 </td>
-
-                                <td class="px-6 py-5">
-                                    <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                        WARNING
-                                    </span>
-                                </td>
-
-                                <td class="px-6 py-5 text-gray-700">
-                                    Percobaan login gagal sebanyak 3 kali.
-                                </td>
-
-                                <td class="px-6 py-5 text-gray-600 text-sm">
-                                    192.168.1.55
-                                </td>
-
-                                <td class="px-6 py-5">
-                                    <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                        Warning
-                                    </span>
-                                </td>
-
                             </tr>
-
-                            {{-- LOG ITEM --}}
-                            <tr class="hover:bg-gray-50 transition">
-
-                                <td class="px-6 py-5 text-sm text-gray-600">
-                                    2026-05-13 08:33:42
-                                </td>
-
-                                <td class="px-6 py-5">
-                                    <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                        ERROR
-                                    </span>
-                                </td>
-
-                                <td class="px-6 py-5 text-gray-700">
-                                    Database connection timeout detected.
-                                </td>
-
-                                <td class="px-6 py-5 text-gray-600 text-sm">
-                                    192.168.1.77
-                                </td>
-
-                                <td class="px-6 py-5">
-                                    <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                        Failed
-                                    </span>
-                                </td>
-
-                            </tr>
-
-                            {{-- LOG ITEM --}}
-                            <tr class="hover:bg-gray-50 transition">
-
-                                <td class="px-6 py-5 text-sm text-gray-600">
-                                    2026-05-12 22:11:09
-                                </td>
-
-                                <td class="px-6 py-5">
-                                    <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                        INFO
-                                    </span>
-                                </td>
-
-                                <td class="px-6 py-5 text-gray-700">
-                                    Backup sistem berhasil dibuat otomatis.
-                                </td>
-
-                                <td class="px-6 py-5 text-gray-600 text-sm">
-                                    127.0.0.1
-                                </td>
-
-                                <td class="px-6 py-5">
-                                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                        Success
-                                    </span>
-                                </td>
-
-                            </tr>
-
-                            {{-- LOG ITEM --}}
-                            <tr class="hover:bg-gray-50 transition">
-
-                                <td class="px-6 py-5 text-sm text-gray-600">
-                                    2026-05-12 20:45:18
-                                </td>
-
-                                <td class="px-6 py-5">
-                                    <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                        ERROR
-                                    </span>
-                                </td>
-
-                                <td class="px-6 py-5 text-gray-700">
-                                    Payment gateway API tidak merespon.
-                                </td>
-
-                                <td class="px-6 py-5 text-gray-600 text-sm">
-                                    192.168.1.100
-                                </td>
-
-                                <td class="px-6 py-5">
-                                    <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                        Failed
-                                    </span>
-                                </td>
-
-                            </tr>
+                            @endforelse
 
                         </tbody>
 
@@ -279,6 +177,10 @@
 
                 </div>
 
+            </div>
+
+            <div class="mt-6">
+                {{ $logs->links() }}
             </div>
 
         </main>

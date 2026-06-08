@@ -7,10 +7,13 @@ use App\Models\Enrollment;
 use App\Models\Payment;
 use App\Models\Review;
 use App\Models\Wishlist;
+use App\Models\Certificate;
 use App\Events\NewEnrollment;
 use App\Mail\EnrollmentMail;
+use App\Mail\CourseCompletionMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class EnrollmentController extends Controller
 {
@@ -48,6 +51,31 @@ class EnrollmentController extends Controller
                         'type' => $track,
                         'upgraded_at' => now(),
                     ]);
+
+                    // Jika siswa sudah menyelesaikan kursus 100%, terbitkan sertifikat & kirim email
+                    if ($enrollment->progress_percent >= 100) {
+                        $alreadyHasCert = Certificate::where('user_id', $user->id)
+                            ->where('course_id', $course->id)
+                            ->exists();
+
+                        if (!$alreadyHasCert) {
+                            try {
+                                $cert = Certificate::create([
+                                    'user_id'            => $user->id,
+                                    'course_id'          => $course->id,
+                                    'enrollment_id'      => $enrollment->id,
+                                    'certificate_type'   => $enrollment->type,
+                                    'certificate_number' => 'CERT-' . date('Y') . '-' . strtoupper(Str::random(8)),
+                                    'issued_at'          => now(),
+                                ]);
+
+                                Mail::to($user->email)->send(new CourseCompletionMail($user, $course, $cert));
+                            } catch (\Exception $e) {
+                                logger()->error('Free upgrade certificate/email failed: ' . $e->getMessage());
+                            }
+                        }
+                    }
+
                     return redirect()->route('student.learn', $course->slug)
                         ->with('success', 'Berhasil upgrade ke jalur Verified!');
                 }

@@ -150,6 +150,12 @@ class Course extends Model
         return $query->where('price', '>', 0);
     }
 
+    /** Kursus yang menunggu approval admin. */
+    public function scopePendingApproval($query)
+    {
+        return $query->where('is_published', false)->withTrashed(false);
+    }
+
     /** Instruktur hasil scraping dari edX */
 public function scrapedInstructors(): HasMany
 {

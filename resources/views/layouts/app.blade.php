@@ -646,6 +646,8 @@
 </head>
 <body>
 
+@unless(request()->is('admin*'))
+
 {{-- ══════════════════════════════════════════════════════════ --}}
 {{-- NAVBAR WRAP — berisi promo banner + pill nav + mega menu  --}}
 {{-- ══════════════════════════════════════════════════════════ --}}
@@ -895,6 +897,8 @@
 {{-- Overlay penutup mega menu (di LUAR navbar-wrap) --}}
 <div class="mega-overlay" id="mega-overlay" onclick="closeMega()"></div>
 
+@endunless
+
 
 {{-- ══════════════════════════════════════════════════════════ --}}
 {{-- FLASH MESSAGES                                             --}}
@@ -932,6 +936,8 @@
 
 
 
+
+@unless(request()->is('admin*'))
 
 <footer>
 
@@ -1172,7 +1178,7 @@
     </div>{{-- /mega footer --}}
 
 </footer>
-</footer>
+@endunless
 
 {{-- ══ SCRIPTS ══ --}}
 @stack('scripts')

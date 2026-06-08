@@ -14,6 +14,9 @@
     {{-- MAIN CONTENT --}}
     <main class="flex-1 p-8 overflow-y-auto">
 
+            @php($breadcrumb = 'Edit User')
+            @include('admin.partials.header')
+
         {{-- BREADCRUMB --}}
         <div class="flex items-center gap-2 text-sm text-gray-500 mb-6">
             <a href="{{ route('admin.users') }}" class="hover:text-violet-600 transition">Users</a>
@@ -94,7 +97,7 @@
 
                     <div class="flex gap-3 pt-4">
                         <a href="{{ route('admin.users') }}"
-                            class="flex-1 text-center bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-xl text-sm font-medium transition">
+                            class="flex-1 text-center border border-gray-200 hover:bg-gray-50 text-gray-600 text-sm font-medium px-4 py-2 rounded-xl transition">
                             Batal
                         </a>
                         <button type="submit"

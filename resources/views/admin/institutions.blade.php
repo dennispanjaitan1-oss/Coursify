@@ -10,6 +10,9 @@
         {{-- MAIN CONTENT --}}
         <main class="flex-1 p-8 overflow-y-auto">
 
+            @php($breadcrumb = 'Institutions')
+            @include('admin.partials.header')
+
             {{-- HEADER --}}
             <div class="flex items-center justify-between mb-8">
                 <div>
@@ -17,29 +20,29 @@
                     <p class="text-gray-500 mt-1">Kelola institusi partner platform pembelajaran.</p>
                 </div>
                 <button onclick="document.getElementById('modalAdd').classList.remove('hidden')"
-                    class="bg-violet-500 hover:bg-violet-600 text-white px-5 py-2.5 rounded-2xl font-medium shadow transition">
+                    class="bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium px-4 py-2 rounded-xl transition">
                     + Add Institution
                 </button>
             </div>
 
             {{-- STATS --}}
             <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
-                <div class="bg-white rounded-3xl shadow-sm p-6 border border-gray-100">
+                <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50">
                     <p class="text-sm text-gray-500">Total Institutions</p>
                     <h2 class="text-3xl font-bold text-gray-800 mt-2">{{ $institutions->total() }}</h2>
                 </div>
-                <div class="bg-white rounded-3xl shadow-sm p-6 border border-gray-100">
+                <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50">
                     <p class="text-sm text-gray-500">Verified</p>
                     <h2 class="text-3xl font-bold text-green-600 mt-2">{{ $institutions->where('is_verified', true)->count() }}</h2>
                 </div>
-                <div class="bg-white rounded-3xl shadow-sm p-6 border border-gray-100">
+                <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50">
                     <p class="text-sm text-gray-500">Unverified</p>
                     <h2 class="text-3xl font-bold text-yellow-500 mt-2">{{ $institutions->where('is_verified', false)->count() }}</h2>
                 </div>
             </div>
 
             {{-- SEARCH --}}
-            <div class="bg-white rounded-3xl shadow-sm p-6 mb-8 border border-gray-100">
+            <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50 mb-8">
                 <form method="GET" action="{{ route('admin.institutions') }}" class="flex flex-col md:flex-row gap-4">
                     <input type="text" name="search" value="{{ request('search') }}"
                         placeholder="Cari institusi..."
@@ -49,18 +52,18 @@
                         <option value="verified" {{ request('status') === 'verified' ? 'selected' : '' }}>Verified</option>
                         <option value="unverified" {{ request('status') === 'unverified' ? 'selected' : '' }}>Unverified</option>
                     </select>
-                    <button type="submit" class="bg-violet-500 text-white px-6 py-3 rounded-2xl font-medium hover:bg-violet-600 transition">
+                    <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium px-4 py-2 rounded-xl transition">
                         Cari
                     </button>
                 </form>
             </div>
 
             {{-- TABLE --}}
-            <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50 overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full">
-                        <thead class="bg-gray-50">
-                            <tr class="text-left text-gray-500 text-sm">
+                        <thead class="bg-gray-50 text-gray-500 text-xs font-semibold uppercase tracking-wide">
+                            <tr class="bg-gray-50 text-gray-500 text-xs font-semibold uppercase tracking-wide">
                                 <th class="px-6 py-4 font-semibold">Institution</th>
                                 <th class="px-6 py-4 font-semibold">Website</th>
                                 <th class="px-6 py-4 font-semibold">Description</th>
@@ -110,7 +113,7 @@
                                         <div class="flex items-center justify-center gap-2">
                                             {{-- Edit Button --}}
                                             <button onclick='openEdit(@json($institution))'
-                                                class="bg-blue-100 hover:bg-blue-200 text-blue-600 px-4 py-2 rounded-xl text-sm font-medium transition">
+                                                class="border border-gray-200 hover:bg-gray-50 text-gray-600 text-sm font-medium px-4 py-2 rounded-xl transition">
                                                 <i class="fa-solid fa-pen-to-square"></i> Edit
                                             </button>
                                             {{-- Delete Button --}}
@@ -119,7 +122,7 @@
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit"
-                                                    class="bg-red-100 hover:bg-red-200 text-red-600 px-4 py-2 rounded-xl text-sm font-medium transition">
+                                                    class="bg-red-50 hover:bg-red-100 text-red-600 text-sm font-medium px-4 py-2 rounded-xl transition">
                                                     <i class="fa-solid fa-trash"></i> Delete
                                                 </button>
                                             </form>
@@ -180,11 +183,11 @@
                 </div>
                 <div class="flex gap-3 mt-6">
                     <button type="button" onclick="document.getElementById('modalAdd').classList.add('hidden')"
-                        class="flex-1 border border-gray-200 text-gray-600 py-3 rounded-2xl font-medium hover:bg-gray-50 transition">
+                        class="flex-1 border border-gray-200 hover:bg-gray-50 text-gray-600 text-sm font-medium px-4 py-2 rounded-xl transition">
                         Batal
                     </button>
                     <button type="submit"
-                        class="flex-1 bg-violet-500 text-white py-3 rounded-2xl font-medium hover:bg-violet-600 transition">
+                        class="flex-1 bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium px-4 py-2 rounded-xl transition">
                         Simpan
                     </button>
                 </div>
@@ -227,11 +230,11 @@
                 </div>
                 <div class="flex gap-3 mt-6">
                     <button type="button" onclick="document.getElementById('modalEdit').classList.add('hidden')"
-                        class="flex-1 border border-gray-200 text-gray-600 py-3 rounded-2xl font-medium hover:bg-gray-50 transition">
+                        class="flex-1 border border-gray-200 hover:bg-gray-50 text-gray-600 text-sm font-medium px-4 py-2 rounded-xl transition">
                         Batal
                     </button>
                     <button type="submit"
-                        class="flex-1 bg-violet-500 text-white py-3 rounded-2xl font-medium hover:bg-violet-600 transition">
+                        class="flex-1 bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium px-4 py-2 rounded-xl transition">
                         Update
                     </button>
                 </div>

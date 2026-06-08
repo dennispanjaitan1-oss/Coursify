@@ -9,6 +9,9 @@
 
     <main class="flex-1 p-8 overflow-y-auto">
 
+            @php($breadcrumb = null)
+            @include('admin.partials.header')
+
         {{-- HEADER --}}
         <div class="mb-8">
             <h1 class="text-3xl font-bold text-gray-800">Dashboard Overview</h1>
@@ -18,7 +21,7 @@
         {{-- STATS --}}
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
 
-            <div class="bg-white rounded-3xl p-6 shadow-sm">
+            <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-500 text-sm">Total Users</p>
@@ -32,7 +35,7 @@
                 </div>
             </div>
 
-            <div class="bg-white rounded-3xl p-6 shadow-sm">
+            <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-500 text-sm">Total Courses</p>
@@ -46,7 +49,7 @@
                 </div>
             </div>
 
-            <div class="bg-white rounded-3xl p-6 shadow-sm">
+            <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-500 text-sm">Pending Approvals</p>
@@ -61,7 +64,7 @@
                 <p class="text-orange-500 text-sm mt-4">Perlu ditinjau admin</p>
             </div>
 
-            <div class="bg-white rounded-3xl p-6 shadow-sm">
+            <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-500 text-sm">Revenue</p>
@@ -84,7 +87,7 @@
             <div class="xl:col-span-2 space-y-6">
 
                 {{-- RECENT USERS --}}
-                <div class="bg-white rounded-3xl p-6 shadow-sm">
+                <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50">
                     <div class="flex items-center justify-between mb-6">
                         <div>
                             <h2 class="text-xl font-bold text-gray-800">User Terbaru</h2>
@@ -122,7 +125,7 @@
                 </div>
 
                 {{-- TOP COURSES --}}
-                <div class="bg-white rounded-3xl p-6 shadow-sm">
+                <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50">
                     <div class="mb-6">
                         <h2 class="text-xl font-bold text-gray-800">Top Courses</h2>
                         <p class="text-gray-500 text-sm mt-1">Course paling populer berdasarkan enrollment</p>
@@ -130,8 +133,8 @@
 
                     <div class="overflow-x-auto">
                         <table class="w-full">
-                            <thead>
-                                <tr class="bg-gray-50 text-gray-500 text-sm">
+                            <thead class="bg-gray-50 text-gray-500 text-xs font-semibold uppercase tracking-wide">
+                                <tr class="bg-gray-50 text-gray-500 text-xs font-semibold uppercase tracking-wide">
                                     <th class="text-left p-4 rounded-l-2xl">Course</th>
                                     <th class="text-left p-4">Enrollments</th>
                                     <th class="text-left p-4 rounded-r-2xl">Rating</th>
@@ -169,7 +172,7 @@
             <div class="space-y-6">
 
                 {{-- PROFILE --}}
-                <div class="bg-white rounded-3xl p-6 shadow-sm">
+                <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50">
                     <div class="flex flex-col items-center text-center">
                         <div class="w-24 h-24 rounded-full bg-indigo-500 text-white flex items-center justify-center text-4xl font-bold mb-4">
                             {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
@@ -183,7 +186,7 @@
                 </div>
 
                 {{-- QUICK ACTIONS --}}
-                <div class="bg-white rounded-3xl p-6 shadow-sm">
+                <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50">
                     <h2 class="text-xl font-bold text-gray-800 mb-6">Quick Actions</h2>
                     <div class="space-y-3">
                         <a href="{{ route('admin.users') }}"

@@ -11,8 +11,11 @@
 
     <main class="flex-1 p-8 overflow-y-auto">
 
+            @php($breadcrumb = 'Transactions')
+            @include('admin.partials.header')
+
         {{-- HEADER --}}
-        <div class="bg-white rounded-3xl shadow-md p-8 mb-6">
+        <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50 mb-6">
             <div class="flex items-center justify-between">
                 <div>
                     <h1 class="text-3xl font-bold text-gray-800">Transactions</h1>
@@ -23,19 +26,19 @@
 
         {{-- STATS --}}
         <div class="grid grid-cols-1 md:grid-cols-4 gap-5 mb-8">
-            <div class="bg-white rounded-3xl shadow-sm p-6 border border-gray-100">
+            <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50">
                 <p class="text-sm text-gray-500">Total Transaksi</p>
                 <h2 class="text-3xl font-bold text-gray-800 mt-2">{{ $stats['total'] }}</h2>
             </div>
-            <div class="bg-white rounded-3xl shadow-sm p-6 border border-gray-100">
+            <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50">
                 <p class="text-sm text-gray-500">Sukses</p>
                 <h2 class="text-3xl font-bold text-green-600 mt-2">{{ $stats['paid'] }}</h2>
             </div>
-            <div class="bg-white rounded-3xl shadow-sm p-6 border border-gray-100">
+            <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50">
                 <p class="text-sm text-gray-500">Pending</p>
                 <h2 class="text-3xl font-bold text-yellow-500 mt-2">{{ $stats['pending'] }}</h2>
             </div>
-            <div class="bg-white rounded-3xl shadow-sm p-6 border border-gray-100">
+            <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50">
                 <p class="text-sm text-gray-500">Total Revenue</p>
                 <h2 class="text-2xl font-bold text-violet-600 mt-2">
                     Rp {{ number_format($stats['revenue'], 0, ',', '.') }}
@@ -44,7 +47,7 @@
         </div>
 
         {{-- SEARCH & FILTER --}}
-        <div class="bg-white rounded-3xl shadow-sm p-6 mb-6 border border-gray-100">
+        <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50 mb-6">
             <form method="GET" action="{{ route('admin.transactions') }}" class="flex flex-col md:flex-row gap-4">
                 <input type="text" name="search" value="{{ request('search') }}"
                     placeholder="Cari nama user atau ID transaksi..."
@@ -57,18 +60,18 @@
                     <option value="refunded" {{ request('status') === 'refunded' ? 'selected' : '' }}>Refunded</option>
                 </select>
                 <button type="submit"
-                    class="bg-violet-500 text-white px-6 py-3 rounded-2xl font-medium hover:bg-violet-600 transition">
+                    class="bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium px-4 py-2 rounded-xl transition">
                     Cari
                 </button>
             </form>
         </div>
 
         {{-- TABLE --}}
-        <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50 overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full">
-                    <thead class="bg-gray-50">
-                        <tr class="text-left text-gray-500 text-sm">
+                    <thead class="bg-gray-50 text-gray-500 text-xs font-semibold uppercase tracking-wide">
+                        <tr class="bg-gray-50 text-gray-500 text-xs font-semibold uppercase tracking-wide">
                             <th class="px-6 py-4 font-semibold">ID Transaksi</th>
                             <th class="px-6 py-4 font-semibold">Pengguna</th>
                             <th class="px-6 py-4 font-semibold">Course</th>
@@ -137,7 +140,7 @@
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
-                                                class="bg-red-100 hover:bg-red-200 text-red-600 px-4 py-2 rounded-xl text-sm font-medium transition">
+                                                class="bg-red-50 hover:bg-red-100 text-red-600 text-sm font-medium px-4 py-2 rounded-xl transition">
                                                 <i class="fa-solid fa-trash"></i> Hapus
                                             </button>
                                         </form>

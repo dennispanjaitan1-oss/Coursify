@@ -1,17 +1,19 @@
-{{-- FONT AWESOME --}}
-@push('styles')
-<link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-@endpush
+@php
+    $adminUser = auth()->user();
+    $baseLink = 'flex items-center gap-3 px-4 py-3 rounded-2xl text-sm transition';
+    $activeLink = 'bg-[var(--accent)] text-white shadow-sm';
+    $inactiveLink = 'text-[var(--text-strong)] hover:bg-[var(--panel)] hover:text-[var(--accent)]';
+    $sectionLabel = 'px-4 pt-5 pb-2 text-[11px] font-bold uppercase tracking-[0.16em] text-[var(--text-muted)]';
+@endphp
 
-<aside class="w-72 bg-white shadow-lg p-5 flex flex-col justify-between min-h-screen">
+<aside class="w-72 p-5 flex flex-col justify-between min-h-screen sticky top-0 glass">
 
     <div>
 
         {{-- LOGO --}}
-        <div class="flex items-center gap-3 mb-8 pb-4 border-b border-gray-100">
+        <div class="flex items-center gap-3 mb-8 pb-5 border-b border-gray-100">
 
-            <div class="w-12 h-12 rounded-2xl overflow-hidden">
+            <div class="w-12 h-12 rounded-2xl overflow-hidden shadow-sm">
                 <img
                     src="{{ asset('images/logo.png') }}"
                     alt="Logo"
@@ -20,7 +22,7 @@
             </div>
 
             <div>
-                <h1 class="text-lg font-bold text-gray-800">
+                <h1 class="text-lg font-bold text-gray-900">
                     Ruang<span class="text-orange-500">Kelas</span>
                 </h1>
 
@@ -32,177 +34,160 @@
         </div>
 
         {{-- MENU --}}
-        <nav class="space-y-2">
+        <nav class="space-y-1">
 
             {{-- DASHBOARD --}}
-           <a href="{{ route('admin.dashboard') }}"
-   class="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-100 hover:text-orange-600 text-gray-700 transition">
-
-    <i class="fa-solid fa-chart-line w-5 text-center"></i>
-
-    <span class="font-medium">
-        Dashboard
-    </span>
-
-</a>
+            <a href="{{ route('admin.dashboard') }}"
+               class="{{ $baseLink }} {{ request()->routeIs('admin.dashboard') ? $activeLink : $inactiveLink }}">
+                <i class="fa-solid fa-chart-line w-5 text-center"></i>
+                <span class="font-medium">Dashboard</span>
+            </a>
 
             {{-- ANALYTICS --}}
             <a href="{{ route('admin.analytics') }}"
-               class="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-100 hover:text-orange-600 text-gray-700 transition">
-
+               class="{{ $baseLink }} {{ request()->routeIs('admin.analytics') ? $activeLink : $inactiveLink }}">
                 <i class="fa-solid fa-chart-pie w-5 text-center"></i>
-
-                <span class="font-medium">
-                    Analytics
-                </span>
-
+                <span class="font-medium">Analytics</span>
             </a>
+
+            <div class="{{ $sectionLabel }}">
+                Management
+            </div>
 
             {{-- USERS --}}
             <a href="{{ route('admin.users') }}"
-               class="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-100 hover:text-orange-600 text-gray-700 transition">
-
+               class="{{ $baseLink }} {{ request()->routeIs('admin.users') ? $activeLink : $inactiveLink }}">
                 <i class="fa-solid fa-users w-5 text-center"></i>
-
-                <span class="font-medium">
-                    Users
-                </span>
-
+                <span class="font-medium">Users</span>
             </a>
 
             {{-- COURSES --}}
             <a href="{{ route('admin.courses.index') }}"
-               class="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-100 hover:text-orange-600 text-gray-700 transition">
-
+               class="{{ $baseLink }} {{ request()->routeIs('admin.courses.index') ? $activeLink : $inactiveLink }}">
                 <i class="fa-solid fa-book-open w-5 text-center"></i>
-
-                <span class="font-medium">
-                    Courses
-                </span>
-
-            </a>
-
-            {{-- QUICK CURRICULUM --}}
-            <a href="{{ route('admin.quick-curriculum.index') }}"
-               class="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-100 hover:text-orange-600 text-gray-700 transition">
-
-                <i class="fa-solid fa-wand-magic-sparkles w-5 text-center"></i>
-
-                <span class="font-medium">
-                    Quick Curriculum
-                </span>
-
+                <span class="font-medium">Courses</span>
             </a>
 
             {{-- INSTITUTIONS --}}
             <a href="{{ route('admin.institutions') }}"
-               class="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-100 hover:text-orange-600 text-gray-700 transition">
-
+               class="{{ $baseLink }} {{ request()->routeIs('admin.institutions') ? $activeLink : $inactiveLink }}">
                 <i class="fa-solid fa-school w-5 text-center"></i>
-
-                <span class="font-medium">
-                    Institutions
-                </span>
-
+                <span class="font-medium">Institutions</span>
             </a>
 
             {{-- CATEGORIES --}}
             <a href="{{ route('admin.categories') }}"
-               class="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-100 hover:text-orange-600 text-gray-700 transition">
-
+               class="{{ $baseLink }} {{ request()->routeIs('admin.categories') ? $activeLink : $inactiveLink }}">
                 <i class="fa-solid fa-layer-group w-5 text-center"></i>
-
-                <span class="font-medium">
-                    Categories
-                </span>
-
+                <span class="font-medium">Categories</span>
             </a>
+
+            <div class="{{ $sectionLabel }}">
+                Moderation
+            </div>
 
             {{-- APPROVALS --}}
             <a href="{{ route('admin.approvals') }}"
-               class="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-100 hover:text-orange-600 text-gray-700 transition">
-
+               class="{{ $baseLink }} {{ request()->routeIs('admin.approvals') ? $activeLink : $inactiveLink }}">
                 <i class="fa-solid fa-circle-check w-5 text-center"></i>
 
-                <span class="font-medium">
+                <span class="font-medium flex-1">
                     Approvals
                 </span>
 
+                @if($pendingApprovals > 0)
+                    <span class="min-w-6 h-6 px-2 rounded-full bg-red-500 text-white text-[11px] font-bold flex items-center justify-center">
+                        {{ $pendingApprovals > 99 ? '99+' : $pendingApprovals }}
+                    </span>
+                @endif
             </a>
 
             {{-- REVIEWS --}}
             <a href="{{ route('admin.reviews') }}"
-               class="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-100 hover:text-orange-600 text-gray-700 transition">
-
+               class="{{ $baseLink }} {{ request()->routeIs('admin.reviews') ? $activeLink : $inactiveLink }}">
                 <i class="fa-solid fa-star w-5 text-center"></i>
-
-                <span class="font-medium">
-                    Reviews
-                </span>
-
+                <span class="font-medium">Reviews</span>
             </a>
 
             {{-- REPORTS --}}
             <a href="{{ route('admin.reports') }}"
-               class="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-100 hover:text-orange-600 text-gray-700 transition">
-
+               class="{{ $baseLink }} {{ request()->routeIs('admin.reports') ? $activeLink : $inactiveLink }}">
                 <i class="fa-solid fa-flag w-5 text-center"></i>
-
-                <span class="font-medium">
-                    Reports
-                </span>
-
+                <span class="font-medium">Reports</span>
             </a>
+
+            <div class="{{ $sectionLabel }}">
+                Finance
+            </div>
 
             {{-- TRANSACTIONS --}}
             <a href="{{ route('admin.transactions') }}"
-               class="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-100 hover:text-orange-600 text-gray-700 transition">
-
+               class="{{ $baseLink }} {{ request()->routeIs('admin.transactions') ? $activeLink : $inactiveLink }}">
                 <i class="fa-solid fa-credit-card w-5 text-center"></i>
-
-                <span class="font-medium">
-                    Transactions
-                </span>
-
+                <span class="font-medium">Transactions</span>
             </a>
 
             {{-- PAYOUTS --}}
             <a href="{{ route('admin.payouts') }}"
-               class="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-100 hover:text-orange-600 text-gray-700 transition">
-
+               class="{{ $baseLink }} {{ request()->routeIs('admin.payouts') ? $activeLink : $inactiveLink }}">
                 <i class="fa-solid fa-wallet w-5 text-center"></i>
-
-                <span class="font-medium">
-                    Payouts
-                </span>
-
+                <span class="font-medium">Payouts</span>
             </a>
+
+            <div class="{{ $sectionLabel }}">
+                System
+            </div>
 
             {{-- SETTINGS --}}
             <a href="{{ route('admin.settings') }}"
-               class="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-100 hover:text-orange-600 text-gray-700 transition">
-
+               class="{{ $baseLink }} {{ request()->routeIs('admin.settings') ? $activeLink : $inactiveLink }}">
                 <i class="fa-solid fa-gear w-5 text-center"></i>
-
-                <span class="font-medium">
-                    Settings
-                </span>
-
+                <span class="font-medium">Settings</span>
             </a>
 
             {{-- LOGS --}}
             <a href="{{ route('admin.logs') }}"
-               class="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-orange-100 hover:text-orange-600 text-gray-700 transition">
-
+               class="{{ $baseLink }} {{ request()->routeIs('admin.logs') ? $activeLink : $inactiveLink }}">
                 <i class="fa-solid fa-file-lines w-5 text-center"></i>
-
-                <span class="font-medium">
-                    Logs
-                </span>
-
+                <span class="font-medium">Logs</span>
             </a>
 
         </nav>
+
+    </div>
+
+    <div class="pt-5 mt-6 border-t border-gray-100">
+
+
+        {{-- Admin profile --}}
+        <div class="flex items-center gap-3 px-3 py-3 rounded-2xl bg-[var(--panel)] border border-[var(--glass-border)]">
+
+            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--accent)] to-[var(--accent-2)] text-white flex items-center justify-center font-bold">
+                {{ strtoupper(substr($adminUser?->name ?? 'A', 0, 1)) }}
+            </div>
+
+            <div class="min-w-0">
+                <p class="text-sm font-semibold text-[var(--text-strong)] truncate">
+                    {{ $adminUser?->name ?? 'Admin' }}
+                </p>
+
+                <p class="text-xs text-[var(--text-muted)] truncate">
+                    {{ $adminUser?->email ?? 'admin@ruangkelas.test' }}
+                </p>
+            </div>
+
+        </div>
+
+        {{-- Logout --}}
+        <form method="POST" action="{{ route('logout') }}" class="mt-3">
+            @csrf
+
+            <button type="submit"
+                    class="w-full flex items-center justify-center gap-2 ui-btn">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Logout
+            </button>
+        </form>
 
     </div>
 

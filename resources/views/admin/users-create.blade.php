@@ -14,6 +14,9 @@
     {{-- MAIN CONTENT --}}
     <main class="flex-1 p-8 overflow-y-auto">
 
+            @php($breadcrumb = 'Create User')
+            @include('admin.partials.header')
+
         {{-- BREADCRUMB --}}
         <div class="flex items-center gap-2 text-sm text-gray-500 mb-6">
             <a href="{{ route('admin.users') }}" class="hover:text-indigo-600 transition">Users</a>
@@ -126,11 +129,11 @@
 
                     <div class="flex gap-3 pt-4">
                         <a href="{{ route('admin.users') }}"
-                            class="flex-1 text-center bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-xl text-sm font-medium transition">
+                            class="flex-1 text-center border border-gray-200 hover:bg-gray-50 text-gray-600 text-sm font-medium px-4 py-2 rounded-xl transition">
                             <i class="fas fa-arrow-left mr-1"></i> Batal
                         </a>
                         <button type="submit"
-                            class="flex-1 bg-indigo-500 hover:bg-indigo-600 text-white py-3 rounded-xl text-sm font-medium transition">
+                            class="flex-1 bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium px-4 py-2 rounded-xl transition">
                             <i class="fas fa-user-plus mr-1"></i> Tambah User
                         </button>
                     </div>

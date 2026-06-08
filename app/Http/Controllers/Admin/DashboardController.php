@@ -16,7 +16,7 @@ class DashboardController extends Controller
         $stats = [
             'total_users'    => User::count(),
             'total_courses'  => Course::count(),
-            'pending_courses'=> Course::where('is_published', false)->count(),
+            'pending_courses'=> Course::pendingApproval()->count(),
             'revenue'        => Payment::where('status', 'paid')->sum('amount'),
         ];
 

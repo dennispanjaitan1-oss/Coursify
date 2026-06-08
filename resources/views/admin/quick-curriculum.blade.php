@@ -9,6 +9,9 @@
 
     <main class="flex-1 p-8 overflow-y-auto">
 
+            @php($breadcrumb = 'Quick Curriculum')
+            @include('admin.partials.header')
+
         {{-- HEADER --}}
         <div class="mb-8 flex items-center justify-between">
             <div>
@@ -37,7 +40,7 @@
         <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
             
             {{-- INPUT FORM --}}
-            <div class="bg-white rounded-3xl p-6 shadow-sm flex flex-col justify-between">
+            <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50 flex flex-col justify-between">
                 <div>
                     <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
                         <i class="fa-solid fa-paste text-orange-500"></i> Input Kurikulum Mentah
@@ -78,7 +81,7 @@
             </div>
 
             {{-- LIVE PREVIEW --}}
-            <div class="bg-white rounded-3xl p-6 shadow-sm flex flex-col">
+            <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50 flex flex-col">
                 <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center justify-between">
                     <span class="flex items-center gap-2">
                         <i class="fa-solid fa-magnifying-glass text-indigo-500"></i> Hasil Live Preview

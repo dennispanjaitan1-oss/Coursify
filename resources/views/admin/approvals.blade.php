@@ -10,8 +10,11 @@
         {{-- MAIN CONTENT --}}
         <main class="flex-1 p-8 overflow-y-auto">
 
+            @php($breadcrumb = 'Approvals')
+            @include('admin.partials.header')
+
             {{-- HEADER --}}
-            <div class="bg-white rounded-3xl shadow-md p-8 mb-6">
+            <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50 mb-6">
                 <div class="flex items-center justify-between">
                     <div>
                         <h1 class="text-3xl font-bold text-gray-800">Approvals</h1>
@@ -27,7 +30,7 @@
             <div class="space-y-4">
 
                 @forelse($pending as $course)
-                    <div class="bg-white rounded-3xl shadow-md p-6 flex items-center justify-between">
+                    <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50 flex items-center justify-between">
                         <div class="flex items-center gap-4">
 
                             {{-- Thumbnail --}}
@@ -67,7 +70,7 @@
                             <form method="POST" action="{{ route('admin.approvals.approve', $course) }}">
                                 @csrf
                                 <button type="submit"
-                                    class="bg-green-100 text-green-700 px-5 py-2 rounded-xl text-sm font-medium hover:bg-green-200 transition">
+                                    class="bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium px-4 py-2 rounded-xl transition">
                                     <i class="fa-solid fa-check"></i> Approve
                                 </button>
                             </form>
@@ -78,14 +81,14 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit"
-                                    class="bg-red-100 text-red-600 px-5 py-2 rounded-xl text-sm font-medium hover:bg-red-200 transition">
+                                    class="bg-red-50 hover:bg-red-100 text-red-600 text-sm font-medium px-4 py-2 rounded-xl transition">
                                     <i class="fa-solid fa-xmark"></i> Reject
                                 </button>
                             </form>
                         </div>
                     </div>
                 @empty
-                    <div class="bg-white rounded-3xl shadow-md p-12 text-center text-gray-400">
+                    <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50 text-center text-gray-400">
                         <i class="fa-solid fa-circle-check text-4xl text-green-300 mb-3"></i>
                         <p class="font-medium">Semua course sudah disetujui!</p>
                     </div>

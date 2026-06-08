@@ -11,8 +11,11 @@
 
     <main class="flex-1 p-8 overflow-y-auto">
 
+            @php($breadcrumb = 'Reviews')
+            @include('admin.partials.header')
+
         {{-- HEADER --}}
-        <div class="bg-white rounded-3xl shadow-md p-8 mb-6">
+        <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50 mb-6">
             <div class="flex items-center justify-between">
                 <div>
                     <h1 class="text-3xl font-bold text-gray-800">Reviews Management</h1>
@@ -23,26 +26,26 @@
 
         {{-- STATS --}}
         <div class="grid grid-cols-1 md:grid-cols-4 gap-5 mb-8">
-            <div class="bg-white rounded-3xl shadow-sm p-6 border border-gray-100">
+            <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50">
                 <p class="text-sm text-gray-500">Total Reviews</p>
                 <h2 class="text-3xl font-bold text-gray-800 mt-2">{{ $stats['total'] }}</h2>
             </div>
-            <div class="bg-white rounded-3xl shadow-sm p-6 border border-gray-100">
+            <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50">
                 <p class="text-sm text-gray-500">Visible</p>
                 <h2 class="text-3xl font-bold text-green-600 mt-2">{{ $stats['visible'] }}</h2>
             </div>
-            <div class="bg-white rounded-3xl shadow-sm p-6 border border-gray-100">
+            <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50">
                 <p class="text-sm text-gray-500">Hidden</p>
                 <h2 class="text-3xl font-bold text-yellow-500 mt-2">{{ $stats['hidden'] }}</h2>
             </div>
-            <div class="bg-white rounded-3xl shadow-sm p-6 border border-gray-100">
+            <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50">
                 <p class="text-sm text-gray-500">Rata-rata Rating</p>
                 <h2 class="text-3xl font-bold text-violet-600 mt-2">⭐ {{ $stats['avg'] }}</h2>
             </div>
         </div>
 
         {{-- SEARCH & FILTER --}}
-        <div class="bg-white rounded-3xl shadow-sm p-6 mb-6 border border-gray-100">
+        <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50 mb-6">
             <form method="GET" action="{{ route('admin.reviews') }}" class="flex flex-col md:flex-row gap-4">
                 <input type="text" name="search" value="{{ request('search') }}"
                     placeholder="Cari user, course, atau komentar..."
@@ -54,18 +57,18 @@
                     @endfor
                 </select>
                 <button type="submit"
-                    class="bg-violet-500 text-white px-6 py-3 rounded-2xl font-medium hover:bg-violet-600 transition">
+                    class="bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium px-4 py-2 rounded-xl transition">
                     Cari
                 </button>
             </form>
         </div>
 
         {{-- TABLE --}}
-        <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50 overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full">
-                    <thead class="bg-gray-50">
-                        <tr class="text-left text-gray-500 text-sm">
+                    <thead class="bg-gray-50 text-gray-500 text-xs font-semibold uppercase tracking-wide">
+                        <tr class="bg-gray-50 text-gray-500 text-xs font-semibold uppercase tracking-wide">
                             <th class="px-6 py-4 font-semibold">Pengguna</th>
                             <th class="px-6 py-4 font-semibold">Course</th>
                             <th class="px-6 py-4 font-semibold">Rating</th>
@@ -110,7 +113,7 @@
                                             @csrf
                                             @method('PATCH')
                                             <button type="submit"
-                                                class="bg-blue-100 hover:bg-blue-200 text-blue-600 px-4 py-2 rounded-xl text-sm font-medium transition">
+                                                class="border border-gray-200 hover:bg-gray-50 text-gray-600 text-sm font-medium px-4 py-2 rounded-xl transition">
                                                 <i class="fa-solid {{ $review->is_visible ? 'fa-eye-slash' : 'fa-eye' }}"></i>
                                                 {{ $review->is_visible ? 'Hide' : 'Show' }}
                                             </button>
@@ -121,7 +124,7 @@
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
-                                                class="bg-red-100 hover:bg-red-200 text-red-600 px-4 py-2 rounded-xl text-sm font-medium transition">
+                                                class="bg-red-50 hover:bg-red-100 text-red-600 text-sm font-medium px-4 py-2 rounded-xl transition">
                                                 <i class="fa-solid fa-trash"></i> Hapus
                                             </button>
                                         </form>

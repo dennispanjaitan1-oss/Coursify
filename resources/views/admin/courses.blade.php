@@ -11,6 +11,9 @@
 
     <div class="flex-1 p-8">
 
+        @php($breadcrumb = 'Courses')
+        @include('admin.partials.header')
+
         {{-- HEADER --}}
         <div class="flex items-center justify-between mb-8">
 
@@ -26,7 +29,7 @@
 
             <button
                 onclick="document.getElementById('createModal').classList.remove('hidden')"
-                class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-2xl shadow-lg transition"
+                class="bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium px-4 py-2 rounded-xl transition"
             >
                 + Tambah Course
             </button>
@@ -41,14 +44,14 @@
         @endif
 
         {{-- TABLE --}}
-        <div class="bg-white rounded-3xl shadow-md overflow-hidden">
+        <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50 overflow-hidden">
 
             <div class="overflow-x-auto">
 
                 <table class="w-full min-w-[1100px]">
 
-                    <thead class="bg-gray-100 text-gray-700">
-                        <tr>
+                    <thead class="bg-gray-50 text-gray-500 text-xs font-semibold uppercase tracking-wide">
+                        <tr class="bg-gray-50 text-gray-500 text-xs font-semibold uppercase tracking-wide">
                             <th class="px-6 py-4 text-left">Thumbnail</th>
                             <th class="px-6 py-4 text-left">Course</th>
                             <th class="px-6 py-4 text-left">Category</th>
@@ -156,7 +159,7 @@
                                             '{{ $course->thumbnail_url }}',
                                             '{{ $course->is_published }}'
                                         )"
-                                        class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-xl text-sm"
+                                        class="border border-gray-200 hover:bg-gray-50 text-gray-600 text-sm font-medium px-4 py-2 rounded-xl transition"
                                     >
                                         Edit
                                     </button>
@@ -171,7 +174,7 @@
                                         @method('DELETE')
 
                                         <button
-                                            class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl text-sm"
+                                            class="bg-red-50 hover:bg-red-100 text-red-600 text-sm font-medium px-4 py-2 rounded-xl transition"
                                         >
                                             Hapus
                                         </button>
@@ -359,7 +362,7 @@
             <div class="md:col-span-2 flex justify-end">
 
                 <button
-                    class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-2xl"
+                    class="bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium px-4 py-2 rounded-xl transition"
                 >
                     Simpan Course
                 </button>
@@ -525,7 +528,7 @@
             <div class="md:col-span-2 flex justify-end">
 
                 <button
-                    class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-2xl"
+                    class="border border-gray-200 hover:bg-gray-50 text-gray-600 text-sm font-medium px-4 py-2 rounded-xl transition"
                 >
                     Simpan Perubahan
                 </button>

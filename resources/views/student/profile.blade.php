@@ -1994,27 +1994,31 @@ html[data-theme="dark"] .theme-option {
         });
     }
 
-    // Bind typing input to check matching phrase
-    const deleteConfirmInput = document.getElementById('delete-confirm-input');
-    if (deleteConfirmInput) {
-        deleteConfirmInput.addEventListener('input', function() {
-            const btnDelete = document.getElementById('btn-modal-confirm-delete');
-            
-            if (this.value.trim().toUpperCase() === 'DELETE MY ACCOUNT') {
-                btnDelete.disabled = false;
-                btnDelete.classList.add('ready');
-                this.classList.add('valid');
-            } else {
-                btnDelete.disabled = true;
-                btnDelete.classList.remove('ready');
-                this.classList.remove('valid');
-            }
-        });
-    }
-    
-    // Confirm delete trigger via AJAX and animated progress
-    const btnModalConfirmDelete = document.getElementById('btn-modal-confirm-delete');
-    if (btnModalConfirmDelete) {
+    document.addEventListener('DOMContentLoaded', function () {
+        // Bind typing input to check matching phrase. The modal markup is below this script,
+        // so binding waits until the full document is parsed.
+        const deleteConfirmInput = document.getElementById('delete-confirm-input');
+        if (deleteConfirmInput) {
+            deleteConfirmInput.addEventListener('input', function() {
+                const btnDelete = document.getElementById('btn-modal-confirm-delete');
+                if (!btnDelete) return;
+
+                if (this.value.trim().toUpperCase() === 'DELETE MY ACCOUNT') {
+                    btnDelete.disabled = false;
+                    btnDelete.classList.add('ready');
+                    this.classList.add('valid');
+                } else {
+                    btnDelete.disabled = true;
+                    btnDelete.classList.remove('ready');
+                    this.classList.remove('valid');
+                }
+            });
+        }
+
+        // Confirm delete trigger via AJAX and animated progress
+        const btnModalConfirmDelete = document.getElementById('btn-modal-confirm-delete');
+        if (!btnModalConfirmDelete) return;
+
         btnModalConfirmDelete.addEventListener('click', function() {
             const input = document.getElementById('delete-confirm-input');
             if (!input || input.value.trim().toUpperCase() !== 'DELETE MY ACCOUNT') {
@@ -2132,7 +2136,7 @@ html[data-theme="dark"] .theme-option {
                 showToast(err.message || 'Gagal memproses penghapusan akun.', 'error');
             });
         });
-    }
+    });
 </script>
 
 <!-- Custom Delete Confirmation Modal Overlay -->

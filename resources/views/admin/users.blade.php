@@ -14,6 +14,9 @@
     {{-- MAIN CONTENT --}}
     <main class="flex-1 p-8 overflow-y-auto">
 
+            @php($breadcrumb = 'User Management')
+            @include('admin.partials.header')
+
         {{-- PAGE HEADER --}}
         <div class="flex items-center justify-between mb-8">
             <div>
@@ -23,7 +26,7 @@
 
             <button
                 onclick="document.getElementById('modal-add-user').classList.remove('hidden')"
-                class="flex items-center gap-2 bg-violet-600 hover:bg-violet-700 text-white px-5 py-2.5 rounded-xl font-medium text-sm transition shadow-sm"
+                class="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium px-4 py-2 rounded-xl transition"
             >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
@@ -55,7 +58,7 @@
         <div class="grid grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
 
             {{-- Total --}}
-            <div class="bg-white rounded-2xl p-5 shadow-sm flex items-center gap-4">
+            <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50 flex items-center gap-4">
                 <div class="w-12 h-12 rounded-xl bg-violet-100 flex items-center justify-center text-xl flex-shrink-0">👥</div>
                 <div>
                     <p class="text-2xl font-bold text-gray-800">{{ number_format($stats['total']) }}</p>
@@ -64,7 +67,7 @@
             </div>
 
             {{-- Students --}}
-            <div class="bg-white rounded-2xl p-5 shadow-sm flex items-center gap-4">
+            <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50 flex items-center gap-4">
                 <div class="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center text-xl flex-shrink-0">🎓</div>
                 <div>
                     <p class="text-2xl font-bold text-gray-800">{{ number_format($stats['students']) }}</p>
@@ -73,7 +76,7 @@
             </div>
 
             {{-- Instructors --}}
-            <div class="bg-white rounded-2xl p-5 shadow-sm flex items-center gap-4">
+            <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50 flex items-center gap-4">
                 <div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center text-xl flex-shrink-0">🧑‍🏫</div>
                 <div>
                     <p class="text-2xl font-bold text-gray-800">{{ number_format($stats['instructors']) }}</p>
@@ -82,7 +85,7 @@
             </div>
 
             {{-- Admins --}}
-            <div class="bg-white rounded-2xl p-5 shadow-sm flex items-center gap-4">
+            <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50 flex items-center gap-4">
                 <div class="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center text-xl flex-shrink-0">🛡️</div>
                 <div>
                     <p class="text-2xl font-bold text-gray-800">{{ number_format($stats['admins']) }}</p>
@@ -93,7 +96,7 @@
         </div>
 
         {{-- FILTER & SEARCH --}}
-        <div class="bg-white rounded-2xl shadow-sm p-6 mb-6">
+        <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50 mb-6">
             <form method="GET" action="{{ route('admin.users') }}" class="flex flex-col md:flex-row gap-3">
 
                 {{-- Search --}}
@@ -133,12 +136,12 @@
                     <option value="role"       {{ request('sort') === 'role'       ? 'selected' : '' }}>Role</option>
                 </select>
 
-                <button type="submit" class="bg-violet-600 hover:bg-violet-700 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition">
+                <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium px-4 py-2 rounded-xl transition">
                     Filter
                 </button>
 
                 @if(request()->hasAny(['search', 'role', 'status', 'sort']))
-                    <a href="{{ route('admin.users') }}" class="bg-gray-100 hover:bg-gray-200 text-gray-600 px-4 py-2.5 rounded-xl text-sm font-medium transition">
+                    <a href="{{ route('admin.users') }}" class="border border-gray-200 hover:bg-gray-50 text-gray-600 text-sm font-medium px-4 py-2 rounded-xl transition">
                         Reset
                     </a>
                 @endif
@@ -147,7 +150,7 @@
         </div>
 
         {{-- TABLE --}}
-        <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+        <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50 overflow-hidden">
 
             {{-- Table Header Info --}}
             <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
@@ -161,8 +164,8 @@
             <div class="overflow-x-auto">
                 <table class="w-full">
 
-                    <thead>
-                        <tr class="bg-gray-50 text-xs text-gray-500 uppercase tracking-wider">
+                    <thead class="bg-gray-50 text-gray-500 text-xs font-semibold uppercase tracking-wide">
+                        <tr class="bg-gray-50 text-gray-500 text-xs font-semibold uppercase tracking-wide">
                             <th class="text-left px-6 py-3 font-semibold">Pengguna</th>
                             <th class="text-left px-6 py-3 font-semibold">Role</th>
                             <th class="text-left px-6 py-3 font-semibold">Status</th>
@@ -372,11 +375,11 @@
             <div class="flex gap-3 pt-2">
                 <button type="button"
                     onclick="document.getElementById('modal-add-user').classList.add('hidden')"
-                    class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-2.5 rounded-xl text-sm font-medium transition">
+                    class="flex-1 border border-gray-200 hover:bg-gray-50 text-gray-600 text-sm font-medium px-4 py-2 rounded-xl transition">
                     Batal
                 </button>
                 <button type="submit"
-                    class="flex-1 bg-violet-600 hover:bg-violet-700 text-white py-2.5 rounded-xl text-sm font-medium transition">
+                    class="flex-1 bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium px-4 py-2 rounded-xl transition">
                     Simpan User
                 </button>
             </div>

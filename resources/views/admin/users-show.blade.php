@@ -14,6 +14,9 @@
     {{-- MAIN CONTENT --}}
     <main class="flex-1 p-8 overflow-y-auto">
 
+            @php($breadcrumb = 'User Detail')
+            @include('admin.partials.header')
+
         {{-- BREADCRUMB --}}
         <div class="flex items-center gap-2 text-sm text-gray-500 mb-6">
             <a href="{{ route('admin.users') }}" class="hover:text-violet-600 transition">Users</a>
@@ -69,7 +72,7 @@
                             @csrf
                             @method('DELETE')
                             <button type="submit"
-                                class="px-4 py-2.5 bg-red-100 hover:bg-red-200 text-red-600 rounded-xl text-sm font-medium transition">
+                                class="px-4 py-2.5 bg-red-50 hover:bg-red-100 text-red-600 text-sm font-medium px-4 py-2 rounded-xl transition">
                                 Hapus
                             </button>
                         </form>
@@ -116,22 +119,22 @@
                 {{-- Stats Cards --}}
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
 
-                    <div class="bg-white rounded-2xl p-5 shadow-sm text-center">
+                    <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50 text-center">
                         <p class="text-3xl font-bold text-violet-600">{{ $user->enrollments->count() }}</p>
                         <p class="text-gray-500 text-xs mt-1">Enrollments</p>
                     </div>
 
-                    <div class="bg-white rounded-2xl p-5 shadow-sm text-center">
+                    <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50 text-center">
                         <p class="text-3xl font-bold text-green-600">{{ $user->coursesTaught->count() }}</p>
                         <p class="text-gray-500 text-xs mt-1">Kursus Diajar</p>
                     </div>
 
-                    <div class="bg-white rounded-2xl p-5 shadow-sm text-center">
+                    <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50 text-center">
                         <p class="text-3xl font-bold text-yellow-500">{{ $user->reviews->count() }}</p>
                         <p class="text-gray-500 text-xs mt-1">Reviews</p>
                     </div>
 
-                    <div class="bg-white rounded-2xl p-5 shadow-sm text-center">
+                    <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50 text-center">
                         <p class="text-3xl font-bold text-blue-600">{{ $user->certificates->count() }}</p>
                         <p class="text-gray-500 text-xs mt-1">Sertifikat</p>
                     </div>

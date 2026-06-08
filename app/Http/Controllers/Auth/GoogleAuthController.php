@@ -18,7 +18,9 @@ class GoogleAuthController extends Controller
         if (app()->environment('local')) {
             $driver->setHttpClient(new \GuzzleHttp\Client(['verify' => false]));
         }
-        return $driver->redirect();
+
+        // Force Google to show the account selector so users can choose the correct email.
+        return $driver->with(['prompt' => 'select_account'])->redirect();
     }
 
     // Callback setelah user login Google

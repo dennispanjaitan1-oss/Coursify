@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Category;
 use App\Models\Institution;
+use App\Http\View\Composers\AdminSidebarComposer;
 use App\Models\Program;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\View;
@@ -118,5 +119,7 @@ class AppServiceProvider extends ServiceProvider
                 'navCareerPaths' => $navCareerPaths,
             ]);
         });
+
+        View::composer('admin.partials.sidebar', AdminSidebarComposer::class);
     }
 }

@@ -1,9 +1,9 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('content')
 
 <div class="p-8 max-w-4xl mx-auto">
-    <div class="bg-white rounded-3xl shadow-md p-10">
+    <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-50">
         <div class="flex items-center justify-between mb-8">
             <div>
                 <h1 class="text-3xl font-bold">Create Course</h1>
@@ -109,7 +109,7 @@
                 </div>
 
                 <div class="pt-4">
-                    <button type="submit" class="bg-indigo-600 text-white px-6 py-3 rounded-2xl hover:bg-indigo-700">Save Course</button>
+                    <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium px-4 py-2 rounded-xl transition">Save Course</button>
                 </div>
             </div>
         </form>

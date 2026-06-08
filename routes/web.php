@@ -15,6 +15,10 @@ use App\Http\Controllers\Instructor\CourseController as InstructorCourseControll
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\Admin\LogController as AdminLogController;
+use App\Http\Controllers\Admin\PayoutController as AdminPayoutController;
+use App\Http\Controllers\Admin\ReportController as AdminReportController;
+use App\Http\Controllers\Admin\SettingsController as AdminSettingsController;
 
 // ═══════════════════════════════════════════════════════════
 // PUBLIC ROUTES
@@ -107,7 +111,7 @@ Route::middleware(['auth', 'role:student,instructor,admin'])
         Route::post('/progress/{lesson}', [LearningController::class, 'updateProgress'])->name('learn.progress');
 
         // Review Course
-        Route::post('/course/review/{course}', [EnrollmentController::class, 'submitReview'])->name('course.review.submit');
+        Route::post('/course/review/{course}', [EnrollmentController::class, 'submitReview'])->name('course.review.dashboard.submit');
 
         // Profile Settings
         Route::get('/profile', [StudentDashboard::class, 'profile'])->name('profile');
@@ -179,29 +183,14 @@ Route::middleware(['auth', 'role:admin'])
         Route::put('/users/{id}', [App\Http\Controllers\Admin\UserController::class, 'update'])->name('users.update');
         Route::delete('/users/{id}', [App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('users.destroy');
 
-       Route::get('/courses', [App\Http\Controllers\Admin\CourseController::class, 'index'])
-    ->name('courses.index');
-
-Route::get('/courses/create', [App\Http\Controllers\Admin\CourseController::class, 'create'])
-    ->name('courses.create');
-
-Route::post('/courses', [App\Http\Controllers\Admin\CourseController::class, 'store'])
-    ->name('courses.store');
-
-Route::get('/courses/{course}/edit', [App\Http\Controllers\Admin\CourseController::class, 'edit'])
-    ->name('courses.edit');
-
-Route::put('/courses/{course}', [App\Http\Controllers\Admin\CourseController::class, 'update'])
-    ->name('courses.update');
-
-Route::get('/courses/{course}', [App\Http\Controllers\Admin\CourseController::class, 'show'])
-    ->name('courses.show');
-
-Route::delete('/courses/{course}', [App\Http\Controllers\Admin\CourseController::class, 'destroy'])
-    ->name('courses.destroy');
-
-Route::patch('/courses/{course}/toggle-publish', [App\Http\Controllers\Admin\CourseController::class, 'togglePublish'])
-    ->name('courses.toggle-publish');
+        Route::get('/courses', [App\Http\Controllers\Admin\CourseController::class, 'index'])->name('courses.index');
+        Route::get('/courses/create', [App\Http\Controllers\Admin\CourseController::class, 'create'])->name('courses.create');
+        Route::post('/courses', [App\Http\Controllers\Admin\CourseController::class, 'store'])->name('courses.store');
+        Route::get('/courses/{course}/edit', [App\Http\Controllers\Admin\CourseController::class, 'edit'])->name('courses.edit');
+        Route::put('/courses/{course}', [App\Http\Controllers\Admin\CourseController::class, 'update'])->name('courses.update');
+        Route::get('/courses/{course}', [App\Http\Controllers\Admin\CourseController::class, 'show'])->name('courses.show');
+        Route::delete('/courses/{course}', [App\Http\Controllers\Admin\CourseController::class, 'destroy'])->name('courses.destroy');
+        Route::patch('/courses/{course}/toggle-publish', [App\Http\Controllers\Admin\CourseController::class, 'togglePublish'])->name('courses.toggle-publish');
 
         Route::get('/institutions', [App\Http\Controllers\Admin\InstitutionController::class, 'index'])->name('institutions');
         Route::post('/institutions', [App\Http\Controllers\Admin\InstitutionController::class, 'store'])->name('institutions.store');
@@ -221,19 +210,20 @@ Route::patch('/courses/{course}/toggle-publish', [App\Http\Controllers\Admin\Cou
         Route::delete('/reviews/{review}', [App\Http\Controllers\Admin\ReviewController::class, 'destroy'])->name('reviews.destroy');
         Route::patch('/reviews/{review}/toggle', [App\Http\Controllers\Admin\ReviewController::class, 'toggleVisibility'])->name('reviews.toggle');
 
-        Route::view('/reports', 'admin.reports')->name('reports');
+        Route::get('/reports', [AdminReportController::class, 'index'])->name('reports');
+        Route::patch('/reports/{report}', [AdminReportController::class, 'update'])->name('reports.update');
 
         Route::get('/transactions', [App\Http\Controllers\Admin\TransactionController::class, 'index'])->name('transactions');
         Route::delete('/transactions/{payment}', [App\Http\Controllers\Admin\TransactionController::class, 'destroy'])->name('transactions.destroy');
 
-        Route::view('/payouts', 'admin.payouts')->name('payouts');
+        Route::get('/payouts', [AdminPayoutController::class, 'index'])->name('payouts');
+        Route::post('/payouts', [AdminPayoutController::class, 'store'])->name('payouts.store');
+        Route::patch('/payouts/{payout}', [AdminPayoutController::class, 'update'])->name('payouts.update');
 
-        Route::view('/settings', 'admin.settings')->name('settings');
+        Route::get('/settings', [AdminSettingsController::class, 'index'])->name('settings');
+        Route::post('/settings', [AdminSettingsController::class, 'update'])->name('settings.update');
 
-        Route::get('/quick-curriculum', [App\Http\Controllers\Admin\QuickCurriculumController::class, 'index'])->name('quick-curriculum.index');
-        Route::post('/quick-curriculum', [App\Http\Controllers\Admin\QuickCurriculumController::class, 'store'])->name('quick-curriculum.store');
-
-        Route::view('/logs', 'admin.logs')->name('logs');
+        Route::get('/logs', [AdminLogController::class, 'index'])->name('logs');
     });
 
 // ═══════════════════════════════════════════════════════════
@@ -270,6 +260,5 @@ Route::view('/forum', 'forum')->name('forum');
 Route::view('/pusat-bantuan', 'pusat-bantuan')->name('pusat-bantuan');
 
 Route::view('/sitemap', 'sitemap')->name('sitemap');
-
 
 

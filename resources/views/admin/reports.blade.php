@@ -3,13 +3,16 @@
 
 @section('content')
 
-    <div class="min-h-screen bg-gray-100 flex">
+    <div class="min-h-screen bg-[var(--admin-bg)] flex">
 
         {{-- SIDEBAR --}}
         @include('admin.partials.sidebar')
 
         {{-- MAIN CONTENT --}}
         <main class="flex-1 p-8 overflow-y-auto">
+
+            @php($breadcrumb = 'Reports')
+            @include('admin.partials.header')
 
             {{-- HEADER --}}
             <div class="flex items-center justify-between mb-8">
@@ -25,7 +28,7 @@
                 </div>
 
                 <button
-                    class="bg-violet-500 hover:bg-violet-600 text-white px-5 py-3 rounded-2xl shadow font-medium transition">
+                    class="ui-btn">
                     Export Reports
                 </button>
 
@@ -34,289 +37,161 @@
             {{-- STATS --}}
             <div class="grid grid-cols-1 md:grid-cols-4 gap-5 mb-8">
 
-                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6">
-                    <p class="text-sm text-gray-500">
-                        Total Reports
-                    </p>
-
+                <div class="glass rounded-3xl p-6 shadow-sm border border-[var(--glass-border)]">
+                    <p class="text-sm text-gray-500">Total Reports</p>
                     <h2 class="text-3xl font-bold text-gray-800 mt-2">
-                        248
+                        {{ number_format($stats['total']) }}
                     </h2>
                 </div>
 
-                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6">
-                    <p class="text-sm text-gray-500">
-                        Pending
-                    </p>
-
+                <div class="glass rounded-3xl p-6 shadow-sm border border-[var(--glass-border)]">
+                    <p class="text-sm text-gray-500">Pending</p>
                     <h2 class="text-3xl font-bold text-yellow-500 mt-2">
-                        32
+                        {{ number_format($stats['pending']) }}
                     </h2>
                 </div>
 
-                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6">
-                    <p class="text-sm text-gray-500">
-                        Resolved
-                    </p>
-
+                <div class="glass rounded-3xl p-6 shadow-sm border border-[var(--glass-border)]">
+                    <p class="text-sm text-gray-500">Resolved</p>
                     <h2 class="text-3xl font-bold text-green-600 mt-2">
-                        201
+                        {{ number_format($stats['resolved']) }}
                     </h2>
                 </div>
 
-                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6">
-                    <p class="text-sm text-gray-500">
-                        Rejected
-                    </p>
-
+                <div class="glass rounded-3xl p-6 shadow-sm border border-[var(--glass-border)]">
+                    <p class="text-sm text-gray-500">Rejected</p>
                     <h2 class="text-3xl font-bold text-red-500 mt-2">
-                        15
+                        {{ number_format($stats['dismissed']) }}
                     </h2>
                 </div>
 
             </div>
 
             {{-- FILTER --}}
-            <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 mb-8">
+            <div class="glass rounded-3xl p-6 shadow-sm border border-[var(--glass-border)] mb-8">
 
-                <div class="flex flex-col md:flex-row gap-4">
+                <form method="GET" action="{{ route('admin.reports') }}" class="flex flex-col md:flex-row gap-4">
 
                     <input
                         type="text"
+                        name="search"
+                        value="{{ request('search') }}"
                         placeholder="Cari laporan..."
                         class="flex-1 border border-gray-200 rounded-2xl px-5 py-3 focus:outline-none focus:ring-2 focus:ring-violet-300">
 
                     <select
+                        name="status"
+                        onchange="this.form.submit()"
                         class="border border-gray-200 rounded-2xl px-5 py-3 focus:outline-none">
 
-                        <option>Semua Status</option>
-                        <option>Pending</option>
-                        <option>Resolved</option>
-                        <option>Rejected</option>
+                        <option value="">Semua Status</option>
+                        <option value="pending" {{ request('status') === 'pending' ? 'selected' : '' }}>Pending</option>
+                        <option value="resolved" {{ request('status') === 'resolved' ? 'selected' : '' }}>Resolved</option>
+                        <option value="dismissed" {{ request('status') === 'dismissed' ? 'selected' : '' }}>Rejected</option>
 
                     </select>
 
-                </div>
+                </form>
 
             </div>
 
             {{-- TABLE --}}
-            <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="glass rounded-3xl p-6 shadow-sm border border-[var(--glass-border)] overflow-hidden">
 
                 <div class="overflow-x-auto">
 
                     <table class="w-full">
 
-                        <thead class="bg-gray-50">
-
-                            <tr class="text-left text-gray-500 text-sm">
-
-                                <th class="px-6 py-4 font-semibold">
-                                    Report ID
-                                </th>
-
-                                <th class="px-6 py-4 font-semibold">
-                                    Reporter
-                                </th>
-
-                                <th class="px-6 py-4 font-semibold">
-                                    Category
-                                </th>
-
-                                <th class="px-6 py-4 font-semibold">
-                                    Description
-                                </th>
-
-                                <th class="px-6 py-4 font-semibold">
-                                    Date
-                                </th>
-
-                                <th class="px-6 py-4 font-semibold">
-                                    Status
-                                </th>
-
-                                <th class="px-6 py-4 font-semibold text-center">
-                                    Action
-                                </th>
-
+                        <thead class="bg-transparent text-[var(--text-muted)] text-xs font-semibold uppercase tracking-wide">
+                            <tr>
+                                <th class="px-6 py-4 font-semibold">Report ID</th>
+                                <th class="px-6 py-4 font-semibold">Reporter</th>
+                                <th class="px-6 py-4 font-semibold">Category</th>
+                                <th class="px-6 py-4 font-semibold">Description</th>
+                                <th class="px-6 py-4 font-semibold">Date</th>
+                                <th class="px-6 py-4 font-semibold">Status</th>
+                                <th class="px-6 py-4 font-semibold text-center">Action</th>
                             </tr>
-
                         </thead>
 
                         <tbody class="divide-y divide-gray-100">
 
-                            {{-- ITEM --}}
+                            @forelse($reports as $report)
                             <tr class="hover:bg-gray-50 transition">
 
                                 <td class="px-6 py-5 font-semibold text-gray-700">
-                                    #RPT-001
+                                    #RPT-{{ str_pad($report->id, 3, '0', STR_PAD_LEFT) }}
                                 </td>
 
                                 <td class="px-6 py-5">
-
                                     <div>
                                         <h3 class="font-semibold text-gray-800">
-                                            John Doe
+                                            {{ $report->reporter?->name ?? 'Unknown User' }}
                                         </h3>
-
                                         <p class="text-sm text-gray-500">
-                                            john@example.com
+                                            {{ $report->reporter?->email ?? '-' }}
                                         </p>
                                     </div>
-
                                 </td>
 
                                 <td class="px-6 py-5">
                                     <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                        Spam
+                                        {{ class_basename($report->reported_type) }}
                                     </span>
                                 </td>
 
                                 <td class="px-6 py-5 text-gray-600">
-                                    User mengirim komentar spam pada course.
+                                    {{ $report->reason }}
                                 </td>
 
                                 <td class="px-6 py-5 text-gray-600">
-                                    13 May 2026
+                                    {{ $report->created_at->format('d M Y') }}
                                 </td>
 
                                 <td class="px-6 py-5">
-                                    <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                        Pending
+                                    <span class="{{ $statusClassMap[$report->status] ?? 'bg-gray-100 text-gray-700' }} px-3 py-1 rounded-full text-xs font-semibold">
+                                        {{ $statusLabelMap[$report->status] ?? ucfirst($report->status) }}
                                     </span>
                                 </td>
 
                                 <td class="px-6 py-5">
-
                                     <div class="flex items-center justify-center gap-2">
 
-                                        <button
-                                            class="bg-green-100 hover:bg-green-200 text-green-700 px-4 py-2 rounded-xl text-sm font-medium transition">
-                                            Resolve
-                                        </button>
+                                        @if($report->status === 'pending')
+                                            <form method="POST" action="{{ route('admin.reports.update', $report) }}">
+                                                @csrf
+                                                @method('PATCH')
+                                                <input type="hidden" name="status" value="resolved">
+                                                <button class="bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium px-4 py-2 rounded-xl transition">
+                                                    Resolve
+                                                </button>
+                                            </form>
 
-                                        <button
-                                            class="bg-red-100 hover:bg-red-200 text-red-600 px-4 py-2 rounded-xl text-sm font-medium transition">
-                                            Reject
-                                        </button>
+                                            <form method="POST" action="{{ route('admin.reports.update', $report) }}">
+                                                @csrf
+                                                @method('PATCH')
+                                                <input type="hidden" name="status" value="dismissed">
+                                                <button class="bg-red-50 hover:bg-red-100 text-red-600 text-sm font-medium px-4 py-2 rounded-xl transition">
+                                                    Reject
+                                                </button>
+                                            </form>
+                                        @else
+                                            <button class="border border-gray-200 hover:bg-gray-50 text-gray-600 text-sm font-medium px-4 py-2 rounded-xl transition">
+                                                View
+                                            </button>
+                                        @endif
 
                                     </div>
-
                                 </td>
 
                             </tr>
-
-                            {{-- ITEM --}}
-                            <tr class="hover:bg-gray-50 transition">
-
-                                <td class="px-6 py-5 font-semibold text-gray-700">
-                                    #RPT-002
+                            @empty
+                            <tr>
+                                <td colspan="7" class="px-6 py-10 text-center text-gray-500">
+                                    Belum ada laporan.
                                 </td>
-
-                                <td class="px-6 py-5">
-
-                                    <div>
-                                        <h3 class="font-semibold text-gray-800">
-                                            Sarah Smith
-                                        </h3>
-
-                                        <p class="text-sm text-gray-500">
-                                            sarah@example.com
-                                        </p>
-                                    </div>
-
-                                </td>
-
-                                <td class="px-6 py-5">
-                                    <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                        Abuse
-                                    </span>
-                                </td>
-
-                                <td class="px-6 py-5 text-gray-600">
-                                    Instructor menggunakan bahasa tidak pantas.
-                                </td>
-
-                                <td class="px-6 py-5 text-gray-600">
-                                    12 May 2026
-                                </td>
-
-                                <td class="px-6 py-5">
-                                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                        Resolved
-                                    </span>
-                                </td>
-
-                                <td class="px-6 py-5">
-
-                                    <div class="flex items-center justify-center gap-2">
-
-                                        <button
-                                            class="bg-blue-100 hover:bg-blue-200 text-blue-700 px-4 py-2 rounded-xl text-sm font-medium transition">
-                                            View
-                                        </button>
-
-                                    </div>
-
-                                </td>
-
                             </tr>
-
-                            {{-- ITEM --}}
-                            <tr class="hover:bg-gray-50 transition">
-
-                                <td class="px-6 py-5 font-semibold text-gray-700">
-                                    #RPT-003
-                                </td>
-
-                                <td class="px-6 py-5">
-
-                                    <div>
-                                        <h3 class="font-semibold text-gray-800">
-                                            Michael Lee
-                                        </h3>
-
-                                        <p class="text-sm text-gray-500">
-                                            michael@example.com
-                                        </p>
-                                    </div>
-
-                                </td>
-
-                                <td class="px-6 py-5">
-                                    <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                        Copyright
-                                    </span>
-                                </td>
-
-                                <td class="px-6 py-5 text-gray-600">
-                                    Materi course diduga melanggar hak cipta.
-                                </td>
-
-                                <td class="px-6 py-5 text-gray-600">
-                                    11 May 2026
-                                </td>
-
-                                <td class="px-6 py-5">
-                                    <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                        Rejected
-                                    </span>
-                                </td>
-
-                                <td class="px-6 py-5">
-
-                                    <div class="flex items-center justify-center gap-2">
-
-                                        <button
-                                            class="bg-blue-100 hover:bg-blue-200 text-blue-700 px-4 py-2 rounded-xl text-sm font-medium transition">
-                                            Detail
-                                        </button>
-
-                                    </div>
-
-                                </td>
-
-                            </tr>
+                            @endforelse
 
                         </tbody>
 
@@ -324,6 +199,10 @@
 
                 </div>
 
+            </div>
+
+            <div class="mt-6">
+                {{ $reports->links() }}
             </div>
 
         </main>

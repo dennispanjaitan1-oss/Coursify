@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Mail\EnrollmentMail;
+use App\Mail\CourseCompletionMail;
 use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\Payment;
+use App\Models\Certificate;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -142,6 +144,31 @@ class PaymentController extends Controller
             Mail::to($user->email)->send(new EnrollmentMail($user, $course));
         } catch (\Exception $e) {
             logger()->warning('Payment enrollment notification email failed to send: ' . $e->getMessage());
+        }
+
+        // KASUS KHUSUS: Jika siswa upgrade ke verified/honor DAN progres belajarnya sudah 100% (sebelumnya di jalur audit)
+        if ($enrollment && $enrollment->progress_percent >= 100 && in_array($enrollment->type, ['verified', 'honor'])) {
+            $alreadyHasCert = Certificate::where('user_id', $user->id)
+                ->where('course_id', $course->id)
+                ->exists();
+
+            if (!$alreadyHasCert) {
+                try {
+                    $cert = Certificate::create([
+                        'user_id'            => $user->id,
+                        'course_id'          => $course->id,
+                        'enrollment_id'      => $enrollment->id,
+                        'certificate_type'   => $enrollment->type,
+                        'certificate_number' => 'CERT-' . date('Y') . '-' . strtoupper(Str::random(8)),
+                        'issued_at'          => now(),
+                    ]);
+
+                    // Kirim email kelulusan mewah dengan lampiran PDF sertifikat
+                    Mail::to($user->email)->send(new CourseCompletionMail($user, $course, $cert));
+                } catch (\Exception $e) {
+                    logger()->error('Failed to issue certificate/send mail during upgrade: ' . $e->getMessage());
+                }
+            }
         }
 
         return redirect()->route('payment.confirmation', $payment);
