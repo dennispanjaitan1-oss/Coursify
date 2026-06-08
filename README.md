@@ -18,34 +18,34 @@
 
 ---
 
-## 📖 Tentang Coursify
+##  Tentang Coursify
 
 **Coursify** adalah platform e-learning berbahasa Indonesia yang menyediakan akses ke ribuan kursus berkualitas dari berbagai institusi ternama dunia. Platform ini mendukung tiga peran pengguna: **Student**, **Instructor**, dan **Admin** — masing-masing dengan fitur dan dashboard tersendiri.
 
 Coursify mendukung Tujuan Pembangunan Berkelanjutan (SDGs) PBB:
-- 🎓 **SDG 4** — Pendidikan Berkualitas: akses kursus gratis (audit track) untuk semua
-- 💼 **SDG 8** — Pekerjaan Layak: kursus skill profesional untuk meningkatkan employability
-- ⚖️ **SDG 10** — Berkurangnya Kesenjangan: konten dalam bahasa Indonesia, akses tanpa biaya
+-  **SDG 4** — Pendidikan Berkualitas: akses kursus gratis (audit track) untuk semua
+-  **SDG 8** — Pekerjaan Layak: kursus skill profesional untuk meningkatkan employability
+-  **SDG 10** — Berkurangnya Kesenjangan: konten dalam bahasa Indonesia, akses tanpa biaya
 
 ---
 
-## ✨ Fitur Utama
+##  Fitur Utama
 
-- 🏠 **Landing Page** — beranda, daftar kursus, program, dan institusi
-- 👨‍🎓 **Student Dashboard** — kursus saya, progress belajar, sertifikat, wishlist
-- 👨‍🏫 **Instructor Panel** — kelola kursus, materi, siswa, pendapatan, dan analitik
-- 🛡️ **Admin Panel** — manajemen penuh: user, kursus, kategori, institusi, transaksi, laporan
-- 📜 **Sertifikasi Digital** — generate & verifikasi sertifikat dengan nomor unik
-- 💳 **Payment Gateway** — integrasi Midtrans (kartu kredit, transfer bank, e-wallet)
-- 🔐 **Google OAuth** — login dengan akun Google via Laravel Socialite
-- 🔔 **Real-time Notifikasi** — powered by Pusher + Laravel Echo
-- 📊 **Audit Log** — activity logging via Spatie Activity Log
-- 🖼️ **Upload Gambar** — avatar & thumbnail via Intervention Image
-- 📄 **Export PDF** — sertifikat via DomPDF
+-  **Landing Page** — beranda, daftar kursus, program, dan institusi
+-  **Student Dashboard** — kursus saya, progress belajar, sertifikat, wishlist
+-  **Instructor Panel** — kelola kursus, materi, siswa, pendapatan, dan analitik
+-  **Admin Panel** — manajemen penuh: user, kursus, kategori, institusi, transaksi, laporan
+-  **Sertifikasi Digital** — generate & verifikasi sertifikat dengan nomor unik
+-  **Payment Gateway** — integrasi Midtrans (kartu kredit, transfer bank, e-wallet)
+-  **Google OAuth** — login dengan akun Google via Laravel Socialite
+-  **Real-time Notifikasi** — powered by Pusher + Laravel Echo
+-  **Audit Log** — activity logging via Spatie Activity Log
+-  **Upload Gambar** — avatar & thumbnail via Intervention Image
+-  **Export PDF** — sertifikat via DomPDF
 
 ---
 
-## 🛠️ Requirement Sistem
+##  Requirement Sistem
 
 | Komponen | Versi Minimum |
 |---|---|
@@ -60,7 +60,7 @@ Coursify mendukung Tujuan Pembangunan Berkelanjutan (SDGs) PBB:
 
 ---
 
-## 🚀 Cara Menjalankan Projek
+##  Cara Menjalankan Projek
 
 ### 1. Clone Repository
 
@@ -159,7 +159,7 @@ Buka browser dan akses: **http://localhost:8000**
 
 ---
 
-## 👤 Akun Demo
+##  Akun Demo
 
 Setelah menjalankan seeder, akun berikut sudah tersedia:
 
@@ -171,7 +171,7 @@ Setelah menjalankan seeder, akun berikut sudah tersedia:
 
 ---
 
-## 📁 Struktur Direktori
+##  Struktur Direktori
 
 ```
 coursify/
@@ -199,7 +199,7 @@ coursify/
 
 ---
 
-## 🗄️ Teknologi yang Digunakan
+##  Teknologi yang Digunakan
 
 ### Backend
 | Package | Fungsi |
@@ -227,7 +227,7 @@ coursify/
 
 ---
 
-## 🧪 Menjalankan Test
+##  Menjalankan Test
 
 ```bash
 php artisan test
@@ -235,6 +235,6 @@ php artisan test
 
 ---
 
-## 📄 Lisensi
+##  Lisensi
 
-Projek ini dibuat untuk keperluan **Tugas Besar Praktikum Pemrograman Web Lanjutan Kom B 2025**.
+Projek ini dibuat untuk keperluan **Tugas Besar Praktikum Pemrograman Web Lanjutan Kelompok 8 Kom B 2026**.
