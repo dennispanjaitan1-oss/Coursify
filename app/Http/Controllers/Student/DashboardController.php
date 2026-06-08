@@ -9,7 +9,9 @@ use App\Models\Enrollment;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
 
@@ -135,7 +137,7 @@ class DashboardController extends Controller
         // ── Recommended courses (not yet enrolled) ────────────────────────
         $enrolledCourseIds = $allEnrollments->pluck('course_id');
 
-        $recommended = Course::with(['category', 'instructors'])
+        $recommended = Course::with(['category', 'instructors', 'institution'])
             ->whereNotIn('id', $enrolledCourseIds)
             ->inRandomOrder()
             ->take(4)
@@ -145,16 +147,20 @@ class DashboardController extends Controller
                 $price      = $course->price ?? 0;
 
                 return [
-                    'slug'           => $course->slug,
-                    'title'          => $course->title,
-                    'thumbnail' => $course->thumbnail_url ?? $course->thumbnail ?? null,
-                    'category'       => optional($course->category)->name ?? 'Course',
-                    'instructor'     => $instructor?->name ?? 'Instructor',
-                    'rating'         => number_format($course->rating ?? 0, 1),
-                    'students_count' => number_format($course->enrollments_count ?? 0),
-                    'price'          => $price > 0 ? 'Rp ' . number_format($price, 0, ',', '.') : 'Free',
-                    'is_free'        => $price == 0,
-                    'emoji'          => '📚',
+                    'slug'             => $course->slug,
+                    'title'            => $course->title,
+                    'thumbnail'        => $course->thumbnail_url ?? $course->thumbnail ?? null,
+                    'category'         => optional($course->category)->name ?? 'Course',
+                    'instructor'       => $instructor?->name ?? 'Instructor',
+                    'rating'           => number_format($course->rating ?? 0, 1),
+                    'students_count'   => number_format($course->enrollments_count ?? 0),
+                    'price'            => $price > 0 ? 'Rp ' . number_format($price, 0, ',', '.') : 'Free',
+                    'is_free'          => $price == 0,
+                    'emoji'            => '📚',
+                    'institution_name' => optional($course->institution)->name ?? 'Coursify',
+                    'institution_logo' => optional($course->institution)->logo_url ?? null,
+                    'duration_weeks'   => $course->duration_weeks ?? 1,
+                    'difficulty'       => ucfirst($course->difficulty ?? 'beginner'),
                 ];
             });
 
@@ -476,6 +482,13 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Sesi tidak valid. Silakan login ulang.'
+            ], 401);
+        }
+
         if (!$request->has('confirm_phrase') || trim(strtoupper($request->input('confirm_phrase'))) !== 'DELETE MY ACCOUNT') {
             return response()->json([
                 'success' => false,
@@ -483,17 +496,38 @@ class DashboardController extends Controller
             ], 422);
         }
 
-        // Delete user row
-        $user->delete();
+        $userId = $user->id;
+        $userEmail = $user->email;
 
-        // Log out the user and invalidate session
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        try {
+            // Log out FIRST to release the session lock
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Akun Anda berhasil dihapus secara permanen. Semua data Anda telah dibersihkan.'
-        ]);
+            // Clean up any remaining sessions for this user
+            DB::table('sessions')->where('user_id', $userId)->delete();
+
+            // Hard delete the user row using Query Builder (bypasses Eloquent issues)
+            $deleted = DB::table('users')->where('id', $userId)->delete();
+
+            if ($deleted) {
+                Log::info("Account permanently deleted: user_id={$userId}, email={$userEmail}");
+            } else {
+                Log::warning("Delete account: no rows affected for user_id={$userId}, email={$userEmail}");
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Akun Anda berhasil dihapus secara permanen. Semua data Anda telah dibersihkan.'
+            ]);
+        } catch (\Exception $e) {
+            Log::error("Failed to delete account user_id={$userId}: " . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menghapus akun: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

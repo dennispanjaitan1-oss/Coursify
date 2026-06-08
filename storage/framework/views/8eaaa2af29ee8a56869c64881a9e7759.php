@@ -1916,37 +1916,50 @@ body {
       </div>
       <div class="rec-grid">
         <?php $__currentLoopData = $recommended; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $rec): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-          <a href="<?php echo e(route('courses.show', $rec['slug'])); ?>" class="rec-card">
-            <div class="rec-thumb">
+          <a href="<?php echo e(route('courses.show', $rec['slug'])); ?>" class="rec-card" style="overflow: visible;">
+            <div class="rec-thumb" style="position: relative; overflow: visible;">
               <?php if($rec['thumbnail'] ?? null): ?>
                 <img src="<?php echo e($rec['thumbnail']); ?>"
                      alt="<?php echo e($rec['title']); ?>"
+                     style="width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-lg) var(--radius-lg) 0 0;"
                      onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                <div class="rec-thumb-fallback grad-<?php echo e(($i % 4) + 1); ?>" style="display:none;">
+                <div class="rec-thumb-fallback grad-<?php echo e(($i % 4) + 1); ?>" style="display:none; border-radius: var(--radius-lg) var(--radius-lg) 0 0;">
                   <?php echo e($rec['emoji']); ?>
 
                 </div>
               <?php else: ?>
-                <div class="rec-thumb-fallback grad-<?php echo e(($i % 4) + 1); ?>">
+                <div class="rec-thumb-fallback grad-<?php echo e(($i % 4) + 1); ?>" style="border-radius: var(--radius-lg) var(--radius-lg) 0 0;">
                   <?php echo e($rec['emoji']); ?>
 
                 </div>
               <?php endif; ?>
-            </div>
-            <div class="rec-body">
-              <div class="course-cat"><?php echo e($rec['category']); ?></div>
-              <div class="rec-title"><?php echo e($rec['title']); ?></div>
-              <div class="rec-instructor"><?php echo e($rec['instructor']); ?></div>
-              <div class="rec-meta">
-                <span>⭐ <?php echo e($rec['rating']); ?></span>
-                <span>👥 <?php echo e($rec['students_count']); ?></span>
-              </div>
-              <div class="rec-footer">
-                <div class="rec-price <?php echo e($rec['is_free'] ? 'price-free' : ''); ?>">
-                  <?php echo e($rec['price']); ?>
+
+              
+              <?php if($rec['institution_logo']): ?>
+                <div style="position: absolute; bottom: -12px; left: 16px; height: 34px; border-radius: 8px; padding: 4px 10px; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: center; z-index: 5; border: 1px solid rgba(0,0,0,0.05);">
+                  <img src="<?php echo e($rec['institution_logo']); ?>" alt="<?php echo e($rec['institution_name']); ?>" style="height: 20px; width: auto; object-fit: contain;">
+                </div>
+              <?php else: ?>
+                <div style="position: absolute; bottom: -12px; left: 16px; height: 34px; border-radius: 8px; padding: 4px 10px; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: center; z-index: 5; font-size: 11px; font-weight: 700; color: var(--text-2); border: 1px solid rgba(0,0,0,0.05); white-space: nowrap;">
+                  <?php echo e($rec['institution_name']); ?>
 
                 </div>
-                <span class="rec-arrow">→</span>
+              <?php endif; ?>
+            </div>
+            <div class="rec-body" style="padding-top: 20px; display: flex; flex-direction: column; flex: 1;">
+              <div class="course-cat" style="font-size: 10px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px;"><?php echo e($rec['category']); ?></div>
+              <div class="rec-title" style="font-size: 15px; font-weight: 700; line-height: 1.4; color: var(--text-1); margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 42px;"><?php echo e($rec['title']); ?></div>
+              <div class="rec-instructor" style="font-size: 12px; color: var(--text-3); margin-bottom: 16px;"><?php echo e($rec['institution_name']); ?></div>
+              
+              <div class="rec-meta" style="display: flex; flex-direction: column; gap: 8px; padding: 0; border: none; font-size: 12.5px; color: var(--text-3); margin-top: auto; margin-bottom: 0;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <i class="fa-regular fa-clock" style="color: var(--accent); font-size: 13px;"></i>
+                  <span><?php echo e($rec['duration_weeks']); ?> weeks to complete</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <i class="fa-solid fa-signal" style="color: var(--accent); font-size: 12px;"></i>
+                  <span><?php echo e($rec['difficulty']); ?> level</span>
+                </div>
               </div>
             </div>
           </a>

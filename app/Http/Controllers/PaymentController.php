@@ -89,7 +89,7 @@ class PaymentController extends Controller
         $total = max(0, $price - $discount);
         $cardNumber = preg_replace('/\D/', '', $validated['card_number']);
 
-        $payment = DB::transaction(function () use ($user, $course, $track, $validated, $couponCode, $discount, $price, $total, $cardNumber, $request) {
+        $result = DB::transaction(function () use ($user, $course, $track, $validated, $couponCode, $discount, $price, $total, $cardNumber, $request) {
             $payment = Payment::create([
                 'user_id' => $user->id,
                 'amount' => $total,

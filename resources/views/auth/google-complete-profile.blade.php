@@ -212,60 +212,113 @@
             to { transform: rotate(360deg); }
         }
 
-        /* ═══ RIGHT PANEL (BRANDING) ═══ */
+        /* ═══ RIGHT PANEL ═══ */
         .right {
             flex: 1;
-            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+            background: linear-gradient(180deg, #EDE5F9 0%, #D8CEEE 50%, #C4B8E8 100%);
             display: flex;
             flex-direction: column;
+            align-items: center;
             justify-content: space-between;
-            padding: 48px;
-            color: white;
+            padding: 48px 48px 32px 48px;
             position: relative;
             overflow: hidden;
         }
 
-        /* Dekomasi Lingkaran */
         .right::before {
-            content: ''; position: absolute; top: -10%; right: -10%;
-            width: 400px; height: 400px; border-radius: 50%;
-            background: radial-gradient(circle, rgba(123,111,232,0.15) 0%, transparent 70%);
-            pointer-events: none;
-        }
-        .right::after {
-            content: ''; position: absolute; bottom: -10%; left: -10%;
-            width: 500px; height: 500px; border-radius: 50%;
-            background: radial-gradient(circle, rgba(0,200,150,0.1) 0%, transparent 70%);
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 600px 300px at 20% 10%, rgba(255,255,255,0.5), transparent),
+                radial-gradient(ellipse 500px 250px at 80% 30%, rgba(255,255,255,0.4), transparent),
+                radial-gradient(ellipse 600px 300px at 50% 90%, rgba(255,255,255,0.4), transparent);
             pointer-events: none;
         }
 
-        .right-content {
-            max-width: 440px; margin: auto 0;
-            position: relative; z-index: 1;
-        }
-
-        .right h2 {
+        .right-heading {
             font-family: var(--font-serif);
-            font-size: 56px; font-weight: 400; line-height: 1.05;
-            letter-spacing: -0.02em; margin-bottom: 24px;
+            font-size: 64px;
+            font-weight: 400;
+            letter-spacing: -0.03em;
+            line-height: 1.0;
+            color: var(--text);
+            text-align: center;
+            white-space: nowrap;
+            margin-bottom: 20px;
+            z-index: 1;
         }
-        .right h2 em { font-style: italic; color: var(--teal); }
-        .right p { font-size: 16px; line-height: 1.6; color: rgba(255,255,255,0.7); }
+        .right-heading em {
+            font-style: italic;
+            background: linear-gradient(135deg, var(--purple), var(--lav-4));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            padding-right: 0.15em;
+        }
+
+        /* Character Stage */
+        .character-stage {
+            position: relative;
+            width: 420px;
+            height: 290px;
+            margin: 0 auto 24px auto;
+            z-index: 1;
+        }
+        .character-body {
+            position: absolute;
+            bottom: 0;
+            border-radius: 10px 10px 0 0;
+            transition: transform 0.7s cubic-bezier(0.25, 0.8, 0.25, 1), height 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transform-origin: bottom center;
+            overflow: hidden;
+        }
+        .eyes-wrap {
+            position: absolute;
+            display: flex;
+            gap: 16px;
+            transition: left 0.7s cubic-bezier(0.25, 0.8, 0.25, 1), top 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .eyeball {
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: height 0.15s ease-in-out, width 0.15s ease-in-out;
+        }
+        .pupil {
+            border-radius: 50%;
+            background: #2D2D2D;
+            transition: transform 0.1s ease-out;
+        }
+        .pupil-only {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #2D2D2D;
+            transition: transform 0.1s ease-out;
+        }
+        .yellow-body .eyes-wrap { gap: 10px; }
+        .black-body .eyes-wrap { gap: 10px; }
 
         .footer-note {
-            font-size: 12px; color: rgba(255,255,255,0.4);
-            position: relative; z-index: 1;
+            font-size: 11px;
+            color: var(--muted);
+            text-align: center;
+            padding-top: 32px;
+            letter-spacing: 0.02em;
+            z-index: 1;
         }
 
-        /* Responsive */
-        @media(max-width: 1024px) {
+        @media(max-width: 900px) {
             .right { display: none; }
             body { justify-content: center; background: #FEFDFF; }
             .left { width: 100%; max-width: 540px; box-shadow: none; padding: 40px 24px; }
         }
     </style>
 </head>
-<body>
+<body x-data="completeInteraction()" @mousemove="handleMouseMove($event)">
 
 <div class="left">
     <div class="form-wrap">
@@ -281,14 +334,16 @@
         </p>
 
         {{-- Google User Info --}}
-        <div class="avatar-preview">
-            @if(!empty($googleUser['avatar']))
-                <img src="{{ $googleUser['avatar'] }}" alt="Avatar" class="avatar-img">
-            @else
+        {{-- Google User Info --}}
+        <div class="avatar-preview" x-data="{ imgFailed: false }">
+            <template x-if="!imgFailed && '{{ $googleUser['avatar'] ?? '' }}'">
+                <img src="{{ $googleUser['avatar'] }}" alt="Avatar" class="avatar-img" @@error="imgFailed = true">
+            </template>
+            <template x-if="imgFailed || !'{{ $googleUser['avatar'] ?? '' }}'">
                 <div class="avatar-img" style="background:#E8E1F3; display:flex; align-items:center; justify-content:center; color:var(--purple); font-weight:bold; font-size:18px;">
                     {{ strtoupper(substr($googleUser['name'] ?? 'U', 0, 1)) }}
                 </div>
-            @endif
+            </template>
             <div class="avatar-info">
                 <h3>Terhubung sebagai Google</h3>
                 <p>{{ $googleUser['email'] }}</p>
@@ -373,18 +428,216 @@
 
 {{-- RIGHT: Branding --}}
 <div class="right">
-    <div class="right-content">
-        <h2>Join the<br><em>Community</em></h2>
-        <p>
-            Tingkatkan keterampilan Anda, terhubung dengan ribuan pelajar dan instruktur di seluruh dunia, dan capai tujuan karir Anda.
-        </p>
+    {{-- Heading Besar --}}
+    <h2 class="right-heading">Learn Anything, <em>Anytime</em></h2>
+
+    {{-- Cartoon Characters Stage --}}
+    <div class="character-stage">
+        <!-- Purple tall rectangle character -->
+        <div id="purple-char" class="character-body purple-body"
+             :style="{
+                 transform: 'skewX(' + purple.bodySkew + 'deg)'
+             }"
+             style="background: var(--purple); width: 140px; height: 260px; left: 30px; z-index: 1;">
+            <div class="eyes-wrap"
+                 :style="{
+                     left: (35 + purple.faceX) + 'px',
+                     top: (30 + purple.faceY) + 'px'
+                 }">
+                <div id="purple-eye-l" class="eyeball" :style="{ height: isPurpleBlinking ? '2px' : '15px', width: '15px' }">
+                    <div class="pupil" x-show="!isPurpleBlinking" :style="{ transform: 'translate(' + pupils.purpleL.x + 'px, ' + pupils.purpleL.y + 'px)' }" style="width: 6px; height: 6px;"></div>
+                </div>
+                <div id="purple-eye-r" class="eyeball" :style="{ height: isPurpleBlinking ? '2px' : '15px', width: '15px' }">
+                    <div class="pupil" x-show="!isPurpleBlinking" :style="{ transform: 'translate(' + pupils.purpleR.x + 'px, ' + pupils.purpleR.y + 'px)' }" style="width: 6px; height: 6px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Black/Navy tall rectangle character -->
+        <div id="black-char" class="character-body black-body"
+             :style="{
+                 transform: 'skewX(' + black.bodySkew + 'deg)'
+             }"
+             style="background: var(--navy); width: 90px; height: 210px; left: 180px; z-index: 2;">
+            <div class="eyes-wrap"
+                 :style="{
+                     left: (20 + black.faceX) + 'px',
+                     top: (25 + black.faceY) + 'px'
+                 }">
+                <div id="black-eye-l" class="eyeball" :style="{ height: isBlackBlinking ? '2px' : '12px', width: '12px' }">
+                    <div class="pupil" x-show="!isBlackBlinking" :style="{ transform: 'translate(' + pupils.blackL.x + 'px, ' + pupils.blackL.y + 'px)' }" style="width: 4px; height: 4px;"></div>
+                </div>
+                <div id="black-eye-r" class="eyeball" :style="{ height: isBlackBlinking ? '2px' : '12px', width: '12px' }">
+                    <div class="pupil" x-show="!isBlackBlinking" :style="{ transform: 'translate(' + pupils.blackR.x + 'px, ' + pupils.blackR.y + 'px)' }" style="width: 4px; height: 4px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Yellow tall rectangle character (The new 4th character!) -->
+        <div id="yellow-char" class="character-body yellow-body"
+             :style="{
+                 transform: 'skewX(' + yellow.bodySkew + 'deg)'
+             }"
+             style="background: #FFC72C; width: 90px; height: 180px; left: 280px; z-index: 1; border-radius: 45px 45px 0 0;">
+            <div class="eyes-wrap"
+                 :style="{
+                     left: (20 + yellow.faceX) + 'px',
+                     top: (25 + yellow.faceY) + 'px'
+                 }">
+                <div id="yellow-eye-l" class="eyeball" :style="{ height: isYellowBlinking ? '2px' : '12px', width: '12px' }">
+                    <div class="pupil" x-show="!isYellowBlinking" :style="{ transform: 'translate(' + pupils.yellowL.x + 'px, ' + pupils.yellowL.y + 'px)' }" style="width: 4px; height: 4px;"></div>
+                </div>
+                <div id="yellow-eye-r" class="eyeball" :style="{ height: isYellowBlinking ? '2px' : '12px', width: '12px' }">
+                    <div class="pupil" x-show="!isYellowBlinking" :style="{ transform: 'translate(' + pupils.yellowR.x + 'px, ' + pupils.yellowR.y + 'px)' }" style="width: 4px; height: 4px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orange semi-circle character -->
+        <div id="orange-char" class="character-body orange-body"
+             :style="{
+                 transform: 'skewX(' + orange.bodySkew + 'deg)'
+             }"
+             style="background: var(--orange); width: 170px; height: 130px; left: 0px; z-index: 3; border-radius: 85px 85px 0 0;">
+            <div class="eyes-wrap" style="gap: 14px;"
+                 :style="{
+                     left: (55 + orange.faceX) + 'px',
+                     top: (55 + orange.faceY) + 'px'
+                 }">
+                <div id="orange-eye-l" class="pupil-only" :style="{ transform: 'translate(' + pupils.orangeL.x + 'px, ' + pupils.orangeL.y + 'px)' }"></div>
+                <div id="orange-eye-r" class="pupil-only" :style="{ transform: 'translate(' + pupils.orangeR.x + 'px, ' + pupils.orangeR.y + 'px)' }"></div>
+            </div>
+        </div>
     </div>
+
     <div class="footer-note">
         © {{ date('Y') }} Coursify. All rights reserved.
     </div>
 </div>
 
 <script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('completeInteraction', () => ({
+            mouseX: 0,
+            mouseY: 0,
+            isPurpleBlinking: false,
+            isBlackBlinking: false,
+            isYellowBlinking: false,
+
+            purple: { faceX: 0, faceY: 0, bodySkew: 0 },
+            black: { faceX: 0, faceY: 0, bodySkew: 0 },
+            orange: { faceX: 0, faceY: 0, bodySkew: 0 },
+            yellow: { faceX: 0, faceY: 0, bodySkew: 0 },
+
+            pupils: {
+                purpleL: { x: 0, y: 0 },
+                purpleR: { x: 0, y: 0 },
+                blackL: { x: 0, y: 0 },
+                blackR: { x: 0, y: 0 },
+                orangeL: { x: 0, y: 0 },
+                orangeR: { x: 0, y: 0 },
+                yellowL: { x: 0, y: 0 },
+                yellowR: { x: 0, y: 0 }
+            },
+
+            init() {
+                this.schedulePurpleBlink();
+                this.scheduleBlackBlink();
+                this.scheduleYellowBlink();
+                this.updatePositions();
+            },
+
+            schedulePurpleBlink() {
+                setTimeout(() => {
+                    this.isPurpleBlinking = true;
+                    setTimeout(() => {
+                        this.isPurpleBlinking = false;
+                        this.schedulePurpleBlink();
+                    }, 150);
+                }, Math.random() * 4000 + 3000);
+            },
+
+            scheduleBlackBlink() {
+                setTimeout(() => {
+                    this.isBlackBlinking = true;
+                    setTimeout(() => {
+                        this.isBlackBlinking = false;
+                        this.scheduleBlackBlink();
+                    }, 150);
+                }, Math.random() * 4000 + 3000);
+            },
+
+            scheduleYellowBlink() {
+                setTimeout(() => {
+                    this.isYellowBlinking = true;
+                    setTimeout(() => {
+                        this.isYellowBlinking = false;
+                        this.scheduleYellowBlink();
+                    }, 150);
+                }, Math.random() * 4000 + 3000);
+            },
+
+            handleMouseMove(e) {
+                this.mouseX = e.clientX;
+                this.mouseY = e.clientY;
+                this.updatePositions();
+            },
+
+            updatePositions() {
+                this.purple = this.calcPos('purple-char');
+                this.black = this.calcPos('black-char');
+                this.orange = this.calcPos('orange-char');
+                this.yellow = this.calcPos('yellow-char');
+
+                this.pupils.purpleL = this.calcPupil('purple-eye-l', 5);
+                this.pupils.purpleR = this.calcPupil('purple-eye-r', 5);
+                this.pupils.blackL = this.calcPupil('black-eye-l', 4);
+                this.pupils.blackR = this.calcPupil('black-eye-r', 4);
+                this.pupils.orangeL = this.calcPupil('orange-eye-l', 5);
+                this.pupils.orangeR = this.calcPupil('orange-eye-r', 5);
+                this.pupils.yellowL = this.calcPupil('yellow-eye-l', 5);
+                this.pupils.yellowR = this.calcPupil('yellow-eye-r', 5);
+            },
+
+            calcPos(id) {
+                const el = document.getElementById(id);
+                if (!el) return { faceX: 0, faceY: 0, bodySkew: 0 };
+
+                const rect = el.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 3;
+
+                const deltaX = this.mouseX - centerX;
+                const deltaY = this.mouseY - centerY;
+
+                const faceX = Math.max(-15, Math.min(15, deltaX / 20));
+                const faceY = Math.max(-10, Math.min(10, deltaY / 30));
+                const bodySkew = Math.max(-6, Math.min(6, -deltaX / 120));
+
+                return { faceX, faceY, bodySkew };
+            },
+
+            calcPupil(id, maxDistance) {
+                const el = document.getElementById(id);
+                if (!el) return { x: 0, y: 0 };
+
+                const rect = el.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+
+                const deltaX = this.mouseX - centerX;
+                const deltaY = this.mouseY - centerY;
+                const distance = Math.min(Math.sqrt(deltaX ** 2 + deltaY ** 2), maxDistance);
+
+                const angle = Math.atan2(deltaY, deltaX);
+                return {
+                    x: Math.cos(angle) * distance,
+                    y: Math.sin(angle) * distance
+                };
+            }
+        }));
+    });
+
     function selectRole(radio) {
         document.querySelectorAll('.role-card').forEach(card => card.classList.remove('selected'));
         if (radio.checked) {
@@ -403,6 +656,5 @@
         text.innerText = 'Memproses...';
     }
 </script>
-
 </body>
 </html>

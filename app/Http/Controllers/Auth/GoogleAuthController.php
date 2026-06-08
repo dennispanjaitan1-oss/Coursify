@@ -11,8 +11,28 @@ use Laravel\Socialite\Facades\Socialite;
 
 class GoogleAuthController extends Controller
 {
-    // Redirect ke halaman login Google
-    public function redirect()
+    /**
+     * Redirect ke Google — dari halaman LOGIN.
+     */
+    public function redirectLogin()
+    {
+        session(['google_auth_intent' => 'login']);
+        return $this->redirectToGoogle();
+    }
+
+    /**
+     * Redirect ke Google — dari halaman REGISTER.
+     */
+    public function redirectRegister()
+    {
+        session(['google_auth_intent' => 'register']);
+        return $this->redirectToGoogle();
+    }
+
+    /**
+     * Shared: redirect ke Google OAuth consent screen.
+     */
+    private function redirectToGoogle()
     {
         $driver = Socialite::driver('google');
         if (app()->environment('local')) {
@@ -23,7 +43,10 @@ class GoogleAuthController extends Controller
         return $driver->with(['prompt' => 'select_account'])->redirect();
     }
 
-    // Callback setelah user login Google
+    /**
+     * Callback setelah user login/register Google.
+     * Alur berbeda tergantung intent (login vs register).
+     */
     public function callback()
     {
         try {
@@ -37,6 +60,8 @@ class GoogleAuthController extends Controller
             return redirect('/login')->withErrors(['google' => 'Login dengan Google gagal: ' . $e->getMessage()]);
         }
 
+        $intent = session()->pull('google_auth_intent', 'login');
+
         // Cek apakah user sudah pernah login dengan Google
         $user = User::where('google_id', $googleUser->id)->first();
 
@@ -45,38 +70,68 @@ class GoogleAuthController extends Controller
             $user = User::where('email', $googleUser->email)->first();
 
             if ($user) {
-                // Update user lama dengan google_id
+                // Email sudah terdaftar — hubungkan dengan Google ID
                 $user->update([
                     'google_id' => $googleUser->id,
                     'avatar'    => $googleUser->avatar,
                 ]);
-            } else {
-                // User baru -> arahkan ke halaman pilih role & konfirmasi nama
-                session([
-                    'google_auth_user' => [
-                        'google_id' => $googleUser->id,
-                        'email'     => $googleUser->email,
-                        'name'      => $googleUser->name,
-                        'avatar'    => $googleUser->avatar,
-                    ]
-                ]);
-
-                return redirect()->route('auth.google.complete');
             }
         }
 
-        Auth::login($user, true); // true = remember me
+        // ─── INTENT: LOGIN ───────────────────────────────────────
+        if ($intent === 'login') {
+            if (!$user) {
+                // User belum terdaftar, TOLAK login
+                return redirect('/login')->withErrors([
+                    'google' => 'Akun dengan email ' . $googleUser->email . ' belum terdaftar. Silakan daftar terlebih dahulu melalui halaman Register.'
+                ]);
+            }
 
-        return match($user->role) {
-            'instructor' => redirect(route('instructor.dashboard')),
-            'admin'      => redirect(route('admin.dashboard')),
-            default      => redirect(route('student.index')),
-        };
+            // User sudah ada, langsung login
+            Auth::login($user, true);
+
+            return match($user->role) {
+                'instructor' => redirect(route('instructor.dashboard')),
+                'admin'      => redirect(route('admin.dashboard')),
+                default      => redirect(route('student.index')),
+            };
+        }
+
+        // ─── INTENT: REGISTER ────────────────────────────────────
+        if ($user) {
+            // User sudah terdaftar, arahkan ke login
+            return redirect('/login')->with('status', 'Akun dengan email ' . $googleUser->email . ' sudah terdaftar. Silakan login.');
+        }
+
+        // User baru -> arahkan ke halaman pilih role & konfirmasi nama
+        $googleAuthData = [
+            'google_id' => $googleUser->id,
+            'email'     => $googleUser->email,
+            'name'      => $googleUser->name,
+            'avatar'    => $googleUser->avatar,
+        ];
+        
+        session()->put('google_auth_user', $googleAuthData);
+        session()->save();
+
+        \Illuminate\Support\Facades\Log::info('Google OAuth Callback - session saved', [
+            'session_id' => session()->getId(),
+            'has_google_auth_user' => session()->has('google_auth_user'),
+            'google_auth_user' => session('google_auth_user')
+        ]);
+
+        return redirect()->route('auth.google.complete');
     }
 
     // Menampilkan form lengkapi profil (pilih role & nama)
     public function showCompleteProfile()
     {
+        \Illuminate\Support\Facades\Log::info('Google OAuth showCompleteProfile', [
+            'session_id' => session()->getId(),
+            'has_google_auth_user' => session()->has('google_auth_user'),
+            'all_session_data' => session()->all()
+        ]);
+
         if (!session()->has('google_auth_user')) {
             return redirect('/login')->withErrors(['google' => 'Sesi Google Auth habis atau tidak valid. Silakan coba lagi.']);
         }

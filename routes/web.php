@@ -58,7 +58,8 @@ Route::get('/verify', function (\Illuminate\Http\Request $req) {
 // ═══════════════════════════════════════════════════════════
 use App\Http\Controllers\Auth\GoogleAuthController;
 
-Route::get('/auth/google',          [GoogleAuthController::class, 'redirect'])->name('auth.google');
+Route::get('/auth/google/login',    [GoogleAuthController::class, 'redirectLogin'])->name('auth.google.login');
+Route::get('/auth/google/register', [GoogleAuthController::class, 'redirectRegister'])->name('auth.google.register');
 Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback'])->name('auth.google.callback');
 Route::get('/auth/google/complete-profile', [GoogleAuthController::class, 'showCompleteProfile'])->name('auth.google.complete');
 Route::post('/auth/google/complete-profile', [GoogleAuthController::class, 'completeProfile'])->name('auth.google.complete.post');

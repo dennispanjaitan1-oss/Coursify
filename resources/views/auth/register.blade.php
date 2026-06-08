@@ -263,514 +263,154 @@
         /* ═══════════════════════════════════════════════
            RIGHT PANEL — OVERPOWERED 3D
         ═══════════════════════════════════════════════ */
-        .right {
+        /* ═══ RIGHT PANEL ═══ */
+        .right{
             flex: 1;
-            background: linear-gradient(145deg, #1A1232 0%, #2A1F4E 35%, #1E2D5A 70%, #122240 100%);
+            background: linear-gradient(180deg, #EDE5F9 0%, #D8CEEE 50%, #C4B8E8 100%);
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            padding: 48px 40px;
+            justify-content: space-between;
+            padding: 48px 48px 32px 48px;
             position: relative;
             overflow: hidden;
         }
 
-        /* Orb backgrounds */
-        .right::before {
+        .right::before{
             content: '';
             position: absolute;
             inset: 0;
             background:
-                radial-gradient(ellipse 500px 400px at 10% 20%, rgba(123,111,232,0.25) 0%, transparent 70%),
-                radial-gradient(ellipse 400px 350px at 90% 70%, rgba(0,200,150,0.15) 0%, transparent 70%),
-                radial-gradient(ellipse 300px 300px at 50% 100%, rgba(184,175,235,0.2) 0%, transparent 60%);
-            pointer-events: none;
-            animation: orbShift 10s ease-in-out infinite alternate;
-        }
-
-        @keyframes orbShift {
-            0%   { opacity: 0.8; transform: scale(1); }
-            100% { opacity: 1;   transform: scale(1.05); }
-        }
-
-        /* Grid overlay */
-        .right::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
+                radial-gradient(ellipse 600px 300px at 20% 10%, rgba(255,255,255,0.5), transparent),
+                radial-gradient(ellipse 500px 250px at 80% 30%, rgba(255,255,255,0.4), transparent),
+                radial-gradient(ellipse 600px 300px at 50% 90%, rgba(255,255,255,0.4), transparent);
             pointer-events: none;
         }
 
-        /* ─── Home Link ─── */
-        .home-link {
-            position: absolute; top: 20px; right: 24px;
-            display: inline-flex; align-items: center; gap: 6px;
-            background: rgba(255,255,255,0.08);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 100px;
-            padding: 8px 16px;
-            font-size: 12px; font-weight: 500;
-            color: rgba(255,255,255,0.7);
-            text-decoration: none;
-            transition: all 0.25s;
-            z-index: 10;
-        }
-        .home-link:hover {
-            background: rgba(255,255,255,0.15);
-            color: white;
-            border-color: rgba(255,255,255,0.3);
-            transform: translateY(-1px);
-        }
-
-        /* ─── Right content wrapper ─── */
-        .right-content {
-            position: relative;
-            z-index: 1;
-            max-width: 440px;
-            width: 100%;
-            perspective: 1000px;
-        }
-
-        /* ─── Section Label ─── */
-        .section-label {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(123,111,232,0.2);
-            border: 1px solid rgba(123,111,232,0.4);
-            border-radius: 100px;
-            padding: 6px 14px;
-            margin-bottom: 20px;
-            font-size: 11px;
-            font-weight: 600;
-            color: #C4BEFF;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
-        .section-label-dot {
-            width: 6px; height: 6px;
-            border-radius: 50%;
-            background: var(--teal);
-            animation: pulse 2s infinite;
-            flex-shrink: 0;
-        }
-        @keyframes pulse {
-            0%,100% { opacity:1; transform:scale(1); box-shadow: 0 0 0 0 rgba(0,200,150,0.4); }
-            50%      { opacity:0.8; transform:scale(1.2); box-shadow: 0 0 0 4px rgba(0,200,150,0); }
-        }
-
-        /* ─── Main Testimonial Card (3D) ─── */
-        .tcard-3d-wrapper {
-            position: relative;
-            transform-style: preserve-3d;
-            margin-bottom: 20px;
-            animation: cardFloat 6s ease-in-out infinite;
-        }
-        @keyframes cardFloat {
-            0%,100% { transform: translateY(0) rotateX(1deg) rotateY(-1deg); }
-            33%      { transform: translateY(-8px) rotateX(-1.5deg) rotateY(1.5deg); }
-            66%      { transform: translateY(-4px) rotateX(1deg) rotateY(-0.5deg); }
-        }
-
-        /* Glow shadow behind card */
-        .tcard-glow {
-            position: absolute;
-            inset: -2px;
-            border-radius: 26px;
-            background: linear-gradient(135deg, rgba(123,111,232,0.6), rgba(0,200,150,0.4), rgba(184,175,235,0.5));
-            filter: blur(18px);
-            opacity: 0.6;
-            z-index: -1;
-            animation: glowPulse 4s ease-in-out infinite;
-        }
-        @keyframes glowPulse {
-            0%,100% { opacity: 0.5; transform: scale(0.98); }
-            50%      { opacity: 0.8; transform: scale(1.02); }
-        }
-
-        .testimonial-card {
-            background: rgba(255,255,255,0.07);
-            backdrop-filter: blur(40px) saturate(200%);
-            border: 1px solid rgba(255,255,255,0.18);
-            border-radius: 24px;
-            padding: 28px 28px 24px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Inner top shimmer */
-        .testimonial-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
-        }
-
-        /* Noise texture */
-        .testimonial-card::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 24px;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-            background-size: 150px;
-            pointer-events: none;
-            opacity: 0.4;
-        }
-
-        /* Decorative quote mark */
-        .quote-deco {
-            position: absolute;
-            top: 16px; right: 20px;
+        .right-heading{
             font-family: var(--font-serif);
-            font-size: 80px;
-            line-height: 1;
-            color: rgba(123,111,232,0.15);
+            font-size: 64px;
+            font-weight: 400;
+            letter-spacing: -0.03em;
+            line-height: 1.0;
+            color: var(--text);
+            text-align: center;
+            white-space: nowrap;
+            margin-bottom: 20px;
+            z-index: 1;
+        }
+        .right-heading em{
             font-style: italic;
-            pointer-events: none;
-            user-select: none;
+            background: linear-gradient(135deg, var(--purple), var(--lav-4));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            padding-right: 0.15em;
         }
 
-        .t-tag {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 14px;
-        }
-        .t-tag-icon {
-            width: 28px; height: 28px;
-            border-radius: 8px;
-            background: linear-gradient(135deg, var(--purple), #9B8FFF);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 12px;
-            color: white;
-            flex-shrink: 0;
-            box-shadow: 0 4px 12px rgba(123,111,232,0.4);
-        }
-        .t-tag-text {
-            font-size: 11px;
-            font-weight: 700;
-            color: #C4BEFF;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
-
-        .t-stars {
-            display: flex;
-            align-items: center;
-            gap: 3px;
-            margin-bottom: 14px;
-        }
-        .t-stars i {
-            color: #FFC452;
-            font-size: 13px;
-            filter: drop-shadow(0 0 4px rgba(255,196,82,0.5));
-        }
-        .t-stars-count {
-            font-size: 11px;
-            color: rgba(255,255,255,0.4);
-            margin-left: 4px;
-            font-weight: 500;
-        }
-
-        .t-quote {
-            font-family: var(--font-serif);
-            font-size: 16px;
-            line-height: 1.6;
-            color: rgba(255,255,255,0.9);
-            margin-bottom: 20px;
-            letter-spacing: -0.01em;
+        /* Character Stage */
+        .character-stage {
             position: relative;
+            width: 420px;
+            height: 290px;
+            margin: 0 auto 24px auto;
             z-index: 1;
         }
-
-        .t-author {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding-top: 16px;
-            border-top: 1px solid rgba(255,255,255,0.08);
-        }
-
-        .t-avatar {
-            position: relative;
-            flex-shrink: 0;
-        }
-        .t-avatar-ring {
+        .character-body {
             position: absolute;
-            inset: -3px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--purple), var(--teal));
-            z-index: 0;
-            animation: ringRotate 4s linear infinite;
-        }
-        @keyframes ringRotate {
-            0%   { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .t-avatar-inner {
-            position: relative;
-            z-index: 1;
-            width: 42px; height: 42px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #2A1F4E, #3D2E7A);
-            border: 2px solid rgba(255,255,255,0.1);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 15px; font-weight: 700;
-            color: rgba(255,255,255,0.9);
-        }
-
-        .t-author-info {}
-        .t-name {
-            font-size: 13px;
-            font-weight: 600;
-            color: rgba(255,255,255,0.9);
-        }
-        .t-role {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 11px;
-            color: rgba(255,255,255,0.4);
-            margin-top: 2px;
-        }
-        .t-role i { color: var(--teal); font-size: 9px; }
-
-        /* Verified badge */
-        .t-verified {
-            margin-left: auto;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            background: rgba(0,200,150,0.15);
-            border: 1px solid rgba(0,200,150,0.3);
-            border-radius: 100px;
-            padding: 4px 10px;
-            font-size: 10px;
-            font-weight: 600;
-            color: var(--teal);
-        }
-        .t-verified i { font-size: 9px; }
-
-        /* ─── Bottom Row: Stats + SDG ─── */
-        .bottom-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        /* Stats mini card */
-        .stats-mini {
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 18px;
-            padding: 18px 16px;
-            position: relative;
+            bottom: 0;
+            border-radius: 10px 10px 0 0;
+            transition: transform 0.7s cubic-bezier(0.25, 0.8, 0.25, 1), height 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transform-origin: bottom center;
             overflow: hidden;
-            transition: all 0.3s;
         }
-        .stats-mini:hover {
-            background: rgba(255,255,255,0.09);
-            border-color: rgba(255,255,255,0.2);
-            transform: translateY(-2px);
-        }
-        .stats-mini::before {
-            content: '';
+        .eyes-wrap {
             position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            display: flex;
+            gap: 16px;
+            transition: left 0.7s cubic-bezier(0.25, 0.8, 0.25, 1), top 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .eyeball {
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: height 0.15s ease-in-out, width 0.15s ease-in-out;
+        }
+        .pupil {
+            border-radius: 50%;
+            background: #2D2D2D;
+            transition: transform 0.1s ease-out;
+        }
+        .pupil-only {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #2D2D2D;
+            transition: transform 0.1s ease-out;
+        }
+        .yellow-body .eyes-wrap { gap: 12px; }
+        .black-body .eyes-wrap { gap: 10px; }
+        .mouth {
+            position: absolute;
+            width: 50px;
+            height: 3px;
+            background: #2D2D2D;
+            border-radius: 10px;
+            transition: left 0.7s cubic-bezier(0.25, 0.8, 0.25, 1), top 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        .stats-grid-inner {
+        /* Tagline Cards */
+        .tagline-cards {
             display: flex;
             flex-direction: column;
             gap: 10px;
+            width: 100%;
+            max-width: 420px;
+            margin-bottom: 20px;
+            z-index: 1;
         }
-
-        .stat-row {
+        .tagline-card {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            gap: 14px;
+            background: rgba(255,255,255,0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.9);
+            border-radius: 16px;
+            padding: 14px 20px;
         }
-
-        .stat-icon-wrap {
-            width: 28px; height: 28px;
-            border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 11px;
+        .tagline-icon {
+            font-size: 22px;
             flex-shrink: 0;
         }
-        .stat-icon-wrap.purple { background: rgba(123,111,232,0.2); color: #B8AFEB; }
-        .stat-icon-wrap.teal   { background: rgba(0,200,150,0.15);  color: var(--teal); }
-        .stat-icon-wrap.orange { background: rgba(255,138,91,0.15);  color: var(--orange); }
-
-        .stat-data {}
-        .stat-val {
-            font-family: var(--font-serif);
-            font-size: 18px;
-            font-weight: 400;
-            color: white;
-            letter-spacing: -0.02em;
-            line-height: 1;
-        }
-        .stat-val em { font-style: italic; color: #B8AFEB; }
-        .stat-key {
-            font-size: 9px;
-            color: rgba(255,255,255,0.35);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            font-weight: 500;
-        }
-
-        /* SDG card */
-        .sdg-mini {
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 18px;
-            padding: 18px 16px;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s;
-        }
-        .sdg-mini:hover {
-            background: rgba(255,255,255,0.09);
-            border-color: rgba(255,255,255,0.2);
-            transform: translateY(-2px);
-        }
-        .sdg-mini::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-        }
-
-        .sdg-mini-title {
-            font-size: 10px;
+        .tagline-title {
+            font-size: 13px;
             font-weight: 600;
-            color: rgba(255,255,255,0.5);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            color: var(--text);
+            margin-bottom: 2px;
         }
-        .sdg-mini-title i { color: var(--teal); font-size: 10px; }
-
-        .sdg-pills {
-            display: flex;
-            flex-direction: column;
-            gap: 7px;
-        }
-        .sdg-pill {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 10px;
-            padding: 7px 10px;
-            transition: all 0.2s;
-        }
-        .sdg-pill:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: rgba(255,255,255,0.15);
-        }
-        .sdg-pill-icon {
-            width: 22px; height: 22px;
-            border-radius: 6px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 10px;
-            flex-shrink: 0;
-        }
-        .sdg-pill-icon.edu    { background: rgba(0,100,200,0.3); color: #6EB3FF; }
-        .sdg-pill-icon.work   { background: rgba(220,140,0,0.3); color: #FFD06E; }
-        .sdg-pill-icon.equal  { background: rgba(180,0,120,0.3); color: #FF8FD9; }
-        .sdg-pill-label {
-            font-size: 10px;
-            font-weight: 600;
-            color: rgba(255,255,255,0.65);
-            line-height: 1.2;
-        }
-        .sdg-pill-label span {
-            display: block;
-            font-size: 9px;
-            font-weight: 400;
-            color: rgba(255,255,255,0.3);
+        .tagline-sub {
+            font-size: 12px;
+            color: var(--muted);
         }
 
-        /* ─── Floating Chips ─── */
-        .float-chip {
-            position: absolute;
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.18);
-            border-radius: 100px;
-            padding: 8px 14px;
-            font-size: 11px;
-            font-weight: 600;
-            color: rgba(255,255,255,0.85);
-            z-index: 2;
-            pointer-events: none;
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.3); }
         }
-        .float-chip i { font-size: 11px; }
-
-        .chip-1 {
-            top: 40px; left: -10px;
-            animation: chipFloat1 7s ease-in-out infinite;
-        }
-        .chip-2 {
-            bottom: 120px; right: -10px;
-            animation: chipFloat2 8s ease-in-out infinite 1s;
-        }
-        .chip-3 {
-            top: 50%; left: -20px;
-            transform: translateY(-50%);
-            animation: chipFloat1 9s ease-in-out infinite 0.5s;
-        }
-
-        @keyframes chipFloat1 {
-            0%,100% { transform: translateY(0) rotate(-2deg); }
-            50%      { transform: translateY(-10px) rotate(1deg); }
-        }
-        @keyframes chipFloat2 {
-            0%,100% { transform: translateY(0) rotate(2deg); }
-            50%      { transform: translateY(-12px) rotate(-1deg); }
-        }
-
-        .chip-dot {
-            width: 7px; height: 7px;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-        .chip-dot.green  { background: var(--teal); }
-        .chip-dot.purple { background: var(--purple); }
-        .chip-dot.orange { background: var(--orange); }
 
         @media(max-width: 900px) {
             .right { display: none; }
             .left { width: 100%; padding: 24px 20px; }
             .form-wrap { max-width: 100%; }
             h1 { font-size: 30px; }
-            .benefits { grid-template-columns: 1fr; }
             .role-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
-<body>
+<body x-data="registerInteraction()" @mousemove="handleMouseMove($event)">
 
 {{-- LEFT: Form --}}
 <div class="left">
@@ -785,22 +425,7 @@
             Sudah punya akun? <a href="{{ route('login') }}">Masuk di sini</a>
         </p>
 
-        {{-- Benefits --}}
-        <div class="benefits">
-            @foreach([
-                ['fa-book-open', 'Ratusan kursus gratis'],
-                ['fa-chart-line', 'Progress tersimpan'],
-                ['fa-award', 'Sertifikat digital'],
-                ['fa-users', 'Komunitas aktif'],
-            ] as [$icon, $label])
-                <div class="benefit-item">
-                    <div class="check-ic">
-                        <i class="fa-solid fa-check" style="font-size:8px;"></i>
-                    </div>
-                    {{ $label }}
-                </div>
-            @endforeach
-        </div>
+
 
         @error('google')
             <div class="error-msg" style="margin-bottom: 20px; text-align: left; background: #FFF0F2; color: #D32F2F; padding: 12px 16px; border-radius: 8px; border: 1px solid #FFCDD2; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 8px;">
@@ -810,16 +435,6 @@
 
         <form method="POST" action="{{ route('register') }}"
               id="registerForm"
-              x-data="{
-                showPass: false,
-                showConfirm: false,
-                password: '',
-                confirm: '',
-                get matchState() {
-                    if (!this.confirm) return 'empty';
-                    return this.password === this.confirm ? 'match' : 'no-match';
-                }
-              }"
               @submit="handleSubmit($event)">
             @csrf
 
@@ -867,7 +482,9 @@
                     <input type="text" id="name" name="name" value="{{ old('name') }}"
                         placeholder="Masukkan nama lengkap"
                         required autofocus autocomplete="name"
-                        class="{{ $errors->has('name') ? 'error-input' : '' }}">
+                        class="{{ $errors->has('name') ? 'error-input' : '' }}"
+                        @focus="isTyping = true; updatePositions()"
+                        @blur="isTyping = false; updatePositions()">
                 </div>
                 @error('name')
                     <div class="error-msg">
@@ -884,7 +501,9 @@
                     <input type="email" id="email" name="email" value="{{ old('email') }}"
                         placeholder="nama@email.com"
                         required autocomplete="username"
-                        class="{{ $errors->has('email') ? 'error-input' : '' }}">
+                        class="{{ $errors->has('email') ? 'error-input' : '' }}"
+                        @focus="isTyping = true; updatePositions()"
+                        @blur="isTyping = false; updatePositions()">
                 </div>
                 @error('email')
                     <div class="error-msg">
@@ -903,11 +522,13 @@
                         placeholder="Minimal 8 karakter"
                         required autocomplete="new-password"
                         x-model="password"
-                        @input="checkStrength($event.target.value)"
+                        @focus="isTyping = true; updatePositions()"
+                        @blur="isTyping = false; updatePositions()"
+                        @input="checkStrength($event.target.value); updatePositions()"
                         class="{{ $errors->has('password') ? 'error-input' : '' }}"
-                        type="password">
-                    <button type="button" class="input-toggle" onclick="togglePass('password', this)" tabindex="-1">
-                        <i class="fa-solid fa-eye"></i>
+                        :type="showPassword ? 'text' : 'password'">
+                    <button type="button" class="input-toggle" @click="showPassword = !showPassword; $nextTick(() => updatePositions())" tabindex="-1">
+                        <i :class="showPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"></i>
                     </button>
                 </div>
                 <div class="strength-bar">
@@ -931,10 +552,13 @@
                         placeholder="Ulangi password"
                         required autocomplete="new-password"
                         x-model="confirm"
+                        @focus="isTyping = true; updatePositions()"
+                        @blur="isTyping = false; updatePositions()"
+                        @input="updatePositions()"
                         :class="matchState === 'match' ? 'success-input' : (matchState === 'no-match' ? 'error-input' : '')"
-                        type="password">
-                    <button type="button" class="input-toggle" onclick="togglePass('password_confirmation', this)" tabindex="-1">
-                        <i class="fa-solid fa-eye"></i>
+                        :type="showConfirm ? 'text' : 'password'">
+                    <button type="button" class="input-toggle" @click="showConfirm = !showConfirm; $nextTick(() => updatePositions())" tabindex="-1">
+                        <i :class="showConfirm ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"></i>
                     </button>
                 </div>
                 <div class="match-indicator" :class="matchState">
@@ -964,7 +588,6 @@
                 <div class="btn-spinner" id="btnSpinner"></div>
                 <span class="btn-text" id="btnText">
                     Buat Akun Sekarang
-                    
                 </span>
             </button>
         </form>
@@ -977,7 +600,7 @@
         </div>
 
         {{-- Google Button --}}
-        <a href="{{ route('auth.google') }}"
+        <a href="{{ route('auth.google.register') }}"
            style="display:flex;align-items:center;justify-content:center;gap:10px;
                   width:100%;padding:12px;border-radius:100px;border:1.5px solid var(--border);
                   background:white;color:var(--text);font-size:14px;font-weight:500;
@@ -1001,214 +624,336 @@
     </div>
 </div>
 
-{{-- RIGHT: Overpowered 3D Panel --}}
+{{-- RIGHT: Branding --}}
 <div class="right">
 
-    
+    {{-- Heading Besar --}}
+    <h2 class="right-heading">Welcome, <em>Learner</em></h2>
 
-    <a href="{{ route('home') }}" class="home-link">
-        <i class="fa-solid fa-arrow-left"></i> Back to Home
-    </a>
-
-    <div class="right-content">
-
-        {{-- 3D Testimonial Card --}}
-        <div class="tcard-3d-wrapper">
-            <div class="tcard-glow"></div>
-            <div class="testimonial-card">
-                <div class="quote-deco">"</div>
-
-                <div class="t-tag">
-                    <div class="t-tag-icon">
-                        <i class="fa-solid fa-user-graduate"></i>
-                    </div>
-                    <span class="t-tag-text">Review</span>
+    {{-- Cartoon Characters Stage --}}
+    <div class="character-stage">
+        <!-- Purple tall rectangle character -->
+        <div id="purple-char" class="character-body purple-body"
+             :style="{
+                 height: (isTyping || (password.length > 0 && !showPassword)) ? '375px' : '340px',
+                 transform: (password.length > 0 && showPassword) ? 'skewX(0deg)' : (isTyping || (password.length > 0 && !showPassword)) ? 'skewX(' + (purple.bodySkew - 12) + 'deg) translateX(34px)' : 'skewX(' + purple.bodySkew + 'deg)'
+             }"
+             style="background: var(--purple); width: 150px; left: 58px; z-index: 1;">
+            <div class="eyes-wrap"
+                 :style="{
+                     left: (password.length > 0 && showPassword) ? '18px' : isLookingAtEachOther ? '46px' : (38 + purple.faceX) + 'px',
+                     top: (password.length > 0 && showPassword) ? '30px' : isLookingAtEachOther ? '55px' : (34 + purple.faceY) + 'px'
+                 }">
+                <div id="purple-eye-l" class="eyeball" :style="{ height: isPurpleBlinking ? '2px' : '15px', width: '15px' }">
+                    <div class="pupil" x-show="!isPurpleBlinking" :style="{ transform: 'translate(' + pupils.purpleL.x + 'px, ' + pupils.purpleL.y + 'px)' }" style="width: 6px; height: 6px;"></div>
                 </div>
-
-                <div class="t-stars">
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-
-                </div>
-
-                <p class="t-quote">
-                    "Coursify benar-benar mengubah karier saya. Dalam 3 bulan belajar Data Science, saya langsung dapat pekerjaan impian sebagai Data Analyst di Tokopedia!"
-                </p>
-
-                <div class="t-author">
-                    <div class="t-avatar">
-                        <div class="t-avatar-ring"></div>
-                        <div class="t-avatar-inner">R</div>
-                    </div>
-                    <div class="t-author-info">
-                        <div class="t-name">Rizky Pratama</div>
-                        <div class="t-role">
-                            <i class="fa-solid fa-circle-check"></i>
-                            Data Analyst 
-                        </div>
-                    </div>
+                <div id="purple-eye-r" class="eyeball" :style="{ height: isPurpleBlinking ? '2px' : '15px', width: '15px' }">
+                    <div class="pupil" x-show="!isPurpleBlinking" :style="{ transform: 'translate(' + pupils.purpleR.x + 'px, ' + pupils.purpleR.y + 'px)' }" style="width: 6px; height: 6px;"></div>
                 </div>
             </div>
         </div>
 
-        {{-- Bottom row --}}
-        <div class="bottom-row">
-
-            {{-- Stats mini --}}
-            <div class="stats-mini">
-                <div class="stats-grid-inner">
-                    <div class="stat-row">
-                        <div class="stat-icon-wrap purple">
-                            <i class="fa-solid fa-book-open"></i>
-                        </div>
-                        <div class="stat-data" style="text-align:right;">
-                            <div class="stat-val"><em>900+</em></div>
-                            <div class="stat-key">Kursus</div>
-                        </div>
-                    </div>
-                    <div class="stat-row">
-                        <div class="stat-icon-wrap teal">
-                            <i class="fa-solid fa-users"></i>
-                        </div>
-                        <div class="stat-data" style="text-align:right;">
-                            <div class="stat-val"><em>Ribuan</em></div>
-                            <div class="stat-key">Pelajar</div>
-                        </div>
-                    </div>
-                    <div class="stat-row">
-                        <div class="stat-icon-wrap orange">
-                            <i class="fa-solid fa-star"></i>
-                        </div>
-                        <div class="stat-data" style="text-align:right;">
-                            <div class="stat-val"><em>95%</em></div>
-                            <div class="stat-key">Rating</div>
-                        </div>
-                    </div>
+        <!-- Black/Navy tall rectangle character -->
+        <div id="black-char" class="character-body black-body"
+             :style="{
+                 transform: (password.length > 0 && showPassword) ? 'skewX(0deg)' : isLookingAtEachOther ? 'skewX(' + (black.bodySkew * 1.5 + 10) + 'deg) translateX(17px)' : (isTyping || (password.length > 0 && !showPassword)) ? 'skewX(' + (black.bodySkew * 1.5) + 'deg)' : 'skewX(' + black.bodySkew + 'deg)'
+             }"
+             style="background: var(--navy); width: 100px; height: 260px; left: 200px; z-index: 2;">
+            <div class="eyes-wrap"
+                 :style="{
+                     left: (password.length > 0 && showPassword) ? '8px' : isLookingAtEachOther ? '27px' : (22 + black.faceX) + 'px',
+                     top: (password.length > 0 && showPassword) ? '24px' : isLookingAtEachOther ? '10px' : (27 + black.faceY) + 'px'
+                 }">
+                <div id="black-eye-l" class="eyeball" :style="{ height: isBlackBlinking ? '2px' : '14px', width: '14px' }">
+                    <div class="pupil" x-show="!isBlackBlinking" :style="{ transform: 'translate(' + pupils.blackL.x + 'px, ' + pupils.blackL.y + 'px)' }" style="width: 5px; height: 5px;"></div>
+                </div>
+                <div id="black-eye-r" class="eyeball" :style="{ height: isBlackBlinking ? '2px' : '14px', width: '14px' }">
+                    <div class="pupil" x-show="!isBlackBlinking" :style="{ transform: 'translate(' + pupils.blackR.x + 'px, ' + pupils.blackR.y + 'px)' }" style="width: 5px; height: 5px;"></div>
                 </div>
             </div>
-
-            {{-- SDG mini --}}
-            <div class="sdg-mini">
-                <div class="sdg-mini-title">
-                    <i class="fa-solid fa-earth-asia"></i>
-                    SDG Goals
-                </div>
-                <div class="sdg-pills">
-                    <div class="sdg-pill">
-                        <div class="sdg-pill-icon edu">
-                            <i class="fa-solid fa-book"></i>
-                        </div>
-                        <div class="sdg-pill-label">
-                            SDG 4
-                            <span>Pendidikan</span>
-                        </div>
-                    </div>
-                    <div class="sdg-pill">
-                        <div class="sdg-pill-icon work">
-                            <i class="fa-solid fa-briefcase"></i>
-                        </div>
-                        <div class="sdg-pill-label">
-                            SDG 8
-                            <span>Pekerjaan</span>
-                        </div>
-                    </div>
-                    <div class="sdg-pill">
-                        <div class="sdg-pill-icon equal">
-                            <i class="fa-solid fa-scale-balanced"></i>
-                        </div>
-                        <div class="sdg-pill-label">
-                            SDG 10
-                            <span>Kesetaraan</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
+
+        <!-- Orange semi-circle character -->
+        <div id="orange-char" class="character-body orange-body"
+             :style="{
+                 transform: (password.length > 0 && showPassword) ? 'skewX(0deg)' : 'skewX(' + orange.bodySkew + 'deg)'
+             }"
+             style="background: var(--orange); width: 200px; height: 170px; left: 0px; z-index: 3; border-radius: 100px 100px 0 0;">
+            <div class="eyes-wrap" style="gap: 18px;"
+                 :style="{
+                     left: (password.length > 0 && showPassword) ? '42px' : (70 + orange.faceX) + 'px',
+                     top: (password.length > 0 && showPassword) ? '72px' : (76 + orange.faceY) + 'px'
+                 }">
+                <div id="orange-eye-l" class="pupil-only" :style="{ transform: 'translate(' + pupils.orangeL.x + 'px, ' + pupils.orangeL.y + 'px)' }"></div>
+                <div id="orange-eye-r" class="pupil-only" :style="{ transform: 'translate(' + pupils.orangeR.x + 'px, ' + pupils.orangeR.y + 'px)' }"></div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Footer Links --}}
+    <div style="display: flex; gap: 24px; justify-content: center; z-index: 10;">
+        <a href="{{ route('privacy') }}" style="color: var(--text-soft); font-size: 13px; font-weight: 500; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--purple)'" onmouseout="this.style.color='var(--text-soft)'">Privacy Policy</a>
+        <a href="{{ route('about') }}" style="color: var(--text-soft); font-size: 13px; font-weight: 500; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--purple)'" onmouseout="this.style.color='var(--text-soft)'">About Us</a>
+        <a href="{{ route('contact') }}" style="color: var(--text-soft); font-size: 13px; font-weight: 500; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='var(--purple)'" onmouseout="this.style.color='var(--text-soft)'">Contact</a>
     </div>
 </div>
 
 <script>
-// ─── Password toggle (vanilla, no Alpine) ─────────────────
-function togglePass(inputId, btn) {
-    const input = document.getElementById(inputId);
-    const icon  = btn.querySelector('i');
-    const show  = input.type === 'password';
-    input.type  = show ? 'text' : 'password';
-    icon.className = show ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
-}
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('registerInteraction', () => ({
+            mouseX: 0,
+            mouseY: 0,
+            isPurpleBlinking: false,
+            isBlackBlinking: false,
+            isTyping: false,
+            isLookingAtEachOther: false,
+            isPurplePeeking: false,
+            password: '',
+            confirm: '',
+            showPassword: false,
+            showConfirm: false,
 
-// ─── Role selection ───────────────────────────────────────
-function selectRole(input) {
-    document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
-    input.closest('.role-card').classList.add('selected');
-}
+            get matchState() {
+                if (!this.confirm) return 'empty';
+                return this.password === this.confirm ? 'match' : 'no-match';
+            },
 
-// ─── Password strength ────────────────────────────────────
-function checkStrength(val) {
-    const fill  = document.getElementById('strengthFill');
-    const label = document.getElementById('strengthLabel');
-    let score = 0;
-    if (val.length >= 8)          score++;
-    if (/[A-Z]/.test(val))        score++;
-    if (/[0-9]/.test(val))        score++;
-    if (/[^A-Za-z0-9]/.test(val)) score++;
+            purple: { faceX: 0, faceY: 0, bodySkew: 0 },
+            black: { faceX: 0, faceY: 0, bodySkew: 0 },
+            orange: { faceX: 0, faceY: 0, bodySkew: 0 },
+            yellow: { faceX: 0, faceY: 0, bodySkew: 0 },
 
-    const configs = [
-        { w: '0%',   c: '#9CA3AF', t: 'Masukkan password' },
-        { w: '25%',  c: '#C29393', t: 'Lemah' },
-        { w: '50%',  c: '#D4AF37', t: 'Cukup' },
-        { w: '75%',  c: '#6B728E', t: 'Kuat' },
-        { w: '100%', c: '#4D6151', t: 'Sangat kuat' },
-    ];
-    const cfg = val.length === 0 ? configs[0] : (configs[score] || configs[0]);
-    fill.style.width      = cfg.w;
-    fill.style.background = cfg.c;
-    label.textContent     = cfg.t;
-    label.style.color     = cfg.c;
-}
+            pupils: {
+                purpleL: { x: 0, y: 0 },
+                purpleR: { x: 0, y: 0 },
+                blackL: { x: 0, y: 0 },
+                blackR: { x: 0, y: 0 },
+                orangeL: { x: 0, y: 0 },
+                orangeR: { x: 0, y: 0 },
+                yellowL: { x: 0, y: 0 },
+                yellowR: { x: 0, y: 0 }
+            },
 
-// ─── Form submit ──────────────────────────────────────────
-function handleSubmit(e) {
-    const terms   = document.getElementById('terms');
-    const btn     = document.getElementById('submitBtn');
-    const spinner = document.getElementById('btnSpinner');
-    const btnText = document.getElementById('btnText');
+            init() {
+                this.schedulePurpleBlink();
+                this.scheduleBlackBlink();
+                this.updatePositions();
 
-    if (!terms.checked) {
-        e.preventDefault();
-        terms.style.borderColor = 'var(--orange)';
-        terms.style.animation   = 'shake 0.4s ease';
-        setTimeout(() => { terms.style.animation = ''; terms.style.borderColor = ''; }, 500);
-        terms.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return;
+                this.$watch('password', (value) => {
+                    this.updatePeeking();
+                    this.updatePositions();
+                });
+                this.$watch('showPassword', (value) => {
+                    this.updatePeeking();
+                    this.updatePositions();
+                });
+                this.$watch('isTyping', (value) => {
+                    if (value) {
+                        this.isLookingAtEachOther = true;
+                        setTimeout(() => {
+                            this.isLookingAtEachOther = false;
+                            this.updatePositions();
+                        }, 800);
+                    } else {
+                        this.isLookingAtEachOther = false;
+                    }
+                    this.updatePositions();
+                });
+            },
+
+            updatePeeking() {
+                if (this.password.length > 0 && this.showPassword) {
+                    if (!this.peekInterval) {
+                        this.peekInterval = setInterval(() => {
+                            if (this.password.length > 0 && this.showPassword) {
+                                this.isPurplePeeking = true;
+                                this.updatePositions();
+                                setTimeout(() => {
+                                    this.isPurplePeeking = false;
+                                    this.updatePositions();
+                                }, 800);
+                            } else {
+                                clearInterval(this.peekInterval);
+                                this.peekInterval = null;
+                            }
+                        }, 3000);
+                    }
+                } else {
+                    if (this.peekInterval) {
+                        clearInterval(this.peekInterval);
+                        this.peekInterval = null;
+                    }
+                    this.isPurplePeeking = false;
+                }
+            },
+
+            schedulePurpleBlink() {
+                setTimeout(() => {
+                    this.isPurpleBlinking = true;
+                    setTimeout(() => {
+                        this.isPurpleBlinking = false;
+                        this.schedulePurpleBlink();
+                    }, 150);
+                }, Math.random() * 4000 + 3000);
+            },
+
+            scheduleBlackBlink() {
+                setTimeout(() => {
+                    this.isBlackBlinking = true;
+                    setTimeout(() => {
+                        this.isBlackBlinking = false;
+                        this.scheduleBlackBlink();
+                    }, 150);
+                }, Math.random() * 4000 + 3000);
+            },
+
+            handleMouseMove(e) {
+                this.mouseX = e.clientX;
+                this.mouseY = e.clientY;
+                this.updatePositions();
+            },
+
+            updatePositions() {
+                this.purple = this.calcPos('purple-char');
+                this.black = this.calcPos('black-char');
+                this.orange = this.calcPos('orange-char');
+                this.yellow = this.calcPos('yellow-char');
+
+                const hasPassword = this.password.length > 0;
+
+                let purpleForceX, purpleForceY;
+                if (hasPassword && this.showPassword) {
+                    purpleForceX = this.isPurplePeeking ? 4 : -4;
+                    purpleForceY = this.isPurplePeeking ? 5 : -4;
+                } else if (this.isLookingAtEachOther) {
+                    purpleForceX = 3;
+                    purpleForceY = 4;
+                }
+
+                let blackForceX, blackForceY;
+                if (hasPassword && this.showPassword) {
+                    blackForceX = -4;
+                    blackForceY = -4;
+                } else if (this.isLookingAtEachOther) {
+                    blackForceX = 0;
+                    blackForceY = -4;
+                }
+
+                let orangeForceX, orangeForceY;
+                if (hasPassword && this.showPassword) {
+                    orangeForceX = -5;
+                    orangeForceY = -4;
+                }
+
+                let yellowForceX, yellowForceY;
+                if (hasPassword && this.showPassword) {
+                    yellowForceX = -5;
+                    yellowForceY = -4;
+                }
+
+                this.pupils.purpleL = this.calcPupil('purple-eye-l', 5, purpleForceX, purpleForceY);
+                this.pupils.purpleR = this.calcPupil('purple-eye-r', 5, purpleForceX, purpleForceY);
+                this.pupils.blackL = this.calcPupil('black-eye-l', 4, blackForceX, blackForceY);
+                this.pupils.blackR = this.calcPupil('black-eye-r', 4, blackForceX, blackForceY);
+                this.pupils.orangeL = this.calcPupil('orange-eye-l', 5, orangeForceX, orangeForceY);
+                this.pupils.orangeR = this.calcPupil('orange-eye-r', 5, orangeForceX, orangeForceY);
+                this.pupils.yellowL = this.calcPupil('yellow-eye-l', 5, yellowForceX, yellowForceY);
+                this.pupils.yellowR = this.calcPupil('yellow-eye-r', 5, yellowForceX, yellowForceY);
+            },
+
+            calcPos(id) {
+                const el = document.getElementById(id);
+                if (!el) return { faceX: 0, faceY: 0, bodySkew: 0 };
+
+                const rect = el.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 3;
+
+                const deltaX = this.mouseX - centerX;
+                const deltaY = this.mouseY - centerY;
+
+                const faceX = Math.max(-15, Math.min(15, deltaX / 20));
+                const faceY = Math.max(-10, Math.min(10, deltaY / 30));
+                const bodySkew = Math.max(-6, Math.min(6, -deltaX / 120));
+
+                return { faceX, faceY, bodySkew };
+            },
+
+            calcPupil(id, maxDistance, forceX, forceY) {
+                if (forceX !== undefined && forceY !== undefined) {
+                    return { x: forceX, y: forceY };
+                }
+                const el = document.getElementById(id);
+                if (!el) return { x: 0, y: 0 };
+
+                const rect = el.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+
+                const deltaX = this.mouseX - centerX;
+                const deltaY = this.mouseY - centerY;
+                const distance = Math.min(Math.sqrt(deltaX ** 2 + deltaY ** 2), maxDistance);
+
+                const angle = Math.atan2(deltaY, deltaX);
+                return {
+                    x: Math.cos(angle) * distance,
+                    y: Math.sin(angle) * distance
+                };
+            }
+        }));
+    });
+
+    // ─── Role selection ───────────────────────────────────────
+    function selectRole(input) {
+        document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
+        input.closest('.role-card').classList.add('selected');
     }
 
-    btn.disabled = true;
-    btn.classList.add('loading');
-    spinner.style.display = 'block';
-    btnText.textContent   = 'Membuat akun...';
-}
+    // ─── Password strength ────────────────────────────────────
+    function checkStrength(val) {
+        const fill  = document.getElementById('strengthFill');
+        const label = document.getElementById('strengthLabel');
+        let score = 0;
+        if (val.length >= 8)          score++;
+        if (/[A-Z]/.test(val))        score++;
+        if (/[0-9]/.test(val))        score++;
+        if (/[^A-Za-z0-9]/.test(val)) score++;
 
-// ─── 3D tilt on mouse move ────────────────────────────────
-const wrapper = document.querySelector('.tcard-3d-wrapper');
-if (wrapper) {
-    const card = wrapper.querySelector('.testimonial-card');
-    wrapper.addEventListener('mousemove', e => {
-        const rect = wrapper.getBoundingClientRect();
-        const x = (e.clientX - rect.left) / rect.width  - 0.5;
-        const y = (e.clientY - rect.top)  / rect.height - 0.5;
-        wrapper.style.animation = 'none';
-        wrapper.style.transform = `rotateY(${x * 14}deg) rotateX(${-y * 10}deg) translateY(-4px)`;
-    });
-    wrapper.addEventListener('mouseleave', () => {
-        wrapper.style.animation = '';
-        wrapper.style.transform = '';
-    });
-}
+        const configs = [
+            { w: '0%',   c: '#9CA3AF', t: 'Masukkan password' },
+            { w: '25%',  c: '#C29393', t: 'Lemah' },
+            { w: '50%',  c: '#D4AF37', t: 'Cukup' },
+            { w: '75%',  c: '#6B728E', t: 'Kuat' },
+            { w: '100%', c: '#4D6151', t: 'Sangat kuat' },
+        ];
+        const cfg = val.length === 0 ? configs[0] : (configs[score] || configs[0]);
+        fill.style.width      = cfg.w;
+        fill.style.background = cfg.c;
+        label.textContent     = cfg.t;
+        label.style.color     = cfg.c;
+    }
+
+    // ─── Form submit ──────────────────────────────────────────
+    function handleSubmit(e) {
+        const terms   = document.getElementById('terms');
+        const btn     = document.getElementById('submitBtn');
+        const spinner = document.getElementById('btnSpinner');
+        const btnText = document.getElementById('btnText');
+
+        if (!terms.checked) {
+            e.preventDefault();
+            terms.style.borderColor = 'var(--orange)';
+            terms.style.animation   = 'shake 0.4s ease';
+            setTimeout(() => { terms.style.animation = ''; terms.style.borderColor = ''; }, 500);
+            terms.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return;
+        }
+
+        btn.disabled = true;
+        btn.classList.add('loading');
+        spinner.style.display = 'block';
+        btnText.textContent   = 'Membuat akun...';
+    }
 </script>
 
 <style>

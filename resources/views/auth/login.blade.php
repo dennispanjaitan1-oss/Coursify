@@ -396,6 +396,7 @@
             background: linear-gradient(135deg, var(--purple), var(--lav-4));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            padding-right: 0.15em;
         }
 
         /* Character Stage */
@@ -524,20 +525,25 @@
             <a href="{{ route('register') }}">Daftar gratis</a>
         </p>
 
-        @if (session('status'))
-            <div class="status-msg">
-                ✓ {{ session('status') }}
-            </div>
-        @endif
-
-        @error('google')
-            <div class="error-msg" style="margin-bottom: 20px; text-align: left; background: #FFF0F2; color: #D32F2F; padding: 12px 16px; border-radius: 8px; border: 1px solid #FFCDD2; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 8px;">
-                <i class="fa-solid fa-circle-exclamation"></i> {{ $message }}
-            </div>
-        @enderror
 
         <form method="POST" action="{{ route('login') }}">
             @csrf
+
+            {{-- Google OAuth Error Message --}}
+            @if ($errors->has('google'))
+            <div style="background: linear-gradient(135deg, #FEE2E2, #FECACA); border: 1px solid rgba(239,68,68,0.3); border-radius: 14px; padding: 14px 18px; margin-bottom: 18px; display: flex; align-items: flex-start; gap: 10px;">
+                <i class="fa-solid fa-circle-exclamation" style="color: #EF4444; font-size: 16px; margin-top: 2px; flex-shrink: 0;"></i>
+                <span style="font-size: 13px; color: #991B1B; line-height: 1.5; font-weight: 500;">{{ $errors->first('google') }}</span>
+            </div>
+            @endif
+
+            {{-- Status / Info Message (e.g. "Akun sudah terdaftar, silakan login") --}}
+            @if (session('status'))
+            <div style="background: linear-gradient(135deg, #E6FBF5, #D1FAE5); border: 1px solid rgba(0,200,150,0.3); border-radius: 14px; padding: 14px 18px; margin-bottom: 18px; display: flex; align-items: flex-start; gap: 10px;">
+                <i class="fa-solid fa-circle-info" style="color: #00C896; font-size: 16px; margin-top: 2px; flex-shrink: 0;"></i>
+                <span style="font-size: 13px; color: #065F46; line-height: 1.5; font-weight: 500;">{{ session('status') }}</span>
+            </div>
+            @endif
 
             {{-- Email --}}
             <div class="field">
@@ -609,7 +615,7 @@
 
         <div class="divider"><span>Atau masuk dengan</span></div>
 
-        <a href="{{ route('auth.google') }}" class="btn-google" style="text-decoration:none;">
+        <a href="{{ route('auth.google.login') }}" class="btn-google" style="text-decoration:none;">
             <svg width="18" height="18" viewBox="0 0 48 48">
                 <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
                 <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
