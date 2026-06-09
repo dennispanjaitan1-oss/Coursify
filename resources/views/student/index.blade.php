@@ -1520,13 +1520,6 @@ body {
     {{-- ── HERO ── --}}
     <div class="hero">
       <div class="hero-content">
-        <div class="hero-eyebrow">
-          <span class="hero-eyebrow-dot"></span>
-          <span class="hero-eyebrow-text">
-            {{ now()->format('l, d F Y') }} ·
-            {{ now()->hour < 12 ? 'Good morning' : (now()->hour < 17 ? 'Good afternoon' : 'Good evening') }}
-          </span>
-        </div>
         <h1 class="hero-title">
           Welcome back,<br><em>{{ explode(' ', $user->name)[0] }}</em>
         </h1>
@@ -1550,10 +1543,6 @@ body {
             Explore
           </a>
         </div>
-      </div>
-
-      <div class="hero-visual">
-        <div class="hero-icon-ring">🎓</div>
       </div>
     </div>
 

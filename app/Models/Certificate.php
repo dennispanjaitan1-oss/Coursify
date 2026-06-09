@@ -12,6 +12,9 @@ class Certificate extends Model
     ];
 
     protected $casts = [
+        'user_id'       => 'integer',
+        'course_id'     => 'integer',
+        'enrollment_id' => 'integer',
         'issued_at'  => 'datetime',
         'revoked_at' => 'datetime',
         'grade'      => 'decimal:2',

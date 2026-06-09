@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Instructor;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\Category;
+use App\Models\Institution;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -48,8 +49,16 @@ class CourseController extends Controller
         ]);
 
         // Auto-generate slug dari title
-        $validated['slug']           = Str::slug($validated['title']) . '-' . Str::random(5);
-        $validated['institution_id'] = Auth::user()->institution_id ?? 1; // sesuaikan
+        $validated['slug'] = Str::slug($validated['title']) . '-' . Str::random(5);
+
+        $institutionId = Auth::user()->institution_id ?? Institution::query()->value('id');
+        if (! $institutionId) {
+            return back()
+                ->withInput()
+                ->with('error', 'Belum ada institution yang tersedia untuk membuat course.');
+        }
+
+        $validated['institution_id'] = $institutionId;
         $validated['is_published']   = $request->input('action') === 'publish';
 
         $course = Course::create($validated);
@@ -100,7 +109,13 @@ class CourseController extends Controller
             'preview_video_url' => 'nullable|url',
         ]);
 
-        $validated['is_published'] = $request->has('is_published');
+        if ($request->has('action')) {
+            $validated['is_published'] = $request->input('action') === 'publish';
+        } elseif ($request->has('is_published')) {
+            $validated['is_published'] = true;
+        } else {
+            $validated['is_published'] = $course->is_published;
+        }
 
         $course->update($validated);
 

@@ -8,7 +8,7 @@
     $logoSrc = $institutionLogo
         ? (Str::startsWith($institutionLogo, ['http://', 'https://']) ? $institutionLogo : asset($institutionLogo))
         : asset('images/logo.png');
-    $enrolledCount = number_format(($course->enrollments_count ?? 0) + 676730);
+    $enrolledCount = number_format($course->enrollments_count ?? 0);
 @endphp
 
 <!DOCTYPE html>
@@ -47,13 +47,13 @@
         }
         a { color:inherit; }
         .checkout-shell {
-            position:relative; z-index:1; width:min(1180px,calc(100% - 40px)); margin:0 auto;
-            display:grid; grid-template-columns:minmax(0,1fr) 400px; gap:54px; padding:34px 0 56px;
+            position:relative; z-index:1; width:min(1240px,calc(100% - 40px)); margin:0 auto;
+            display:grid; grid-template-columns:minmax(0,1fr) minmax(320px,420px); gap:54px; padding:34px 0 56px;
         }
         .brand-link { display:inline-flex; align-items:center; gap:10px; color:var(--purple-dark); text-decoration:none; font-weight:800; margin-bottom:14px; }
         .brand-link img { width:32px; height:32px; border-radius:9px; object-fit:cover; box-shadow:0 10px 26px rgba(30,58,95,.18); }
         h1 { margin:0 0 30px; color:#073B3F; font-size:clamp(44px,6vw,64px); line-height:.92; font-weight:800; letter-spacing:0; }
-        .steps { display:grid; grid-template-columns:auto minmax(80px,150px) auto minmax(80px,150px) auto; align-items:center; gap:10px; margin:0 0 34px 72px; max-width:660px; }
+        .steps { display:grid; grid-template-columns:auto minmax(80px,150px) auto minmax(80px,150px) auto; align-items:center; gap:10px; margin:0 0 34px 0; max-width:660px; }
         .step { display:inline-flex; align-items:center; gap:10px; color:#073B3F; font-size:20px; white-space:nowrap; }
         .step-number { width:28px; height:28px; border-radius:50%; display:grid; place-items:center; background:#073B3F; color:white; font-size:12px; font-weight:800; box-shadow:0 8px 20px rgba(7,59,63,.18); }
         .step.disabled { color:#AEB8BB; } .step.disabled .step-number { background:#C7D0D2; box-shadow:none; }
@@ -80,14 +80,14 @@
         .buy-row { display:flex; justify-content:flex-end; margin-top:38px; }
         .buy-btn {
             width:min(430px,100%); height:58px; border:0; border-radius:999px; cursor:pointer;
-            background:linear-gradient(135deg,var(--orange),#C93500); color:white; font:800 20px var(--font-sans);
-            box-shadow:0 20px 42px rgba(228,61,0,.22); transition:.2s ease;
+            background:linear-gradient(135deg,var(--purple),var(--purple-dark)); color:white; font:800 20px var(--font-sans);
+            box-shadow:0 20px 42px rgba(123,111,232,.28); transition:.2s ease;
         }
-        .buy-btn:hover { transform:translateY(-2px); box-shadow:0 26px 54px rgba(228,61,0,.30); }
+        .buy-btn:hover { transform:translateY(-2px); box-shadow:0 26px 54px rgba(91,79,212,.32); }
         .error-list { margin:0 0 24px; padding:14px 16px; border:1px solid #F2B7B7; background:#FFF5F5; border-radius:12px; color:#9B1C1C; line-height:1.7; }
-        .summary-column { padding-top:18px; }
+        .summary-column { padding-top:18px; display:flex; flex-direction:column; gap:24px; align-items:flex-end; margin-left:1cm; }
         .cart-card, .coupon-card {
-            background:rgba(255,255,255,.72); backdrop-filter:blur(28px) saturate(170%);
+            width:100%; max-width:420px; background:rgba(255,255,255,.72); backdrop-filter:blur(28px) saturate(170%);
             border:1px solid rgba(255,255,255,.92); border-radius:14px; box-shadow:0 22px 70px rgba(30,58,95,.12); overflow:hidden;
         }
         .cart-card { padding:18px; }

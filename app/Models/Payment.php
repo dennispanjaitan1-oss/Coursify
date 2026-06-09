@@ -32,6 +32,7 @@ class Payment extends Model
     ];
 
     protected $casts = [
+        'user_id'         => 'integer',
         'amount'          => 'decimal:2',
         'discount_amount' => 'decimal:2',
         'original_amount' => 'decimal:2',

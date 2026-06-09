@@ -640,11 +640,40 @@
         @media (max-width: 480px) {
             .footer-grid { grid-template-columns: 1fr; }
         }
+
+        /* Admin pages share this public layout, but should not inherit public page chrome. */
+        body.admin-area {
+            padding-top: 0 !important;
+            background: #f3f4f6;
+        }
+        body.admin-area::before {
+            display: none;
+        }
+        body.admin-area > main {
+            min-height: 100vh;
+        }
+        body.admin-area img {
+            max-width: 100%;
+            height: auto;
+        }
+        .admin-sidebar-logo {
+            width: 48px;
+            height: 48px;
+            flex: 0 0 48px;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        .admin-sidebar-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
     </style>
 
     @stack('styles')
 </head>
-<body>
+<body @class(['admin-area' => request()->is('admin*')])>
 
 @unless(request()->is('admin*'))
 

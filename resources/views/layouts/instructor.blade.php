@@ -65,7 +65,6 @@
                     <i class="fa-solid fa-book-open"></i>
                 </span>
                 <span>My Courses</span>
-                <span class="sidebar__badge" aria-label="8 courses">8</span>
             </a>
             <a href="{{ route('instructor.students') }}" class="sidebar__link {{ request()->routeIs('instructor.students') ? 'sidebar__link--active' : '' }}">
                 <span class="sidebar__link-icon" aria-hidden="true">
@@ -78,7 +77,6 @@
                     <i class="fa-solid fa-envelope"></i>
                 </span>
                 <span>Messages</span>
-                <span class="sidebar__badge" aria-label="3 unread messages">3</span>
             </a>
             <a href="{{ route('instructor.reviews') }}" class="sidebar__link {{ request()->routeIs('instructor.reviews') ? 'sidebar__link--active' : '' }}">
                 <span class="sidebar__link-icon" aria-hidden="true">

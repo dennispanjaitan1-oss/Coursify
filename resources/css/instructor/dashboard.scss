@@ -1847,6 +1847,40 @@ select.form-control {
     margin-top: 24px;
 }
 
+// Create/edit course forms need explicit scoping so production caches cannot leave
+// browser-default controls mixed into the instructor shell.
+.course-form {
+    .form-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 18px;
+        align-items: start;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 7px;
+    }
+
+    .form-label {
+        display: block;
+        line-height: 1.3;
+    }
+
+    .form-control {
+        display: block;
+        width: 100%;
+        min-height: 44px;
+        line-height: 1.4;
+    }
+
+    textarea.form-control {
+        min-height: 96px;
+    }
+}
+
 // Secondary button (for cancel, etc.)
 .btn-secondary {
     display: inline-flex;

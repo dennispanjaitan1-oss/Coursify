@@ -112,7 +112,7 @@
                                             <a href="{{ route('instructor.courses.edit', $course) }}" class="actions-menu__item" role="menuitem">
                                                 <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i> Edit
                                             </a>
-                                            <a href="#" class="actions-menu__item" role="menuitem">
+                                            <a href="{{ route('instructor.performance') }}" class="actions-menu__item" role="menuitem">
                                                 <i class="fa-solid fa-chart-simple" aria-hidden="true"></i> Analytics
                                             </a>
                                             <div class="actions-menu__divider" role="separator"></div>

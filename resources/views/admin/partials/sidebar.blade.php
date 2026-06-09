@@ -13,7 +13,7 @@
         {{-- LOGO --}}
         <div class="flex items-center gap-3 mb-8 pb-5 border-b border-gray-100">
 
-            <div class="w-12 h-12 rounded-2xl overflow-hidden shadow-sm">
+            <div class="admin-sidebar-logo w-12 h-12 rounded-2xl overflow-hidden shadow-sm">
                 <img
                     src="{{ asset('images/logo.png') }}"
                     alt="Logo"
@@ -23,11 +23,11 @@
 
             <div>
                 <h1 class="text-lg font-bold text-gray-900">
-                    Ruang<span class="text-orange-500">Kelas</span>
+                    Coursify<span class="text-violet-600"> Admin</span>
                 </h1>
 
                 <p class="text-xs text-gray-400">
-                    Admin Dashboard
+                    Control Panel
                 </p>
             </div>
 

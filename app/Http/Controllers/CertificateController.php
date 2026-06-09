@@ -70,7 +70,7 @@ class CertificateController extends Controller
     {
         $user = Auth::user();
 
-        if (!$user || ($user->id !== $certificate->user_id && !$user->hasRole('admin'))) {
+        if (!$user || ((int) $user->id !== (int) $certificate->user_id && !$user->isAdmin())) {
             abort(403, 'Kamu tidak memiliki akses ke sertifikat ini.');
         }
 
@@ -107,7 +107,7 @@ class CertificateController extends Controller
     {
         $user = Auth::user();
 
-        if (!$user || ($user->id !== $certificate->user_id && !$user->hasRole('admin'))) {
+        if (!$user || ((int) $user->id !== (int) $certificate->user_id && !$user->isAdmin())) {
             abort(403, 'Kamu tidak memiliki akses ke sertifikat ini.');
         }
 

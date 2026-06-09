@@ -176,7 +176,7 @@ class PaymentController extends Controller
 
     public function confirmation(Payment $payment)
     {
-        abort_unless($payment->user_id === auth()->id(), 403);
+        abort_unless((int) $payment->user_id === (int) auth()->id(), 403);
 
         $payment->load(['items.course.institution', 'user']);
         $course = $payment->items->first()?->course;

@@ -75,7 +75,7 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('instructor.courses.store') }}" enctype="multipart/form-data">
+    <form class="course-form" method="POST" action="{{ route('instructor.courses.store') }}" enctype="multipart/form-data">
         @csrf
 
         <div style="display:grid; grid-template-columns:1fr 340px; gap:24px; align-items:start;">
