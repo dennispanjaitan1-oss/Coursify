@@ -12,12 +12,12 @@ class RoleMiddleware
     {
         if (!auth()->check()) {
             return redirect()->route('login')
-                ->with('error', 'Silakan login terlebih dahulu.');
+                ->with('error', 'Please log in first.');
         }
 
         if (!in_array(auth()->user()->role, $roles)) {
-            abort(403, 'Kamu tidak memiliki akses ke halaman ini.');
-        } 
+            abort(403, 'You do not have access to this page.');
+        }
         
 
         return $next($request);

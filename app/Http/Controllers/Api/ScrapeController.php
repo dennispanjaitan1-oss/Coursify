@@ -121,14 +121,14 @@ class ScrapeController extends Controller
             if (strtolower($priceRaw) === 'free' || $priceRaw === '0') {
                 $course->price = 0.00;
                 $course->has_audit_track = true;
-                $course->currency = 'USD';
+                $course->currency = 'IDR';
             } else {
                 $priceClean = preg_replace('/[^0-9.]/', '', $priceRaw);
                 if (is_numeric($priceClean) && (float)$priceClean > 0) {
                     $course->price = (float) $priceClean;
                     $course->certificate_price = (float) $priceClean;
                     $course->has_audit_track = true;
-                    $course->currency = 'USD';
+                    $course->currency = 'IDR';
                 }
             }
         }

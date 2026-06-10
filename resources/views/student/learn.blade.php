@@ -674,42 +674,83 @@ body::before {
                     }
                 @endphp
 
-                @if($youtubeId)
-                    <div class="video-wrap">
-                        <div class="video-frame">
-                            <iframe
-                                src="https://www.youtube.com/embed/{{ $youtubeId }}?rel=0&modestbranding=1"
-                                title="{{ $lesson->title }}"
-                                allowfullscreen
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
-                            </iframe>
-                        </div>
-                        <div class="video-caption">
-                            🎬 <span>{{ $lesson->title }}</span>
-                        </div>
-                    </div>
-                @elseif($videoUrl)
-                    <div class="video-wrap">
-                        <div class="video-frame">
-                            <video controls style="position:absolute;inset:0;width:100%;height:100%;background:#000;">
-                                <source src="{{ $videoUrl }}">
-                            </video>
-                        </div>
-                        <div class="video-caption">🎬 <span>{{ $lesson->title }}</span></div>
-                    </div>
-                @endif
+                @if($lesson->type === 'quiz')
+                    <section class="lesson-body" style="padding: 28px;">
+                        <h2 style="font-size: 24px; margin-bottom: 16px;">Quiz: {{ $lesson->title }}</h2>
+                        <p style="margin-bottom: 24px; color: var(--muted);">Jawab semua pertanyaan berikut untuk menyelesaikan quiz.</p>
 
-                {{-- Lesson Content --}}
-                @if($lesson->content ?? false)
-                    <div class="lesson-body">
-                        {!! $lesson->content !!}
-                    </div>
-                @elseif(!$youtubeId && !$videoUrl)
-                    <div class="no-content-box">
-                        <div class="no-content-icon">📝</div>
-                        <div class="no-content-title">Materi akan segera tersedia</div>
-                        <p class="no-content-desc">Instruktur sedang menyiapkan konten untuk lesson ini. Silakan cek kembali nanti.</p>
-                    </div>
+                        @if($lesson->quizzes->isEmpty())
+                            <div class="no-content-box">
+                                <div class="no-content-icon">❗</div>
+                                <div class="no-content-title">Quiz belum tersedia</div>
+                                <p class="no-content-desc">Belum ada pertanyaan untuk lesson ini. Silakan hubungi instruktur.</p>
+                            </div>
+                        @else
+                            <form id="quizForm" onsubmit="submitQuiz(event, {{ $lesson->id }})">
+                                @csrf
+
+                                <div id="quizFeedback" style="margin-bottom: 24px; display:none; padding: 18px 20px; border-radius: 16px; background: rgba(232, 241, 255, 0.9); border: 1px solid rgba(123,111,232,0.3); color: var(--text);"></div>
+
+                                @foreach($lesson->quizzes as $index => $quiz)
+                                    <div class="quiz-question" style="margin-bottom: 28px;">
+                                        <div style="font-weight: 700; margin-bottom: 12px;">{{ $index + 1 }}. {{ $quiz->question }}</div>
+
+                                        @foreach($quiz->options as $option)
+                                            <label style="display:block; margin-bottom: 10px; cursor:pointer;">
+                                                <input type="radio"
+                                                       name="answers[{{ $quiz->id }}]"
+                                                       value="{{ $option->id }}"
+                                                       style="margin-right: 10px;"
+                                                       required>
+                                                {{ $option->option_text }}
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                @endforeach
+
+                                <button type="submit" id="quizSubmitButton" class="btn-complete" style="background: linear-gradient(135deg, var(--purple), var(--text));">
+                                    Submit Quiz
+                                </button>
+                            </form>
+                        @endif
+                    </section>
+                @else
+                    @if($youtubeId)
+                        <div class="video-wrap">
+                            <div class="video-frame">
+                                <iframe
+                                    src="https://www.youtube.com/embed/{{ $youtubeId }}?rel=0&modestbranding=1"
+                                    title="{{ $lesson->title }}"
+                                    allowfullscreen
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
+                                </iframe>
+                            </div>
+                            <div class="video-caption">
+                                🎬 <span>{{ $lesson->title }}</span>
+                            </div>
+                        </div>
+                    @elseif($videoUrl)
+                        <div class="video-wrap">
+                            <div class="video-frame">
+                                <video controls style="position:absolute;inset:0;width:100%;height:100%;background:#000;">
+                                    <source src="{{ $videoUrl }}">
+                                </video>
+                            </div>
+                            <div class="video-caption">🎬 <span>{{ $lesson->title }}</span></div>
+                        </div>
+                    @endif
+
+                    @if($lesson->content ?? false)
+                        <div class="lesson-body">
+                            {!! $lesson->content !!}
+                        </div>
+                    @elseif(!$youtubeId && !$videoUrl)
+                        <div class="no-content-box">
+                            <div class="no-content-icon">📝</div>
+                            <div class="no-content-title">Materi akan segera tersedia</div>
+                            <p class="no-content-desc">Instruktur sedang menyiapkan konten untuk lesson ini. Silakan cek kembali nanti.</p>
+                        </div>
+                    @endif
                 @endif
             @endif
 
@@ -861,7 +902,85 @@ function markComplete(lessonId, currentlyDone) {
     })
     .catch(() => { btn.disabled = false; });
 }
-</script>
 
+function submitQuiz(event, lessonId) {
+    event.preventDefault();
+    const form = document.getElementById('quizForm');
+    const button = document.getElementById('quizSubmitButton');
+    const feedback = document.getElementById('quizFeedback');
+
+    button.disabled = true;
+    feedback.style.display = 'none';
+
+    const formData = new FormData(form);
+    const answers = {};
+
+    for (const [key, value] of formData.entries()) {
+        if (key.startsWith('answers[')) {
+            const quizId = key.replace('answers[', '').replace(']', '');
+            answers[quizId] = value;
+        }
+    }
+
+    fetch(`/dashboard/quiz/${lessonId}/submit`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify({ answers }),
+    })
+    .then((res) => res.json())
+    .then((data) => {
+        button.disabled = false;
+        if (!data.success) {
+            feedback.style.display = 'block';
+            feedback.style.background = 'rgba(255, 235, 238, 0.95)';
+            feedback.style.borderColor = 'rgba(244,67,54,0.25)';
+            feedback.innerHTML = data.message || 'Terjadi kesalahan. Silakan coba lagi.';
+            return;
+        }
+
+        const scoreLabel = data.passed ? '🎉 Selamat! Kamu lulus quiz.' : '⚠️ Belum lulus. Coba lagi.';
+        const scoreText = `${scoreLabel} Nilai kamu: ${data.score}% (${data.correct_count}/${data.total_questions} benar).`;
+
+        feedback.style.display = 'block';
+        feedback.style.background = data.passed ? 'rgba(222, 251, 237, 0.95)' : 'rgba(255, 244, 229, 0.95)';
+        feedback.style.borderColor = data.passed ? 'rgba(72, 187, 120, 0.25)' : 'rgba(255, 193, 7, 0.25)';
+        feedback.innerHTML = `<strong>${scoreText}</strong>`;
+
+        if (data.passed) {
+            button.textContent = 'Completed';
+            button.disabled = true;
+            button.classList.add('done');
+
+            const completedLesson = document.querySelector('.sidebar-lesson.active');
+            if (completedLesson) {
+                completedLesson.classList.add('completed');
+                completedLesson.querySelector('.lesson-check').textContent = '✓';
+            }
+            if (data.progress !== undefined) {
+                const pct = Math.round(data.progress);
+                const pctStr = pct + '%';
+                const navFill = document.getElementById('navProgressFill');
+                const navPct = document.getElementById('navProgressPct');
+                const sidebarFill = document.getElementById('sidebarProgressFill');
+                const sidebarPct = document.getElementById('sidebarProgressPct');
+                if (navFill) navFill.style.width = pctStr;
+                if (navPct) navPct.textContent = pctStr;
+                if (sidebarFill) sidebarFill.style.width = pctStr;
+                if (sidebarPct) sidebarPct.textContent = pctStr;
+            }
+        }
+    })
+    .catch(() => {
+        button.disabled = false;
+        feedback.style.display = 'block';
+        feedback.style.background = 'rgba(255, 235, 238, 0.95)';
+        feedback.style.borderColor = 'rgba(244,67,54,0.25)';
+        feedback.innerHTML = 'Gagal mengirim jawaban. Coba lagi.';
+    });
+}
 </body>
 </html>

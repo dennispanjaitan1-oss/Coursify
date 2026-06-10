@@ -76,56 +76,92 @@
                             <th class="px-6 py-4 font-semibold">Status</th>
                             <th class="px-6 py-4 font-semibold">Tanggal</th>
                             <th class="px-6 py-4 font-semibold text-center">Aksi</th>
-                        </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-100">
+                    <tbody class="divide-y divide-gray-100 bg-white">
                         @forelse($reviews as $review)
-                            <tr class="hover:bg-gray-50 transition">
-                                <td class="px-6 py-5 font-medium text-gray-800">
-                                    {{ $review->user->name ?? '-' }}
-                                    <p class="text-xs text-gray-400">{{ $review->user->email ?? '' }}</p>
+                            <tr class="hover:bg-gray-50/60 transition group">
+                                {{-- PENGGUNA --}}
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-9 h-9 rounded-xl flex items-center justify-center font-bold text-white text-xs bg-gradient-to-tr from-violet-500 to-indigo-600 flex-shrink-0 shadow-sm">
+                                            {{ strtoupper(substr($review->user->name ?? 'U', 0, 1)) }}
+                                        </div>
+                                        <div>
+                                            <p class="font-semibold text-gray-800 text-sm leading-none">
+                                                {{ $review->user->name ?? 'Pengguna Terhapus' }}
+                                            </p>
+                                            <p class="text-gray-400 text-xs mt-1 leading-none">
+                                                {{ $review->user->email ?? '-' }}
+                                            </p>
+                                        </div>
+                                    </div>
                                 </td>
-                                <td class="px-6 py-5 text-sm text-gray-600">
-                                    {{ $review->course->title ?? '-' }}
+
+                                {{-- COURSE --}}
+                                <td class="px-6 py-4 text-sm font-semibold text-gray-800 max-w-[220px]">
+                                    <div class="truncate" title="{{ $review->course->title ?? '-' }}">
+                                        {{ $review->course->title ?? '-' }}
+                                    </div>
                                 </td>
-                                <td class="px-6 py-5">
-                                    <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-semibold">
-                                        ⭐ {{ $review->rating }}
+
+                                {{-- RATING --}}
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center gap-1 bg-amber-50 text-amber-600 border border-amber-200/60 px-2.5 py-1 rounded-full text-xs font-bold shadow-sm">
+                                        <i class="fa-solid fa-star text-amber-400 text-[10px]"></i>
+                                        <span>{{ $review->rating }}</span>
                                     </span>
                                 </td>
-                                <td class="px-6 py-5 text-sm text-gray-500 max-w-xs truncate">
-                                    {{ $review->comment ?? '-' }}
+
+                                {{-- KOMENTAR --}}
+                                <td class="px-6 py-4 text-sm text-gray-600 max-w-[280px]">
+                                    <p class="line-clamp-2" title="{{ $review->comment }}">
+                                        {{ $review->comment ?? '-' }}
+                                    </p>
                                 </td>
-                                <td class="px-6 py-5">
+
+                                {{-- STATUS --}}
+                                <td class="px-6 py-4">
                                     @if($review->is_visible)
-                                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">Visible</span>
+                                        <span class="inline-flex items-center gap-1.5 bg-green-50 text-green-700 border border-green-200/50 px-2.5 py-1 rounded-full text-xs font-semibold">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                                            Visible
+                                        </span>
                                     @else
-                                        <span class="bg-gray-100 text-gray-500 px-3 py-1 rounded-full text-xs font-semibold">Hidden</span>
+                                        <span class="inline-flex items-center gap-1.5 bg-gray-50 text-gray-500 border border-gray-200/50 px-2.5 py-1 rounded-full text-xs font-semibold">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
+                                            Hidden
+                                        </span>
                                     @endif
                                 </td>
-                                <td class="px-6 py-5 text-sm text-gray-400">
+
+                                {{-- TANGGAL --}}
+                                <td class="px-6 py-4 text-xs font-medium text-gray-400">
                                     {{ $review->created_at->format('d M Y') }}
                                 </td>
-                                <td class="px-6 py-5">
+
+                                {{-- AKSI --}}
+                                <td class="px-6 py-4">
                                     <div class="flex items-center justify-center gap-2">
                                         {{-- Toggle Visibility --}}
                                         <form method="POST" action="{{ route('admin.reviews.toggle', $review) }}">
                                             @csrf
                                             @method('PATCH')
                                             <button type="submit"
-                                                class="border border-gray-200 hover:bg-gray-50 text-gray-600 text-sm font-medium px-4 py-2 rounded-xl transition">
-                                                <i class="fa-solid {{ $review->is_visible ? 'fa-eye-slash' : 'fa-eye' }}"></i>
-                                                {{ $review->is_visible ? 'Hide' : 'Show' }}
+                                                class="border border-gray-200 hover:bg-violet-50 text-gray-600 hover:text-violet-600 text-xs font-semibold px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 shadow-sm bg-white">
+                                                <i class="fa-solid {{ $review->is_visible ? 'fa-eye-slash' : 'fa-eye' }} text-[11px]"></i>
+                                                <span>{{ $review->is_visible ? 'Hide' : 'Show' }}</span>
                                             </button>
                                         </form>
+
                                         {{-- Delete --}}
                                         <form method="POST" action="{{ route('admin.reviews.destroy', $review) }}"
                                             onsubmit="return confirm('Hapus review ini?')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
-                                                class="bg-red-50 hover:bg-red-100 text-red-600 text-sm font-medium px-4 py-2 rounded-xl transition">
-                                                <i class="fa-solid fa-trash"></i> Hapus
+                                                class="bg-red-50 hover:bg-red-100 text-red-600 text-xs font-semibold px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 shadow-sm">
+                                                <i class="fa-solid fa-trash text-[11px]"></i>
+                                                <span>Hapus</span>
                                             </button>
                                         </form>
                                     </div>
@@ -133,8 +169,11 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="px-6 py-10 text-center text-gray-400">
-                                    Belum ada review.
+                                <td colspan="7" class="px-6 py-16 text-center">
+                                    <div class="flex flex-col items-center gap-3 text-gray-400">
+                                        <i class="fa-solid fa-star-half-stroke text-4xl"></i>
+                                        <p class="font-medium">Belum ada review ditemukan</p>
+                                    </div>
                                 </td>
                             </tr>
                         @endforelse

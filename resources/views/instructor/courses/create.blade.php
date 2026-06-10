@@ -226,6 +226,74 @@
                     </div>
                 </section>
 
+                {{-- Additional Metadata --}}
+                <section class="card-wrap" aria-labelledby="metadata-title">
+                    <div class="card-head">
+                        <h2 class="card-title" id="metadata-title">
+                            <span style="display:inline-flex; align-items:center; gap:10px;">
+                                <span style="width:28px; height:28px; border-radius:8px; background:linear-gradient(135deg,var(--purple),var(--purple-dark)); color:white; display:inline-flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0;">4</span>
+                                Additional <em>Metadata</em>
+                            </span>
+                        </h2>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group" style="margin-bottom:0;">
+                            <label for="is_self_paced" class="form-label">Pacing Method <span style="color:#EF4444;">*</span></label>
+                            <select id="is_self_paced" name="is_self_paced" class="form-control" required>
+                                <option value="1" {{ old('is_self_paced', '1') == '1' ? 'selected' : '' }}>Self-paced (Belajar Mandiri)</option>
+                                <option value="0" {{ old('is_self_paced') == '0' ? 'selected' : '' }}>Instructor-paced (Terjadwal)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" style="margin-bottom:0;">
+                            <label for="hours_per_week" class="form-label">Study Hours per Week</label>
+                            <input type="text" id="hours_per_week" name="hours_per_week" class="form-control" 
+                                   placeholder="e.g. 3-5 hours per week" value="{{ old('hours_per_week') }}">
+                        </div>
+
+                        <div class="form-group" style="margin-bottom:0;">
+                            <label for="has_certificate" class="form-label">Earn Certificate <span style="color:#EF4444;">*</span></label>
+                            <select id="has_certificate" name="has_certificate" class="form-control" required>
+                                <option value="1" {{ old('has_certificate', '1') == '1' ? 'selected' : '' }}>Yes (Dapat Sertifikat)</option>
+                                <option value="0" {{ old('has_certificate') == '0' ? 'selected' : '' }}>No (Tidak Ada Sertifikat)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row" style="margin-top:16px;">
+                        <div class="form-group" style="margin-bottom:0;">
+                            <label for="start_date" class="form-label">Start Date</label>
+                            <input type="date" id="start_date" name="start_date" class="form-control" value="{{ old('start_date') }}">
+                        </div>
+
+                        <div class="form-group" style="margin-bottom:0;">
+                            <label for="enroll_deadline" class="form-label">Enroll Deadline</label>
+                            <input type="date" id="enroll_deadline" name="enroll_deadline" class="form-control" value="{{ old('enroll_deadline') }}">
+                        </div>
+                    </div>
+
+                    <div class="form-row" style="margin-top:16px;">
+                        <div class="form-group" style="margin-bottom:0;">
+                            <label for="translations" class="form-label">Translations</label>
+                            <input type="text" id="translations" name="translations" class="form-control" 
+                                   placeholder="e.g. English, Chinese (or None)" value="{{ old('translations') }}">
+                        </div>
+
+                        <div class="form-group" style="margin-bottom:0;">
+                            <label for="transcripts" class="form-label">Transcripts</label>
+                            <input type="text" id="transcripts" name="transcripts" class="form-control" 
+                                   placeholder="e.g. Indonesian, English" value="{{ old('transcripts') }}">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-top:16px; margin-bottom:0;">
+                        <label for="prerequisites" class="form-label">Prerequisites (Prasyarat)</label>
+                        <textarea id="prerequisites" name="prerequisites" class="form-control" 
+                                  rows="2" placeholder="e.g. Basic programming logic, math knowledge..." >{{ old('prerequisites') }}</textarea>
+                    </div>
+                </section>
+
             </div>
 
             {{-- RIGHT COLUMN: Media & Actions --}}
@@ -268,20 +336,27 @@
                     </div>
 
                     <div class="form-group" style="margin-bottom:0;">
-                        <label for="thumbnail_url" class="form-label">Thumbnail URL</label>
-                        <input type="url" id="thumbnail_url" name="thumbnail_url"
-                               class="form-control @error('thumbnail_url') is-invalid @enderror"
-                               placeholder="https://example.com/image.jpg"
-                               value="{{ old('thumbnail_url') }}">
-                        <span style="font-size:12px; color:var(--muted);">Recommended: 1280×720px (16:9)</span>
-                        @error('thumbnail_url')
+                        <label class="form-label">Upload Thumbnail</label>
+
+                        {{-- Drop zone --}}
+                        <label for="thumbnail"
+                               id="thumb-dropzone"
+                               style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:24px;border:2px dashed var(--lav-3);border-radius:var(--radius-md);cursor:pointer;background:var(--lav-1);transition:background 0.2s;">
+                            <i class="fa-solid fa-cloud-arrow-up" style="font-size:28px;color:var(--purple);"></i>
+                            <span style="font-size:13px;font-weight:600;color:var(--purple);">Klik untuk pilih gambar</span>
+                            <span style="font-size:11px;color:var(--muted);">JPG, PNG, WEBP — maks 10 MB &nbsp;|&nbsp; Rekomendasi: 1280×720px</span>
+                        </label>
+                        <input type="file" id="thumbnail" name="thumbnail" accept="image/*" style="display:none;">
+
+                        @error('thumbnail')
                             <span class="error-message">{{ $message }}</span>
                         @enderror
                     </div>
 
                     {{-- Preview --}}
                     <div id="thumbnail-preview" style="display:none; margin-top:12px; border-radius:var(--radius-md); overflow:hidden; border:1px solid var(--border);">
-                        <img id="preview-img" src="" alt="Thumbnail preview" style="width:100%; height:120px; object-fit:cover;">
+                        <img id="preview-img" src="" alt="Thumbnail preview" style="width:100%; max-height:200px; object-fit:cover;">
+                        <p style="font-size:11px;color:var(--muted);padding:6px 10px;" id="thumb-filename"></p>
                     </div>
                 </section>
 
@@ -291,15 +366,27 @@
                         <h2 class="card-title" id="video-title">Preview <em>Video</em></h2>
                     </div>
                     <div class="form-group" style="margin-bottom:0;">
-                        <label for="preview_video_url" class="form-label">YouTube / Video URL</label>
-                        <input type="url" id="preview_video_url" name="preview_video_url"
-                               class="form-control @error('preview_video_url') is-invalid @enderror"
-                               placeholder="https://youtube.com/watch?v=..."
-                               value="{{ old('preview_video_url') }}">
-                        <span style="font-size:12px; color:var(--muted);">2–5 minute course preview video</span>
-                        @error('preview_video_url')
+                        <label class="form-label">Upload Video Preview</label>
+
+                        {{-- Drop zone --}}
+                        <label for="preview_video"
+                               id="video-dropzone"
+                               style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:24px;border:2px dashed var(--lav-3);border-radius:var(--radius-md);cursor:pointer;background:var(--lav-1);transition:background 0.2s;">
+                            <i class="fa-solid fa-film" style="font-size:28px;color:var(--purple);"></i>
+                            <span style="font-size:13px;font-weight:600;color:var(--purple);">Klik untuk pilih video</span>
+                            <span style="font-size:11px;color:var(--muted);">MP4, MOV, AVI, WEBM — maks 100 MB &nbsp;|&nbsp; Durasi 2–5 menit</span>
+                        </label>
+                        <input type="file" id="preview_video" name="preview_video" accept="video/*" style="display:none;">
+
+                        @error('preview_video')
                             <span class="error-message">{{ $message }}</span>
                         @enderror
+
+                        {{-- Video Preview --}}
+                        <div id="video-preview" style="display:none;margin-top:12px;border-radius:var(--radius-md);overflow:hidden;border:1px solid var(--border);">
+                            <video id="preview-vid" controls style="width:100%;max-height:200px;"></video>
+                            <p style="font-size:11px;color:var(--muted);padding:6px 10px;" id="video-filename"></p>
+                        </div>
                     </div>
                 </section>
 
@@ -316,7 +403,7 @@
                                 ['label'=>'Short description', 'done'=>old('short_description')],
                                 ['label'=>'Full description', 'done'=>old('description')],
                                 ['label'=>'Price & duration', 'done'=>old('price') !== null && old('duration_weeks')],
-                                ['label'=>'Thumbnail URL (optional)', 'done'=>old('thumbnail_url')],
+                                ['label'=>'Thumbnail (optional)', 'done'=>false],
                             ];
                         @endphp
                         @foreach($checks as $check)
@@ -338,17 +425,34 @@
     </form>
 
     <script>
-        // Thumbnail preview
-        document.getElementById('thumbnail_url')?.addEventListener('input', function() {
-            const preview = document.getElementById('thumbnail-preview');
-            const img = document.getElementById('preview-img');
-            if (this.value && this.value.startsWith('http')) {
-                img.src = this.value;
-                preview.style.display = 'block';
-                img.onerror = () => { preview.style.display = 'none'; };
-            } else {
-                preview.style.display = 'none';
-            }
+        // Thumbnail file upload preview
+        document.getElementById('thumbnail')?.addEventListener('change', function() {
+            const file = this.files[0];
+            if (!file) return;
+            const preview  = document.getElementById('thumbnail-preview');
+            const img      = document.getElementById('preview-img');
+            const fname    = document.getElementById('thumb-filename');
+            const dropzone = document.getElementById('thumb-dropzone');
+            img.src        = URL.createObjectURL(file);
+            preview.style.display  = 'block';
+            fname.textContent      = file.name + ' (' + (file.size / 1024 / 1024).toFixed(2) + ' MB)';
+            dropzone.style.border  = '2px solid var(--purple)';
+            dropzone.style.background = 'var(--lav-2)';
+        });
+
+        // Video file upload preview
+        document.getElementById('preview_video')?.addEventListener('change', function() {
+            const file = this.files[0];
+            if (!file) return;
+            const preview  = document.getElementById('video-preview');
+            const vid      = document.getElementById('preview-vid');
+            const fname    = document.getElementById('video-filename');
+            const dropzone = document.getElementById('video-dropzone');
+            vid.src        = URL.createObjectURL(file);
+            preview.style.display  = 'block';
+            fname.textContent      = file.name + ' (' + (file.size / 1024 / 1024).toFixed(2) + ' MB)';
+            dropzone.style.border  = '2px solid var(--purple)';
+            dropzone.style.background = 'var(--lav-2)';
         });
     </script>
 

@@ -41,8 +41,8 @@
         </div>
 
         @if($courses->isNotEmpty())
-            <div class="table-responsive">
-                <table class="table" role="grid" aria-label="Courses performance data">
+            <div class="courses-table-wrap">
+                <table class="courses-table" role="grid" aria-label="Courses performance data">
                     <thead>
                         <tr>
                             <th scope="col">Course</th>
@@ -78,9 +78,31 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <button class="action-btn" aria-label="Actions for {{ $course->title }}">
-                                        <i class="fa-solid fa-ellipsis" aria-hidden="true"></i>
-                                    </button>
+                                    <div class="actions-wrap"
+                                         x-data="{ open: false }"
+                                         @keydown.escape="open = false">
+                                        <button class="action-btn"
+                                                @click="open = !open"
+                                                :aria-expanded="open.toString()"
+                                                aria-haspopup="true"
+                                                aria-label="Actions for {{ $course->title }}">
+                                            <i class="fa-solid fa-ellipsis" aria-hidden="true"></i>
+                                        </button>
+                                        <div x-show="open"
+                                             x-transition
+                                             @click.away="open = false"
+                                             @keydown.tab.shift="open = false"
+                                             class="actions-menu"
+                                             role="menu"
+                                             aria-label="Course actions">
+                                            <a href="{{ route('instructor.courses.show', $course) }}" class="actions-menu__item" role="menuitem">
+                                                <i class="fa-solid fa-eye" aria-hidden="true"></i> View
+                                            </a>
+                                            <a href="{{ route('instructor.courses.edit', $course) }}" class="actions-menu__item" role="menuitem">
+                                                <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i> Edit
+                                            </a>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach

@@ -44,8 +44,8 @@
         </div>
 
         @if($students->isNotEmpty())
-            <div class="table-responsive">
-                <table class="table" role="grid" aria-label="Students data">
+            <div class="courses-table-wrap">
+                <table class="courses-table" role="grid" aria-label="Students data">
                     <thead>
                         <tr>
                             <th scope="col">Student Name</th>

@@ -3,7 +3,7 @@
     $fmt = fn ($amount) => $currency === 'USD'
         ? '$' . number_format((float) $amount, 2)
         : 'Rp ' . number_format((float) $amount, 0, ',', '.');
-    $auditEnds = now()->addWeeks($course->audit_access_weeks ?: 6)->translatedFormat('d F Y');
+    $auditEnds = now()->addWeeks((int) ($course->audit_access_weeks ?: 6))->translatedFormat('d F Y');
 @endphp
 
 <!DOCTYPE html>

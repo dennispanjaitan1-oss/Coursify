@@ -6,6 +6,7 @@ use App\Models\Course;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class WishlistController extends Controller
 {
@@ -28,17 +29,17 @@ class WishlistController extends Controller
     // Hitung stats dari collection — tidak perlu query kedua
     $stats = [
         'total'       => $all->count(),
-        'free'        => $all->filter(fn($w) => optional($w->course)->price == 0)->count(),
-        'premium'     => $all->filter(fn($w) => optional($w->course)->price > 0)->count(),
+        'audit'       => $all->filter(fn($w) => ($w->status ?? 'audit') === 'audit')->count(),
+        'certificate' => $all->filter(fn($w) => ($w->status ?? 'audit') === 'certificate')->count(),
         'saved_value' => $all->sum(fn($w) => optional($w->course)->price ?? 0),
     ];
 
     // Filter dari collection yang sudah ada
-    $wishlists = $all->when($filter === 'free', fn($c) =>
-            $c->filter(fn($w) => optional($w->course)->price == 0)
+    $wishlists = $all->when($filter === 'audit', fn($c) =>
+            $c->filter(fn($w) => ($w->status ?? 'audit') === 'audit')
         )
-        ->when($filter === 'premium', fn($c) =>
-            $c->filter(fn($w) => optional($w->course)->price > 0)
+        ->when($filter === 'certificate', fn($c) =>
+            $c->filter(fn($w) => ($w->status ?? 'audit') === 'certificate')
         )
         ->when($search, fn($c) =>
             $c->filter(fn($w) =>
@@ -77,6 +78,9 @@ class WishlistController extends Controller
 
     // Validasi course benar-benar ada di database
     $course = Course::findOrFail($courseId);
+    $status = in_array($request->get('status'), ['audit', 'certificate'])
+        ? $request->get('status')
+        : 'audit';
 
     $existing = Wishlist::where('user_id', $user->id)
         ->where('course_id', $course->id)
@@ -85,13 +89,16 @@ class WishlistController extends Controller
 
     if ($existing) {
         if ($existing->trashed()) {
-            // Restore jika sebelumnya soft-deleted
             $existing->restore();
+            if ($existing->status !== $status) {
+                $existing->update(['status' => $status]);
+            }
             return response()->json([
                 'status'  => 'added',
                 'message' => 'Ditambahkan ke wishlist',
             ]);
         }
+
         $existing->delete();
         return response()->json([
             'status'  => 'removed',
@@ -102,6 +109,7 @@ class WishlistController extends Controller
     Wishlist::create([
         'user_id'   => $user->id,
         'course_id' => $course->id,
+        'status'    => $status,
     ]);
 
     return response()->json([
@@ -134,5 +142,30 @@ class WishlistController extends Controller
         return redirect()
             ->route('student.wishlist')
             ->with('success', 'Kursus berhasil dihapus dari wishlist');
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $user = Auth::user();
+
+        $wishlist = Wishlist::where('id', $id)
+            ->where('user_id', $user->id)
+            ->firstOrFail();
+
+        $validated = $request->validate([
+            'status' => ['required', Rule::in(['audit', 'certificate'])],
+        ]);
+
+        $wishlist->update(['status' => $validated['status']]);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'status'  => $wishlist->status,
+                'message' => 'Status wishlist berhasil diperbarui',
+            ]);
+        }
+
+        return back()->with('success', 'Status wishlist berhasil diperbarui.');
     }
 }

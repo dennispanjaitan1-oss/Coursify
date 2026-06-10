@@ -30,11 +30,7 @@
     </header>
 
     {{-- PAGE HEADER WITH ACTION --}}
-    <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-        <div>
-            <h1 class="page-title">My Courses</h1>
-            <p class="page-subtitle">Manage all your published and draft courses</p>
-        </div>
+    <header style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 24px;">
         <a href="{{ route('instructor.courses.create') }}" class="btn-primary">
             <i class="fa-solid fa-plus" aria-hidden="true"></i>
             New Course
@@ -48,8 +44,8 @@
         </div>
 
         @if($courses->isNotEmpty())
-            <div class="table-responsive">
-                <table class="table" role="grid" aria-label="Courses data">
+            <div class="courses-table-wrap">
+                <table class="courses-table" role="grid" aria-label="Courses data">
                     <thead>
                         <tr>
                             <th scope="col">Course</th>

@@ -92,8 +92,8 @@
         </div>
 
         @if($courses->isNotEmpty())
-            <div class="table-responsive">
-                <table class="table" role="grid" aria-label="Courses report data">
+            <div class="courses-table-wrap">
+                <table class="courses-table" role="grid" aria-label="Courses report data">
                     <thead>
                         <tr>
                             <th scope="col">Course</th>

@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Course;
 use App\Models\Enrollment;
+use App\Models\Lesson;
+use App\Models\Quiz;
+use App\Models\QuizOption;
 use App\Models\Review;
 
 class DashboardController extends Controller
@@ -300,7 +303,70 @@ public function messagesApi()
 
     public function addQuiz()
     {
-        return view('instructor.add-quiz');
+        $instructor = Auth::user();
+
+        $courses = Course::whereHas('instructors', function ($q) use ($instructor) {
+            $q->where('user_id', $instructor->id);
+        })->with(['sections' => function ($q) {
+            $q->orderBy('order_index');
+        }])->get();
+
+        return view('instructor.add-quiz', compact('courses'));
+    }
+
+    public function storeQuiz(Request $request)
+    {
+        $instructor = Auth::user();
+
+        $validated = $request->validate([
+            'course_id' => 'required|exists:courses,id',
+            'section_id' => 'required|exists:sections,id',
+            'lesson_title' => 'required|string|max:255',
+            'lesson_description' => 'nullable|string',
+            'questions' => 'required|array|min:1',
+            'questions.*.question' => 'required|string|max:1000',
+            'questions.*.type' => 'required|in:multiple_choice,true_false',
+            'questions.*.options' => 'required|array|min:2',
+            'questions.*.options.*.text' => 'required|string|max:1000',
+            'questions.*.correct' => 'required|integer',
+        ]);
+
+        $course = Course::whereHas('instructors', function ($q) use ($instructor) {
+            $q->where('user_id', $instructor->id);
+        })->findOrFail($validated['course_id']);
+
+        $section = $course->sections()->findOrFail($validated['section_id']);
+
+        $orderIndex = $section->lessons()->max('order_index');
+        $orderIndex = $orderIndex !== null ? $orderIndex + 1 : 1;
+
+        $lesson = Lesson::create([
+            'section_id' => $section->id,
+            'title' => $validated['lesson_title'],
+            'type' => 'quiz',
+            'content' => $validated['lesson_description'],
+            'order_index' => $orderIndex,
+        ]);
+
+        foreach ($validated['questions'] as $qIndex => $questionData) {
+            $quiz = Quiz::create([
+                'lesson_id' => $lesson->id,
+                'question' => $questionData['question'],
+                'type' => $questionData['type'],
+                'order_index' => $qIndex + 1,
+            ]);
+
+            foreach ($questionData['options'] as $optionIndex => $optionData) {
+                QuizOption::create([
+                    'quiz_id' => $quiz->id,
+                    'option_text' => $optionData['text'],
+                    'is_correct' => $questionData['correct'] == $optionIndex,
+                ]);
+            }
+        }
+
+        return redirect()->route('instructor.add-quiz')
+            ->with('success', 'Quiz berhasil dibuat dan disimpan ke lesson baru.');
     }
 
     public function broadcast()

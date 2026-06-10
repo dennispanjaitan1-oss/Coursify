@@ -1,26 +1,26 @@
-{{-- resources/views/admin/partials/header.blade.php --}}
-@php
+
+<?php
     $adminUser = auth()->user();
-@endphp
+?>
 
 <header class="sticky top-0 z-30 -mx-8 px-8 py-4 mb-6" style="background: var(--admin-bg);">
     <div class="glass flex items-center justify-between gap-6 px-6 py-3.5 transition-all duration-300">
 
-        {{-- LEFT: Breadcrumb --}}
+        
         <div class="flex-shrink-0 flex items-center gap-2">
             <div class="flex items-center gap-1.5 text-xs font-semibold text-gray-400 bg-gray-100/80 px-3 py-1.5 rounded-xl border border-gray-200/50">
                 <i class="fa-solid fa-house-chimney text-gray-400 text-[10px]"></i>
                 <span class="hover:text-violet-600 transition cursor-pointer">Dashboard</span>
-                @isset($breadcrumb)
-                    @if($breadcrumb)
+                <?php if(isset($breadcrumb)): ?>
+                    <?php if($breadcrumb): ?>
                         <i class="fa-solid fa-chevron-right text-[8px] text-gray-300 mx-0.5"></i>
-                        <span class="text-gray-700 font-bold">{{ $breadcrumb }}</span>
-                    @endif
-                @endisset
+                        <span class="text-gray-700 font-bold"><?php echo e($breadcrumb); ?></span>
+                    <?php endif; ?>
+                <?php endif; ?>
             </div>
         </div>
 
-        {{-- CENTER: Search bar --}}
+        
         <div class="flex-grow max-w-lg mx-auto min-w-[240px]">
             <div class="relative group">
                 <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-violet-500 text-sm transition-colors duration-200"></i>
@@ -36,36 +36,39 @@
             </div>
         </div>
 
-        {{-- RIGHT: Actions --}}
+        
         <div class="flex items-center gap-4 flex-shrink-0">
 
-            {{-- Notification bell --}}
+            
             <button type="button"
                     class="relative w-10 h-10 rounded-xl bg-gray-100/80 hover:bg-violet-50 border border-gray-200/40 text-gray-500 hover:text-violet-600 shadow-sm transition-all duration-200 flex items-center justify-center group active:scale-95">
                 <i class="fa-solid fa-bell group-hover:animate-bounce"></i>
 
-                {{-- Badge --}}
-                @if(isset($pendingCount) && $pendingCount > 0)
+                
+                <?php if(isset($pendingCount) && $pendingCount > 0): ?>
                     <span class="absolute -top-1 -right-1 min-w-5 h-5 px-1 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center border-2 border-white">
-                        {{ $pendingCount > 9 ? '9+' : $pendingCount }}
+                        <?php echo e($pendingCount > 9 ? '9+' : $pendingCount); ?>
+
                     </span>
-                @elseif(isset($pendingApprovals) && $pendingApprovals > 0)
+                <?php elseif(isset($pendingApprovals) && $pendingApprovals > 0): ?>
                     <span class="absolute -top-1 -right-1 min-w-5 h-5 px-1 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center border-2 border-white">
-                        {{ $pendingApprovals > 9 ? '9+' : $pendingApprovals }}
+                        <?php echo e($pendingApprovals > 9 ? '9+' : $pendingApprovals); ?>
+
                     </span>
-                @endif
+                <?php endif; ?>
             </button>
 
-            {{-- Separator --}}
+            
             <div class="w-px h-6 bg-gray-200"></div>
 
-            {{-- Admin avatar --}}
+            
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-violet-500 to-indigo-600 text-white flex items-center justify-center font-bold shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer">
-                    {{ strtoupper(substr($adminUser?->name ?? 'A', 0, 1)) }}
+                    <?php echo e(strtoupper(substr($adminUser?->name ?? 'A', 0, 1))); ?>
+
                 </div>
                 <div class="hidden xl:flex flex-col text-left leading-none">
-                    <span class="text-xs font-bold text-gray-800">{{ $adminUser?->name ?? 'Administrator' }}</span>
+                    <span class="text-xs font-bold text-gray-800"><?php echo e($adminUser?->name ?? 'Administrator'); ?></span>
                     <span class="text-[10px] text-gray-400 font-medium mt-0.5">Admin</span>
                 </div>
             </div>
@@ -74,3 +77,4 @@
 
     </div>
 </header>
+<?php /**PATH C:\laragon\www\coursify\resources\views/admin/partials/header.blade.php ENDPATH**/ ?>

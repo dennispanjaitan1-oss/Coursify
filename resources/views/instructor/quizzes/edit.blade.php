@@ -1,47 +1,37 @@
 @extends('layouts.instructor')
 
-@section('title', 'Add Quiz')
+@section('title', 'Edit Quiz')
 
 @section('content')
-
-    {{-- TOP BAR --}}
     <header class="topbar" role="banner">
         <div class="topbar__search">
             <i class="fa-solid fa-magnifying-glass topbar__search-icon" aria-hidden="true"></i>
-            <label for="courses-search" class="sr-only">Search courses</label>
-            <input type="text"
-                   id="courses-search"
-                   class="topbar__search-input"
-                   placeholder="Search courses..."
-                   aria-label="Search courses">
+            <label for="lesson-search" class="sr-only">Search</label>
+            <input type="text" id="lesson-search" class="topbar__search-input" placeholder="Search..." aria-label="Search">
         </div>
 
         <div class="topbar__actions">
-            <button class="icon-btn"
-                    aria-label="Notifications - 2 new"
-                    title="Notifications">
-                <i class="fa-solid fa-bell" aria-hidden="true"></i>
-                <span class="icon-btn__dot" aria-hidden="true"></span>
-            </button>
+            <a href="{{ route('instructor.quizzes.index') }}" class="icon-btn" aria-label="Back to quizzes">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
         </div>
     </header>
 
-    {{-- PAGE TITLE --}}
     <section class="page-header" aria-label="Page title">
         <div>
-            <h1 class="page-title">Add Quiz</h1>
-            <p class="page-subtitle">Create a quiz to test your students' knowledge</p>
+            <h1 class="page-title">Edit Quiz</h1>
+            <p class="page-subtitle">Update the quiz lesson and its questions.</p>
         </div>
     </section>
 
-    {{-- QUIZ FORM --}}
-    <section class="card-wrap" aria-labelledby="quiz-form-title">
+    <section class="card-wrap" aria-labelledby="quiz-edit-title">
         <div class="card-head">
-            <h2 class="card-title" id="quiz-form-title">Create New Quiz</h2>
+            <h2 class="card-title" id="quiz-edit-title">Quiz: {{ $lesson->title }}</h2>
         </div>
 
-        <form method="POST" action="{{ route('instructor.add-quiz.store') }}" class="quiz-form" id="addQuizForm">
+        <form method="POST" action="{{ route('instructor.quizzes.update', $lesson) }}" class="quiz-form" id="editQuizForm">
             @csrf
+            @method('PUT')
 
             @if(session('success'))
                 <div class="alert alert-success" style="margin-bottom: 20px; padding: 16px; border-radius: 16px; background: #E6F4EA; color: #1F4532; border: 1px solid #C6E6CF;">
@@ -61,34 +51,27 @@
             @endif
 
             <div class="form-group">
-                <label for="course-select" class="form-label">Select Course *</label>
-                <select id="course-select" name="course_id" class="form-control" required onchange="updateSectionOptions()">
-                    <option value="">-- Choose a course --</option>
-                    @foreach($courses as $course)
-                        <option value="{{ $course->id }}">{{ $course->title }}</option>
-                    @endforeach
-                </select>
+                <label class="form-label">Course</label>
+                <div class="form-control" style="background: #F8FAFF;">{{ $lesson->section->course->title }}</div>
             </div>
 
             <div class="form-group">
-                <label for="section-select" class="form-label">Select Section *</label>
-                <select id="section-select" name="section_id" class="form-control" required>
-                    <option value="">-- Choose a section --</option>
-                </select>
+                <label class="form-label">Section</label>
+                <div class="form-control" style="background: #F8FAFF;">{{ $lesson->section->title }}</div>
             </div>
 
             <div class="form-group">
                 <label for="lesson-title" class="form-label">Lesson Title *</label>
-                <input type="text" id="lesson-title" name="lesson_title" class="form-control" placeholder="e.g., HTML Quiz 1" required>
+                <input type="text" id="lesson-title" name="lesson_title" class="form-control" value="{{ old('lesson_title', $lesson->title) }}" required>
             </div>
 
             <div class="form-group">
                 <label for="lesson-description" class="form-label">Lesson Description</label>
-                <textarea id="lesson-description" name="lesson_description" class="form-control" rows="3" placeholder="Optional description for this quiz lesson"></textarea>
+                <textarea id="lesson-description" name="lesson_description" class="form-control" rows="3">{{ old('lesson_description', $lesson->content) }}</textarea>
             </div>
 
             <div class="form-info" style="font-size: 14px; color: #555; margin-bottom: 24px;">
-                Quiz akan dibuat sebagai lesson baru dengan tipe <strong>quiz</strong> di section yang Anda pilih.
+                Update questions and answer options for the quiz lesson.
             </div>
 
             <div class="form-section-title">Questions</div>
@@ -102,45 +85,35 @@
             <div class="form-actions">
                 <button type="submit" class="btn-primary">
                     <i class="fa-solid fa-check" aria-hidden="true"></i>
-                    Create Quiz
+                    Save Quiz
                 </button>
-                <a href="{{ route('instructor.dashboard') }}" class="btn-secondary">Cancel</a>
+                <a href="{{ route('instructor.quizzes.index') }}" class="btn-secondary">Cancel</a>
             </div>
         </form>
     </section>
 
     <script>
-        const sectionsByCourse = @json($courses->mapWithKeys(function ($course) {
-            return [$course->id => $course->sections->map(function ($section) {
-                return ['id' => $section->id, 'title' => $section->title];
-            })->toArray()];
-        }));
+        @php
+            $initialQuestions = $lesson->quizzes->map(function ($quiz) {
+                return [
+                    'question' => $quiz->question,
+                    'type' => $quiz->type,
+                    'options' => $quiz->options->map(function ($option) {
+                        return [
+                            'text' => $option->option_text,
+                            'isCorrect' => (bool)$option->is_correct,
+                        ];
+                    })->toArray(),
+                ];
+            })->values()->toArray();
+        @endphp
+        const initialQuestions = @json($initialQuestions);
 
         let questionCount = 0;
-
-        function updateSectionOptions() {
-            const courseSelect = document.getElementById('course-select');
-            const sectionSelect = document.getElementById('section-select');
-            const courseId = courseSelect.value;
-
-            sectionSelect.innerHTML = '<option value="">-- Choose a section --</option>';
-
-            if (!courseId || !sectionsByCourse[courseId]) {
-                return;
-            }
-
-            sectionsByCourse[courseId].forEach(section => {
-                const option = document.createElement('option');
-                option.value = section.id;
-                option.textContent = section.title;
-                sectionSelect.appendChild(option);
-            });
-        }
 
         function addQuestion(data = null) {
             const container = document.getElementById('questionsContainer');
             const index = questionCount++;
-
             const questionText = data?.question ?? '';
             const type = data?.type ?? 'multiple_choice';
             const options = data?.options ?? [
@@ -159,7 +132,6 @@
                     <label class="form-label" for="questions_${index}_question">Question Text *</label>
                     <textarea id="questions_${index}_question" name="questions[${index}][question]" class="form-control" rows="2" placeholder="Enter your question..." required>${questionText}</textarea>
                 </div>
-
                 <div class="form-group">
                     <label class="form-label">Question Type</label>
                     <div class="radio-group">
@@ -173,7 +145,6 @@
                         </label>
                     </div>
                 </div>
-
                 <div class="options-block" id="options-${index}">
                     <div class="form-label" style="font-weight:700; margin-bottom:10px;">Options</div>
                     ${options.map((option, optionIndex) => `
@@ -185,7 +156,6 @@
                         </div>
                     `).join('')}
                 </div>
-
                 <button type="button" class="btn-secondary" style="margin-bottom:20px;" onclick="removeQuestion(${index})">
                     <i class="fa-solid fa-trash" aria-hidden="true"></i>
                     Remove Question
@@ -211,7 +181,11 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            addQuestion();
+            if (initialQuestions.length) {
+                initialQuestions.forEach(question => addQuestion(question));
+            } else {
+                addQuestion();
+            }
         });
     </script>
 @endsection

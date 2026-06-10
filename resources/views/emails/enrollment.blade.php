@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Konfirmasi Pendaftaran Program</title>
+    <title>Program Enrollment Confirmation</title>
 </head>
 <body style="margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background-color:#fafafa;color:#1a1a1a;">
 
@@ -32,11 +32,11 @@
                 <tr>
                     <td style="padding:0 48px 36px;">
                         <h1 style="margin:0 0 16px;font-size:24px;font-weight:600;color:#111111;letter-spacing:-0.3px;line-height:1.3;">
-                            Pendaftaran Anda Berhasil
+                            Your Enrollment is Confirmed
                         </h1>
                         <p style="margin:0 0 28px;font-size:14px;color:#666666;line-height:1.6;">
-                            Halo {{ $user->name }},<br><br>
-                            Anda telah terdaftar secara resmi pada program berikut. Seluruh riwayat pembelajaran dan materi dapat diakses kapan pun melalui portal pembelajaran Anda.
+                            Hi {{ $user->name }},<br><br>
+                            You are officially enrolled in the program below. Your learning history and materials are available anytime through your learning portal.
                         </p>
 
                         <!-- Program Card -->
@@ -65,7 +65,7 @@
                                     <a href="{{ route('student.learn', $course->slug) }}"
                                        style="display:inline-block;background-color:#111111;color:#ffffff;padding:12px 28px;
                                               border-radius:6px;text-decoration:none;font-weight:500;font-size:13px;letter-spacing:0.5px;">
-                                        Mulai Belajar
+                                        Start Learning
                                     </a>
                                 </td>
                             </tr>
@@ -85,8 +85,8 @@
                     <td style="padding:24px 48px 48px;font-size:12px;color:#999999;line-height:1.5;">
                         <p style="margin:0 0 4px;font-weight:600;color:#666666;">Coursify</p>
                         <p style="margin:0;">
-                            Surel ini dikirim secara otomatis sebagai tanda bukti pendaftaran yang sah.<br>
-                            &copy; {{ date('Y') }} Coursify. Hak cipta dilindungi undang-undang.
+                            This email was sent automatically as proof of your enrollment.<br>
+                            &copy; {{ date('Y') }} Coursify. All rights reserved.
                         </p>
                     </td>
                 </tr>

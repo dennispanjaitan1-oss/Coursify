@@ -50,8 +50,12 @@ class LearningController extends Controller
 
         $sections = $course->sections()
             ->with(['lessons' => function ($q) {
-                $q->orderBy('order_index');
+                $q->orderBy('order_index')->with('quizzes.options');
             }])->orderBy('order_index')->get();
+
+        if ($lesson->type === 'quiz') {
+            $lesson->load('quizzes.options');
+        }
 
         $allLessonIds = $sections->flatMap->lessons->pluck('id');
 
@@ -170,9 +174,96 @@ class LearningController extends Controller
         }
 
         return response()->json([
-            'progress'          => $percent,
-            'success'           => true,
+            'progress'           => $percent,
+            'success'            => true,
             'certificate_earned' => $certificateEarned,
+        ]);
+    }
+
+    public function submitQuiz(Request $request, Lesson $lesson)
+    {
+        $course = $lesson->section->course;
+        $this->checkEnrollment($course);
+
+        if ($lesson->type !== 'quiz') {
+            abort(404);
+        }
+
+        $quizzes = $lesson->quizzes()->with('options')->get();
+        if ($quizzes->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Quiz belum tersedia untuk lesson ini.',
+            ], 404);
+        }
+
+        $answers = $request->input('answers', []);
+        $correctCount = 0;
+        $results = [];
+
+        foreach ($quizzes as $quiz) {
+            $selectedOptionId = $answers[$quiz->id] ?? null;
+            $selectedOption = $quiz->options->firstWhere('id', $selectedOptionId);
+            $isCorrect = $selectedOption && $selectedOption->is_correct;
+
+            if ($isCorrect) {
+                $correctCount++;
+            }
+
+            $results[] = [
+                'quiz_id' => $quiz->id,
+                'question' => $quiz->question,
+                'selected_option_id' => $selectedOptionId,
+                'selected_option_text' => $selectedOption?->option_text,
+                'is_correct' => $isCorrect,
+                'correct_option_text' => $quiz->options->firstWhere('is_correct', true)?->option_text,
+            ];
+        }
+
+        $totalQuestions = $quizzes->count();
+        $score = $totalQuestions > 0 ? round(($correctCount / $totalQuestions) * 100) : 0;
+        $passed = $score === 100;
+        $progress = null;
+
+        if ($passed) {
+            LessonProgress::updateOrCreate(
+                ['user_id' => auth()->id(), 'lesson_id' => $lesson->id],
+                ['is_completed' => true, 'last_position_seconds' => 0]
+            );
+
+            $sections     = $course->sections()->with('lessons')->get();
+            $allLessonIds = $sections->flatMap->lessons->pluck('id');
+            $doneLessons  = LessonProgress::where('user_id', auth()->id())
+                ->whereIn('lesson_id', $allLessonIds)
+                ->where('is_completed', true)
+                ->count();
+
+            $percent = $allLessonIds->count() > 0
+                ? round(($doneLessons / $allLessonIds->count()) * 100, 2)
+                : 0;
+
+            $enrollment = Enrollment::where('user_id', auth()->id())
+                ->where('course_id', $course->id)
+                ->first();
+
+            if ($enrollment) {
+                $enrollment->update([
+                    'progress_percent' => $percent,
+                    'status'           => $percent >= 100 ? 'completed' : 'active',
+                    'completed_at'     => $percent >= 100 ? now() : null,
+                ]);
+            }
+            $progress = $percent;
+        }
+
+        return response()->json([
+            'success' => true,
+            'score' => $score,
+            'passed' => $passed,
+            'correct_count' => $correctCount,
+            'total_questions' => $totalQuestions,
+            'progress' => $progress,
+            'results' => $results,
         ]);
     }
 

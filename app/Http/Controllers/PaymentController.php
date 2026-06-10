@@ -93,7 +93,7 @@ class PaymentController extends Controller
             $payment = Payment::create([
                 'user_id' => $user->id,
                 'amount' => $total,
-                'currency' => $course->currency ?: 'IDR',
+                'currency' => 'IDR',
                 'method' => 'kartu_kredit',
                 'status' => 'paid',
                 'transaction_id' => 'CRS-' . now()->format('Ymd') . '-' . Str::upper(Str::random(8)),

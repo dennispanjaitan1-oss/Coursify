@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <style>
@@ -288,17 +288,17 @@
 <div class="sidebar">
   <div class="sidebar-logo">
     <div class="logo-text">Coursify</div>
-    <div class="logo-sub">Platform Belajar</div>
+    <div class="logo-sub">Learning Platform</div>
   </div>
 
   <div class="sidebar-divider"></div>
 
   <div class="sidebar-course-info">
-    <div class="label">Institusi</div>
+    <div class="label">Institution</div>
     <div class="value">{{ $course->institution?->name ?? 'Coursify Academy' }}</div>
 
     <br>
-    <div class="label" style="margin-top: 5mm;">Kategori</div>
+    <div class="label" style="margin-top: 5mm;">Category</div>
     <div class="value">{{ $course->category?->name ?? '-' }}</div>
 
     @if($course->difficulty)
@@ -311,47 +311,47 @@
   <div class="sidebar-qr">
     {{-- QR code sederhana dari text -- dompdf tidak render QR native, gunakan URL text --}}
     <div style="background: white; padding: 3mm; display: inline-block; font-size: 5pt; color: #1a3a6b; word-break: break-all; max-width: 36mm; text-align: center;">
-      Verifikasi:<br>
+      Verify:<br>
       {{ url('/verify/' . $certificate->certificate_number) }}
     </div>
-    <div class="qr-label">Scan untuk verifikasi</div>
+    <div class="qr-label">Scan to verify</div>
   </div>
 </div>
 
 {{-- Konten utama --}}
 <div class="content">
-  <div class="cert-label">Sertifikat Penyelesaian</div>
+  <div class="cert-label">Certificate of Completion</div>
 
   <div class="cert-title">Certificate<br>of Completion</div>
 
-  <div class="cert-subtitle">Diberikan kepada yang tersebut di bawah ini</div>
+  <div class="cert-subtitle">Presented to the individual named below</div>
 
-  <div class="recipient-label">Nama Peserta</div>
+  <div class="recipient-label">Recipient Name</div>
   <div class="recipient-name">{{ $user->name }}</div>
 
   <div class="cert-desc">
-    Telah berhasil menyelesaikan dan lulus dalam program kursus
+    Has successfully completed and passed the course program
     <strong>"{{ $course->title }}"</strong>
-    yang diselenggarakan oleh <strong>{{ $course->institution?->name ?? 'Coursify Academy' }}</strong>
-    melalui platform Coursify.
+    offered by <strong>{{ $course->institution?->name ?? 'Coursify Academy' }}</strong>
+    through the Coursify platform.
     @if($course->duration_weeks)
-      Program ini berlangsung selama <strong>{{ $course->duration_weeks }} minggu</strong>.
+      This program lasted <strong>{{ $course->duration_weeks }} weeks</strong>.
     @endif
   </div>
 
   {{-- Info row --}}
   <div class="info-row">
     <div class="info-cell">
-      <div class="label">Tanggal Terbit</div>
+      <div class="label">Issued Date</div>
       <div class="value">{{ $certificate->issued_at_formatted }}</div>
     </div>
     <div class="info-cell">
-      <div class="label">Nomor Sertifikat</div>
+      <div class="label">Certificate Number</div>
       <div class="value">{{ $certificate->certificate_number }}</div>
     </div>
     <div class="info-cell">
       <div class="label">Status</div>
-      <div class="value" style="color: #2d7a3a;">✓ Terverifikasi</div>
+      <div class="value" style="color: #2d7a3a;">✓ Verified</div>
     </div>
   </div>
 
@@ -363,16 +363,16 @@
           @if($course->instructors && $course->instructors->isNotEmpty())
             {{ $course->instructors->first()->name }}
           @else
-            Tim Instruktur Coursify
+            Coursify Instruction Team
           @endif
         </div>
-        <div class="sig-role">Instruktur Kursus</div>
+        <div class="sig-role">Course Instructor</div>
       </div>
     </div>
     <div class="sig-cell">
       <div class="sig-line">
-        <div class="sig-name">Direktur Coursify</div>
-        <div class="sig-role">Platform Coursify</div>
+        <div class="sig-name">Coursify Director</div>
+        <div class="sig-role">Coursify Platform</div>
       </div>
     </div>
   </div>

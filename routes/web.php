@@ -12,6 +12,10 @@ use App\Http\Controllers\Student\LearningController;
 
 use App\Http\Controllers\Instructor\DashboardController as InstructorDashboard;
 use App\Http\Controllers\Instructor\CourseController as InstructorCourseController;
+use App\Http\Controllers\Instructor\SectionController as InstructorSectionController;
+use App\Http\Controllers\Instructor\LessonController as InstructorLessonController;
+use App\Http\Controllers\Instructor\SyllabusController as InstructorSyllabusController;
+use App\Http\Controllers\Instructor\QuizController as InstructorQuizController;
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PaymentController;
@@ -110,6 +114,7 @@ Route::middleware(['auth', 'role:student,instructor,admin'])
         Route::get('/learn/{slug}', [LearningController::class, 'index'])->name('learn');
         Route::get('/learn/{slug}/{lesson}', [LearningController::class, 'lesson'])->name('learn.lesson');
         Route::post('/progress/{lesson}', [LearningController::class, 'updateProgress'])->name('learn.progress');
+        Route::post('/quiz/{lesson}/submit', [LearningController::class, 'submitQuiz'])->name('learn.quiz.submit');
 
         // Review Course
         Route::post('/course/review/{course}', [EnrollmentController::class, 'submitReview'])->name('course.review.dashboard.submit');
@@ -124,6 +129,7 @@ Route::middleware(['auth', 'role:student,instructor,admin'])
 
         // Wishlist (delete only — toggle is at standalone route above)
         Route::delete('/wishlist/{id}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
+        Route::patch('/wishlist/{id}/status', [WishlistController::class, 'updateStatus'])->name('wishlist.status');
 
     });
 
@@ -135,10 +141,9 @@ Route::middleware(['auth', 'role:instructor,admin'])
     ->name('instructor.')
     ->group(function () {
 
-        Route::get('/dashboard', [InstructorDashboard::class, 'index'])
-            ->name('dashboard');
+        Route::get('/dashboard', [InstructorDashboard::class, 'index'])->name('dashboard');
 
-        // Teaching Navigation
+        // ── Course CRUD ─────────────────────────────────────────────
         Route::get('/courses', [InstructorCourseController::class, 'index'])->name('courses.index');
         Route::get('/courses/create', [InstructorCourseController::class, 'create'])->name('courses.create');
         Route::post('/courses', [InstructorCourseController::class, 'store'])->name('courses.store');
@@ -147,19 +152,38 @@ Route::middleware(['auth', 'role:instructor,admin'])
         Route::get('/courses/{course}', [InstructorCourseController::class, 'show'])->name('courses.show');
         Route::delete('/courses/{course}', [InstructorCourseController::class, 'destroy'])->name('courses.destroy');
 
+        // ── Section CRUD (dalam course) ──────────────────────────────
+        Route::post('/courses/{course}/sections', [InstructorSectionController::class, 'store'])->name('sections.store');
+        Route::put('/sections/{section}', [InstructorSectionController::class, 'update'])->name('sections.update');
+        Route::delete('/sections/{section}', [InstructorSectionController::class, 'destroy'])->name('sections.destroy');
+
+        // ── Lesson CRUD (dalam section) ──────────────────────────────
+        Route::post('/sections/{section}/lessons', [InstructorLessonController::class, 'store'])->name('lessons.store');
+        Route::put('/lessons/{lesson}', [InstructorLessonController::class, 'update'])->name('lessons.update');
+        Route::delete('/lessons/{lesson}', [InstructorLessonController::class, 'destroy'])->name('lessons.destroy');
+
+        // ── Quiz CRUD ────────────────────────────────────────────────
+        Route::get('/quizzes', [InstructorQuizController::class, 'index'])->name('quizzes.index');
+        Route::get('/quizzes/{lesson}/edit', [InstructorQuizController::class, 'edit'])->name('quizzes.edit');
+        Route::put('/quizzes/{lesson}', [InstructorQuizController::class, 'update'])->name('quizzes.update');
+        Route::delete('/quiz-questions/{quiz}', [InstructorQuizController::class, 'destroyQuestion'])->name('quizzes.question.destroy');
+
+        // ── Syllabus CRUD (What You'll Learn) ────────────────────────
+        Route::post('/courses/{course}/syllabus', [InstructorSyllabusController::class, 'store'])->name('syllabus.store');
+        Route::put('/syllabus/{syllabus}', [InstructorSyllabusController::class, 'update'])->name('syllabus.update');
+        Route::delete('/syllabus/{syllabus}', [InstructorSyllabusController::class, 'destroy'])->name('syllabus.destroy');
+
+        // ── Navigasi lainnya ─────────────────────────────────────────
         Route::get('/students', [InstructorDashboard::class, 'students'])->name('students');
         Route::get('/messages', [InstructorDashboard::class, 'messagesView'])->name('messages');
         Route::get('/reviews', [InstructorDashboard::class, 'reviewsView'])->name('reviews');
-
-        // Analytics Navigation
         Route::get('/earnings', [InstructorDashboard::class, 'earnings'])->name('earnings');
         Route::get('/performance', [InstructorDashboard::class, 'performance'])->name('performance');
         Route::get('/insights', [InstructorDashboard::class, 'insights'])->name('insights');
-
-        // Quick Actions
         Route::get('/courses/new', [InstructorCourseController::class, 'create'])->name('create-course');
         Route::get('/upload-video', [InstructorDashboard::class, 'uploadVideo'])->name('upload-video');
         Route::get('/add-quiz', [InstructorDashboard::class, 'addQuiz'])->name('add-quiz');
+        Route::post('/add-quiz', [InstructorDashboard::class, 'storeQuiz'])->name('add-quiz.store');
         Route::get('/broadcast', [InstructorDashboard::class, 'broadcast'])->name('broadcast');
         Route::get('/withdraw', [InstructorDashboard::class, 'withdraw'])->name('withdraw');
         Route::get('/reports', [InstructorDashboard::class, 'reports'])->name('reports');
@@ -184,9 +208,8 @@ Route::middleware(['auth', 'role:admin'])
         Route::put('/users/{id}', [App\Http\Controllers\Admin\UserController::class, 'update'])->name('users.update');
         Route::delete('/users/{id}', [App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('users.destroy');
 
+        // Admin hanya bisa edit/delete/toggle — create dilakukan oleh Instructor
         Route::get('/courses', [App\Http\Controllers\Admin\CourseController::class, 'index'])->name('courses.index');
-        Route::get('/courses/create', [App\Http\Controllers\Admin\CourseController::class, 'create'])->name('courses.create');
-        Route::post('/courses', [App\Http\Controllers\Admin\CourseController::class, 'store'])->name('courses.store');
         Route::get('/courses/{course}/edit', [App\Http\Controllers\Admin\CourseController::class, 'edit'])->name('courses.edit');
         Route::put('/courses/{course}', [App\Http\Controllers\Admin\CourseController::class, 'update'])->name('courses.update');
         Route::get('/courses/{course}', [App\Http\Controllers\Admin\CourseController::class, 'show'])->name('courses.show');

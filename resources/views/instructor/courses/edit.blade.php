@@ -40,7 +40,7 @@
             <h2 class="card-title" id="edit-form-title">Course Information</h2>
         </div>
 
-        <form method="POST" action="{{ route('instructor.courses.update', $course) }}" class="course-form">
+        <form method="POST" action="{{ route('instructor.courses.update', $course) }}" class="course-form" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             
@@ -137,19 +137,135 @@
 
             <div class="form-row">
                 <div class="form-group">
-                    <label for="thumbnail_url" class="form-label">Thumbnail URL</label>
-                    <input type="url" id="thumbnail_url" name="thumbnail_url" class="form-control @error('thumbnail_url') is-invalid @enderror" 
-                           placeholder="https://..." value="{{ old('thumbnail_url', $course->thumbnail_url) }}">
-                    @error('thumbnail_url')
+                    <label for="is_self_paced" class="form-label">Pacing Method *</label>
+                    <select id="is_self_paced" name="is_self_paced" class="form-control @error('is_self_paced') is-invalid @enderror" required>
+                        <option value="1" {{ old('is_self_paced', $course->is_self_paced) ? 'selected' : '' }}>Self-paced (Belajar Mandiri)</option>
+                        <option value="0" {{ !old('is_self_paced', $course->is_self_paced) ? 'selected' : '' }}>Instructor-paced (Terjadwal)</option>
+                    </select>
+                    @error('is_self_paced')
                         <span class="error-message">{{ $message }}</span>
                     @enderror
                 </div>
 
                 <div class="form-group">
-                    <label for="preview_video_url" class="form-label">Preview Video URL</label>
-                    <input type="url" id="preview_video_url" name="preview_video_url" class="form-control @error('preview_video_url') is-invalid @enderror" 
-                           placeholder="https://youtube.com/..." value="{{ old('preview_video_url', $course->preview_video_url) }}">
-                    @error('preview_video_url')
+                    <label for="hours_per_week" class="form-label">Study Hours per Week</label>
+                    <input type="text" id="hours_per_week" name="hours_per_week" class="form-control @error('hours_per_week') is-invalid @enderror" 
+                           placeholder="e.g. 3-5 hours per week" value="{{ old('hours_per_week', $course->hours_per_week) }}">
+                    @error('hours_per_week')
+                        <span class="error-message">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="has_certificate" class="form-label">Earn Certificate Credentials *</label>
+                    <select id="has_certificate" name="has_certificate" class="form-control @error('has_certificate') is-invalid @enderror" required>
+                        <option value="1" {{ old('has_certificate', $course->has_certificate) ? 'selected' : '' }}>Yes (Dapat Sertifikat)</option>
+                        <option value="0" {{ !old('has_certificate', $course->has_certificate) ? 'selected' : '' }}>No (Tidak Ada Sertifikat)</option>
+                    </select>
+                    @error('has_certificate')
+                        <span class="error-message">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="start_date" class="form-label">Start Date</label>
+                    <input type="date" id="start_date" name="start_date" class="form-control @error('start_date') is-invalid @enderror" 
+                           value="{{ old('start_date', $course->start_date ? $course->start_date->format('Y-m-d') : '') }}">
+                    @error('start_date')
+                        <span class="error-message">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="enroll_deadline" class="form-label">Enroll Deadline</label>
+                    <input type="date" id="enroll_deadline" name="enroll_deadline" class="form-control @error('enroll_deadline') is-invalid @enderror" 
+                           value="{{ old('enroll_deadline', $course->enroll_deadline ? $course->enroll_deadline->format('Y-m-d') : '') }}">
+                    @error('enroll_deadline')
+                        <span class="error-message">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="translations" class="form-label">Translations</label>
+                    <input type="text" id="translations" name="translations" class="form-control @error('translations') is-invalid @enderror" 
+                           placeholder="e.g. English, Chinese (or None)" value="{{ old('translations', $course->translations) }}">
+                    @error('translations')
+                        <span class="error-message">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="transcripts" class="form-label">Transcripts</label>
+                    <input type="text" id="transcripts" name="transcripts" class="form-control @error('transcripts') is-invalid @enderror" 
+                           placeholder="e.g. Indonesian, English" value="{{ old('transcripts', $course->transcripts) }}">
+                    @error('transcripts')
+                        <span class="error-message">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="prerequisites" class="form-label">Prerequisites (Prasyarat)</label>
+                <textarea id="prerequisites" name="prerequisites" class="form-control @error('prerequisites') is-invalid @enderror" 
+                          rows="2" placeholder="e.g. Basic programming logic, math knowledge..." >{{ old('prerequisites', $course->prerequisites) }}</textarea>
+                @error('prerequisites')
+                    <span class="error-message">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Thumbnail Kursus</label>
+
+                    @if($course->thumbnail_url)
+                        <div id="thumb-cur" style="margin-bottom:10px;border-radius:var(--radius-md);overflow:hidden;border:1px solid var(--border);">
+                            <img id="preview-img" src="{{ $course->thumbnail_url }}" alt="Thumbnail saat ini" style="width:100%;max-height:180px;object-fit:cover;">
+                            <p style="font-size:11px;color:var(--muted);padding:6px 10px;">Thumbnail saat ini</p>
+                        </div>
+                    @else
+                        <div id="thumb-cur" style="display:none;margin-bottom:10px;border-radius:var(--radius-md);overflow:hidden;border:1px solid var(--border);">
+                            <img id="preview-img" src="" alt="Preview" style="width:100%;max-height:180px;object-fit:cover;">
+                        </div>
+                    @endif
+
+                    <label for="thumbnail" id="thumb-dropzone"
+                           style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:20px;border:2px dashed var(--lav-3);border-radius:var(--radius-md);cursor:pointer;background:var(--lav-1);transition:background 0.2s;">
+                        <i class="fa-solid fa-cloud-arrow-up" style="font-size:24px;color:var(--purple);"></i>
+                        <span style="font-size:13px;font-weight:600;color:var(--purple);">Klik untuk upload thumbnail baru</span>
+                        <span style="font-size:11px;color:var(--muted);">JPG, PNG, WEBP — maks 10 MB</span>
+                    </label>
+                    <input type="file" id="thumbnail" name="thumbnail" accept="image/*" style="display:none;">
+                    @error('thumbnail')
+                        <span class="error-message">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Preview Video Kursus</label>
+
+                    @if($course->preview_video_url)
+                        <div id="video-cur" style="margin-bottom:10px;border-radius:var(--radius-md);overflow:hidden;border:1px solid var(--border);">
+                            <video id="preview-vid" src="{{ $course->preview_video_url }}" controls style="width:100%;max-height:180px;"></video>
+                            <p style="font-size:11px;color:var(--muted);padding:6px 10px;">Video saat ini</p>
+                        </div>
+                    @else
+                        <div id="video-cur" style="display:none;margin-bottom:10px;border-radius:var(--radius-md);overflow:hidden;border:1px solid var(--border);">
+                            <video id="preview-vid" controls style="width:100%;max-height:180px;"></video>
+                        </div>
+                    @endif
+
+                    <label for="preview_video" id="video-dropzone"
+                           style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:20px;border:2px dashed var(--lav-3);border-radius:var(--radius-md);cursor:pointer;background:var(--lav-1);transition:background 0.2s;">
+                        <i class="fa-solid fa-film" style="font-size:24px;color:var(--purple);"></i>
+                        <span style="font-size:13px;font-weight:600;color:var(--purple);">Klik untuk upload video baru</span>
+                        <span style="font-size:11px;color:var(--muted);">MP4, MOV, AVI, WEBM — maks 100 MB</span>
+                    </label>
+                    <input type="file" id="preview_video" name="preview_video" accept="video/*" style="display:none;">
+                    @error('preview_video')
                         <span class="error-message">{{ $message }}</span>
                     @enderror
                 </div>
@@ -164,5 +280,37 @@
             </div>
         </form>
     </section>
+
+<script>
+// Thumbnail file upload preview
+document.getElementById('thumbnail')?.addEventListener('change', function() {
+    const file = this.files[0];
+    if (!file) return;
+    const img      = document.getElementById('preview-img');
+    const cur      = document.getElementById('thumb-cur');
+    const dropzone = document.getElementById('thumb-dropzone');
+    img.src        = URL.createObjectURL(file);
+    if (cur) cur.style.display = 'block';
+    dropzone.style.border     = '2px solid var(--purple)';
+    dropzone.style.background = 'var(--lav-2)';
+    const p = cur?.querySelector('p');
+    if (p) p.textContent = file.name + ' (' + (file.size / 1024 / 1024).toFixed(2) + ' MB)';
+});
+
+// Video file upload preview
+document.getElementById('preview_video')?.addEventListener('change', function() {
+    const file = this.files[0];
+    if (!file) return;
+    const vid      = document.getElementById('preview-vid');
+    const cur      = document.getElementById('video-cur');
+    const dropzone = document.getElementById('video-dropzone');
+    vid.src        = URL.createObjectURL(file);
+    if (cur) cur.style.display = 'block';
+    dropzone.style.border     = '2px solid var(--purple)';
+    dropzone.style.background = 'var(--lav-2)';
+    const p = cur?.querySelector('p');
+    if (p) p.textContent = file.name + ' (' + (file.size / 1024 / 1024).toFixed(2) + ' MB)';
+});
+</script>
 
 @endsection

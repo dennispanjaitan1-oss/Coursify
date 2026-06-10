@@ -3,25 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Coursify')</title>
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
+    <title><?php echo $__env->yieldContent('title', 'Coursify'); ?></title>
 
-    {{-- Favicon --}}
-    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
-    <link rel="apple-touch-icon" href="{{ asset('images/logo.png') }}">
+    
+    <link rel="icon" type="image/png" href="<?php echo e(asset('images/logo.png')); ?>">
+    <link rel="apple-touch-icon" href="<?php echo e(asset('images/logo.png')); ?>">
 
-    {{-- Google Fonts --}}
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;700&family=Noto+Sans+Arabic:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&family=Noto+Sans+Telugu:wght@400;700&family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
-    {{-- Font Awesome --}}
+    
     <link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css" as="style">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
 
-    {{-- Vite Assets --}}
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
 
-    {{-- Alpine.js --}}
+    
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <style>
@@ -671,32 +671,32 @@
         }
     </style>
 
-    @stack('styles')
+    <?php echo $__env->yieldPushContent('styles'); ?>
 </head>
-<body @class(['admin-area' => request()->is('admin*')])>
+<body class="<?php echo \Illuminate\Support\Arr::toCssClasses(['admin-area' => request()->is('admin*')]); ?>">
 
-@unless(request()->is('admin*'))
+<?php if (! (request()->is('admin*'))): ?>
 
-{{-- ══════════════════════════════════════════════════════════ --}}
-{{-- NAVBAR WRAP — berisi promo banner + pill nav + mega menu  --}}
-{{-- ══════════════════════════════════════════════════════════ --}}
+
+
+
 <div class="navbar-wrap" id="mainNavbar">
 
 
-    {{-- ── NAVBAR PILL ────────────────────────────────────────── --}}
+    
     <div class="navbar-inner">
         <nav class="navbar">
 
-            {{-- Logo --}}
-            <a href="{{ route('home') }}" class="logo">
-                <img src="{{ asset('images/logo.png') }}" alt="Coursify" class="logo-img">
+            
+            <a href="<?php echo e(route('home')); ?>" class="logo">
+                <img src="<?php echo e(asset('images/logo.png')); ?>" alt="Coursify" class="logo-img">
                 <span class="logo-text">Coursify</span>
             </a>
 
-            {{-- Center: Mega trigger + nav links --}}
+            
             <div class="nav-center">
 
-                {{-- ▸ MEGA NAV TRIGGER --}}
+                
                 <button
                     class="mega-trigger"
                     id="mega-btn"
@@ -712,14 +712,14 @@
                     </svg>
                 </button>
 
-                {{-- Regular links --}}
-                <a href="{{ route('courses.index') }}"
-                   class="nav-link {{ request()->routeIs('courses.*') ? 'active' : '' }}">
+                
+                <a href="<?php echo e(route('courses.index')); ?>"
+                   class="nav-link <?php echo e(request()->routeIs('courses.*') ? 'active' : ''); ?>">
                     <i class="fa-solid fa-graduation-cap"></i>
                     Courses
                 </a>
 
-                <a href="{{ route('home') }}#how" class="nav-link">
+                <a href="<?php echo e(route('home')); ?>#how" class="nav-link">
                     <i class="fa-solid fa-circle-info"></i>
                     How It Works
                 </a>
@@ -727,18 +727,19 @@
 
             </div>
 
-            {{-- Right: Auth --}}
-            @guest
-                <a href="{{ route('login') }}" class="btn btn-dark" style="flex-shrink:0;">
+            
+            <?php if(auth()->guard()->guest()): ?>
+                <a href="<?php echo e(route('login')); ?>" class="btn btn-dark" style="flex-shrink:0;">
                     Get Started
                 </a>
-            @else
+            <?php else: ?>
                 <div style="position:relative;flex-shrink:0;" x-data="{ userOpen: false }">
                     <button @click="userOpen = !userOpen" class="user-btn">
                         <div class="user-avatar">
-                            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                            <?php echo e(strtoupper(substr(auth()->user()->name, 0, 1))); ?>
+
                         </div>
-                        <span>{{ Str::limit(auth()->user()->name, 12) }}</span>
+                        <span><?php echo e(Str::limit(auth()->user()->name, 12)); ?></span>
                         <i class="fa-solid fa-chevron-down" style="font-size:10px;opacity:0.5;"></i>
                     </button>
 
@@ -752,34 +753,35 @@
                          x-transition:leave-end="opacity-0"
                          class="user-dropdown">
 
-                        {{-- Header --}}
+                        
                         <div class="dropdown-header">
-                            <div class="dropdown-name">{{ auth()->user()->name }}</div>
-                            <div class="dropdown-email">{{ auth()->user()->email }}</div>
+                            <div class="dropdown-name"><?php echo e(auth()->user()->name); ?></div>
+                            <div class="dropdown-email"><?php echo e(auth()->user()->email); ?></div>
                             <div style="margin-top:8px;">
-                                @php
+                                <?php
                                     $roleMap = [
                                         'admin'      => ['bg' => 'linear-gradient(135deg,#1E3A5F,#2D4D7A)', 'color' => 'white',   'icon' => 'fa-user-shield',     'label' => 'Administrator'],
                                         'instructor' => ['bg' => 'rgba(0,200,150,0.14)',                   'color' => '#00705A',  'icon' => 'fa-chalkboard-user', 'label' => 'Instructor'],
                                         'student'    => ['bg' => 'rgba(123,111,232,0.14)',                 'color' => '#5B4FD4',  'icon' => 'fa-graduation-cap',  'label' => 'Student'],
                                     ];
                                     $r = $roleMap[auth()->user()->role] ?? $roleMap['student'];
-                                @endphp
-                                <span style="display:inline-block;padding:3px 10px;background:{{ $r['bg'] }};color:{{ $r['color'] }};border-radius:100px;font-size:10px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;">
-                                    <i class="fa-solid {{ $r['icon'] }}"></i> {{ $r['label'] }}
+                                ?>
+                                <span style="display:inline-block;padding:3px 10px;background:<?php echo e($r['bg']); ?>;color:<?php echo e($r['color']); ?>;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;">
+                                    <i class="fa-solid <?php echo e($r['icon']); ?>"></i> <?php echo e($r['label']); ?>
+
                                 </span>
                             </div>
                         </div>
 
-                        {{-- ═══ ADMIN MENU ═══ --}}
-                        @if(auth()->user()->role === 'admin')
-                            <a href="{{ route('admin.dashboard') }}" class="dropdown-item">
+                        
+                        <?php if(auth()->user()->role === 'admin'): ?>
+                            <a href="<?php echo e(route('admin.dashboard')); ?>" class="dropdown-item">
                                 <i class="fa-solid fa-chart-pie"></i> Dashboard
                             </a>
                             <a href="#" class="dropdown-item">
                                 <i class="fa-solid fa-users-gear"></i> Manage Users
                             </a>
-                            <a href="{{ route('admin.courses.index') }}" class="dropdown-item">
+                            <a href="<?php echo e(route('admin.courses.index')); ?>" class="dropdown-item">
                             <i class="fa-solid fa-book-open"></i> Manage Courses
                             </a>
 
@@ -792,11 +794,11 @@
                             <a href="#" class="dropdown-item">
                                 <i class="fa-solid fa-gears"></i> Settings
                             </a>
-                        @endif
+                        <?php endif; ?>
 
-                        {{-- ═══ INSTRUCTOR MENU ═══ --}}
-                        @if(auth()->user()->role === 'instructor')
-                            <a href="{{ route('instructor.dashboard') }}" class="dropdown-item">
+                        
+                        <?php if(auth()->user()->role === 'instructor'): ?>
+                            <a href="<?php echo e(route('instructor.dashboard')); ?>" class="dropdown-item">
                                 <i class="fa-solid fa-chart-line"></i> Dashboard
                             </a>
                             <a href="#" class="dropdown-item">
@@ -814,31 +816,31 @@
                             <a href="#" class="dropdown-item">
                                 <i class="fa-solid fa-user-gear"></i> Profile Settings
                             </a>
-                        @endif
+                        <?php endif; ?>
 
-                        {{-- ═══ STUDENT MENU ═══ --}}
-                        @if(auth()->user()->role === 'student')
-                            <a href="{{ route('student.index') }}" class="dropdown-item">
+                        
+                        <?php if(auth()->user()->role === 'student'): ?>
+                            <a href="<?php echo e(route('student.index')); ?>" class="dropdown-item">
                                 <i class="fa-solid fa-gauge-high"></i> My Dashboard
                             </a>
-                            <a href="{{ route('student.courses') }}" class="dropdown-item">
+                            <a href="<?php echo e(route('student.courses')); ?>" class="dropdown-item">
                                 <i class="fa-solid fa-book-open"></i> My Courses
                             </a>
-                            <a href="{{ route('student.wishlist') }}" class="dropdown-item">
+                            <a href="<?php echo e(route('student.wishlist')); ?>" class="dropdown-item">
                                 <i class="fa-solid fa-heart"></i> Wishlist
                             </a>
-                            <a href="{{ route('student.certificates') }}" class="dropdown-item">
+                            <a href="<?php echo e(route('student.certificates')); ?>" class="dropdown-item">
                                 <i class="fa-solid fa-award"></i> Certificates
                             </a>
-                            <a href="{{ route('student.profile') }}" class="dropdown-item">
+                            <a href="<?php echo e(route('student.profile')); ?>" class="dropdown-item">
                                 <i class="fa-solid fa-user-pen"></i> Profile Settings
                             </a>
-                        @endif
+                        <?php endif; ?>
 
-                        {{-- Logout --}}
+                        
                         <div style="border-top:1px solid rgba(0,0,0,0.06);margin-top:6px;padding-top:6px;">
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
+                            <form method="POST" action="<?php echo e(route('logout')); ?>">
+                                <?php echo csrf_field(); ?>
                                 <button type="submit" class="dropdown-item dropdown-item-danger">
                                     <i class="fa-solid fa-right-from-bracket"></i> Sign Out
                                 </button>
@@ -847,178 +849,182 @@
 
                     </div>
                 </div>
-            @endguest
+            <?php endif; ?>
 
         </nav>
-    </div>{{-- /.navbar-inner --}}
+    </div>
 
-    {{-- ── MEGA MENU (drops below the pill) ──────────────────── --}}
+    
     <div class="mega-menu-wrap">
         <div class="mega-menu" id="mega-menu" role="dialog" aria-label="Menu navigasi utama">
             <div class="mega-grid">
 
-                {{-- ▸ Kolom 1: Jelajahi Topik --}}
+                
                 <div class="mega-col">
                     <div class="mega-col-title">Jelajahi Topik</div>
-                    @forelse($navBrowseTopics as $topic)
-                        <a href="{{ route('courses.index') }}?category={{ $topic['slug'] }}" class="mega-link">{{ $topic['name'] }}</a>
-                    @empty
+                    <?php $__empty_1 = true; $__currentLoopData = $navBrowseTopics; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $topic): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                        <a href="<?php echo e(route('courses.index')); ?>?category=<?php echo e($topic['slug']); ?>" class="mega-link"><?php echo e($topic['name']); ?></a>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                         <p class="mega-empty">Tidak ada topik tersedia</p>
-                    @endforelse
-                    <a href="{{ route('courses.index') }}" class="mega-link mega-link-cta">Lihat semua topik </a>
+                    <?php endif; ?>
+                    <a href="<?php echo e(route('courses.index')); ?>" class="mega-link mega-link-cta">Lihat semua topik </a>
                     <div class="mega-group-label">Untuk Pemula</div>
-                    @foreach($navBeginnerTopics as $beginner)
-                        <a href="{{ route('courses.index') }}?q={{ urlencode($beginner['query']) }}" class="mega-link">{{ $beginner['name'] }}</a>
-                    @endforeach
+                    <?php $__currentLoopData = $navBeginnerTopics; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $beginner): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <a href="<?php echo e(route('courses.index')); ?>?q=<?php echo e(urlencode($beginner['query'])); ?>" class="mega-link"><?php echo e($beginner['name']); ?></a>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
 
-                {{-- ▸ Kolom 2: Raih Sertifikat --}}
+                
                 <div class="mega-col">
                     <div class="mega-col-title">Raih Sertifikat</div>
-                    @forelse($navCertificatePrograms as $cert)
-                        <a href="{{ route('courses.index') }}?q={{ urlencode($cert['name']) }}" class="mega-link">{{ $cert['name'] }}</a>
-                    @empty
+                    <?php $__empty_1 = true; $__currentLoopData = $navCertificatePrograms; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cert): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                        <a href="<?php echo e(route('courses.index')); ?>?q=<?php echo e(urlencode($cert['name'])); ?>" class="mega-link"><?php echo e($cert['name']); ?></a>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                         <p class="mega-empty">Tidak ada sertifikat tersedia</p>
-                    @endforelse
-                    <a href="{{ route('courses.index') }}?type=certificate" class="mega-link mega-link-cta">Lihat semua sertifikat </a>
+                    <?php endif; ?>
+                    <a href="<?php echo e(route('courses.index')); ?>?type=certificate" class="mega-link mega-link-cta">Lihat semua sertifikat </a>
                     <div class="mega-group-label">Populer</div>
-                    @foreach($navPopularCertificateSearches as $search)
-                        <a href="{{ route('courses.index') }}?q={{ urlencode($search['query']) }}" class="mega-link">{{ $search['name'] }}</a>
-                    @endforeach
+                    <?php $__currentLoopData = $navPopularCertificateSearches; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $search): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <a href="<?php echo e(route('courses.index')); ?>?q=<?php echo e(urlencode($search['query'])); ?>" class="mega-link"><?php echo e($search['name']); ?></a>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
 
-                {{-- ▸ Kolom 3: Program Gelar --}}
+                
                 <div class="mega-col">
                     <div class="mega-col-title">Program Gelar</div>
-                    @forelse($navDegreePrograms as $degree)
-                        <a href="{{ route('courses.index') }}?q={{ urlencode($degree['name']) }}" class="mega-link">{{ $degree['name'] }}</a>
-                    @empty
+                    <?php $__empty_1 = true; $__currentLoopData = $navDegreePrograms; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $degree): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                        <a href="<?php echo e(route('courses.index')); ?>?q=<?php echo e(urlencode($degree['name'])); ?>" class="mega-link"><?php echo e($degree['name']); ?></a>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                         <p class="mega-empty">Tidak ada program gelar tersedia</p>
-                    @endforelse
-                    <a href="{{ route('courses.index') }}?type=program" class="mega-link mega-link-cta">Lihat semua program </a>
+                    <?php endif; ?>
+                    <a href="<?php echo e(route('courses.index')); ?>?type=program" class="mega-link mega-link-cta">Lihat semua program </a>
                     <div class="mega-group-label">Populer</div>
-                    @foreach($navCareerPaths as $career)
-                        <a href="{{ route('courses.index') }}?q={{ urlencode($career['query']) }}" class="mega-link">{{ $career['name'] }}</a>
-                    @endforeach
+                    <?php $__currentLoopData = $navCareerPaths; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $career): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <a href="<?php echo e(route('courses.index')); ?>?q=<?php echo e(urlencode($career['query'])); ?>" class="mega-link"><?php echo e($career['name']); ?></a>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
 
-                {{-- ▸ Kolom 4: Universitas & Karir --}}
+                
                 <div class="mega-col">
                     <div class="mega-col-title">Universitas Partner</div>
-                    @forelse($navPartnerInstitutions as $inst)
-                        <a href="{{ route('universities.show', $inst['slug']) }}" class="mega-link">{{ $inst['name'] }}</a>
-                    @empty
+                    <?php $__empty_1 = true; $__currentLoopData = $navPartnerInstitutions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $inst): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                        <a href="<?php echo e(route('universities.show', $inst['slug'])); ?>" class="mega-link"><?php echo e($inst['name']); ?></a>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                         <p class="mega-empty">Tidak ada universitas tersedia</p>
-                    @endforelse
-                    <a href="{{ route('universities') }}" class="mega-link mega-link-cta">Lihat semua universitas </a>
+                    <?php endif; ?>
+                    <a href="<?php echo e(route('universities')); ?>" class="mega-link mega-link-cta">Lihat semua universitas </a>
                     <div class="mega-group-label">Jalur Karir</div>
-                    @foreach($navCareerPaths as $career)
-                        <a href="{{ route('courses.index') }}?q={{ urlencode($career['query']) }}" class="mega-link">{{ $career['name'] }}</a>
-                    @endforeach
+                    <?php $__currentLoopData = $navCareerPaths; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $career): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <a href="<?php echo e(route('courses.index')); ?>?q=<?php echo e(urlencode($career['query'])); ?>" class="mega-link"><?php echo e($career['name']); ?></a>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
 
             </div>
         </div>
-    </div>{{-- /.mega-menu-wrap --}}
+    </div>
 
-</div>{{-- /.navbar-wrap --}}
+</div>
 
-{{-- Overlay penutup mega menu (di LUAR navbar-wrap) --}}
+
 <div class="mega-overlay" id="mega-overlay" onclick="closeMega()"></div>
 
-@endunless
+<?php endif; ?>
 
 
-{{-- ══════════════════════════════════════════════════════════ --}}
-{{-- FLASH MESSAGES                                             --}}
-{{-- ══════════════════════════════════════════════════════════ --}}
-@if(session('success') || session('error') || session('info'))
+
+
+
+<?php if(session('success') || session('error') || session('info')): ?>
     <div class="flash-wrap">
-        @if(session('success'))
+        <?php if(session('success')): ?>
             <div class="flash flash-success" x-data x-init="setTimeout(() => $el.remove(), 4000)">
                 <i class="fa-solid fa-circle-check" style="color:var(--teal);"></i>
-                {{ session('success') }}
+                <?php echo e(session('success')); ?>
+
             </div>
-        @endif
-        @if(session('error'))
+        <?php endif; ?>
+        <?php if(session('error')): ?>
             <div class="flash flash-error" x-data x-init="setTimeout(() => $el.remove(), 4000)">
                 <i class="fa-solid fa-circle-xmark" style="color:var(--orange);"></i>
-                {{ session('error') }}
+                <?php echo e(session('error')); ?>
+
             </div>
-        @endif
-        @if(session('info'))
+        <?php endif; ?>
+        <?php if(session('info')): ?>
             <div class="flash flash-info" x-data x-init="setTimeout(() => $el.remove(), 4000)">
                 <i class="fa-solid fa-circle-info" style="color:var(--purple);"></i>
-                {{ session('info') }}
+                <?php echo e(session('info')); ?>
+
             </div>
-        @endif
+        <?php endif; ?>
     </div>
-@endif
+<?php endif; ?>
 
 
-{{-- ══════════════════════════════════════════════════════════ --}}
-{{-- MAIN CONTENT                                               --}}
-{{-- ══════════════════════════════════════════════════════════ --}}
+
+
+
 <main>
-    @yield('content')
+    <?php echo $__env->yieldContent('content'); ?>
 </main>
 
 
 
 
-@unless(request()->is('admin*'))
+<?php if (! (request()->is('admin*'))): ?>
 
 <footer>
 
-    {{-- ══ MEGA FOOTER (dark, banyak link) ══ --}}
+    
     <div style="background:#0F2744;padding:56px 0 0;">
         <div style="max-width:1160px;margin:0 auto;padding:0 24px;">
 
-            {{-- Row 1: Logo + 4 kolom link --}}
+            
             <div style="display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr 1fr;gap:40px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,0.08);">
 
-                {{-- Brand --}}
+                
                 <div>
-                    <a href="{{ route('home') }}" style="display:inline-flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:16px;">
-                        <img src="{{ asset('images/logo.png') }}" alt="Coursify"
+                    <a href="<?php echo e(route('home')); ?>" style="display:inline-flex;align-items:center;gap:10px;text-decoration:none;margin-bottom:16px;">
+                        <img src="<?php echo e(asset('images/logo.png')); ?>" alt="Coursify"
                              style="width:36px;height:36px;border-radius:9px;object-fit:cover;box-shadow:0 2px 10px rgba(0,0,0,0.3);">
                         <span style="font-size:20px;font-weight:700;letter-spacing:-0.02em;color:white;">Coursify</span>
                     </a>
                     <p style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;max-width:240px;margin-bottom:20px;">
                         Platform belajar online terpercaya dari universitas-universitas terkemuka Indonesia. Belajar kapan saja, di mana saja.
                     </p>
-                    {{-- SDG Badges --}}
+                    
                     <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px;">
-                        @foreach([['#4CAF50','SDG 4'],['#2196F3','SDG 8'],['#FF9800','SDG 10']] as [$c,$l])
+                        <?php $__currentLoopData = [['#4CAF50','SDG 4'],['#2196F3','SDG 8'],['#FF9800','SDG 10']]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$c,$l]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <span style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);font-size:10px;font-weight:600;padding:4px 10px;border-radius:100px;letter-spacing:0.05em;">
-                                {{ $l }}
+                                <?php echo e($l); ?>
+
                             </span>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
-                    {{-- Social --}}
+                    
                     <div style="display:flex;gap:8px;">
-                        @foreach([
+                        <?php $__currentLoopData = [
                             ['fa-x-twitter','#'],
                             ['fa-facebook-f','#'],
                             ['fa-linkedin-in','#'],
                             ['fa-instagram','#'],
-                        ] as [$icon,$url])
-                            <a href="{{ $url }}"
+                        ]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$icon,$url]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <a href="<?php echo e($url); ?>"
                                style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.55);font-size:13px;text-decoration:none;transition:all 0.2s;"
                                onmouseover="this.style.background='rgba(255,255,255,0.18)';this.style.color='white';"
                                onmouseout="this.style.background='rgba(255,255,255,0.08)';this.style.color='rgba(255,255,255,0.55)';">
-                                <i class="fa-brands {{ $icon }}"></i>
+                                <i class="fa-brands <?php echo e($icon); ?>"></i>
                             </a>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
                 </div>
 
-                {{-- Kolom: Jelajahi Topik --}}
+                
                 <div>
                     <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:16px;">
                         Jelajahi Topik
                     </div>
-                    @foreach([
+                    <?php $__currentLoopData = [
                         ['Kecerdasan Buatan','courses.index','?category=ai'],
                         ['Web Development','courses.index','?category=web'],
                         ['Data Science','courses.index','?category=data'],
@@ -1028,22 +1034,23 @@
                         ['Bahasa Asing','courses.index','?category=language'],
                         ['Bisnis & Manajemen','courses.index','?category=business'],
                         ['Lihat semua topik ','courses.index',''],
-                    ] as $i => [$label, $route, $param])
-                        <a href="{{ route($route) }}{{ $param }}"
-                           style="display:block;font-size:13px;color:{{ $i === 8 ? '#B8AFEB' : 'rgba(255,255,255,0.55)' }};text-decoration:none;padding:4px 0;line-height:1.5;transition:color 0.2s;{{ $i === 8 ? 'margin-top:8px;font-weight:600;' : '' }}"
+                    ]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => [$label, $route, $param]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <a href="<?php echo e(route($route)); ?><?php echo e($param); ?>"
+                           style="display:block;font-size:13px;color:<?php echo e($i === 8 ? '#B8AFEB' : 'rgba(255,255,255,0.55)'); ?>;text-decoration:none;padding:4px 0;line-height:1.5;transition:color 0.2s;<?php echo e($i === 8 ? 'margin-top:8px;font-weight:600;' : ''); ?>"
                            onmouseover="this.style.color='white'"
-                           onmouseout="this.style.color='{{ $i === 8 ? '#B8AFEB' : 'rgba(255,255,255,0.55)' }}'">
-                            {{ $label }}
+                           onmouseout="this.style.color='<?php echo e($i === 8 ? '#B8AFEB' : 'rgba(255,255,255,0.55)'); ?>'">
+                            <?php echo e($label); ?>
+
                         </a>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
 
-                {{-- Kolom: Program --}}
+                
                 <div>
                     <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:16px;">
                         Program
                     </div>
-                    @foreach([
+                    <?php $__currentLoopData = [
                         ['Sertifikat Profesional','courses.index','?type=certificate'],
                         ['MicroMasters','courses.index','?type=micromasters'],
                         ['Program Diploma','courses.index','?type=diploma'],
@@ -1052,22 +1059,23 @@
                         ['MBA Online','courses.index','?q=mba'],
                         ['Executive Education','courses.index','?type=executive'],
                         ['Lihat semua program ','courses.index','?type=all'],
-                    ] as $i => [$label, $route, $param])
-                        <a href="{{ route($route) }}{{ $param }}"
-                           style="display:block;font-size:13px;color:{{ $i === 7 ? '#B8AFEB' : 'rgba(255,255,255,0.55)' }};text-decoration:none;padding:4px 0;line-height:1.5;transition:color 0.2s;{{ $i === 7 ? 'margin-top:8px;font-weight:600;' : '' }}"
+                    ]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => [$label, $route, $param]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <a href="<?php echo e(route($route)); ?><?php echo e($param); ?>"
+                           style="display:block;font-size:13px;color:<?php echo e($i === 7 ? '#B8AFEB' : 'rgba(255,255,255,0.55)'); ?>;text-decoration:none;padding:4px 0;line-height:1.5;transition:color 0.2s;<?php echo e($i === 7 ? 'margin-top:8px;font-weight:600;' : ''); ?>"
                            onmouseover="this.style.color='white'"
-                           onmouseout="this.style.color='{{ $i === 7 ? '#B8AFEB' : 'rgba(255,255,255,0.55)' }}'">
-                            {{ $label }}
+                           onmouseout="this.style.color='<?php echo e($i === 7 ? '#B8AFEB' : 'rgba(255,255,255,0.55)'); ?>'">
+                            <?php echo e($label); ?>
+
                         </a>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
 
-                {{-- Kolom: Universitas --}}
+                
                 <div>
                     <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:16px;">
                         Universitas
                     </div>
-                    @foreach([
+                    <?php $__currentLoopData = [
                         ['Harvard University','courses.index','?university=ui'],
                         ['Adelaide University','courses.index','?university=itb'],
                         ['Stanford University','courses.index','?university=ugm'],
@@ -1076,22 +1084,23 @@
                         ['Massachusetts Institute of Technology','courses.index','?university=ipb'],
                         ['University of Toronto','courses.index','?university=binus'],
                         ['Lihat semua Universitas','universities',''],
-                    ] as $i => [$label, $route, $param])
-                        <a href="{{ route($route) }}{{ $param }}"
-                           style="display:block;font-size:13px;color:{{ $i === 7 ? '#B8AFEB' : 'rgba(255,255,255,0.55)' }};text-decoration:none;padding:4px 0;line-height:1.5;transition:color 0.2s;{{ $i === 7 ? 'margin-top:8px;font-weight:600;' : '' }}"
+                    ]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => [$label, $route, $param]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <a href="<?php echo e(route($route)); ?><?php echo e($param); ?>"
+                           style="display:block;font-size:13px;color:<?php echo e($i === 7 ? '#B8AFEB' : 'rgba(255,255,255,0.55)'); ?>;text-decoration:none;padding:4px 0;line-height:1.5;transition:color 0.2s;<?php echo e($i === 7 ? 'margin-top:8px;font-weight:600;' : ''); ?>"
                            onmouseover="this.style.color='white'"
-                           onmouseout="this.style.color='{{ $i === 7 ? '#B8AFEB' : 'rgba(255,255,255,0.55)' }}'">
-                            {{ $label }}
+                           onmouseout="this.style.color='<?php echo e($i === 7 ? '#B8AFEB' : 'rgba(255,255,255,0.55)'); ?>'">
+                            <?php echo e($label); ?>
+
                         </a>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
 
-                {{-- Kolom: Jalur Karir --}}
+                
                 <div>
                     <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:16px;">
                         Jalur Karir
                     </div>
-                    @foreach([
+                    <?php $__currentLoopData = [
                         ['Software Engineer','courses.index','?career=software-engineer'],
                         ['Data Scientist','courses.index','?career=data-scientist'],
                         ['UI/UX Designer','courses.index','?career=ui-ux'],
@@ -1100,117 +1109,122 @@
                         ['Cloud Architect','courses.index','?career=cloud'],
                         ['Digital Marketer','courses.index','?career=marketing'],
                         ['Lihat semua karir ','courses.index','?type=career'],
-                    ] as $i => [$label, $route, $param])
-                        <a href="{{ route($route) }}{{ $param }}"
-                           style="display:block;font-size:13px;color:{{ $i === 7 ? '#B8AFEB' : 'rgba(255,255,255,0.55)' }};text-decoration:none;padding:4px 0;line-height:1.5;transition:color 0.2s;{{ $i === 7 ? 'margin-top:8px;font-weight:600;' : '' }}"
+                    ]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => [$label, $route, $param]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <a href="<?php echo e(route($route)); ?><?php echo e($param); ?>"
+                           style="display:block;font-size:13px;color:<?php echo e($i === 7 ? '#B8AFEB' : 'rgba(255,255,255,0.55)'); ?>;text-decoration:none;padding:4px 0;line-height:1.5;transition:color 0.2s;<?php echo e($i === 7 ? 'margin-top:8px;font-weight:600;' : ''); ?>"
                            onmouseover="this.style.color='white'"
-                           onmouseout="this.style.color='{{ $i === 7 ? '#B8AFEB' : 'rgba(255,255,255,0.55)' }}'">
-                            {{ $label }}
+                           onmouseout="this.style.color='<?php echo e($i === 7 ? '#B8AFEB' : 'rgba(255,255,255,0.55)'); ?>'">
+                            <?php echo e($label); ?>
+
                         </a>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
 
-            </div>{{-- /Row 1 --}}
+            </div>
 
-            {{-- ══ SECONDARY FOOTER ROWw ══ --}}
+            
             <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:40px;padding:40px 0 48px;border-bottom:1px solid rgba(255,255,255,0.08);">
 
-                {{-- Coursify Company --}}
+                
 <div>
     <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:14px;">
         Coursify
     </div>
-    <div style="display:block;"> {{-- Pakai block jika ingin berurutan ke bawah --}}
-        @foreach([
+    <div style="display:block;"> 
+        <?php $__currentLoopData = [
             ['Tentang Kami', '/about'], 
             ['Partner Kami', '/universities'],
             ['Blog & Berita', '/blog'],
-        ] as [$label, $url])
-            <a href="{{ url($url) }}"
+        ]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$label, $url]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <a href="<?php echo e(url($url)); ?>"
                style="display:block;font-size:13px;color:rgba(255,255,255,0.5);text-decoration:none;padding:4px 0;transition:color 0.2s;"
                onmouseover="this.style.color='white'"
                onmouseout="this.style.color='rgba(255,255,255,0.5)'">
-                {{ $label }}
+                <?php echo e($label); ?>
+
             </a>
-        @endforeach
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     </div>
 </div>
 
-                {{-- Connect --}}
+                
                 <div>
                     <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:14px;">
                         Connect
                     </div>
-                    @foreach([
+                    <?php $__currentLoopData = [
                         ['Help Center','/contact'],
                         ['Contact Us','/login'],
                         ['Community Forum','/forum'],
                         ['FAQ','/faq'],
                         ['Become an Instructor','/login'],
-                    ] as [$label, $url])
-                        <a href="{{ $url }}"
+                    ]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$label, $url]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <a href="<?php echo e($url); ?>"
                            style="display:block;font-size:13px;color:rgba(255,255,255,0.5);text-decoration:none;padding:4px 0;transition:color 0.2s;"
                            onmouseover="this.style.color='white'"
                            onmouseout="this.style.color='rgba(255,255,255,0.5)'">
-                            {{ $label }}
+                            <?php echo e($label); ?>
+
                         </a>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
 
-                {{-- Legal --}}
+                
                 <div>
                     <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:14px;">
                         Legal
                     </div>
-                    @foreach([
+                    <?php $__currentLoopData = [
                         ['Terms & Conditions','/terms'],
                         ['Privacy Policy','/privacy'],
                         ['Cookie Policy','/cookies'],
                         ['Accessibility Policy','/accessibility'],
                         ['Sitemap','/sitemap'],
                         ['Security','/security'],
-                    ] as [$label, $url])
-                        <a href="{{ $url }}"
+                    ]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$label, $url]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <a href="<?php echo e($url); ?>"
                            style="display:block;font-size:13px;color:rgba(255,255,255,0.5);text-decoration:none;padding:4px 0;transition:color 0.2s;"
                            onmouseover="this.style.color='white'"
                            onmouseout="this.style.color='rgba(255,255,255,0.5)'">
-                            {{ $label }}
+                            <?php echo e($label); ?>
+
                         </a>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
 
-            </div>{{-- /Secondary row --}}
+            </div>
 
-            {{-- ══ BOTTOM BAR ══ --}}
+            
             <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 0;flex-wrap:wrap;gap:12px;">
                 <div style="font-size:12px;color:rgba(255,255,255,0.3);">
-                    © {{ date('Y') }} Coursify. All Rights Reserved. 
+                    © <?php echo e(date('Y')); ?> Coursify. All Rights Reserved. 
                 </div>
                 <div style="display:flex;gap:20px;">
-    @foreach([
+    <?php $__currentLoopData = [
         ['Privacy', '/privacy'],
         ['Terms', '/terms'],
         ['Cookies', '/cookies'],
         ['Sitemap', '/sitemap'],
-    ] as [$label, $url])
-        <a href="{{ $url }}"
+    ]; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$label, $url]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <a href="<?php echo e($url); ?>"
            style="font-size:12px;color:rgba(255,255,255,0.3);text-decoration:none;transition:color 0.2s;"
            onmouseover="this.style.color='rgba(255,255,255,0.7)'"
            onmouseout="this.style.color='rgba(255,255,255,0.3)'">
-            {{ $label }}
+            <?php echo e($label); ?>
+
         </a>
-    @endforeach
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 </div>
             </div>
 
         </div>
-    </div>{{-- /mega footer --}}
+    </div>
 
 </footer>
-@endunless
+<?php endif; ?>
 
-{{-- ══ SCRIPTS ══ --}}
-@stack('scripts')
+
+<?php echo $__env->yieldPushContent('scripts'); ?>
 
 <script>
 /* ─── Adjust body padding ─── */
@@ -1296,3 +1310,4 @@ window.addEventListener('pageshow', function (e) {
 
 </body>
 </html>
+<?php /**PATH C:\laragon\www\coursify\resources\views/layouts/app.blade.php ENDPATH**/ ?>

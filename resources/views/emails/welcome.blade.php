@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Selamat Datang di Coursify</title>
+    <title>Welcome to Coursify</title>
 </head>
 <body style="margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background-color:#fafafa;color:#1a1a1a;">
 
@@ -23,11 +23,11 @@
                 <tr>
                     <td style="padding:0 48px 36px;">
                         <h1 style="margin:0 0 16px;font-size:24px;font-weight:600;color:#111111;letter-spacing:-0.3px;line-height:1.3;">
-                            Mulai Perjalanan Baru Anda
+                            Start Your New Learning Journey
                         </h1>
                         <p style="margin:0 0 24px;font-size:14px;color:#666666;line-height:1.6;">
-                            Halo {{ $user->name }},<br><br>
-                            Akun Anda telah berhasil dibuat. Platform ini didesain khusus untuk mendukung pengembangan kompetensi profesional Anda melalui akses ke berbagai program pembelajaran terstruktur dari institusi ternama.
+                            Hi {{ $user->name }},<br><br>
+                            Your account has been successfully created. This platform is built to support your professional growth with access to structured learning programs from top institutions.
                         </p>
                         
                         <table role="presentation" cellpadding="0" cellspacing="0" style="margin-bottom:16px;">
@@ -56,8 +56,8 @@
                     <td style="padding:24px 48px 48px;font-size:12px;color:#999999;line-height:1.5;">
                         <p style="margin:0 0 4px;font-weight:600;color:#666666;">Coursify</p>
                         <p style="margin:0;">
-                            Surel ini dikirim secara otomatis sebagai konfirmasi pendaftaran akun baru.<br>
-                            &copy; {{ date('Y') }} Coursify. Hak cipta dilindungi undang-undang.
+                            This email was sent automatically to confirm your new account registration.<br>
+                            &copy; {{ date('Y') }} Coursify. All rights reserved.
                         </p>
                     </td>
                 </tr>

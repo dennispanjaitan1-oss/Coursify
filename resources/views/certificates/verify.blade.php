@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Verifikasi Sertifikat - Coursify')
+@section('title', 'Certificate Verification - Coursify')
 
 @section('content')
 <div class="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4">
@@ -10,11 +10,11 @@
       {{-- ✅ VALID --}}
       <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
 
-        {{-- Header hijau --}}
+        {{-- Green header --}}
         <div class="bg-gradient-to-r from-green-600 to-emerald-500 px-8 py-8 text-white text-center">
           <div class="text-5xl mb-3">✓</div>
-          <h1 class="text-2xl font-bold">Sertifikat Valid</h1>
-          <p class="text-green-100 mt-1 text-sm">Sertifikat ini asli dan diterbitkan oleh Coursify</p>
+          <h1 class="text-2xl font-bold">Valid Certificate</h1>
+          <p class="text-green-100 mt-1 text-sm">This certificate is genuine and issued by Coursify.</p>
         </div>
 
         {{-- Detail sertifikat --}}
@@ -24,7 +24,7 @@
             <div class="flex items-start gap-4 p-4 bg-gray-50 rounded-xl">
               <div class="text-2xl">👤</div>
               <div>
-                <div class="text-xs text-gray-500 uppercase tracking-wide mb-0.5">Nama Penerima</div>
+                <div class="text-xs text-gray-500 uppercase tracking-wide mb-0.5">Recipient Name</div>
                 <div class="text-xl font-bold text-gray-800">{{ $certificate->user->name }}</div>
               </div>
             </div>
@@ -32,7 +32,7 @@
             <div class="flex items-start gap-4 p-4 bg-gray-50 rounded-xl">
               <div class="text-2xl">📚</div>
               <div>
-                <div class="text-xs text-gray-500 uppercase tracking-wide mb-0.5">Kursus</div>
+                <div class="text-xs text-gray-500 uppercase tracking-wide mb-0.5">Course</div>
                 <div class="text-lg font-semibold text-gray-800">{{ $certificate->course->title }}</div>
                 @if($certificate->course->institution)
                   <div class="text-sm text-gray-500 mt-0.5">{{ $certificate->course->institution->name }}</div>
@@ -42,11 +42,11 @@
 
             <div class="grid grid-cols-2 gap-4">
               <div class="p-4 bg-gray-50 rounded-xl">
-                <div class="text-xs text-gray-500 uppercase tracking-wide mb-0.5">Nomor Sertifikat</div>
+                <div class="text-xs text-gray-500 uppercase tracking-wide mb-0.5">Certificate Number</div>
                 <div class="font-mono text-sm font-semibold text-gray-800">{{ $certificate->certificate_number }}</div>
               </div>
               <div class="p-4 bg-gray-50 rounded-xl">
-                <div class="text-xs text-gray-500 uppercase tracking-wide mb-0.5">Tanggal Terbit</div>
+                <div class="text-xs text-gray-500 uppercase tracking-wide mb-0.5">Issued Date</div>
                 <div class="font-semibold text-gray-800">{{ $certificate->issued_at_formatted }}</div>
               </div>
             </div>
@@ -55,8 +55,8 @@
 
           <div class="mt-6 pt-6 border-t border-gray-100 text-center">
             <p class="text-xs text-gray-400">
-              Halaman ini merupakan bukti verifikasi resmi dari Coursify.<br>
-              Keaslian sertifikat dapat diverifikasi di
+              This page is an official verification record from Coursify.<br>
+              Certificate authenticity can be verified at
               <span class="font-mono">{{ url('/verify/' . $certificate->certificate_number) }}</span>
             </p>
           </div>
@@ -80,19 +80,19 @@
 
     {{-- Form cari sertifikat lain --}}
     <div class="mt-6 bg-white rounded-2xl shadow px-8 py-6">
-      <h2 class="text-base font-semibold text-gray-700 mb-4">Verifikasi Nomor Lain</h2>
+      <h2 class="text-base font-semibold text-gray-700 mb-4">Verify another certificate</h2>
       <form action="{{ route('certificates.verify.form') }}" method="GET" class="flex gap-3">
         <input
           type="text"
           name="number"
-          placeholder="Contoh: CERT-2025-ABCD1234"
+          placeholder="Example: CERT-2025-ABCD1234"
           class="flex-1 border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
         <button
           type="submit"
           class="bg-blue-600 text-white px-5 py-2.5 rounded-xl text-sm font-medium hover:bg-blue-700 transition"
         >
-          Cari
+          Search
         </button>
       </form>
     </div>

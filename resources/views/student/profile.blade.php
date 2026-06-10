@@ -829,10 +829,6 @@ body::before {
 {{-- PAGE HEADER --}}
 <section class="page-header">
     <div class="container">
-        <div class="page-badge">
-            <span class="page-badge-dot"></span>
-            <span>Account settings</span>
-        </div>
 
         <h1 class="page-title">
             Profile <em>Settings</em>
@@ -879,13 +875,6 @@ body::before {
                         class="tab-link">
                     <span class="tab-icon"><i class="fa-solid fa-palette"></i></span>
                     <span>Preferences</span>
-                </button>
-
-                <button @click="activeTab = 'billing'"
-                        :class="{ 'active': activeTab === 'billing' }"
-                        class="tab-link">
-                    <span class="tab-icon"><i class="fa-regular fa-credit-card"></i></span>
-                    <span>Billing</span>
                 </button>
             </aside>
 
@@ -1142,24 +1131,6 @@ body::before {
                         </div>
                     </form>
 
-                    {{-- Two-Factor Auth Info --}}
-                    <div style="margin-top: 28px; padding: 20px; background: linear-gradient(135deg, var(--teal-light), rgba(255,255,255,0.5)); border: 1px solid rgba(0,200,150,0.2); border-radius: 14px;">
-                        <div style="display: flex; align-items: flex-start; gap: 14px;">
-                            <div style="font-size: 28px;"><i class="fa-solid fa-shield-halved"></i></div>
-                            <div style="flex: 1;">
-                                <div style="font-family: var(--font-serif); font-size: 18px; margin-bottom: 4px;">
-                                    Two-Factor <em style="color: var(--teal);">Authentication</em>
-                                </div>
-                                <p style="font-size: 13px; color: var(--text-soft); line-height: 1.6; margin-bottom: 12px;">
-                                    Add an extra layer of security to your account by enabling 2FA. You'll need to enter a code from your authenticator app when signing in.
-                                </p>
-                                <button type="button" style="padding: 8px 16px; background: var(--teal); color: white; border: none; border-radius: 100px; font-size: 12px; font-weight: 600; cursor: pointer;" onclick="alert('2FA feature coming soon!')">
-                                    Enable 2FA
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
                     {{-- Danger Zone --}}
                     <div class="danger-zone">
                         <div class="danger-title">Delete Account</div>
@@ -1366,73 +1337,6 @@ body::before {
                     </form>
                 </div>
 
-                {{-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ --}}
-                {{-- TAB 5: BILLING                              --}}
-                {{-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ --}}
-                <div class="content-card" x-show="activeTab === 'billing'" x-transition>
-                    <div class="card-header">
-                        <h2 class="card-title">Billing & <em>Payments</em></h2>
-                        <p class="card-desc">Manage your subscription and payment methods.</p>
-                    </div>
-
-                    {{-- Current Plan --}}
-                    <div style="background: linear-gradient(135deg, var(--navy), #2D4D7A); border-radius: 16px; padding: 24px; color: white; margin-bottom: 20px; position: relative; overflow: hidden;">
-                        <div style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(184,175,235,0.3), transparent); pointer-events: none;"></div>
-
-                        <div style="position: relative; z-index: 1;">
-                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
-                                <div>
-                                    <div style="font-size: 11px; color: var(--lav-4); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px;">Current Plan</div>
-                                    <div style="font-family: var(--font-serif); font-size: 32px; font-weight: 400; line-height: 1; padding-bottom: 2px;">
-                                        <em style="color: var(--lav-4);">Free</em> Plan
-                                    </div>
-                                </div>
-                                <span style="padding: 6px 14px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 100px; font-size: 11px; font-weight: 700; letter-spacing: 0.05em;">
-                                    ACTIVE
-                                </span>
-                            </div>
-
-                            <p style="font-size: 13px; color: rgba(255,255,255,0.8); line-height: 1.6; margin-bottom: 20px;">
-                                You're on the Free plan. Upgrade to Pro to unlock all premium courses, certificates, and advanced features.
-                            </p>
-
-                            <a href="{{ route('home') }}#pricing" style="display: inline-flex; align-items: center; gap: 6px; padding: 11px 22px; background: white; color: var(--navy); text-decoration: none; border-radius: 100px; font-size: 13px; font-weight: 700;">
-                                ✨ Upgrade to Pro
-                            </a>
-                        </div>
-                    </div>
-
-                    {{-- Payment Methods --}}
-                    <div style="margin-bottom: 20px;">
-                        <div style="font-family: var(--font-serif); font-size: 20px; margin-bottom: 14px;">
-                            <i class="fa-regular fa-credit-card"></i> Payment Methods
-                        </div>
-
-                        <div class="payment-method-card" style="padding: 20px; background: rgba(255,255,255,0.5); border: 1px solid var(--border); border-radius: 12px; text-align: center;">
-                            <div style="font-size: 36px; margin-bottom: 8px;"><i class="fa-regular fa-credit-card"></i></div>
-                            <div style="font-size: 14px; color: var(--text-soft); margin-bottom: 12px;">
-                                No payment methods added yet
-                            </div>
-                            <button type="button" style="padding: 10px 20px; background: #1A1825; color: white; border: none; border-radius: 100px; font-size: 12px; font-weight: 600; cursor: pointer;" onclick="alert('Payment integration coming soon!')">
-                                + Add Payment Method
-                            </button>
-                        </div>
-                    </div>
-
-                    {{-- Transaction History --}}
-                    <div>
-                        <div style="font-family: var(--font-serif); font-size: 20px; margin-bottom: 14px;">
-                            📋 Transaction History
-                        </div>
-
-                        <div class="transaction-history-card" style="padding: 40px 20px; background: rgba(255,255,255,0.5); border: 1px solid var(--border); border-radius: 12px; text-align: center;">
-                            <div style="font-size: 36px; margin-bottom: 8px;">📭</div>
-                            <div style="font-family: var(--font-serif); font-size: 18px; margin-bottom: 4px;">No transactions yet</div>
-                            <div style="font-size: 12px; color: var(--muted);">
-                                Your purchase history will appear here
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -1566,18 +1470,6 @@ html[data-theme="dark"] .stat-val {
 
 html[data-theme="dark"] .stat-lbl {
     color: #B8AFEB !important;
-}
-
-html[data-theme="dark"] .payment-method-card,
-html[data-theme="dark"] .transaction-history-card {
-    background: rgba(255,255,255,0.02) !important;
-    border-color: rgba(255,255,255,0.06) !important;
-    color: #B8AFEB !important;
-}
-
-html[data-theme="dark"] .payment-method-card .form-help,
-html[data-theme="dark"] .transaction-history-card .form-help {
-    color: #8B87A8 !important;
 }
 
 html[data-theme="dark"] .btn-cancel {

@@ -44,49 +44,7 @@ class CourseController extends Controller
         return view('admin.courses', compact('courses', 'categories', 'institutions', 'programs'));
     }
 
-    /**
-     * Tampilkan form create course.
-     */
-    public function create()
-    {
-        $categories   = Category::orderBy('name')->get();
-        $institutions = Institution::orderBy('name')->get();
-        $programs     = Program::orderBy('title')->get();
 
-        return view('admin.create-course', compact('categories', 'institutions', 'programs'));
-    }
-
-    /**
-     * Simpan course baru.
-     */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'title'             => 'required|string|max:255',
-            'category_id'       => 'required|exists:categories,id',
-            'institution_id'    => 'required|exists:institutions,id',
-            'program_id'        => 'nullable|exists:programs,id',
-            'short_description' => 'nullable|string|max:500',
-          
-            'price'             => 'required|numeric|min:0',
-            
-            'difficulty'        => 'required|in:beginner,intermediate,advanced',
-           
-            'thumbnail_url'     => 'nullable|url|max:500',
-            'preview_video_url' => 'nullable|url|max:500',
-            'is_published'      => 'boolean',
-            'order_index' => 'nullable|integer|min:0',
-        ]);
-
-        $validated['slug']         = Str::slug($validated['title']) . '-' . Str::random(5);
-        $validated['is_published'] = $request->boolean('is_published');
-       $validated['order_index'] = $request->input('order_index', 0);
-
-        Course::create($validated);
-
-        return redirect()->route('admin.courses.index')
-                         ->with('success', 'Course berhasil ditambahkan!');
-    }
 
     /**
      * Update course yang sudah ada.
@@ -99,22 +57,32 @@ class CourseController extends Controller
             'institution_id'    => 'required|exists:institutions,id',
             'program_id'        => 'nullable|exists:programs,id',
             'short_description' => 'nullable|string|max:500',
-          
+            'description'       => 'nullable|string',
             'price'             => 'required|numeric|min:0',
-           
             'difficulty'        => 'required|in:beginner,intermediate,advanced',
-          'thumbnail_url' => 'nullable|string|max:500',
-          'preview_video_url' => 'nullable|string|max:500',
-            'is_published'      => 'boolean',
-            'order_index' => 'nullable|integer|min:0',
+            'duration_weeks'    => 'nullable|integer|min:1|max:200',
+            'language'          => 'nullable|string|max:50',
+            'thumbnail'         => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
+            'preview_video'     => 'nullable|file|mimes:mp4,mov,avi,mkv,webm|max:102400',
+            'is_published'      => 'nullable|boolean',
+            'order_index'       => 'nullable|integer|min:0',
         ]);
 
         if ($validated['title'] !== $course->title) {
-            $validated['slug'] = Str::slug($validated['title']) . '-' . Str::random(5);
+            $validated['slug'] = \Illuminate\Support\Str::slug($validated['title']) . '-' . \Illuminate\Support\Str::random(5);
         }
 
         $validated['is_published'] = $request->boolean('is_published');
-        $validated['order_index'] = $request->input('order_index', 0);
+        $validated['order_index']  = $request->input('order_index', 0);
+
+        if ($request->hasFile('thumbnail')) {
+            $path = $request->file('thumbnail')->store('courses/thumbnails', 'public');
+            $validated['thumbnail_url'] = asset('storage/' . $path);
+        }
+        if ($request->hasFile('preview_video')) {
+            $path = $request->file('preview_video')->store('courses/videos', 'public');
+            $validated['preview_video_url'] = asset('storage/' . $path);
+        }
 
         $course->update($validated);
 

@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\Auth;
 class CertificateController extends Controller
 {
     /**
-     * Generate sertifikat untuk kursus yang sudah selesai.
-     * Dipanggil jika sertifikat belum otomatis dibuat.
+     * Generate certificate for a completed course.
+     * Called when a certificate has not been generated automatically.
      *
      * POST /dashboard/certificates/{course}/generate
      */
@@ -28,27 +28,27 @@ class CertificateController extends Controller
             ->first();
 
         if (! $enrollment) {
-            return back()->with('error', 'Kamu belum terdaftar di kursus ini.');
+            return back()->with('error', 'You are not enrolled in this course.');
         }
 
         if ($enrollment->progress_percent < 100) {
-            return back()->with('error', 'Selesaikan semua materi terlebih dahulu. Progress kamu: ' . $enrollment->progress_percent . '%');
+            return back()->with('error', 'Please complete all course material first. Your progress: ' . $enrollment->progress_percent . '%');
         }
 
         if (!in_array($enrollment->type, ['verified', 'honor'])) {
-            return back()->with('error', 'Sertifikat hanya tersedia untuk jalur Verified. Silakan upgrade ke Verified terlebih dahulu.');
+            return back()->with('error', 'Certificates are only available for the Verified track. Please upgrade to Verified first.');
         }
 
-        // Cegah duplikat
+        // Prevent duplicates
         $existing = Certificate::where('user_id', $user->id)
             ->where('course_id', $course->id)
             ->first();
 
         if ($existing) {
-            return back()->with('info', 'Sertifikat sudah pernah diterbitkan.');
+            return back()->with('info', 'A certificate has already been issued.');
         }
 
-        // Buat sertifikat
+        // Create certificate
         Certificate::create([
             'user_id'            => $user->id,
             'course_id'          => $course->id,
@@ -58,7 +58,7 @@ class CertificateController extends Controller
             'issued_at'          => now(),
         ]);
 
-        return back()->with('success', 'Sertifikat berhasil diterbitkan!');
+        return back()->with('success', 'Certificate issued successfully!');
     }
 
     /**
@@ -93,7 +93,7 @@ class CertificateController extends Controller
             'dpi'                  => 150,
         ]);
 
-        $filename = 'Sertifikat-' . Str::slug($certificate->course->title) . '-' . $certificate->certificate_number . '.pdf';
+        $filename = 'Certificate-' . Str::slug($certificate->course->title) . '-' . $certificate->certificate_number . '.pdf';
 
         return $pdf->download($filename);
     }

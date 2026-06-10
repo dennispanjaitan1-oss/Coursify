@@ -1177,18 +1177,18 @@ body::before {
 
             <div class="stat-cell" role="listitem">
                 <div class="stat-icon-wrap stat-icon-teal" aria-hidden="true">
-                    <i class="fa-solid fa-gift"></i>
+                    <i class="fa-solid fa-flask"></i>
                 </div>
-                <div class="stat-value text-teal"><em>{{ $stats['free'] }}</em></div>
-                <div class="stat-label">Free Courses</div>
+                <div class="stat-value text-teal"><em>{{ $stats['audit'] }}</em></div>
+                <div class="stat-label">Audit</div>
             </div>
 
             <div class="stat-cell" role="listitem">
                 <div class="stat-icon-wrap stat-icon-purple" aria-hidden="true">
-                    <i class="fa-solid fa-gem"></i>
+                    <i class="fa-solid fa-certificate"></i>
                 </div>
-                <div class="stat-value text-purple"><em>{{ $stats['premium'] }}</em></div>
-                <div class="stat-label">Premium</div>
+                <div class="stat-value text-purple"><em>{{ $stats['certificate'] }}</em></div>
+                <div class="stat-label">Certificate</div>
             </div>
 
             <div class="stat-cell" role="listitem">
@@ -1227,25 +1227,22 @@ body::before {
                 <a href="{{ route('student.wishlist') }}"
                    class="filter-tab {{ $currentFilter === 'all' ? 'active' : '' }}"
                    role="tab" aria-selected="{{ $currentFilter === 'all' ? 'true' : 'false' }}">
-                    <i class="fa-solid fa-heart" aria-hidden="true"></i>
                     All
                     <span class="filter-tab-count" aria-label="{{ $stats['total'] }} items">
                         {{ $stats['total'] }}
                     </span>
                 </a>
-                <a href="{{ route('student.wishlist', ['filter' => 'free']) }}"
-                   class="filter-tab {{ $currentFilter === 'free' ? 'active' : '' }}"
-                   role="tab" aria-selected="{{ $currentFilter === 'free' ? 'true' : 'false' }}">
-                    <i class="fa-solid fa-gift" aria-hidden="true"></i>
-                    Free
-                    <span class="filter-tab-count">{{ $stats['free'] }}</span>
+                <a href="{{ route('student.wishlist', ['filter' => 'audit']) }}"
+                   class="filter-tab {{ $currentFilter === 'audit' ? 'active' : '' }}"
+                   role="tab" aria-selected="{{ $currentFilter === 'audit' ? 'true' : 'false' }}">
+                    Audit
+                    <span class="filter-tab-count">{{ $stats['audit'] }}</span>
                 </a>
-                <a href="{{ route('student.wishlist', ['filter' => 'premium']) }}"
-                   class="filter-tab {{ $currentFilter === 'premium' ? 'active' : '' }}"
-                   role="tab" aria-selected="{{ $currentFilter === 'premium' ? 'true' : 'false' }}">
-                    <i class="fa-solid fa-gem" aria-hidden="true"></i>
-                    Premium
-                    <span class="filter-tab-count">{{ $stats['premium'] }}</span>
+                <a href="{{ route('student.wishlist', ['filter' => 'certificate']) }}"
+                   class="filter-tab {{ $currentFilter === 'certificate' ? 'active' : '' }}"
+                   role="tab" aria-selected="{{ $currentFilter === 'certificate' ? 'true' : 'false' }}">
+                    Certificate
+                    <span class="filter-tab-count">{{ $stats['certificate'] }}</span>
                 </a>
             </div>
 
@@ -1284,13 +1281,13 @@ body::before {
     <a href="{{ route('student.wishlist', array_merge(array_filter(request()->only(['filter', 'search'])), ['sort' => 'price_high'])) }}"
        class="sort-option {{ request('sort') === 'price_high' ? 'active' : '' }}" role="option">
         <i class="fa-solid fa-arrow-down-9-1" aria-hidden="true"></i>
-        Harga: Tinggi ke Rendah
+        Price: High to Low
     </a>
 
     <a href="{{ route('student.wishlist', array_merge(array_filter(request()->only(['filter', 'search'])), ['sort' => 'rating'])) }}"
        class="sort-option {{ request('sort') === 'rating' ? 'active' : '' }}" role="option">
         <i class="fa-solid fa-star" aria-hidden="true"></i>
-        Rating tertinggi
+        Top Rated
     </a>
 
 </div>{{-- /sort-menu --}}
@@ -1305,7 +1302,7 @@ body::before {
                         name="search"
                         id="wishlist-search"
                         class="search-input"
-                        placeholder="Cari wishlist kamu..."
+                        placeholder="Search saved courses..."
                         value="{{ request('search') }}"
                         autocomplete="off"
                         aria-label="Search courses in wishlist"
@@ -1332,27 +1329,26 @@ body::before {
                         <i class="fa-solid fa-wallet"></i>
                     </div>
                     <div>
-                        <div class="saved-label">Total nilai tersimpan</div>
+                        <div class="saved-label">Total saved value</div>
                         <div class="saved-value">
                             Rp <em>{{ number_format($stats['saved_value'], 0, ',', '.') }}</em>
                             <span style="font-size:13px; color:var(--muted); font-weight:500;">
-                                — siap untuk di-unlock
+                                — ready to unlock
                             </span>
                         </div>
                     </div>
                 </div>
                 <a href="{{ route('courses.index') }}" class="btn-primary">
                     <i class="fa-solid fa-compass" aria-hidden="true"></i>
-                    Browse Lebih Banyak
+                    Browse more
                 </a>
             </div>
         @endif
 
-        {{-- ═══ COURSES GRID ═══ --}}
         {{--
-            CATATAN: Tidak ada lagi fallback dummy data di View.
-            Data harus selalu dari Controller ($wishlists dari WishlistController@index).
-            Jika kosong, tampilkan empty state.
+            NOTE: The view should never use dummy fallback data.
+            The course list must come from the controller ($wishlists from WishlistController@index).
+            If empty, show the empty state.
         --}}
         <div class="courses-grid" id="wishlist-grid" role="list" aria-label="Saved courses">
 
@@ -1379,7 +1375,7 @@ body::before {
 
                     {{-- Thumbnail --}}
                     <div class="course-thumb-wrap" style="position:relative;">
-                        <a href="{{ route('courses.show', $courseSlug) }}" class="course-card__thumb" aria-label="Lihat kursus {{ $courseTitle }}">
+                        <a href="{{ route('courses.show', $courseSlug) }}" class="course-card__thumb" aria-label="View course {{ $courseTitle }}">
                             @if($course->thumbnail_url)
                                 <img src="{{ $course->thumbnail_url }}" alt="{{ $courseTitle }} thumbnail" />
                             @else
@@ -1387,11 +1383,6 @@ body::before {
                                     <i class="fa-solid fa-graduation-cap" style="font-size:40px;color:rgba(255,255,255,0.3);"></i>
                                 </div>
                             @endif
-                            
-                            <span class="badge-saved">
-                                <i class="fa-solid fa-heart" aria-hidden="true"></i>
-                                Saved
-                            </span>
                         </a>
 
                         {{-- Tombol Remove — di luar <a>, masih dalam wrapper --}}
@@ -1400,8 +1391,8 @@ body::before {
                             data-id="{{ $wishlistId }}"
                             data-delete-url="{{ route('student.wishlist.destroy', $wishlistId) }}"
                             onclick="openRemoveModal({{ $wishlistId }}, '{{ addslashes($courseTitle) }}')"
-                            aria-label="Hapus {{ $courseTitle }} dari wishlist"
-                            title="Hapus dari wishlist"
+                            aria-label="Remove {{ $courseTitle }} from wishlist"
+                            title="Remove from wishlist"
                             style="position:absolute; top:10px; right:10px; width:34px; height:34px; border-radius:50%; background:rgba(255,255,255,0.9); border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:15px; z-index:2; transition:all 0.2s; color:var(--pink);">
                             <i class="fa-solid fa-xmark" aria-hidden="true"></i>
                         </button>
@@ -1419,9 +1410,11 @@ body::before {
                             </h3>
                         </a>
 
-                        <p style="font-size:12px;color:var(--muted);margin:0 0 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-                            {{ $instructorName }}
-                        </p>
+                        <div style="margin-bottom:10px;">
+                            <p style="font-size:12px;color:var(--muted);margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                                {{ $instructorName }}
+                            </p>
+                        </div>
 
                         {{-- Meta row --}}
                         <div style="display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted);flex-wrap:wrap;">
@@ -1450,15 +1443,15 @@ body::before {
                     <div class="empty-icon-wrap" aria-hidden="true">
                         <i class="fa-solid fa-heart-crack"></i>
                     </div>
-                    <h2 class="empty-title">Wishlist kamu <em>kosong</em></h2>
+                    <h2 class="empty-title">Your wishlist is <em>empty</em></h2>
                     <p class="empty-desc">
-                        Jelajahi katalog kami dan simpan kursus yang kamu minati.
-                        Klik ikon <i class="fa-solid fa-heart" style="color:var(--pink);" aria-label="heart"></i>
-                        di kursus mana saja untuk menambahkannya ke sini.
+                        Explore the catalog and save courses you want to come back to.
+                        Click the <i class="fa-solid fa-heart" style="color:var(--pink);" aria-label="heart"></i>
+                        icon on any course to add it here.
                     </p>
                     <a href="{{ route('courses.index') }}" class="btn-primary" style="margin: 0 auto;">
                         <i class="fa-solid fa-compass" aria-hidden="true"></i>
-                        Jelajahi Kursus
+                        Browse courses
                     </a>
                 </div>
             @endforelse
@@ -1474,10 +1467,9 @@ body::before {
                     <em style="color:var(--pink);">Pro tip</em>
                 </div>
                 <p style="font-size:13px; color:var(--text-soft); max-width:540px; margin:0 auto; line-height:1.6;">
-                    Item wishlist tersimpan sampai kamu menghapusnya sendiri. Aktifkan notifikasi agar
-                    mendapat info ketika kursus yang kamu simpan sedang diskon —
+                    Wishlist items stay here until you remove them. Turn on notifications to get alerts when one of your saved courses goes on sale —
                     <a href="#" style="color:var(--pink); font-weight:600; text-decoration:none;">
-                        aktifkan notifikasi
+                        enable notifications
                     </a>.
                 </p>
             </div>
@@ -1498,21 +1490,21 @@ body::before {
         <div class="modal-icon" aria-hidden="true">
             <i class="fa-solid fa-trash-can"></i>
         </div>
-        <h3 class="modal-title" id="modal-title">Hapus dari Wishlist?</h3>
+        <h3 class="modal-title" id="modal-title">Remove from wishlist?</h3>
         <p class="modal-desc" id="modal-desc">
-            Kursus <strong class="modal-course-name" id="modal-course-name"></strong>
-            akan dihapus dari wishlist kamu.
+            The course <strong class="modal-course-name" id="modal-course-name"></strong>
+            will be removed from your wishlist.
         </p>
         <div class="modal-actions">
             <button class="btn-outline" onclick="closeRemoveModal()" type="button"
-                    aria-label="Batal, jangan hapus">
+                    aria-label="Cancel, do not remove">
                 <i class="fa-solid fa-xmark" aria-hidden="true"></i>
-                Batal
+                Cancel
             </button>
             <button class="btn-danger" onclick="confirmRemove()" type="button"
-                    id="modal-confirm-btn" aria-label="Ya, hapus dari wishlist">
+                    id="modal-confirm-btn" aria-label="Yes, remove from wishlist">
                 <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
-                Ya, Hapus
+                Yes, remove
             </button>
         </div>
     </div>
@@ -1601,7 +1593,7 @@ function handleModalEsc(e) {
     if (e.key === 'Escape') closeRemoveModal();
 }
 
-// Klik di luar modal menutupnya
+// Click outside the modal closes it
 document.getElementById('remove-modal').addEventListener('click', function (e) {
     if (e.target === this) closeRemoveModal();
 });
@@ -1624,11 +1616,10 @@ function confirmRemove() {
     const deleteUrl = btn ? btn.dataset.deleteUrl : null;
 
     if (!deleteUrl) {
-        console.error('deleteUrl tidak ditemukan untuk id:', id);
+        console.error('deleteUrl not found for id:', id);
         return;
     }
 
-    // Simpan HTML kartu untuk fitur Undo
     const cardHTML = card ? card.outerHTML : null;
     const cardNext = card ? card.nextSibling : null;
     const grid     = document.getElementById('wishlist-grid');
@@ -1681,7 +1672,7 @@ function confirmRemove() {
 function submitDeleteUrl(url) {
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
     if (!csrfToken || !url) {
-        console.error('CSRF token atau URL tidak ditemukan');
+        console.error('CSRF token or URL not found');
         return;
     }
 
@@ -1696,9 +1687,57 @@ function submitDeleteUrl(url) {
         body: JSON.stringify({ _method: 'DELETE' }),
     })
     .then(res => {
-        if (!res.ok) console.error('Gagal hapus wishlist, status:', res.status);
+        if (!res.ok) console.error('Failed to remove wishlist item, status:', res.status);
     })
-    .catch(err => console.error('Network error saat hapus wishlist:', err));
+    .catch(err => console.error('Network error removing wishlist item:', err));
+}
+
+function updateWishlistStatus(wishlistId, status, select) {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+    if (!csrfToken) {
+        console.error('CSRF token not found');
+        return;
+    }
+
+    const url = `/dashboard/wishlist/${wishlistId}/status`;
+    const originalValue = select.value;
+
+    fetch(url, {
+        method: 'PATCH',
+        headers: {
+            'X-CSRF-TOKEN': csrfToken,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status }),
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (!data.success) {
+            console.error('Failed to update wishlist status:', data);
+            return;
+        }
+        showStatusToast(`Wishlist status changed to ${status}`);
+    })
+    .catch(err => {
+        console.error('Network error updating wishlist status:', err);
+        select.value = originalValue;
+    });
+}
+
+function showStatusToast(message) {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    container.appendChild(toast);
+
+    setTimeout(() => {
+        toast.classList.add('removing');
+        setTimeout(() => toast.remove(), 250);
+    }, 1800);
 }
 
 // ──────────────────────────────────────────────
@@ -1715,8 +1754,8 @@ function showUndoToast(id, title, onUndo) {
     toast.setAttribute('role', 'status');
     toast.innerHTML = `
         <i class="fa-solid fa-trash-can" style="opacity:0.6;" aria-hidden="true"></i>
-        <span><strong>${escapeHtml(title)}</strong> dihapus dari wishlist</span>
-        <button class="toast-undo-btn" onclick="undoRemove(${id})" aria-label="Undo hapus ${escapeHtml(title)}">
+        <span><strong>${escapeHtml(title)}</strong> removed from wishlist</span>
+        <button class="toast-undo-btn" onclick="undoRemove(${id})" aria-label="Undo remove ${escapeHtml(title)}">
             <i class="fa-solid fa-rotate-left" style="margin-right:4px;" aria-hidden="true"></i>
             Undo
         </button>

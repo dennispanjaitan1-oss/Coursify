@@ -875,7 +875,6 @@ body {
     background: white;
     border: 1px solid var(--border);
     border-radius: var(--radius-xl);
-    overflow: hidden;
     margin-bottom: 28px;
 }
 
@@ -896,6 +895,14 @@ body {
         letter-spacing: 0.1em;
         text-transform: uppercase;
         border-bottom: 1px solid var(--border);
+
+        &:first-child {
+            border-top-left-radius: var(--radius-xl);
+        }
+        
+        &:last-child {
+            border-top-right-radius: var(--radius-xl);
+        }
     }
 
     td {
@@ -1591,6 +1598,63 @@ body {
 .quick-icon-gold { background: var(--gold-light); color: var(--gold); }
 .quick-icon-blue { background: var(--blue-light); color: var(--blue); }
 .quick-icon-pink { background: var(--pink-light); color: var(--pink); }
+
+// ═══════════════════════════════════════
+// RECOMMENDATIONS (INSIGHTS)
+// ═══════════════════════════════════════
+.recommendations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.recommendation-item {
+    display: flex;
+    gap: 16px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: white;
+    transition: all var(--transition-fast);
+
+    &:hover {
+        border-color: var(--purple);
+        box-shadow: var(--shadow-sm);
+        transform: translateY(-2px);
+    }
+}
+
+.recommendation-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+
+    &--primary { background: rgba(123, 111, 232, 0.12); color: var(--purple); }
+    &--success { background: var(--teal-light); color: var(--teal); }
+    &--warning { background: var(--orange-light); color: var(--orange); }
+}
+
+.recommendation-content {
+    flex: 1;
+}
+
+.recommendation-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+}
+
+.recommendation-text {
+    font-size: 13px;
+    color: var(--text-soft);
+    line-height: 1.5;
+}
 
 .quick-label {
     font-size: 12px;

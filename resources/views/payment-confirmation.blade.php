@@ -46,7 +46,7 @@
             <section>
                 <div class="success"><i class="fa-solid fa-check"></i></div>
                 <h1>You're enrolled.</h1>
-                <p>Pembayaran berhasil dan akses Verified untuk <strong>{{ $course->title }}</strong> sudah aktif. Kamu bisa langsung mulai belajar dan sertifikat akan tersedia setelah course selesai.</p>
+                <p>Your payment was successful and Verified access for <strong>{{ $course->title }}</strong> is now active. You can start learning immediately and your certificate will be available after completing the course.</p>
                 <div class="actions">
                     <a class="btn primary" href="{{ route('student.learn', $course->slug) }}">Start learning</a>
                     <a class="btn secondary" href="{{ route('student.courses') }}">My courses</a>

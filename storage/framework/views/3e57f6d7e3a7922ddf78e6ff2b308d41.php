@@ -1,7 +1,6 @@
-@extends('layouts.instructor')
-@section('title', 'Course Builder — ' . $course->title)
+<?php $__env->startSection('title', 'Course Builder — ' . $course->title); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 <style>
 :root {
     --cb-purple: #7B6FE8; --cb-purple-dark: #5B4FD8; --cb-teal: #00C896;
@@ -100,77 +99,78 @@
 }
 </style>
 
-{{-- TOP BAR --}}
+
 <header class="topbar" role="banner">
     <div class="topbar__search">
         <i class="fa-solid fa-magnifying-glass topbar__search-icon" aria-hidden="true"></i>
         <input type="text" class="topbar__search-input" placeholder="Search..." aria-label="Search">
     </div>
     <div class="topbar__actions">
-        <a href="{{ route('instructor.courses.edit', $course) }}" class="btn-outline" style="font-size:12px; padding:8px 14px;">
+        <a href="<?php echo e(route('instructor.courses.edit', $course)); ?>" class="btn-outline" style="font-size:12px; padding:8px 14px;">
             <i class="fa-solid fa-pen-to-square"></i> Edit Info
         </a>
     </div>
 </header>
 
-{{-- FLASH --}}
-@if(session('success'))
-    <div class="alert-success"><i class="fa-solid fa-circle-check"></i> {{ session('success') }}</div>
-@endif
-@if(session('error'))
-    <div class="alert-error"><i class="fa-solid fa-circle-exclamation"></i> {{ session('error') }}</div>
-@endif
-@if($errors->any())
-    <div class="alert-error">
-        @foreach($errors->all() as $e)<div>• {{ $e }}</div>@endforeach
-    </div>
-@endif
 
-{{-- HEADER --}}
+<?php if(session('success')): ?>
+    <div class="alert-success"><i class="fa-solid fa-circle-check"></i> <?php echo e(session('success')); ?></div>
+<?php endif; ?>
+<?php if(session('error')): ?>
+    <div class="alert-error"><i class="fa-solid fa-circle-exclamation"></i> <?php echo e(session('error')); ?></div>
+<?php endif; ?>
+<?php if($errors->any()): ?>
+    <div class="alert-error">
+        <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $e): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><div>• <?php echo e($e); ?></div><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+    </div>
+<?php endif; ?>
+
+
 <div class="cb-header">
     <div>
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
-            <a href="{{ route('instructor.courses.index') }}" style="color:rgba(255,255,255,.5);font-size:12px;text-decoration:none;">
+            <a href="<?php echo e(route('instructor.courses.index')); ?>" style="color:rgba(255,255,255,.5);font-size:12px;text-decoration:none;">
                 ← My Courses
             </a>
         </div>
-        <h1>{{ $course->title }}</h1>
-        <p>{{ $course->category->name ?? 'No Category' }} · {{ ucfirst($course->difficulty) }} · {{ $course->language }}</p>
+        <h1><?php echo e($course->title); ?></h1>
+        <p><?php echo e($course->category->name ?? 'No Category'); ?> · <?php echo e(ucfirst($course->difficulty)); ?> · <?php echo e($course->language); ?></p>
     </div>
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-        <span class="cb-badge {{ $course->is_published ? 'badge-published' : 'badge-draft' }}">
-            <i class="fa-solid fa-{{ $course->is_published ? 'eye' : 'eye-slash' }}"></i>
-            {{ $course->is_published ? 'Published' : 'Draft' }}
+        <span class="cb-badge <?php echo e($course->is_published ? 'badge-published' : 'badge-draft'); ?>">
+            <i class="fa-solid fa-<?php echo e($course->is_published ? 'eye' : 'eye-slash'); ?>"></i>
+            <?php echo e($course->is_published ? 'Published' : 'Draft'); ?>
+
         </span>
-        @if($course->is_published)
-            <a href="{{ route('courses.show', $course->slug) }}" target="_blank" class="btn-welcome btn-welcome--ghost" style="font-size:12px;padding:7px 14px;">
+        <?php if($course->is_published): ?>
+            <a href="<?php echo e(route('courses.show', $course->slug)); ?>" target="_blank" class="btn-welcome btn-welcome--ghost" style="font-size:12px;padding:7px 14px;">
                 <i class="fa-solid fa-arrow-up-right-from-square"></i> Preview
             </a>
-        @endif
+        <?php endif; ?>
     </div>
 </div>
 
-{{-- STATS --}}
+
 <div class="stats-row">
     <div class="stat-box">
-        <div class="stat-box-val">{{ $course->enrollments_count }}</div>
+        <div class="stat-box-val"><?php echo e($course->enrollments_count); ?></div>
         <div class="stat-box-label">Students</div>
     </div>
     <div class="stat-box">
-        <div class="stat-box-val">{{ $totalLessons }}</div>
+        <div class="stat-box-val"><?php echo e($totalLessons); ?></div>
         <div class="stat-box-label">Lessons</div>
     </div>
     <div class="stat-box">
-        <div class="stat-box-val">{{ $course->sections->count() }}</div>
+        <div class="stat-box-val"><?php echo e($course->sections->count()); ?></div>
         <div class="stat-box-label">Sections</div>
     </div>
     <div class="stat-box">
-        <div class="stat-box-val">{{ number_format($course->reviews_avg_rating ?? 0, 1) }}</div>
+        <div class="stat-box-val"><?php echo e(number_format($course->reviews_avg_rating ?? 0, 1)); ?></div>
         <div class="stat-box-label">Avg Rating</div>
     </div>
 </div>
 
-{{-- TABS --}}
+
 <div class="cb-tabs" role="tablist">
     <button class="cb-tab active" onclick="switchTab('curriculum')" id="tab-curriculum">
         <i class="fa-solid fa-list-ol"></i> Curriculum
@@ -183,78 +183,80 @@
     </button>
 </div>
 
-{{-- ══════════ TAB: CURRICULUM ══════════ --}}
+
 <div class="cb-panel active" id="panel-curriculum">
 
-    @foreach($course->sections as $sIdx => $section)
-    <div class="section-block" id="section-block-{{ $section->id }}">
+    <?php $__currentLoopData = $course->sections; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sIdx => $section): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+    <div class="section-block" id="section-block-<?php echo e($section->id); ?>">
         <div class="section-head">
-            <div class="section-num">{{ $sIdx + 1 }}</div>
-            <span class="section-title-text">{{ $section->title }}</span>
+            <div class="section-num"><?php echo e($sIdx + 1); ?></div>
+            <span class="section-title-text"><?php echo e($section->title); ?></span>
             <span style="font-size:11px;color:var(--cb-muted);margin-right:8px;">
-                {{ $section->lessons->count() }} lesson{{ $section->lessons->count() != 1 ? 's' : '' }}
+                <?php echo e($section->lessons->count()); ?> lesson<?php echo e($section->lessons->count() != 1 ? 's' : ''); ?>
+
             </span>
             <div class="section-actions">
-                <button class="btn-ghost-sm" onclick="openEditSection({{ $section->id }}, '{{ addslashes($section->title) }}')" title="Rename section">
+                <button class="btn-ghost-sm" onclick="openEditSection(<?php echo e($section->id); ?>, '<?php echo e(addslashes($section->title)); ?>')" title="Rename section">
                     <i class="fa-solid fa-pen"></i>
                 </button>
-                <button class="btn-danger-sm" onclick="openDeleteSection({{ $section->id }}, '{{ addslashes($section->title) }}')" title="Delete section">
+                <button class="btn-danger-sm" onclick="openDeleteSection(<?php echo e($section->id); ?>, '<?php echo e(addslashes($section->title)); ?>')" title="Delete section">
                     <i class="fa-solid fa-trash"></i>
                 </button>
             </div>
         </div>
 
-        <div class="section-lessons" id="lessons-{{ $section->id }}">
-            @forelse($section->lessons as $lIdx => $lesson)
-            <div class="lesson-row" id="lesson-row-{{ $lesson->id }}">
-                <div class="lesson-type-icon icon-{{ $lesson->type }}">
-                    @if($lesson->type === 'video') <i class="fa-solid fa-play"></i>
-                    @elseif($lesson->type === 'quiz') <i class="fa-solid fa-question"></i>
-                    @else <i class="fa-solid fa-file-lines"></i>
-                    @endif
+        <div class="section-lessons" id="lessons-<?php echo e($section->id); ?>">
+            <?php $__empty_1 = true; $__currentLoopData = $section->lessons; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $lIdx => $lesson): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+            <div class="lesson-row" id="lesson-row-<?php echo e($lesson->id); ?>">
+                <div class="lesson-type-icon icon-<?php echo e($lesson->type); ?>">
+                    <?php if($lesson->type === 'video'): ?> <i class="fa-solid fa-play"></i>
+                    <?php elseif($lesson->type === 'quiz'): ?> <i class="fa-solid fa-question"></i>
+                    <?php else: ?> <i class="fa-solid fa-file-lines"></i>
+                    <?php endif; ?>
                 </div>
-                <div class="lesson-name">{{ $lesson->title }}</div>
+                <div class="lesson-name"><?php echo e($lesson->title); ?></div>
                 <div class="lesson-meta">
-                    {{ ucfirst($lesson->type) }}
-                    @if($lesson->duration_seconds) · {{ intdiv($lesson->duration_seconds, 60) }} min @endif
-                    @if($lesson->is_free_preview) · <span style="color:var(--cb-teal);">Free</span> @endif
+                    <?php echo e(ucfirst($lesson->type)); ?>
+
+                    <?php if($lesson->duration_seconds): ?> · <?php echo e(intdiv($lesson->duration_seconds, 60)); ?> min <?php endif; ?>
+                    <?php if($lesson->is_free_preview): ?> · <span style="color:var(--cb-teal);">Free</span> <?php endif; ?>
                 </div>
                 <div class="lesson-actions">
-                    @if($lesson->type === 'quiz')
-                    <a href="{{ route('instructor.quizzes.edit', $lesson) }}" class="btn-teal-sm" title="Edit quiz">
+                    <?php if($lesson->type === 'quiz'): ?>
+                    <a href="<?php echo e(route('instructor.quizzes.edit', $lesson)); ?>" class="btn-teal-sm" title="Edit quiz">
                         <i class="fa-solid fa-pen"></i> Quiz
                     </a>
-                    @else
-                    <button class="btn-ghost-sm" onclick="openEditLesson({{ $lesson->id }}, {{ $section->id }}, '{{ addslashes($lesson->title) }}', '{{ $lesson->type }}', '{{ addslashes($lesson->video_url ?? '') }}', {{ $lesson->duration_seconds ? intdiv($lesson->duration_seconds, 60) : 'null' }}, {{ $lesson->is_free_preview ? 'true' : 'false' }})" title="Edit lesson">
+                    <?php else: ?>
+                    <button class="btn-ghost-sm" onclick="openEditLesson(<?php echo e($lesson->id); ?>, <?php echo e($section->id); ?>, '<?php echo e(addslashes($lesson->title)); ?>', '<?php echo e($lesson->type); ?>', '<?php echo e(addslashes($lesson->video_url ?? '')); ?>', <?php echo e($lesson->duration_seconds ? intdiv($lesson->duration_seconds, 60) : 'null'); ?>, <?php echo e($lesson->is_free_preview ? 'true' : 'false'); ?>)" title="Edit lesson">
                         <i class="fa-solid fa-pen"></i>
                     </button>
-                    @endif
-                    <button class="btn-danger-sm" onclick="openDeleteLesson({{ $lesson->id }}, '{{ addslashes($lesson->title) }}')" title="Delete lesson">
+                    <?php endif; ?>
+                    <button class="btn-danger-sm" onclick="openDeleteLesson(<?php echo e($lesson->id); ?>, '<?php echo e(addslashes($lesson->title)); ?>')" title="Delete lesson">
                         <i class="fa-solid fa-trash"></i>
                     </button>
                 </div>
             </div>
-            @empty
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
             <div style="text-align:center;padding:20px;color:var(--cb-muted);font-size:13px;">
                 <i class="fa-solid fa-inbox" style="font-size:24px;margin-bottom:8px;display:block;"></i>
                 Belum ada lesson. Tambahkan lesson pertama!
             </div>
-            @endforelse
+            <?php endif; ?>
 
             <button class="add-section-btn" style="margin-top:8px;border-radius:8px;padding:9px;"
-                    onclick="openAddLesson({{ $section->id }})">
+                    onclick="openAddLesson(<?php echo e($section->id); ?>)">
                 <i class="fa-solid fa-plus"></i> Tambah Lesson
             </button>
         </div>
     </div>
-    @endforeach
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
     <button class="add-section-btn" onclick="openAddSection()">
         <i class="fa-solid fa-plus"></i> Tambah Section / Bab Baru
     </button>
 </div>
 
-{{-- ══════════ TAB: WHAT YOU'LL LEARN ══════════ --}}
+
 <div class="cb-panel" id="panel-syllabus">
     <div class="cb-card">
         <div class="cb-card-head">
@@ -264,27 +266,27 @@
             <p style="font-size:13px;color:var(--cb-muted);margin-bottom:16px;">Tambahkan poin-poin yang akan dipelajari siswa. Gunakan kalimat singkat dan jelas.</p>
 
             <div id="syllabus-list">
-            @forelse($course->syllabus as $item)
-                <div class="syllabus-item" id="syllabus-item-{{ $item->id }}">
+            <?php $__empty_1 = true; $__currentLoopData = $course->syllabus; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                <div class="syllabus-item" id="syllabus-item-<?php echo e($item->id); ?>">
                     <i class="fa-solid fa-check-circle" style="color:var(--cb-teal);flex-shrink:0;"></i>
-                    <span class="syllabus-item-text">{{ $item->item }}</span>
-                    <button class="btn-ghost-sm" onclick="openEditSyllabus({{ $item->id }}, '{{ addslashes($item->item) }}')" title="Edit">
+                    <span class="syllabus-item-text"><?php echo e($item->item); ?></span>
+                    <button class="btn-ghost-sm" onclick="openEditSyllabus(<?php echo e($item->id); ?>, '<?php echo e(addslashes($item->item)); ?>')" title="Edit">
                         <i class="fa-solid fa-pen"></i>
                     </button>
-                    <button class="btn-danger-sm" onclick="deleteSyllabus({{ $item->id }})" title="Hapus">
+                    <button class="btn-danger-sm" onclick="deleteSyllabus(<?php echo e($item->id); ?>)" title="Hapus">
                         <i class="fa-solid fa-trash"></i>
                     </button>
                 </div>
-            @empty
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                 <div id="syllabus-empty" style="text-align:center;padding:28px;color:var(--cb-muted);font-size:13px;">
                     <i class="fa-solid fa-lightbulb" style="font-size:28px;margin-bottom:10px;display:block;opacity:.4;"></i>
                     Belum ada item. Tambahkan apa yang akan dipelajari siswa.
                 </div>
-            @endforelse
+            <?php endif; ?>
             </div>
 
-            <form action="{{ route('instructor.syllabus.store', $course) }}" method="POST" style="margin-top:16px;display:flex;gap:10px;">
-                @csrf
+            <form action="<?php echo e(route('instructor.syllabus.store', $course)); ?>" method="POST" style="margin-top:16px;display:flex;gap:10px;">
+                <?php echo csrf_field(); ?>
                 <input type="text" name="item" class="form-control" placeholder="e.g. Memahami konsep dasar machine learning" required style="flex:1;">
                 <button type="submit" class="btn-primary" style="white-space:nowrap;">
                     <i class="fa-solid fa-plus"></i> Tambah
@@ -294,12 +296,12 @@
     </div>
 </div>
 
-{{-- ══════════ TAB: OVERVIEW ══════════ --}}
+
 <div class="cb-panel" id="panel-overview">
     <div class="cb-card">
         <div class="cb-card-head">
             <span class="cb-card-title"><i class="fa-solid fa-circle-info" style="color:var(--cb-purple);"></i> Informasi Kursus</span>
-            <a href="{{ route('instructor.courses.edit', $course) }}" class="btn-primary" style="font-size:12px;padding:8px 14px;">
+            <a href="<?php echo e(route('instructor.courses.edit', $course)); ?>" class="btn-primary" style="font-size:12px;padding:8px 14px;">
                 <i class="fa-solid fa-pen"></i> Edit
             </a>
         </div>
@@ -307,81 +309,81 @@
             <div class="form-row" style="margin-bottom:16px;">
                 <div>
                     <div class="form-label">Judul</div>
-                    <div style="font-size:14px;color:var(--cb-text);font-weight:600;">{{ $course->title }}</div>
+                    <div style="font-size:14px;color:var(--cb-text);font-weight:600;"><?php echo e($course->title); ?></div>
                 </div>
                 <div>
                     <div class="form-label">Kategori</div>
-                    <div style="font-size:14px;color:var(--cb-text);">{{ $course->category->name ?? '-' }}</div>
+                    <div style="font-size:14px;color:var(--cb-text);"><?php echo e($course->category->name ?? '-'); ?></div>
                 </div>
             </div>
             <div class="form-row" style="margin-bottom:16px;">
                 <div>
                     <div class="form-label">Harga Kursus</div>
-                    <div style="font-size:14px;color:var(--cb-text);">{{ $course->formatted_price }}</div>
+                    <div style="font-size:14px;color:var(--cb-text);"><?php echo e($course->formatted_price); ?></div>
                 </div>
                 <div>
                     <div class="form-label">Harga Sertifikat</div>
-                    <div style="font-size:14px;color:var(--cb-text);">{{ $course->formatted_certificate_price }}</div>
+                    <div style="font-size:14px;color:var(--cb-text);"><?php echo e($course->formatted_certificate_price); ?></div>
                 </div>
             </div>
             <div class="form-row" style="margin-bottom:16px;">
                 <div>
                     <div class="form-label">Difficulty</div>
-                    <div style="font-size:14px;color:var(--cb-text);">{{ ucfirst($course->difficulty) }}</div>
+                    <div style="font-size:14px;color:var(--cb-text);"><?php echo e(ucfirst($course->difficulty)); ?></div>
                 </div>
                 <div>
                     <div class="form-label">Durasi</div>
-                    <div style="font-size:14px;color:var(--cb-text);">{{ $course->duration_weeks }} minggu</div>
+                    <div style="font-size:14px;color:var(--cb-text);"><?php echo e($course->duration_weeks); ?> minggu</div>
                 </div>
             </div>
             <div class="form-row" style="margin-bottom:16px;">
                 <div>
                     <div class="form-label">Bahasa</div>
-                    <div style="font-size:14px;color:var(--cb-text);">{{ $course->language }}</div>
+                    <div style="font-size:14px;color:var(--cb-text);"><?php echo e($course->language); ?></div>
                 </div>
                 <div>
                     <div class="form-label">Audit Track</div>
                     <div style="font-size:14px;color:var(--cb-text);">
-                        @if($course->has_audit_track)
+                        <?php if($course->has_audit_track): ?>
                             <span style="color:var(--cb-teal);">✓ Aktif</span>
-                            @if($course->audit_access_weeks) ({{ $course->audit_access_weeks }} minggu) @endif
-                        @else
+                            <?php if($course->audit_access_weeks): ?> (<?php echo e($course->audit_access_weeks); ?> minggu) <?php endif; ?>
+                        <?php else: ?>
                             <span style="color:var(--cb-muted);">Tidak aktif</span>
-                        @endif
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
-            @if($course->short_description)
+            <?php if($course->short_description): ?>
             <div style="margin-bottom:16px;">
                 <div class="form-label">Deskripsi Singkat</div>
-                <div style="font-size:13px;color:var(--cb-soft);line-height:1.6;">{{ $course->short_description }}</div>
+                <div style="font-size:13px;color:var(--cb-soft);line-height:1.6;"><?php echo e($course->short_description); ?></div>
             </div>
-            @endif
-            @if($course->prerequisites)
+            <?php endif; ?>
+            <?php if($course->prerequisites): ?>
             <div>
                 <div class="form-label">Prerequisites</div>
-                <div style="font-size:13px;color:var(--cb-soft);line-height:1.6;">{{ $course->prerequisites }}</div>
+                <div style="font-size:13px;color:var(--cb-soft);line-height:1.6;"><?php echo e($course->prerequisites); ?></div>
             </div>
-            @endif
-            @if($course->thumbnail_url)
+            <?php endif; ?>
+            <?php if($course->thumbnail_url): ?>
             <div style="margin-top:16px;">
                 <div class="form-label">Thumbnail</div>
-                <img src="{{ $course->thumbnail_url }}" alt="thumbnail" style="width:100%;max-width:300px;border-radius:10px;border:1px solid var(--cb-border);">
+                <img src="<?php echo e($course->thumbnail_url); ?>" alt="thumbnail" style="width:100%;max-width:300px;border-radius:10px;border:1px solid var(--cb-border);">
             </div>
-            @endif
+            <?php endif; ?>
         </div>
     </div>
 </div>
 
-{{-- ══════════ MODALS ══════════ --}}
 
-{{-- Modal: Add Section --}}
+
+
 <div class="modal-bg" id="modal-add-section">
     <div class="modal-box">
         <div class="modal-title">Tambah Section / Bab</div>
         <div class="modal-sub">Bab baru akan ditambahkan di akhir kursus.</div>
-        <form method="POST" action="{{ route('instructor.sections.store', $course) }}">
-            @csrf
+        <form method="POST" action="<?php echo e(route('instructor.sections.store', $course)); ?>">
+            <?php echo csrf_field(); ?>
             <div class="form-group">
                 <label class="form-label">Judul Section *</label>
                 <input type="text" name="title" class="form-control" placeholder="e.g. Bab 1: Pengantar Machine Learning" required autofocus>
@@ -394,14 +396,14 @@
     </div>
 </div>
 
-{{-- Modal: Edit Section --}}
+
 <div class="modal-bg" id="modal-edit-section">
     <div class="modal-box">
         <div class="modal-title">Rename Section</div>
         <div class="modal-sub">Ubah nama section / bab ini.</div>
         <form method="POST" id="form-edit-section">
-            @csrf
-            @method('PUT')
+            <?php echo csrf_field(); ?>
+            <?php echo method_field('PUT'); ?>
             <div class="form-group">
                 <label class="form-label">Judul Section *</label>
                 <input type="text" name="title" id="edit-section-title" class="form-control" required>
@@ -414,7 +416,7 @@
     </div>
 </div>
 
-{{-- Modal: Delete Section --}}
+
 <div class="modal-bg" id="modal-delete-section">
     <div class="modal-box">
         <div style="width:48px;height:48px;border-radius:12px;background:#FFF0F0;display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--cb-red);margin-bottom:14px;">
@@ -423,8 +425,8 @@
         <div class="modal-title">Hapus Section?</div>
         <div class="modal-sub">Section "<strong id="delete-section-name"></strong>" dan semua lesson di dalamnya akan dihapus permanen.</div>
         <form method="POST" id="form-delete-section">
-            @csrf
-            @method('DELETE')
+            <?php echo csrf_field(); ?>
+            <?php echo method_field('DELETE'); ?>
             <div class="modal-actions">
                 <button type="button" class="btn-outline" onclick="closeModal('modal-delete-section')">Batal</button>
                 <button type="submit" style="background:var(--cb-red);color:white;border:none;padding:10px 20px;border-radius:999px;font-size:13px;font-weight:700;cursor:pointer;">
@@ -435,13 +437,13 @@
     </div>
 </div>
 
-{{-- Modal: Add Lesson --}}
+
 <div class="modal-bg" id="modal-add-lesson">
     <div class="modal-box" style="max-width:580px;">
         <div class="modal-title">Tambah Lesson</div>
         <div class="modal-sub">Isi detail lesson yang ingin ditambahkan ke section ini.</div>
         <form method="POST" id="form-add-lesson">
-            @csrf
+            <?php echo csrf_field(); ?>
             <div class="form-group">
                 <label class="form-label">Judul Lesson *</label>
                 <input type="text" name="title" class="form-control" placeholder="e.g. Pengenalan Konsep Neural Network" required>
@@ -480,14 +482,14 @@
     </div>
 </div>
 
-{{-- Modal: Edit Lesson --}}
+
 <div class="modal-bg" id="modal-edit-lesson">
     <div class="modal-box" style="max-width:580px;">
         <div class="modal-title">Edit Lesson</div>
         <div class="modal-sub">Perbarui informasi lesson ini.</div>
         <form method="POST" id="form-edit-lesson">
-            @csrf
-            @method('PUT')
+            <?php echo csrf_field(); ?>
+            <?php echo method_field('PUT'); ?>
             <div class="form-group">
                 <label class="form-label">Judul Lesson *</label>
                 <input type="text" name="title" id="edit-lesson-title" class="form-control" required>
@@ -526,7 +528,7 @@
     </div>
 </div>
 
-{{-- Modal: Delete Lesson --}}
+
 <div class="modal-bg" id="modal-delete-lesson">
     <div class="modal-box">
         <div style="width:48px;height:48px;border-radius:12px;background:#FFF0F0;display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--cb-red);margin-bottom:14px;">
@@ -535,8 +537,8 @@
         <div class="modal-title">Hapus Lesson?</div>
         <div class="modal-sub">Lesson "<strong id="delete-lesson-name"></strong>" akan dihapus permanen.</div>
         <form method="POST" id="form-delete-lesson">
-            @csrf
-            @method('DELETE')
+            <?php echo csrf_field(); ?>
+            <?php echo method_field('DELETE'); ?>
             <div class="modal-actions">
                 <button type="button" class="btn-outline" onclick="closeModal('modal-delete-lesson')">Batal</button>
                 <button type="submit" style="background:var(--cb-red);color:white;border:none;padding:10px 20px;border-radius:999px;font-size:13px;font-weight:700;cursor:pointer;">
@@ -547,13 +549,13 @@
     </div>
 </div>
 
-{{-- Modal: Edit Syllabus --}}
+
 <div class="modal-bg" id="modal-edit-syllabus">
     <div class="modal-box">
         <div class="modal-title">Edit Item Syllabus</div>
         <form method="POST" id="form-edit-syllabus">
-            @csrf
-            @method('PUT')
+            <?php echo csrf_field(); ?>
+            <?php echo method_field('PUT'); ?>
             <div class="form-group" style="margin-top:14px;">
                 <label class="form-label">Item *</label>
                 <input type="text" name="item" id="edit-syllabus-item" class="form-control" required>
@@ -590,19 +592,19 @@ function openAddSection() { openModal('modal-add-section'); }
 
 function openEditSection(id, title) {
     document.getElementById('edit-section-title').value = title;
-    document.getElementById('form-edit-section').action = '{{ url("instructor/sections") }}/' + id;
+    document.getElementById('form-edit-section').action = '<?php echo e(url("instructor/sections")); ?>/' + id;
     openModal('modal-edit-section');
 }
 
 function openDeleteSection(id, title) {
     document.getElementById('delete-section-name').textContent = title;
-    document.getElementById('form-delete-section').action = '{{ url("instructor/sections") }}/' + id;
+    document.getElementById('form-delete-section').action = '<?php echo e(url("instructor/sections")); ?>/' + id;
     openModal('modal-delete-section');
 }
 
 // ── Lesson Modals ───────────────────────────────────────────────
 function openAddLesson(sectionId) {
-    document.getElementById('form-add-lesson').action = '{{ url("instructor/sections") }}/' + sectionId + '/lessons';
+    document.getElementById('form-add-lesson').action = '<?php echo e(url("instructor/sections")); ?>/' + sectionId + '/lessons';
     // Reset form
     document.getElementById('form-add-lesson').reset();
     document.getElementById('add-video-url-group').style.display = 'block';
@@ -610,7 +612,7 @@ function openAddLesson(sectionId) {
 }
 
 function openEditLesson(lessonId, sectionId, title, type, videoUrl, durationMin, isFreePreview) {
-    document.getElementById('form-edit-lesson').action = '{{ url("instructor/lessons") }}/' + lessonId;
+    document.getElementById('form-edit-lesson').action = '<?php echo e(url("instructor/lessons")); ?>/' + lessonId;
     document.getElementById('edit-lesson-title').value = title;
     document.getElementById('edit-lesson-type').value = type;
     document.getElementById('edit-lesson-video').value = videoUrl || '';
@@ -622,7 +624,7 @@ function openEditLesson(lessonId, sectionId, title, type, videoUrl, durationMin,
 
 function openDeleteLesson(id, title) {
     document.getElementById('delete-lesson-name').textContent = title;
-    document.getElementById('form-delete-lesson').action = '{{ url("instructor/lessons") }}/' + id;
+    document.getElementById('form-delete-lesson').action = '<?php echo e(url("instructor/lessons")); ?>/' + id;
     openModal('modal-delete-lesson');
 }
 
@@ -635,7 +637,7 @@ function toggleVideoField(prefix) {
 // ── Syllabus ────────────────────────────────────────────────────
 function openEditSyllabus(id, item) {
     document.getElementById('edit-syllabus-item').value = item;
-    document.getElementById('form-edit-syllabus').action = '{{ url("instructor/syllabus") }}/' + id;
+    document.getElementById('form-edit-syllabus').action = '<?php echo e(url("instructor/syllabus")); ?>/' + id;
     openModal('modal-edit-syllabus');
 }
 
@@ -643,9 +645,9 @@ function deleteSyllabus(id) {
     if (!confirm('Hapus item ini?')) return;
     const form = document.createElement('form');
     form.method = 'POST';
-    form.action = '{{ url("instructor/syllabus") }}/' + id;
+    form.action = '<?php echo e(url("instructor/syllabus")); ?>/' + id;
     form.innerHTML = `
-        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="_token" value="<?php echo e(csrf_token()); ?>">
         <input type="hidden" name="_method" value="DELETE">
     `;
     document.body.appendChild(form);
@@ -664,4 +666,6 @@ const hash = window.location.hash;
 if (hash === '#syllabus') switchTab('syllabus');
 else if (hash === '#overview') switchTab('overview');
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.instructor', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\coursify\resources\views/instructor/courses/show.blade.php ENDPATH**/ ?>

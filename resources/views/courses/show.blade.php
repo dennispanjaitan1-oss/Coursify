@@ -1417,9 +1417,13 @@ section { position: relative; z-index: 1; }
                         @foreach($section->lessons as $lesson)
                             <div class="lesson-item">
                                 <div class="lesson-left">
-                                    <div class="lesson-icon lesson-icon-video"><i class="fa-solid fa-play"></i></div>
+                                    <div class="lesson-icon {{ $lesson->type === 'quiz' ? 'lesson-icon-quiz' : 'lesson-icon-video' }}">
+                                        <i class="fa-solid {{ $lesson->type === 'quiz' ? 'fa-question' : 'fa-play' }}"></i>
+                                    </div>
                                     <span class="lesson-title">{{ $lesson->title }}</span>
-                                    @if($lesson->is_free ?? false)
+                                    @if($lesson->type === 'quiz')
+                                        <span class="lesson-preview-badge">Quiz</span>
+                                    @elseif($lesson->is_free ?? false)
                                         <span class="lesson-preview-badge">Preview</span>
                                     @endif
                                 </div>

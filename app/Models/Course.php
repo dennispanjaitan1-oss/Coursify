@@ -39,6 +39,11 @@ class Course extends Model
         'has_audit_track',
         'audit_access_weeks',
         'upgrade_deadline',
+        'hours_per_week',
+        'start_date',
+        'enroll_deadline',
+        'is_self_paced',
+        'has_certificate',
     ];
 
     protected $casts = [
@@ -46,7 +51,11 @@ class Course extends Model
         'certificate_price' => 'decimal:2',
         'is_published'      => 'boolean',
         'has_audit_track'   => 'boolean',
+        'is_self_paced'     => 'boolean',
+        'has_certificate'   => 'boolean',
         'upgrade_deadline'  => 'date',
+        'start_date'        => 'date',
+        'enroll_deadline'   => 'date',
     ];
 
     // ── Relationships ───────────────────────────────────────────────
@@ -201,28 +210,20 @@ public function scrapedInstructors(): HasMany
     }
 
     public function getFormattedPriceAttribute(): string
-{
-    if ($this->isFree()) return 'GRATIS';
-    
-    if ($this->currency === 'USD') {
-        return '$' . number_format($this->price, 2);
-    }
-    
-    return 'Rp ' . number_format($this->price, 0, ',', '.');
-}
+    {
+        if ($this->isFree()) return 'GRATIS';
 
-public function getFormattedCertificatePriceAttribute(): string
-{
-    if (! $this->hasCertificatePrice()) {
-        return $this->isFree() ? 'Gratis' : 'Included';
+        return 'Rp ' . number_format($this->price, 0, ',', '.');
     }
-    
-    if ($this->currency === 'USD') {
-        return '$' . number_format($this->certificate_price, 2);
+
+    public function getFormattedCertificatePriceAttribute(): string
+    {
+        if (! $this->hasCertificatePrice()) {
+            return $this->isFree() ? 'Gratis' : 'Included';
+        }
+
+        return 'Rp ' . number_format($this->certificate_price, 0, ',', '.');
     }
-    
-    return 'Rp ' . number_format($this->certificate_price, 0, ',', '.');
-}
 
     public function getTotalLessonsAttribute(): int
     {

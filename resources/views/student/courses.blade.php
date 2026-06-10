@@ -1156,7 +1156,11 @@ if ($progress >= 100 || $status === 'completed') {
     data-enrollment-id="{{ $enrollment->id }}"
     data-course-title="{{ $courseTitle }}"
     data-course-slug="{{ $courseSlug }}"
-    data-course-url="{{ url('courses/' . $courseSlug) }}">
+    data-course-url="{{ url('courses/' . $courseSlug) }}"
+    data-enrollment-type="{{ $enrollment->type }}"
+    data-course-completed="{{ ($progress >= 100 || $status === 'completed') ? '1' : '0' }}"
+    data-upgrade-url="{{ $enrollment->type === 'audit' && $course->hasCertificatePrice() && $course->isUpgradeAvailable() ? route('payment.index', ['course' => $course->id, 'track' => 'verified', 'upgrade' => 1]) : '' }}"
+    data-certificates-url="{{ route('student.certificates') }}">
     ⋯
 </button>
 
@@ -1257,16 +1261,20 @@ function toggleMenu(btn, event) {
         }
     }
 
-    const enrollmentId  = btn.dataset.enrollmentId;
-    const courseTitle   = btn.dataset.courseTitle;
-    const courseSlug    = btn.dataset.courseSlug;   // tambahkan data-course-slug di blade
-    const courseUrl     = btn.dataset.courseUrl;    // tambahkan data-course-url di blade
+    const enrollmentId      = btn.dataset.enrollmentId;
+    const courseTitle       = btn.dataset.courseTitle;
+    const courseSlug        = btn.dataset.courseSlug;   // tambahkan data-course-slug di blade
+    const courseUrl         = btn.dataset.courseUrl;    // tambahkan data-course-url di blade
+    const enrollmentType    = btn.dataset.enrollmentType;
+    const courseCompleted   = btn.dataset.courseCompleted === '1';
+    const upgradeUrl        = btn.dataset.upgradeUrl;
+    const certificatesUrl   = btn.dataset.certificatesUrl;
 
     // Buat dropdown
     const menu = document.createElement('div');
     menu.className = 'course-dropdown-menu';
 
-    menu.innerHTML = `
+    let menuHtml = `
       <button class="cdm-item" onclick="cdmAction('resume','${courseSlug}',this)">
         <span class="cdm-icon purple"><i class="fa-solid fa-circle-play"></i></span>
         <span class="cdm-text">
@@ -1274,23 +1282,33 @@ function toggleMenu(btn, event) {
           <span class="cdm-sub">Lanjutkan dari terakhir</span>
         </span>
       </button>
+`;
 
-      <button class="cdm-item" onclick="cdmAction('download','${enrollmentId}',this)">
-        <span class="cdm-icon teal"><i class="fa-solid fa-download"></i></span>
+    if (enrollmentType === 'audit' && upgradeUrl) {
+        menuHtml += `
+      <button class="cdm-item" onclick="cdmAction('upgrade','${upgradeUrl}',this)">
+        <span class="cdm-icon teal"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
         <span class="cdm-text">
-          <span>Download Materials</span>
-          <span class="cdm-sub">Materi & slide tersedia</span>
+          <span>Upgrade to Verified</span>
+          <span class="cdm-sub">Dapatkan sertifikat resmi</span>
         </span>
       </button>
+`;
+    }
 
-      <button class="cdm-item" onclick="cdmAction('favorite','${enrollmentId}',this)">
-        <span class="cdm-icon gold"><i class="fa-solid fa-star"></i></span>
+    if (courseCompleted && ['verified', 'honor'].includes(enrollmentType) && certificatesUrl) {
+        menuHtml += `
+      <button class="cdm-item" onclick="cdmAction('certificate','${certificatesUrl}',this)">
+        <span class="cdm-icon gold"><i class="fa-solid fa-award"></i></span>
         <span class="cdm-text">
-          <span>Mark as Favorite</span>
-          <span class="cdm-sub">Simpan ke favoritmu</span>
+          <span>View Certificate</span>
+          <span class="cdm-sub">Lihat sertifikat kamu</span>
         </span>
       </button>
+`;
+    }
 
+    menuHtml += `
       <button class="cdm-item" onclick="cdmAction('share','${courseUrl || window.location.origin + '/courses/' + courseSlug}',this)">
         <span class="cdm-icon gold" style="background:rgba(255,196,82,0.15);color:#C88A00;"><i class="fa-solid fa-share-nodes"></i></span>
         <span class="cdm-text">
@@ -1309,6 +1327,8 @@ function toggleMenu(btn, event) {
         </span>
       </button>
     `;
+
+    menu.innerHTML = menuHtml;
 
     document.body.appendChild(menu);
     _activeDropdown = menu;
@@ -1360,13 +1380,13 @@ function cdmAction(type, value, el, title) {
         return;
     }
 
-    if (type === 'download') {
-        showCdmToast('<i class="fa-solid fa-clock"></i> Fitur download segera hadir!');
+    if (type === 'upgrade') {
+        window.location.href = value;
         return;
     }
 
-    if (type === 'favorite') {
-        showCdmToast('<i class="fa-solid fa-star"></i> Fitur favorit segera hadir!');
+    if (type === 'certificate') {
+        window.location.href = value;
         return;
     }
 }

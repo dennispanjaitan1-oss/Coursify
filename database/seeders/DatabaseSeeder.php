@@ -15,9 +15,10 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,          // 4. User (admin + instructor CSV + demo users + 200 students)
             CourseSeeder::class,        // 5. Kursus + Pivot course_instructors (dari CSV)
             CourseSyllabusSeeder::class,// 6. Silabus
-            CourseContentSeeder::class, // 6. Section & Lesson dummy
-            EnrollmentSeeder::class,    // 7. Enrollments, Payments, Progress dummy
-            ReviewSeeder::class,        // 8. Reviews dummy
+            CourseContentSeeder::class, // 7. Section & Lesson dummy
+            QuizSeeder::class,          // 8. Kuis demo
+            EnrollmentSeeder::class,    // 9. Enrollments, Payments, Progress dummy
+            ReviewSeeder::class,        // 10. Reviews dummy
             
         ]);
  
@@ -35,6 +36,9 @@ class DatabaseSeeder extends Seeder
         $this->command->info('   Users       → ' . \DB::table('users')->count() . ' records');
         $this->command->info('   Courses     → ' . \DB::table('courses')->count() . ' records');
         $this->command->info('   Syllabus    → ' . \DB::table('course_syllabus')->count() . ' records');
+        $this->command->info('   Lessons     → ' . \DB::table('lessons')->count() . ' records');
+        $this->command->info('   Quizzes     → ' . \DB::table('quizzes')->count() . ' records');
+        $this->command->info('   Quiz Options→ ' . \DB::table('quiz_options')->count() . ' records');
         $this->command->info('   Enrollments → ' . \DB::table('enrollments')->count() . ' records');
         $this->command->info('   Payments    → ' . \DB::table('payments')->count() . ' records');
         $this->command->info('   Reviews     → ' . \DB::table('reviews')->count() . ' records');

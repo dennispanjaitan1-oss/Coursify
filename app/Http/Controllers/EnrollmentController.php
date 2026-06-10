@@ -101,7 +101,7 @@ class EnrollmentController extends Controller
                 'method'  => 'free',
                 'status'  => 'paid',
                 'paid_at' => now(),
-                'currency' => $course->currency ?: 'IDR',
+                'currency' => 'IDR',
                 'transaction_id' => 'AUDIT-' . now()->format('Ymd') . '-' . strtoupper(\Illuminate\Support\Str::random(8)),
             ]);
 
