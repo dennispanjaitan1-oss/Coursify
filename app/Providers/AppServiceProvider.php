@@ -3,9 +3,13 @@
 namespace App\Providers;
 
 use App\Models\Category;
+use App\Models\Course;
 use App\Models\Institution;
+use App\Models\User;
 use App\Http\View\Composers\AdminSidebarComposer;
 use App\Models\Program;
+use App\Observers\CourseObserver;
+use App\Observers\UserObserver;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -25,6 +29,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Course::observe(CourseObserver::class);
+        User::observe(UserObserver::class);
+
         View::composer('layouts.app', function ($view) {
             $navBrowseTopics = Cache::remember('nav_browse_topics', 3600, function () {
                 return Category::withCount(['courses' => function ($q) {

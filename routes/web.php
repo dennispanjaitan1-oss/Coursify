@@ -181,7 +181,7 @@ Route::middleware(['auth', 'role:instructor,admin'])
         Route::get('/performance', [InstructorDashboard::class, 'performance'])->name('performance');
         Route::get('/insights', [InstructorDashboard::class, 'insights'])->name('insights');
         Route::get('/courses/new', [InstructorCourseController::class, 'create'])->name('create-course');
-        Route::get('/upload-video', [InstructorDashboard::class, 'uploadVideo'])->name('upload-video');
+        Route::match(['get', 'post'], '/upload-video', [InstructorDashboard::class, 'uploadVideo'])->name('upload-video');
         Route::get('/add-quiz', [InstructorDashboard::class, 'addQuiz'])->name('add-quiz');
         Route::post('/add-quiz', [InstructorDashboard::class, 'storeQuiz'])->name('add-quiz.store');
         Route::get('/broadcast', [InstructorDashboard::class, 'broadcast'])->name('broadcast');

@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Instructor;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\Lesson;
 use App\Models\Quiz;
 use App\Models\QuizOption;
 use App\Models\Review;
+use App\Models\Section;
 
 class DashboardController extends Controller
 {
@@ -296,9 +299,55 @@ public function messagesApi()
     // Quick Action Methods
     // ═══════════════════════════════════════════════════════════
 
-    public function uploadVideo()
+    public function uploadVideo(Request $request)
     {
-        return view('instructor.upload-video');
+        $instructor = Auth::user();
+
+        if ($request->isMethod('POST')) {
+            $validated = $request->validate([
+                'course_id' => 'required|exists:courses,id',
+                'section_id' => 'required|exists:sections,id',
+                'video'     => 'required|file|mimes:mp4,webm,ogg|max:512000',
+                'title'     => 'required|string|max:255',
+                'description' => 'nullable|string|max:5000',
+            ]);
+
+            $course = Course::whereHas('instructors', function ($q) use ($instructor) {
+                $q->where('user_id', $instructor->id);
+            })->findOrFail($validated['course_id']);
+
+            $section = $course->sections()->findOrFail($validated['section_id']);
+
+            $path = $request->file('video')->store('courses/videos', 'public');
+
+            $orderIndex = $section->lessons()->max('order_index');
+            $orderIndex = $orderIndex !== null ? $orderIndex + 1 : 1;
+
+            Lesson::create([
+                'section_id'       => $section->id,
+                'title'            => $validated['title'],
+                'type'             => 'video',
+                'video_url'        => 'storage/' . $path,
+                'content'          => $validated['description'],
+                'order_index'      => $orderIndex,
+                'is_free_preview'  => false,
+            ]);
+
+            Cache::forget('home_featured_courses');
+            Cache::forget('home_promo_courses');
+            Cache::forget('home_latest_courses');
+
+            return redirect()->route('instructor.upload-video')
+                ->with('success', 'Video berhasil diupload dan ditambahkan ke lesson!');
+        }
+
+        $courses = Course::whereHas('instructors', function ($q) use ($instructor) {
+            $q->where('user_id', $instructor->id);
+        })->with(['sections' => function ($q) {
+            $q->orderBy('order_index');
+        }])->get();
+
+        return view('instructor.upload-video', compact('courses'));
     }
 
     public function addQuiz()

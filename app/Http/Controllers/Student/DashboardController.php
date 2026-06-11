@@ -9,9 +9,11 @@ use App\Models\Enrollment;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
 
@@ -413,24 +415,27 @@ class DashboardController extends Controller
         $user = Auth::user();
 
         if ($request->hasFile('avatar')) {
-            $file = $request->file('avatar');
-            $filename = 'avatar_' . $user->id . '_' . time() . '.' . $file->getClientOriginalExtension();
-            
-            // Simpan ke folder public/uploads/avatars
-            $uploadPath = public_path('uploads/avatars');
-            if (!file_exists($uploadPath)) {
-                mkdir($uploadPath, 0755, true);
-            }
-            
-            $file->move($uploadPath, $filename);
-            
-            // Hapus file lama jika ada dan bukan default
-            if ($user->avatar_url && file_exists(public_path($user->avatar_url))) {
-                @unlink(public_path($user->avatar_url));
+            $path = $request->file('avatar')->store('avatars', 'public');
+
+            // Hapus file avatar lama
+            if ($user->avatar_url) {
+                $oldPath = str_replace('storage/', '', $user->avatar_url);
+                if (Storage::disk('public')->exists($oldPath)) {
+                    Storage::disk('public')->delete($oldPath);
+                }
+                // Juga hapus dari lokasi lama (public/uploads/avatars/)
+                $oldLegacy = public_path($user->avatar_url);
+                if (file_exists($oldLegacy)) {
+                    @unlink($oldLegacy);
+                }
             }
 
-            $avatarUrl = 'uploads/avatars/' . $filename;
+            $avatarUrl = 'storage/' . $path;
             $user->update(['avatar_url' => $avatarUrl]);
+
+            Cache::forget('home_featured_courses');
+            Cache::forget('home_promo_courses');
+            Cache::forget('home_latest_courses');
 
             if ($request->expectsJson()) {
                 return response()->json([

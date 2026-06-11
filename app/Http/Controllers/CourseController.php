@@ -15,40 +15,33 @@ class CourseController extends Controller
         $parentCategories = Category::whereNull('parent_id')
             ->with(['children' => function ($q) {
                 $q->withCount(['courses' => function ($sq) {
-                    $sq->withTrashed();
+                    $sq->where('is_published', true);
                 }])->orderBy('name');
             }])
             ->withCount(['courses' => function ($q) {
-                $q->withTrashed();
+                $q->where('is_published', true);
             }])
             ->orderBy('name')
             ->get();
 
-        // ── Flat list semua kategori (untuk backward compat stats bar) ────────
         $categories = Category::withCount(['courses' => function ($q) {
-            $q->withTrashed();
+            $q->where('is_published', true);
         }])->orderBy('name')->get();
-        // ── Ambil semua kategori ─────────────────────────────────
-        $categories = Category::withCount([
-            'courses' => function ($q) {
-                $q->withTrashed();
-            }
-        ])->orderBy('name')->get();
 
         // ── Total course ────────────────────────────────────────
-        $totalCourses = Course::withTrashed()->count();
+        $totalCourses = Course::where('is_published', true)->count();
 
         try {
 
             // ── Query utama ─────────────────────────────────────
-            $query = Course::withTrashed()
-                ->with([
+            $query = Course::with([
                     'category',
                     'institution',
                     'instructors'
                 ])
                 ->withCount('enrollments')
-                ->withAvg('reviews', 'rating');
+                ->withAvg('reviews', 'rating')
+                ->where('is_published', true);
 
             // ── SEARCH ──────────────────────────────────────────
             if ($request->filled('search')) {
@@ -170,8 +163,8 @@ class CourseController extends Controller
                 'CourseController@index error: ' . $e->getMessage()
             );
 
-            $courses = Course::withTrashed()
-                ->where('id', 0)
+            $courses = Course::where('id', 0)
+                ->where('is_published', true)
                 ->paginate(12);
         }
 
@@ -193,8 +186,8 @@ class CourseController extends Controller
     {
         try {
 
-            $course = Course::withTrashed()
-                ->where('slug', $slug)
+            $course = Course::where('slug', $slug)
+                ->where('is_published', true)
                 ->with([
                     'category',
                     'institution',

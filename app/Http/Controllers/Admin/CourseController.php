@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Institution;
 use App\Models\Program;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class CourseController extends Controller
@@ -86,6 +87,11 @@ class CourseController extends Controller
 
         $course->update($validated);
 
+        Cache::forget('home_featured_courses');
+        Cache::forget('home_promo_courses');
+        Cache::forget('home_latest_courses');
+        Cache::forget('home_categories');
+
         return redirect()->route('admin.courses.index')
                          ->with('success', 'Course berhasil diperbarui!');
     }
@@ -98,6 +104,11 @@ class CourseController extends Controller
         $course->update(['is_published' => !$course->is_published]);
         $status = $course->is_published ? 'dipublikasikan' : 'disembunyikan';
 
+        Cache::forget('home_featured_courses');
+        Cache::forget('home_promo_courses');
+        Cache::forget('home_latest_courses');
+        Cache::forget('home_categories');
+
         return redirect()->route('admin.courses.index')
                          ->with('success', "Course berhasil {$status}!");
     }
@@ -108,6 +119,11 @@ class CourseController extends Controller
     public function destroy(Course $course)
     {
         $course->forceDelete();
+
+        Cache::forget('home_featured_courses');
+        Cache::forget('home_promo_courses');
+        Cache::forget('home_latest_courses');
+        Cache::forget('home_categories');
 
         return redirect()->route('admin.courses.index')
                          ->with('success', 'Course berhasil dihapus!');

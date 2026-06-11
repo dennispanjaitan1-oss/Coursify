@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Course;
 use App\Models\Institution;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 
@@ -84,6 +85,11 @@ class CourseController extends Controller
 
         $course = Course::create($validated);
         $course->instructors()->attach(Auth::id(), ['role' => 'lead']);
+
+        Cache::forget('home_featured_courses');
+        Cache::forget('home_promo_courses');
+        Cache::forget('home_latest_courses');
+        Cache::forget('home_categories');
 
         return redirect()
             ->route('instructor.courses.show', $course)
@@ -163,6 +169,11 @@ class CourseController extends Controller
 
         $course->update($validated);
 
+        Cache::forget('home_featured_courses');
+        Cache::forget('home_promo_courses');
+        Cache::forget('home_latest_courses');
+        Cache::forget('home_categories');
+
         return redirect()
             ->route('instructor.courses.show', $course)
             ->with('success', 'Kursus berhasil diperbarui!');
@@ -172,6 +183,12 @@ class CourseController extends Controller
     {
         $this->authorizeInstructor($course);
         $course->delete();
+
+        Cache::forget('home_featured_courses');
+        Cache::forget('home_promo_courses');
+        Cache::forget('home_latest_courses');
+        Cache::forget('home_categories');
+
         return redirect()
             ->route('instructor.courses.index')
             ->with('success', 'Kursus berhasil dihapus.');
