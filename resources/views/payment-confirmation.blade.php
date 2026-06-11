@@ -1,8 +1,5 @@
 @php
-    $currency = $payment->currency ?: 'IDR';
-    $fmt = fn ($amount) => $currency === 'USD'
-        ? '$' . number_format((float) $amount, 2)
-        : 'Rp ' . number_format((float) $amount, 0, ',', '.');
+    $fmt = fn ($amount) => 'Rp ' . number_format((float) $amount, 0, ',', '.');
 @endphp
 
 <!DOCTYPE html>

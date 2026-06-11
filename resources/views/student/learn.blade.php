@@ -573,7 +573,7 @@ body::before {
                         <div class="sidebar-section-icon">{{ $sIdx + 1 }}</div>
                         <span class="sidebar-section-name">{{ $section->title }}</span>
                         <span class="sidebar-section-count">{{ $sectionLessons->count() }}</span>
-                        <span class="sidebar-section-chevron">▾</span>
+                        <span class="sidebar-section-chevron"><i class="fa-solid fa-chevron-down"></i></span>
                     </button>
 
                     <div class="sidebar-lessons" id="sidebarLessons{{ $section->id }}">
@@ -586,8 +586,8 @@ body::before {
                             <a href="{{ route('student.learn.lesson', [$course->slug, $sLesson->id]) }}"
                                class="sidebar-lesson {{ $isActive ? 'active' : ($isCompleted ? 'completed' : '') }}">
                                 <div class="lesson-check">
-                                    @if($isCompleted) ✓
-                                    @elseif($isActive) ▶
+                                    @if($isCompleted) <i class="fa-solid fa-check" style="font-size:9px;"></i>
+                                    @elseif($isActive) <i class="fa-solid fa-play" style="font-size:8px;"></i>
                                     @endif
                                 </div>
                                 <span class="lesson-num">{{ $lessonCounter }}</span>
@@ -643,16 +643,16 @@ body::before {
             {{-- Lesson Header --}}
             <div class="lesson-header">
                 <div class="lesson-section-badge">
-                    📚 {{ $sections->first(fn($s) => $s->lessons->contains('id', $lesson->id))?->title ?? 'Lesson' }}
+                    <i class="fa-solid fa-book"></i> {{ $sections->first(fn($s) => $s->lessons->contains('id', $lesson->id))?->title ?? 'Lesson' }}
                 </div>
                 <h1 class="lesson-title">{{ $lesson->title }}</h1>
                 <div class="lesson-meta">
-                    <span class="lesson-meta-item">📖 Lesson {{ $sections->flatMap->lessons->search(fn($l) => $l->id === $lesson->id) + 1 }} of {{ $totalLessons }}</span>
+                    <span class="lesson-meta-item"> Lesson {{ $sections->flatMap->lessons->search(fn($l) => $l->id === $lesson->id) + 1 }} of {{ $totalLessons }}</span>
                     @if($lesson->duration_minutes ?? false)
-                        <span class="lesson-meta-item">🕐 {{ $lesson->duration_minutes }} min</span>
+                        <span class="lesson-meta-item"> {{ $lesson->duration_minutes }} min</span>
                     @endif
                     @if(isset($progress[$lesson->id]) && $progress[$lesson->id]->is_completed)
-                        <span class="lesson-meta-item" style="color:var(--teal);">✓ Completed</span>
+                        <span class="lesson-meta-item" style="color:var(--teal);"><i class="fa-solid fa-check-circle"></i> Completed</span>
                     @endif
                 </div>
             </div>
@@ -681,7 +681,7 @@ body::before {
 
                         @if($lesson->quizzes->isEmpty())
                             <div class="no-content-box">
-                                <div class="no-content-icon">❗</div>
+                                <div class="no-content-icon"></div>
                                 <div class="no-content-title">Quiz belum tersedia</div>
                                 <p class="no-content-desc">Belum ada pertanyaan untuk lesson ini. Silakan hubungi instruktur.</p>
                             </div>
@@ -726,7 +726,7 @@ body::before {
                                 </iframe>
                             </div>
                             <div class="video-caption">
-                                🎬 <span>{{ $lesson->title }}</span>
+                                <i class="fa-solid fa-video"></i> <span>{{ $lesson->title }}</span>
                             </div>
                         </div>
                     @elseif($videoUrl)
@@ -736,7 +736,7 @@ body::before {
                                     <source src="{{ $videoUrl }}">
                                 </video>
                             </div>
-                            <div class="video-caption">🎬 <span>{{ $lesson->title }}</span></div>
+                            <div class="video-caption"> <span>{{ $lesson->title }}</span></div>
                         </div>
                     @endif
 
@@ -746,7 +746,7 @@ body::before {
                         </div>
                     @elseif(!$youtubeId && !$videoUrl)
                         <div class="no-content-box">
-                            <div class="no-content-icon">📝</div>
+                            <div class="no-content-icon"></div>
                             <div class="no-content-title">Materi akan segera tersedia</div>
                             <p class="no-content-desc">Instruktur sedang menyiapkan konten untuk lesson ini. Silakan cek kembali nanti.</p>
                         </div>
@@ -769,7 +769,9 @@ body::before {
                     <button class="btn-complete {{ $isCompleted ? 'done' : '' }}"
                             id="btnComplete"
                             onclick="markComplete({{ $lesson->id }}, {{ $isCompleted ? 'true' : 'false' }})">
-                        <span id="btnCompleteIcon">{{ $isCompleted ? '✓' : '○' }}</span>
+                        <span id="btnCompleteIcon">
+                            @if($isCompleted)<i class="fa-solid fa-check-circle"></i>@else<i class="fa-regular fa-circle"></i>@endif
+                        </span>
                         <span id="btnCompleteText">{{ $isCompleted ? 'Completed' : 'Mark as Complete' }}</span>
                     </button>
                     <span class="complete-label">{{ $completedCount }}/{{ $totalLessons }} lessons done</span>
@@ -779,20 +781,20 @@ body::before {
                     @if($prevLesson)
                         <a href="{{ route('student.learn.lesson', [$course->slug, $prevLesson->id]) }}"
                            class="btn-lesson-nav">
-                            ← Prev
+                            <i class="fa-solid fa-chevron-left"></i> Prev
                         </a>
                     @else
-                        <span class="btn-lesson-nav disabled">← Prev</span>
+                        <span class="btn-lesson-nav disabled"><i class="fa-solid fa-chevron-left"></i> Prev</span>
                     @endif
 
                     @if($nextLesson)
                         <a href="{{ route('student.learn.lesson', [$course->slug, $nextLesson->id]) }}"
                            class="btn-lesson-nav primary">
-                            Next →
+                            Next <i class="fa-solid fa-chevron-right"></i>
                         </a>
                     @else
                         <a href="{{ route('student.index') }}" class="btn-lesson-nav primary">
-                            🎓 Finish Course
+                            <i class="fa-solid fa-flag-checkered"></i> Finish Course
                         </a>
                     @endif
                 </div>
@@ -813,7 +815,7 @@ body::before {
                 <a href="{{ route('privacy') }}">Privacy</a>
                 <a href="{{ route('contact') }}">Contact</a>
             </div>
-            <div class="footer-copy">© {{ date('Y') }} Coursify · Supporting SDG 4 🌍</div>
+            <div class="footer-copy">© {{ date('Y') }} Coursify </div>
         </footer>
 
     </main>
@@ -821,7 +823,7 @@ body::before {
 
 {{-- Mobile sidebar toggle --}}
 <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleMobileSidebar()" title="Toggle lessons">
-    ☰
+    <i class="fa-solid fa-bars" id="sidebarToggleIcon"></i>
 </button>
 
 <script>
@@ -834,9 +836,9 @@ function toggleSidebarSection(id) {
 // ── Mobile sidebar ─────────────────────────────────────
 function toggleMobileSidebar() {
     const sidebar = document.getElementById('learnSidebar');
-    const toggle  = document.getElementById('sidebarToggle');
+    const toggleIcon = document.getElementById('sidebarToggleIcon');
     sidebar.classList.toggle('open');
-    toggle.textContent = sidebar.classList.contains('open') ? '✕' : '☰';
+    toggleIcon.className = sidebar.classList.contains('open') ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
 }
 
 // Close sidebar on outside click (mobile)
@@ -848,7 +850,8 @@ document.addEventListener('click', function(e) {
         && !sidebar.contains(e.target)
         && e.target !== toggle) {
         sidebar.classList.remove('open');
-        toggle.textContent = '☰';
+        const toggleIcon = document.getElementById('sidebarToggleIcon');
+        if (toggleIcon) toggleIcon.className = 'fa-solid fa-bars';
     }
 });
 
@@ -860,6 +863,7 @@ function markComplete(lessonId, currentlyDone) {
     const newState = !currentlyDone;
 
     btn.disabled = true;
+    btn.style.opacity = '0.6';
 
     fetch(`/dashboard/progress/${lessonId}`, {
         method: 'POST',
@@ -870,20 +874,30 @@ function markComplete(lessonId, currentlyDone) {
         },
         body: JSON.stringify({ is_completed: newState }),
     })
-    .then(res => res.json())
+    .then(res => {
+        if (!res.ok) {
+            throw new Error('Server returned ' + res.status);
+        }
+        return res.json();
+    })
     .then(data => {
         btn.disabled = false;
+        btn.style.opacity = '1';
 
         if (newState) {
             btn.classList.add('done');
-            icon.textContent = '✓';
+            icon.innerHTML = '<i class="fa-solid fa-check-circle"></i>';
             text.textContent = 'Completed';
             // Update sidebar lesson style
-            const sidebarLesson = document.querySelector(`.sidebar-lesson.active`);
-            if (sidebarLesson) sidebarLesson.classList.add('completed');
+            const sidebarLesson = document.querySelector('.sidebar-lesson.active');
+            if (sidebarLesson) {
+                sidebarLesson.classList.add('completed');
+                const check = sidebarLesson.querySelector('.lesson-check');
+                if (check) check.innerHTML = '<i class="fa-solid fa-check" style="font-size:9px;"></i>';
+            }
         } else {
             btn.classList.remove('done');
-            icon.textContent = '○';
+            icon.innerHTML = '<i class="fa-regular fa-circle"></i>';
             text.textContent = 'Mark as Complete';
         }
 
@@ -891,16 +905,41 @@ function markComplete(lessonId, currentlyDone) {
         if (data.progress !== undefined) {
             const pct = Math.round(data.progress);
             const pctStr = pct + '%';
-            document.getElementById('navProgressFill').style.width  = pctStr;
-            document.getElementById('navProgressPct').textContent   = pctStr;
-            document.getElementById('sidebarProgressFill').style.width = pctStr;
-            document.getElementById('sidebarProgressPct').textContent  = pctStr;
+            const navFill = document.getElementById('navProgressFill');
+            const navPct = document.getElementById('navProgressPct');
+            const sideFill = document.getElementById('sidebarProgressFill');
+            const sidePct = document.getElementById('sidebarProgressPct');
+            if (navFill) navFill.style.width = pctStr;
+            if (navPct) navPct.textContent = pctStr;
+            if (sideFill) sideFill.style.width = pctStr;
+            if (sidePct) sidePct.textContent = pctStr;
         }
 
         // Re-set onclick for next toggle
         btn.setAttribute('onclick', `markComplete(${lessonId}, ${newState})`);
     })
-    .catch(() => { btn.disabled = false; });
+    .catch(err => {
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        console.error('Mark complete error:', err);
+        // Tampilkan feedback ke user
+        const feedback = document.getElementById('quizFeedback') || document.getElementById('markCompleteFeedback') || document.createElement('div');
+        if (!feedback.id) {
+            feedback.id = 'markCompleteFeedback';
+            feedback.style.marginBottom = '16px';
+            feedback.style.padding = '12px 18px';
+            feedback.style.borderRadius = '12px';
+            feedback.style.background = 'rgba(255, 235, 238, 0.95)';
+            feedback.style.border = '1px solid rgba(244,67,54,0.25)';
+            feedback.style.color = '#c62828';
+            feedback.style.fontSize = '13px';
+            feedback.style.fontWeight = '500';
+            btn.parentNode.insertBefore(feedback, btn);
+        }
+        feedback.style.display = 'block';
+        feedback.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Gagal menyimpan progress. Silakan coba lagi.';
+        setTimeout(() => { feedback.style.display = 'none'; }, 4000);
+    });
 }
 
 function submitQuiz(event, lessonId) {
@@ -942,7 +981,7 @@ function submitQuiz(event, lessonId) {
             return;
         }
 
-        const scoreLabel = data.passed ? '🎉 Selamat! Kamu lulus quiz.' : '⚠️ Belum lulus. Coba lagi.';
+        const scoreLabel = data.passed ? ' Selamat! Kamu lulus quiz.' : ' Belum lulus. Coba lagi.';
         const scoreText = `${scoreLabel} Nilai kamu: ${data.score}% (${data.correct_count}/${data.total_questions} benar).`;
 
         feedback.style.display = 'block';
@@ -958,7 +997,8 @@ function submitQuiz(event, lessonId) {
             const completedLesson = document.querySelector('.sidebar-lesson.active');
             if (completedLesson) {
                 completedLesson.classList.add('completed');
-                completedLesson.querySelector('.lesson-check').textContent = '✓';
+                const check = completedLesson.querySelector('.lesson-check');
+                if (check) check.innerHTML = '<i class="fa-solid fa-check" style="font-size:9px;"></i>';
             }
             if (data.progress !== undefined) {
                 const pct = Math.round(data.progress);
@@ -982,5 +1022,6 @@ function submitQuiz(event, lessonId) {
         feedback.innerHTML = 'Gagal mengirim jawaban. Coba lagi.';
     });
 }
+</script>
 </body>
 </html>

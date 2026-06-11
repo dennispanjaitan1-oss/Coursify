@@ -1,8 +1,5 @@
 @php
-    $currency = $course->currency ?: 'IDR';
-    $fmt = fn ($amount) => $currency === 'USD'
-        ? '$' . number_format((float) $amount, 2)
-        : 'Rp ' . number_format((float) $amount, 0, ',', '.');
+    $fmt = fn ($amount) => 'Rp ' . number_format((float) $amount, 0, ',', '.');
     $institutionName = $course->institution?->name ?: 'Coursify Partner';
     $institutionLogo = $course->institution?->logo_url ?: $course->thumbnail_url;
     $logoSrc = $institutionLogo
@@ -171,7 +168,7 @@
                     <h2 class="section-title" style="font-size:24px;">Payment methods</h2>
                     <div class="secure-title">
                         <i class="fa-solid fa-lock"></i>
-                        <span>Secure {{ $currency === 'USD' ? 'US Dollar' : 'Indonesian Rupiah' }} Checkout</span>
+                        <span><i class="fa-solid fa-shield-halved"></i> Pembayaran Rupiah Aman</span>
                     </div>
 
                     <div class="card-row">
@@ -250,7 +247,6 @@
 
     <script>
         const basePrice = Number(@json((float) $price));
-        const currency = @json($currency);
         const coupon = document.getElementById('coupon_code');
         const apply = document.getElementById('applyCoupon');
         const discountRow = document.getElementById('discountRow');
@@ -260,9 +256,7 @@
         const cardExpiry = document.getElementById('card_expiry');
         const cardCvc = document.getElementById('card_cvc');
         function money(amount) {
-            return currency === 'USD'
-                ? '$' + amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-                : 'Rp ' + amount.toLocaleString('id-ID', { maximumFractionDigits: 0 });
+            return 'Rp ' + amount.toLocaleString('id-ID', { maximumFractionDigits: 0 });
         }
         function refreshCoupon() {
             const active = coupon.value.trim().toUpperCase() === 'COURSIFY10';
